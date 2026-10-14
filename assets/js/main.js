@@ -108,9 +108,9 @@
         // --- 4. Dynamic Bag Counter Pulse on Add To Cart ---
         $(document.body).on('added_to_cart', function (event, fragments, cart_hash, $button) {
             const $counter = $('.maze-cart-count');
-            $counter.addClass('scale-125 bg-white text-black');
+            $counter.addClass('scale-125 ring-2 ring-black');
             setTimeout(function () {
-                $counter.removeClass('scale-125 bg-white text-black');
+                $counter.removeClass('scale-125 ring-2 ring-black');
             }, 600);
         });
 

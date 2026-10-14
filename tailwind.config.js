@@ -13,14 +13,16 @@ module.exports = {
     extend: {
       colors: {
         maze: {
-          black: '#09090b',
-          dark: '#111113',
-          card: '#161619',
-          border: 'rgba(255, 255, 255, 0.1)',
-          'border-light': 'rgba(255, 255, 255, 0.2)',
-          accent: '#ccff00', /* Streetwear acid volt accent */
-          muted: '#8e8e93',
-          light: '#f4f4f5'
+          black: '#000000',
+          white: '#ffffff',
+          dark: '#111111',
+          card: '#ffffff',
+          border: '#000000',
+          'border-light': '#e5e5e5',
+          accent: '#000000',
+          muted: '#737373',
+          subtle: '#a3a3a3',
+          light: '#f5f5f5'
         }
       },
       fontFamily: {
@@ -32,9 +34,10 @@ module.exports = {
         widest: '0.15em'
       },
       boxShadow: {
-        'street': '0 0 25px -5px rgba(0, 0, 0, 0.7)',
-        'glow': '0 0 20px -3px rgba(204, 255, 0, 0.25)',
-        'glow-white': '0 0 20px -3px rgba(255, 255, 255, 0.15)'
+        'brutal': '4px 4px 0px 0px #000000',
+        'brutal-sm': '2px 2px 0px 0px #000000',
+        'brutal-lg': '8px 8px 0px 0px #000000',
+        'street': '0 4px 20px -2px rgba(0, 0, 0, 0.08)'
       }
     },
   },

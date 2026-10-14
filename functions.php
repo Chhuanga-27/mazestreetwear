@@ -131,10 +131,10 @@ function mazestreetwear_cart_count_fragments( $fragments ) {
 
     $count = WC()->cart->get_cart_contents_count();
 
-    // Generate updated badge HTML fragment
+    // Generate updated badge HTML fragment: Black bag badge with white number counter
     ob_start();
     ?>
-    <span class="maze-cart-count absolute -top-1.5 -right-2 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-mono font-bold tracking-tight text-black bg-[#ccff00] rounded-full transition-transform duration-200 <?php echo $count > 0 ? 'scale-100' : 'scale-90 opacity-75'; ?>">
+    <span class="maze-cart-count absolute -top-1.5 -right-2 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-mono font-bold tracking-tight text-white bg-black border border-black rounded-full transition-transform duration-200 <?php echo $count > 0 ? 'scale-100' : 'scale-90 opacity-75'; ?>">
         <?php echo esc_html( $count ); ?>
     </span>
     <?php
@@ -153,7 +153,7 @@ remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wra
 
 // Custom wrapper start
 function mazestreetwear_wrapper_start() {
-    echo '<main id="primary" class="site-main min-h-screen bg-[#09090b] text-[#f4f4f5] antialiased selection:bg-[#ccff00] selection:text-black">';
+    echo '<main id="primary" class="site-main min-h-screen bg-white text-black antialiased selection:bg-black selection:text-white">';
 }
 add_action( 'woocommerce_before_main_content', 'mazestreetwear_wrapper_start', 10 );
 
@@ -164,13 +164,13 @@ function mazestreetwear_wrapper_end() {
 add_action( 'woocommerce_after_main_content', 'mazestreetwear_wrapper_end', 10 );
 
 /**
- * Filter WooCommerce breadcrumb defaults for minimalist dark aesthetic
+ * Filter WooCommerce breadcrumb defaults for minimalist monochrome aesthetic
  */
 function mazestreetwear_breadcrumbs_defaults( $defaults ) {
-    $defaults['delimiter']   = '<span class="text-[#52525b] mx-2">/</span>';
-    $defaults['wrap_before'] = '<nav class="woocommerce-breadcrumb text-xs font-mono uppercase tracking-widest text-[#a1a1aa] mb-6 flex flex-wrap items-center" aria-label="Breadcrumb">';
+    $defaults['delimiter']   = '<span class="text-neutral-400 mx-2">/</span>';
+    $defaults['wrap_before'] = '<nav class="woocommerce-breadcrumb text-xs font-mono font-bold uppercase tracking-widest text-neutral-600 mb-6 flex flex-wrap items-center" aria-label="Breadcrumb">';
     $defaults['wrap_after']  = '</nav>';
-    $defaults['before']      = '<span class="text-[#f4f4f5]">';
+    $defaults['before']      = '<span class="text-black">';
     $defaults['after']       = '</span>';
     $defaults['home']        = _x( 'HOME', 'breadcrumb', 'mazestreetwear' );
     return $defaults;
@@ -178,9 +178,9 @@ function mazestreetwear_breadcrumbs_defaults( $defaults ) {
 add_filter( 'woocommerce_breadcrumb_defaults', 'mazestreetwear_breadcrumbs_defaults' );
 
 /**
- * Custom Sale Flash Badge
+ * Custom Sale Flash Badge: Black background with crisp white text
  */
 function mazestreetwear_sale_flash( $html, $post, $product ) {
-    return '<span class="maze-sale-badge absolute top-3 left-3 z-10 px-2 py-0.5 text-[10px] font-mono font-bold tracking-widest uppercase bg-[#ccff00] text-black border border-black shadow-sm">' . esc_html__( 'SALE', 'mazestreetwear' ) . '</span>';
+    return '<span class="maze-sale-badge absolute top-3 left-3 z-10 px-2 py-0.5 text-[10px] font-mono font-bold tracking-widest uppercase bg-black text-white border border-black">' . esc_html__( 'SALE', 'mazestreetwear' ) . '</span>';
 }
 add_filter( 'woocommerce_sale_flash', 'mazestreetwear_sale_flash', 10, 3 );

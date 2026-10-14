@@ -23,7 +23,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
     <?php do_action( 'woocommerce_before_variations_form' ); ?>
 
     <?php if ( empty( $available_variations ) && false !== $available_variations ) : ?>
-        <p class="stock out-of-stock font-mono text-xs uppercase tracking-widest text-[#ef4444] bg-[#ef4444]/10 p-3 border border-[#ef4444]/20">
+        <p class="stock out-of-stock font-mono text-xs uppercase tracking-widest text-black bg-neutral-100 p-3 border border-black">
             <?php echo esc_html( apply_filters( 'woocommerce_out_of_stock_message', __( 'This garment drop is currently out of stock and unavailable.', 'mazestreetwear' ) ) ); ?>
         </p>
     <?php else : ?>
@@ -33,19 +33,19 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
             <?php foreach ( $attributes as $attribute_name => $options ) : ?>
                 <div class="variation-row" data-attribute="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>">
                     <div class="flex items-center justify-between mb-2">
-                        <label for="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>" class="text-xs font-mono font-bold tracking-widest uppercase text-white">
+                        <label for="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>" class="text-xs font-mono font-bold tracking-widest uppercase text-black">
                             <?php echo wc_attribute_label( $attribute_name ); // WPCS: XSS ok. ?>
-                            <span class="selected-variation-value text-[#ccff00] font-normal ml-2"></span>
+                            <span class="selected-variation-value text-black font-bold ml-2"></span>
                         </label>
 
                         <?php if ( stripos( $attribute_name, 'size' ) !== false ) : ?>
-                            <button type="button" class="maze-size-guide-trigger text-[11px] font-mono tracking-widest uppercase text-[#a1a1aa] hover:text-[#ccff00] underline underline-offset-4 transition-colors">
+                            <button type="button" class="maze-size-guide-trigger text-[11px] font-mono font-bold tracking-widest uppercase text-neutral-600 hover:text-black underline underline-offset-4 transition-colors">
                                 <?php esc_html_e( 'SIZE GUIDE', 'mazestreetwear' ); ?>
                             </button>
                         <?php endif; ?>
                     </div>
 
-                    <!-- Streetwear Size Pills Interactive Container -->
+                    <!-- Streetwear Size Pills Interactive Container: Crisp Black Outline, Solid Black Fill when Active -->
                     <div class="maze-size-pills flex flex-wrap gap-2.5 my-2" data-target-select="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>">
                         <?php
                         if ( ! empty( $options ) ) {
@@ -55,7 +55,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                                     if ( in_array( $term->slug, $options, true ) ) {
                                         ?>
                                         <button type="button"
-                                                class="maze-size-pill px-4 py-2 text-xs font-mono font-bold tracking-wider uppercase border border-white/20 bg-[#161619] text-[#f4f4f5] hover:border-[#ccff00] hover:text-white transition-all duration-150 cursor-pointer"
+                                                class="maze-size-pill px-4 py-2.5 text-xs font-mono font-bold tracking-wider uppercase border border-black bg-white text-black hover:bg-neutral-100 transition-all duration-150 cursor-pointer"
                                                 data-value="<?php echo esc_attr( $term->slug ); ?>">
                                             <?php echo esc_html( $term->name ); ?>
                                         </button>
@@ -66,7 +66,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                                 foreach ( $options as $option ) {
                                     ?>
                                     <button type="button"
-                                            class="maze-size-pill px-4 py-2 text-xs font-mono font-bold tracking-wider uppercase border border-white/20 bg-[#161619] text-[#f4f4f5] hover:border-[#ccff00] hover:text-white transition-all duration-150 cursor-pointer"
+                                            class="maze-size-pill px-4 py-2.5 text-xs font-mono font-bold tracking-wider uppercase border border-black bg-white text-black hover:bg-neutral-100 transition-all duration-150 cursor-pointer"
                                             data-value="<?php echo esc_attr( $option ); ?>">
                                         <?php echo esc_html( $option ); ?>
                                     </button>
@@ -89,7 +89,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                     </div>
 
                     <?php
-                    echo end( $attribute_keys ) === $attribute_name ? wp_kses_post( apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations text-[10px] font-mono tracking-widest uppercase text-[#71717a] hover:text-[#ccff00] mt-1 inline-block" href="#">' . esc_html__( 'CLEAR SELECTION', 'mazestreetwear' ) . '</a>' ) ) : '';
+                    echo end( $attribute_keys ) === $attribute_name ? wp_kses_post( apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations text-[10px] font-mono font-bold tracking-widest uppercase text-neutral-500 hover:text-black mt-1 inline-block" href="#">' . esc_html__( 'CLEAR SELECTION', 'mazestreetwear' ) . '</a>' ) ) : '';
                     ?>
                 </div>
             <?php endforeach; ?>

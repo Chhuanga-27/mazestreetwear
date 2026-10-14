@@ -23,25 +23,25 @@ get_header( 'shop' );
 do_action( 'woocommerce_before_main_content' );
 ?>
 
-<div class="maze-archive-wrapper max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+<div class="maze-archive-wrapper max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 bg-white text-black">
 
     <!-- Header Section / Editorial Streetwear Title -->
-    <header class="woocommerce-products-header mb-8 pb-6 border-b border-white/10">
+    <header class="woocommerce-products-header mb-8 pb-6 border-b border-black">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-                <div class="inline-flex items-center space-x-2 text-[11px] font-mono tracking-widest text-[#ccff00] uppercase mb-2">
-                    <span class="inline-block w-2 h-2 rounded-full bg-[#ccff00] animate-pulse"></span>
+                <div class="inline-flex items-center space-x-2 text-[11px] font-mono font-bold tracking-widest text-black uppercase mb-2 border border-black px-2.5 py-0.5 bg-white">
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-black"></span>
                     <span><?php esc_html_e( 'ARCHIVE CATALOG // 2026', 'mazestreetwear' ); ?></span>
                 </div>
                 <?php if ( apply_filters( 'woocommerce_show_page_title', true ) ) : ?>
-                    <h1 class="woocommerce-products-header__title page-title text-3xl sm:text-5xl font-black font-sans tracking-tight uppercase text-white">
+                    <h1 class="woocommerce-products-header__title page-title text-3xl sm:text-5xl font-black font-sans tracking-tight uppercase text-black">
                         <?php woocommerce_page_title(); ?>
                     </h1>
                 <?php endif; ?>
             </div>
 
             <!-- Shop Description -->
-            <div class="text-xs font-mono text-[#a1a1aa] max-w-md">
+            <div class="text-xs font-mono text-neutral-600 max-w-md">
                 <?php
                 /**
                  * Hook: woocommerce_archive_description.
@@ -66,12 +66,12 @@ do_action( 'woocommerce_before_main_content' );
          * @hooked woocommerce_catalog_ordering - 30
          */
         ?>
-        <div class="maze-shop-controls mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-white/5 font-mono text-xs uppercase tracking-wider text-[#a1a1aa]">
+        <div class="maze-shop-controls mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-neutral-200 font-mono text-xs uppercase tracking-wider text-neutral-600">
             <?php do_action( 'woocommerce_before_shop_loop' ); ?>
         </div>
 
         <!-- Responsive Apparel Product Catalog Grid -->
-        <div class="maze-product-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-12">
+        <div class="maze-product-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <?php
             if ( wc_get_loop_prop( 'total' ) ) {
                 while ( have_posts() ) {
@@ -95,7 +95,7 @@ do_action( 'woocommerce_before_main_content' );
          * @hooked woocommerce_pagination - 10
          */
         ?>
-        <div class="maze-pagination-wrap mt-16 pt-8 border-t border-white/10 flex justify-center font-mono">
+        <div class="maze-pagination-wrap mt-16 pt-8 border-t border-black flex justify-center font-mono">
             <?php do_action( 'woocommerce_after_shop_loop' ); ?>
         </div>
         <?php
@@ -106,10 +106,10 @@ do_action( 'woocommerce_before_main_content' );
          * @hooked wc_no_products_found - 10
          */
         ?>
-        <div class="maze-no-products py-20 text-center border border-dashed border-white/10 bg-[#111113] p-8">
-            <span class="text-4xl mb-4 block text-[#71717a]">[ 00 ]</span>
-            <h3 class="text-lg font-mono uppercase tracking-widest text-white mb-2"><?php esc_html_e( 'NO APPAREL FOUND', 'mazestreetwear' ); ?></h3>
-            <p class="text-xs font-mono text-[#a1a1aa] mb-6"><?php esc_html_e( 'The requested garment archive or drop is currently unavailable.', 'mazestreetwear' ); ?></p>
+        <div class="maze-no-products py-20 text-center border border-black bg-neutral-50 p-8">
+            <span class="text-4xl mb-4 block font-mono font-bold text-neutral-400">[ 00 ]</span>
+            <h3 class="text-lg font-mono uppercase font-bold tracking-widest text-black mb-2"><?php esc_html_e( 'NO APPAREL FOUND', 'mazestreetwear' ); ?></h3>
+            <p class="text-xs font-mono text-neutral-600 mb-6"><?php esc_html_e( 'The requested garment archive or drop is currently unavailable.', 'mazestreetwear' ); ?></p>
             <?php do_action( 'woocommerce_no_products_found' ); ?>
         </div>
         <?php
