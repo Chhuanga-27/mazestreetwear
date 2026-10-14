@@ -8,8 +8,13 @@
     --color-maze-dark: #000000;
     --color-maze-card: #ffffff;
     --color-maze-border: #000000;
-    --color-maze-border-light: #e5e5e5;
+    --color-maze-border-light: #000000;
     --color-maze-accent: #000000;
+  }
+
+  * {
+    border-radius: 0 !important;
+    box-shadow: none !important;
   }
 
   html {
@@ -27,8 +32,8 @@
 
   /* Custom minimal monochrome scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
   }
   ::-webkit-scrollbar-track {
     background: #ffffff;
@@ -38,21 +43,32 @@
     border-radius: 0px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #404040;
+    background: #333333;
+  }
+
+  /* Clean accordion details reset */
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+  details summary {
+    list-style: none;
   }
 }
 
 @layer components {
-  /* Streetwear Size Pill Styling */
+  /* Clean Rectangular Size Box (Filled Black when Selected) */
   .maze-size-pill {
-    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     background-color: #ffffff;
     color: #000000;
     border: 1px solid #000000;
+    border-radius: 0px !important;
+    font-family: 'JetBrains Mono', monospace;
   }
 
   .maze-size-pill:hover {
-    background-color: #f5f5f5;
+    background-color: #f2f2f2;
+    color: #000000;
   }
 
   .maze-size-pill.is-active,
@@ -64,74 +80,132 @@
   }
 
   .maze-size-pill.is-disabled {
-    opacity: 0.3;
+    opacity: 0.25;
     cursor: not-allowed;
     text-decoration: line-through;
-    border-color: #e5e5e5 !important;
-    background-color: #fafafa !important;
-    color: #737373 !important;
+    border-color: #000000 !important;
   }
 
-  /* WooCommerce Gallery Styling */
-  .woocommerce-product-gallery {
-    position: relative;
-    width: 100%;
-  }
-
-  .woocommerce-product-gallery .woocommerce-product-gallery__wrapper {
-    margin: 0;
-    padding: 0;
-  }
-
-  .woocommerce-product-gallery .woocommerce-product-gallery__image {
-    width: 100%;
-    background-color: #ffffff;
-  }
-
-  .woocommerce-product-gallery .woocommerce-product-gallery__image img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    display: block;
-  }
-
-  .woocommerce-product-gallery .flex-control-thumbs {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 1rem;
-    padding: 0;
-    list-style: none;
-    overflow-x: auto;
-  }
-
-  .woocommerce-product-gallery .flex-control-thumbs li {
-    width: 80px;
-    flex-shrink: 0;
+  /* Catalog Order By Minimalist Hairline Trigger */
+  .woocommerce-ordering select.orderby,
+  select.orderby {
+    background-color: #ffffff !important;
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.6875rem !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 0.45rem 2rem 0.45rem 0.75rem !important;
+    outline: none !important;
+    border-radius: 0px !important;
     cursor: pointer;
-    border: 1px solid #e5e5e5;
-    background-color: #ffffff;
-    transition: border-color 0.2s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='black'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.6rem center !important;
+    background-size: 0.75rem !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
   }
 
-  .woocommerce-product-gallery .flex-control-thumbs li:hover,
-  .woocommerce-product-gallery .flex-control-thumbs li .flex-active {
-    border-color: #000000;
+  .woocommerce-ordering select.orderby:focus {
+    border-color: #000000 !important;
+    outline: none !important;
   }
 
-  .woocommerce-product-gallery .flex-control-thumbs img {
-    width: 100%;
-    height: 100px;
-    object-fit: cover;
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
+  /* Minimalist Editorial Price Tags */
+  .price,
+  .woocommerce-Price-amount {
+    font-family: inherit !important;
+    color: #000000 !important;
+    font-weight: 400 !important;
+    text-decoration: none !important;
   }
 
-  .woocommerce-product-gallery .flex-control-thumbs img.flex-active,
-  .woocommerce-product-gallery .flex-control-thumbs li:hover img {
-    opacity: 1;
+  .price del,
+  del .woocommerce-Price-amount {
+    color: #888888 !important;
+    font-size: 0.85em !important;
+    text-decoration: line-through !important;
+    margin-right: 0.35rem !important;
   }
 
-  /* WooCommerce Native Notices */
+  .price ins,
+  ins .woocommerce-Price-amount {
+    text-decoration: none !important;
+    color: #000000 !important;
+    font-weight: 600 !important;
+  }
+
+  /* Solid Black Full-Width Button Reset */
+  .button.single_add_to_cart_button,
+  .button.alt {
+    border-radius: 0 !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #000000 !important;
+    transition: background-color 0.15s ease !important;
+    box-shadow: none !important;
+  }
+
+  .button.single_add_to_cart_button:hover,
+  .button.alt:hover {
+    background-color: #262626 !important;
+    color: #ffffff !important;
+  }
+
+  /* Minimalist Pagination Styling */
+  .woocommerce-pagination ul.page-numbers,
+  .pagination .nav-links {
+    display: inline-flex;
+    border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .woocommerce-pagination ul.page-numbers li,
+  .pagination .nav-links a,
+  .pagination .nav-links span {
+    display: inline-block;
+  }
+
+  .woocommerce-pagination ul.page-numbers li a,
+  .woocommerce-pagination ul.page-numbers li span,
+  .pagination .nav-links a,
+  .pagination .nav-links span {
+    display: block;
+    padding: 0.5rem 0.85rem;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #000000;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .woocommerce-pagination ul.page-numbers li a:hover,
+  .pagination .nav-links a:hover {
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  .woocommerce-pagination ul.page-numbers li span.current,
+  .pagination .nav-links span.current {
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  /* WooCommerce Native Notices Minimalist Reset */
   .woocommerce-message,
   .woocommerce-info,
   .woocommerce-error {
@@ -139,15 +213,11 @@
     border: 1px solid #000000 !important;
     color: #000000 !important;
     font-family: 'JetBrains Mono', monospace !important;
-    font-size: 0.8125rem !important;
-    padding: 1rem 1.25rem !important;
-    margin-bottom: 2rem !important;
+    font-size: 0.75rem !important;
+    padding: 0.85rem 1rem !important;
+    margin-bottom: 1.5rem !important;
     list-style: none !important;
-    border-left: 4px solid #000000 !important;
-  }
-
-  .woocommerce-error {
-    border-left-color: #000000 !important;
+    border-radius: 0px !important;
   }
 
   .woocommerce-message .button,
@@ -155,166 +225,17 @@
     float: right;
     background: #000000 !important;
     color: #ffffff !important;
-    padding: 0.35rem 0.85rem !important;
-    font-size: 0.75rem !important;
+    padding: 0.3rem 0.75rem !important;
+    font-size: 0.6875rem !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.05em !important;
     border-radius: 0 !important;
     border: 1px solid #000000 !important;
-    transition: background 0.15s ease, color 0.15s ease;
   }
 
-  .woocommerce-message .button:hover,
-  .woocommerce-info .button:hover {
-    background: #262626 !important;
-    color: #ffffff !important;
-  }
-
-  /* WooCommerce Tabs Styling */
-  .woocommerce-tabs ul.tabs {
-    display: flex;
-    gap: 2rem;
-    border-bottom: 1px solid #000000;
-    padding: 0;
-    margin: 0 0 2rem 0;
-    list-style: none;
-  }
-
-  .woocommerce-tabs ul.tabs li {
-    padding: 0 0 0.75rem 0;
-    margin: 0;
-  }
-
-  .woocommerce-tabs ul.tabs li a {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #737373;
-    transition: color 0.2s ease;
-    text-decoration: none;
-  }
-
-  .woocommerce-tabs ul.tabs li.active a,
-  .woocommerce-tabs ul.tabs li a:hover {
-    color: #000000;
-  }
-
-  .woocommerce-tabs ul.tabs li.active {
-    border-bottom: 2px solid #000000;
-  }
-
-  .woocommerce-tabs .woocommerce-Tabs-panel {
-    color: #404040;
-    font-size: 0.875rem;
-    line-height: 1.7;
-  }
-
-  .woocommerce-tabs .woocommerce-Tabs-panel h2 {
-    display: none;
-  }
-
-  /* WooCommerce Quantity Selector */
-  .quantity input.qty {
-    background-color: #ffffff;
-    border: 1px solid #000000;
-    color: #000000;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.875rem;
-    font-weight: 700;
-    padding: 0.75rem 0.5rem;
-    text-align: center;
-    width: 4rem;
-    outline: none;
-    transition: border-color 0.15s ease;
-  }
-
-  .quantity input.qty:focus {
-    border-color: #000000;
-    box-shadow: 0 0 0 1px #000000;
-  }
-
-  /* WooCommerce Button standard reset for streetwear style */
-  .button.alt,
-  .button.single_add_to_cart_button,
-  .button.add_to_cart_button {
-    border-radius: 0 !important;
-    letter-spacing: 0.15em !important;
-    text-transform: uppercase !important;
-    font-family: 'JetBrains Mono', monospace !important;
-    font-weight: 700 !important;
-    background-color: #000000 !important;
-    color: #ffffff !important;
-    border: 1px solid #000000 !important;
-    transition: all 0.2s ease !important;
-  }
-
-  .button.alt:hover,
-  .button.single_add_to_cart_button:hover,
-  .button.add_to_cart_button:hover {
-    background-color: #262626 !important;
-    color: #ffffff !important;
-  }
-
-  /* Catalog Order By Dropdown */
-  .woocommerce-ordering select.orderby {
-    background-color: #ffffff;
-    border: 1px solid #000000;
-    color: #000000;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.5rem 1rem;
-    outline: none;
-  }
-
-  /* Price Tags in loops & single product */
-  .price {
-    font-family: 'JetBrains Mono', monospace;
-    color: #000000;
-    font-weight: 700;
-  }
-
-  .price del {
-    color: #737373;
-    font-size: 0.85em;
-    margin-right: 0.5rem;
-  }
-
-  .price ins {
-    text-decoration: none;
-    color: #000000;
-    font-weight: 800;
-  }
-
-  /* Star rating styling */
-  .star-rating {
-    font-size: 0.75rem;
-    color: #000000;
-  }
-
-  /* Infinite Marquee Animation for Streetwear Tickers */
-  @keyframes marquee {
-    0% {
-      transform: translateX(0%);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-
-  .animate-marquee {
-    display: flex;
-    width: max-content;
-    animation: marquee 25s linear infinite;
-  }
-
-  .animate-marquee:hover {
-    animation-play-state: paused;
+  /* Gallery thumbnail helper */
+  .maze-gallery-thumb {
+    border-radius: 0px !important;
   }
 }
-

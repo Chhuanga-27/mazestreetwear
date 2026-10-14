@@ -3,10 +3,14 @@
  * The Template for displaying product archives, including the main shop page
  * and product category/tag archives.
  *
- * Streetwear responsive product catalog grid for mazestw.in.
+ * Stark Luxury Minimalist Editorial Catalog for mazestw.in.
+ * Features:
+ * - Clean category header with a 1px bottom border
+ * - Minimalist 1px hairline sorting trigger & lowercase result count
+ * - Connected 4-column hairline product grid
  *
  * @package MazeStreetwear
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -15,39 +19,27 @@ get_header( 'shop' );
 
 /**
  * Hook: woocommerce_before_main_content.
- *
- * @hooked mazestreetwear_wrapper_start - 10 (outputs site-main container)
- * @hooked woocommerce_breadcrumb - 20
- * @hooked WC_Structured_Data::generate_website_data() - 30
  */
 do_action( 'woocommerce_before_main_content' );
 ?>
 
-<div class="maze-archive-wrapper max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 bg-white text-black">
+<div class="maze-archive-page bg-white text-black min-h-screen">
 
-    <!-- Header Section / Editorial Streetwear Title -->
-    <header class="woocommerce-products-header mb-8 pb-6 border-b border-black">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-                <div class="inline-flex items-center space-x-2 text-[11px] font-mono font-bold tracking-widest text-black uppercase mb-2 border border-black px-2.5 py-0.5 bg-white">
-                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-black"></span>
-                    <span><?php esc_html_e( 'ARCHIVE CATALOG // 2026', 'mazestreetwear' ); ?></span>
+    <!-- Clean Category Header with a 1px Bottom Border -->
+    <header class="woocommerce-products-header border-b border-black py-8 sm:py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-4">
+                <div>
+                    <?php if ( apply_filters( 'woocommerce_show_page_title', true ) ) : ?>
+                        <h1 class="woocommerce-products-header__title page-title text-2xl sm:text-3xl font-bold font-sans uppercase tracking-tight text-black">
+                            <?php woocommerce_page_title(); ?>
+                        </h1>
+                    <?php endif; ?>
                 </div>
-                <?php if ( apply_filters( 'woocommerce_show_page_title', true ) ) : ?>
-                    <h1 class="woocommerce-products-header__title page-title text-3xl sm:text-5xl font-black font-sans tracking-tight uppercase text-black">
-                        <?php woocommerce_page_title(); ?>
-                    </h1>
-                <?php endif; ?>
-            </div>
 
-            <!-- Shop Description -->
-            <div class="text-xs font-mono text-neutral-600 max-w-md">
                 <?php
                 /**
                  * Hook: woocommerce_archive_description.
-                 *
-                 * @hooked woocommerce_taxonomy_archive_description - 10
-                 * @hooked woocommerce_product_archive_description - 10
                  */
                 do_action( 'woocommerce_archive_description' );
                 ?>
@@ -55,82 +47,76 @@ do_action( 'woocommerce_before_main_content' );
         </div>
     </header>
 
-    <?php
-    if ( woocommerce_product_loop() ) {
+    <?php if ( woocommerce_product_loop() ) : ?>
 
-        /**
-         * Hook: woocommerce_before_shop_loop.
-         *
-         * @hooked woocommerce_output_all_notices - 10
-         * @hooked woocommerce_result_count - 20
-         * @hooked woocommerce_catalog_ordering - 30
-         */
-        ?>
-        <div class="maze-shop-controls mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-neutral-200 font-mono text-xs uppercase tracking-wider text-neutral-600">
-            <?php do_action( 'woocommerce_before_shop_loop' ); ?>
+        <!-- Minimalist Controls Bar: Lowercase Result Count & Minimalist Sorting Trigger -->
+        <div class="border-b border-black bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-sans">
+                <div class="text-neutral-500 lowercase tracking-normal">
+                    <?php woocommerce_result_count(); ?>
+                </div>
+
+                <div class="maze-ordering-trigger-wrap">
+                    <?php woocommerce_catalog_ordering(); ?>
+                </div>
+            </div>
         </div>
 
-        <!-- Responsive Apparel Product Catalog Grid -->
-        <div class="maze-product-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Connected Hairline Border Grid: 4 Columns on Desktop -->
+        <div class="w-full bg-white border-b border-black overflow-hidden">
+            <div class="max-w-7xl mx-auto border-x border-black">
+                <div class="maze-product-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 bg-white">
+                    <?php
+                    if ( wc_get_loop_prop( 'total' ) ) {
+                        while ( have_posts() ) {
+                            the_post();
+
+                            /**
+                             * Hook: woocommerce_shop_loop.
+                             */
+                            do_action( 'woocommerce_shop_loop' );
+
+                            wc_get_template_part( 'content', 'product' );
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Minimalist Pagination -->
+        <div class="maze-pagination-wrap py-12 flex justify-center text-xs font-mono">
             <?php
-            if ( wc_get_loop_prop( 'total' ) ) {
-                while ( have_posts() ) {
-                    the_post();
-
-                    /**
-                     * Hook: woocommerce_shop_loop.
-                     */
-                    do_action( 'woocommerce_shop_loop' );
-
-                    wc_get_template_part( 'content', 'product' );
-                }
-            }
+            /**
+             * Hook: woocommerce_after_shop_loop.
+             */
+            do_action( 'woocommerce_after_shop_loop' );
             ?>
         </div>
 
-        <?php
-        /**
-         * Hook: woocommerce_after_shop_loop.
-         *
-         * @hooked woocommerce_pagination - 10
-         */
-        ?>
-        <div class="maze-pagination-wrap mt-16 pt-8 border-t border-black flex justify-center font-mono">
-            <?php do_action( 'woocommerce_after_shop_loop' ); ?>
-        </div>
-        <?php
-    } else {
-        /**
-         * Hook: woocommerce_no_products_found.
-         *
-         * @hooked wc_no_products_found - 10
-         */
-        ?>
-        <div class="maze-no-products py-20 text-center border border-black bg-neutral-50 p-8">
-            <span class="text-4xl mb-4 block font-mono font-bold text-neutral-400">[ 00 ]</span>
-            <h3 class="text-lg font-mono uppercase font-bold tracking-widest text-black mb-2"><?php esc_html_e( 'NO APPAREL FOUND', 'mazestreetwear' ); ?></h3>
-            <p class="text-xs font-mono text-neutral-600 mb-6"><?php esc_html_e( 'The requested garment archive or drop is currently unavailable.', 'mazestreetwear' ); ?></p>
+    <?php else : ?>
+
+        <div class="max-w-xl mx-auto my-20 p-8 text-center border border-black bg-white">
+            <h2 class="text-xs font-mono uppercase font-bold tracking-widest text-black mb-2">
+                <?php esc_html_e( 'NO PRODUCTS FOUND', 'mazestreetwear' ); ?>
+            </h2>
+            <p class="text-xs font-sans text-neutral-600 mb-6">
+                <?php esc_html_e( 'The requested garment drop or category is currently empty.', 'mazestreetwear' ); ?>
+            </p>
+            <a href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-colors px-6 py-2.5 text-xs uppercase tracking-widest font-mono">
+                <?php esc_html_e( 'VIEW ALL GARMENTS', 'mazestreetwear' ); ?>
+            </a>
             <?php do_action( 'woocommerce_no_products_found' ); ?>
         </div>
-        <?php
-    }
-    ?>
 
-</div><!-- .maze-archive-wrapper -->
+    <?php endif; ?>
+
+</div><!-- .maze-archive-page -->
 
 <?php
 /**
  * Hook: woocommerce_after_main_content.
- *
- * @hooked mazestreetwear_wrapper_end - 10 (closes site-main)
  */
 do_action( 'woocommerce_after_main_content' );
-
-/**
- * Hook: woocommerce_sidebar.
- *
- * @hooked woocommerce_get_sidebar - 10
- */
-do_action( 'woocommerce_sidebar' );
 
 get_footer( 'shop' );

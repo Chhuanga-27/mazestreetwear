@@ -2,10 +2,13 @@
 /**
  * The template for displaying product content within loops
  *
- * Streetwear garment card layout for mazestw.in.
+ * Minimalist luxury editorial product card for mazestw.in.
+ * Pure white background, zero radius, hairline black border.
+ * Tall aspect ratio with generous padding, clean lowercase title, right-aligned price.
+ * Zero ratings, zero sale badges, zero bulky buttons.
  *
  * @package MazeStreetwear
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -17,85 +20,37 @@ if ( empty( $product ) || ! $product->is_visible() ) {
     return;
 }
 ?>
-<article <?php wc_product_class( 'maze-product-card group flex flex-col relative bg-white border border-black hover:shadow-[4px_4px_0px_0px_#000000] transition-all duration-200', $product ); ?>>
+<article <?php wc_product_class( 'maze-product-card bg-white border border-black -ml-px -mt-px relative group flex flex-col justify-between rounded-none', $product ); ?>>
+    <a href="<?php the_permalink(); ?>" class="flex flex-col h-full w-full group focus:outline-none" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
+        <!-- Image Area: Tall aspect ratio (aspect-[3/4]), product cutout with generous padding and object-contain -->
+        <div class="relative w-full aspect-[3/4] bg-white p-6 sm:p-8 flex items-center justify-center overflow-hidden">
+            <?php if ( has_post_thumbnail() ) : ?>
+                <?php
+                echo get_the_post_thumbnail(
+                    $product->get_id(),
+                    'woocommerce_thumbnail',
+                    array(
+                        'class' => 'w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300',
+                        'alt'   => esc_attr( get_the_title() ),
+                    )
+                );
+                ?>
+            <?php else : ?>
+                <div class="w-full h-full flex flex-col items-center justify-center text-neutral-300 select-none">
+                    <span class="text-3xl font-light font-sans tracking-widest text-neutral-300 group-hover:text-black transition-colors">MAZE</span>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-neutral-400 mt-2">[ archive ]</span>
+                </div>
+            <?php endif; ?>
+        </div>
 
-    <?php
-    /**
-     * Hook: woocommerce_before_shop_loop_item.
-     *
-     * @hooked woocommerce_template_loop_product_link_open - 10
-     */
-    do_action( 'woocommerce_before_shop_loop_item' );
-    ?>
-
-    <!-- Garment Image Wrapper -->
-    <div class="relative w-full aspect-[3/4] bg-neutral-100 overflow-hidden border-b border-black">
-        <?php
-        /**
-         * Hook: woocommerce_before_shop_loop_item_title.
-         *
-         * @hooked woocommerce_show_product_loop_sale_flash - 10
-         * @hooked woocommerce_template_loop_product_thumbnail - 10
-         */
-        do_action( 'woocommerce_before_shop_loop_item_title' );
-        ?>
-
-        <!-- Hover Overlay Details Badge -->
-        <div class="absolute top-3 left-3 z-10 pointer-events-none">
-            <span class="text-[10px] font-mono font-bold tracking-widest uppercase text-white bg-black px-2 py-0.5 border border-black">
-                <?php echo $product->is_in_stock() ? esc_html__( 'IN STOCK', 'mazestreetwear' ) : esc_html__( 'SOLD OUT', 'mazestreetwear' ); ?>
+        <!-- Bottom Metadata Bar: thin top black border, title lowercase on left, price on right -->
+        <div class="border-t border-black px-3 py-2.5 flex justify-between items-baseline text-xs font-sans bg-white mt-auto">
+            <span class="text-black font-normal lowercase tracking-tight line-clamp-1 mr-2 group-hover:opacity-60 transition-opacity">
+                <?php the_title(); ?>
+            </span>
+            <span class="text-black font-normal whitespace-nowrap font-sans text-right">
+                <?php echo $product->get_price_html(); ?>
             </span>
         </div>
-    </div>
-
-    <!-- Garment Info & Title -->
-    <div class="flex-grow p-4 flex flex-col justify-between bg-white">
-        <div>
-            <!-- Categories -->
-            <div class="text-[10px] font-mono font-bold tracking-widest uppercase text-neutral-500 mb-1">
-                <?php
-                $terms = get_the_terms( $product->get_id(), 'product_cat' );
-                if ( $terms && ! is_wp_error( $terms ) ) {
-                    echo esc_html( $terms[0]->name );
-                } else {
-                    echo esc_html__( 'STREETWEAR', 'mazestreetwear' );
-                }
-                ?>
-            </div>
-
-            <!-- Product Title -->
-            <h2 class="woocommerce-loop-product__title text-sm font-sans font-bold uppercase tracking-tight text-black group-hover:text-neutral-600 transition-colors line-clamp-1">
-                <?php
-                /**
-                 * Hook: woocommerce_shop_loop_item_title.
-                 *
-                 * @hooked woocommerce_template_loop_product_title - 10
-                 */
-                the_title();
-                ?>
-            </h2>
-        </div>
-
-        <!-- Price & Rating -->
-        <div class="mt-3 pt-3 border-t border-neutral-200 flex items-center justify-between text-xs font-mono font-bold text-black">
-            <?php
-            /**
-             * Hook: woocommerce_after_shop_loop_item_title.
-             *
-             * @hooked woocommerce_template_loop_rating - 5
-             * @hooked woocommerce_template_loop_price - 10
-             */
-            do_action( 'woocommerce_after_shop_loop_item_title' );
-            ?>
-        </div>
-    </div>
-
-    <!-- Action / Minimal Black Quick-View / View Garment Button -->
-    <div class="px-4 pb-4 pt-1 bg-white">
-        <a href="<?php the_permalink(); ?>" class="w-full inline-flex items-center justify-center bg-black hover:bg-neutral-800 text-white font-mono font-bold text-xs uppercase tracking-widest py-3 px-4 border border-black transition-colors duration-150">
-            <span><?php esc_html_e( 'VIEW GARMENT', 'mazestreetwear' ); ?></span>
-            <span class="ml-1.5">&rarr;</span>
-        </a>
-    </div>
-
+    </a>
 </article>

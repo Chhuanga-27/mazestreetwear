@@ -147,9 +147,20 @@ add_filter( 'woocommerce_add_to_cart_fragments', 'mazestreetwear_cart_count_frag
 /**
  * Custom WooCommerce hooks & layout customizations
  */
-// Remove default WooCommerce wrapper markup and replace with custom theme containers if needed
+// Remove default WooCommerce wrapper markup and replace with custom theme containers
 remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );
 remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10 );
+
+// Minimalist theme rules: Strip ratings, sale badges, and add-to-bag buttons from shop loops
+remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_show_product_loop_sale_flash', 10 );
+remove_action( 'woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_rating', 5 );
+remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_sale_flash', 10 );
+
+// Filter Add to Cart button text to "ADD TO BAG"
+add_filter( 'woocommerce_product_single_add_to_cart_text', function() {
+    return __( 'ADD TO BAG', 'mazestreetwear' );
+} );
 
 // Custom wrapper start
 function mazestreetwear_wrapper_start() {
@@ -168,7 +179,7 @@ add_action( 'woocommerce_after_main_content', 'mazestreetwear_wrapper_end', 10 )
  */
 function mazestreetwear_breadcrumbs_defaults( $defaults ) {
     $defaults['delimiter']   = '<span class="text-neutral-400 mx-2">/</span>';
-    $defaults['wrap_before'] = '<nav class="woocommerce-breadcrumb text-xs font-mono font-bold uppercase tracking-widest text-neutral-600 mb-6 flex flex-wrap items-center" aria-label="Breadcrumb">';
+    $defaults['wrap_before'] = '<nav class="woocommerce-breadcrumb text-xs font-mono uppercase tracking-widest text-neutral-600 mb-6 flex flex-wrap items-center" aria-label="Breadcrumb">';
     $defaults['wrap_after']  = '</nav>';
     $defaults['before']      = '<span class="text-black">';
     $defaults['after']       = '</span>';
@@ -176,11 +187,3 @@ function mazestreetwear_breadcrumbs_defaults( $defaults ) {
     return $defaults;
 }
 add_filter( 'woocommerce_breadcrumb_defaults', 'mazestreetwear_breadcrumbs_defaults' );
-
-/**
- * Custom Sale Flash Badge: Black background with crisp white text
- */
-function mazestreetwear_sale_flash( $html, $post, $product ) {
-    return '<span class="maze-sale-badge absolute top-3 left-3 z-10 px-2 py-0.5 text-[10px] font-mono font-bold tracking-widest uppercase bg-black text-white border border-black">' . esc_html__( 'SALE', 'mazestreetwear' ) . '</span>';
-}
-add_filter( 'woocommerce_sale_flash', 'mazestreetwear_sale_flash', 10, 3 );

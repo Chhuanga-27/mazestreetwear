@@ -3,8 +3,9 @@
  *
  * Handles:
  * - Responsive mobile navigation toggle
- * - Search bar toggle
- * - Interactive streetwear size pills connected to WooCommerce variation form
+ * - Search modal toggle
+ * - Single product gallery thumbnail switching
+ * - Interactive rectangular size boxes (filled black when selected)
  * - Dynamic cart counter animation feedback
  */
 
@@ -42,76 +43,81 @@
             });
         }
 
-        // --- 3. Interactive Streetwear Size Pills Variation Sync ---
-        const $variationsForm = $('.variations_form');
+        // --- 3. Single Product Gallery Thumbnail Switching ---
+        $(document).on('click', '.maze-gallery-thumb', function (e) {
+            e.preventDefault();
+            const $thumb = $(this);
+            const newSrc = $thumb.data('img-src');
+            const $mainImg = $('#maze-main-product-image');
 
-        if ($variationsForm.length) {
-            // Pill Click Handler
-            $(document).on('click', '.maze-size-pill', function (e) {
-                e.preventDefault();
-                const $pill = $(this);
-                const $container = $pill.closest('.maze-size-pills');
-                const targetSelectName = $container.data('target-select');
-                const selectedVal = $pill.data('value');
+            if (newSrc && $mainImg.length) {
+                $mainImg.attr('src', newSrc);
+                $('.maze-gallery-thumb').removeClass('border-black').addClass('border-neutral-300');
+                $thumb.removeClass('border-neutral-300').addClass('border-black');
+            }
+        });
 
-                // Find corresponding WooCommerce select
+        // --- 4. Interactive Rectangular Size Boxes (Filled Black When Selected) ---
+        $(document).on('click', '.maze-size-pill', function (e) {
+            e.preventDefault();
+            const $pill = $(this);
+            const $container = $pill.closest('.maze-size-pills');
+            const targetSelectName = $container.data('target-select');
+            const selectedVal = $pill.data('value') || $pill.text().trim();
+
+            // Set active state on pill
+            $container.find('.maze-size-pill').removeClass('is-active selected');
+            $pill.addClass('is-active selected');
+
+            // Update visible label
+            const $sizeLabel = $container.closest('.variation-row, .size-selector-wrap').find('.selected-variation-value, .selected-size-label');
+            if ($sizeLabel.length) {
+                $sizeLabel.text('// ' + selectedVal.toUpperCase());
+            }
+
+            // Sync with native select if variable product
+            if (targetSelectName) {
                 let $select = $('select#' + targetSelectName);
                 if (!$select.length) {
                     $select = $container.closest('.variation-row').find('select');
                 }
-
-                if ($pill.hasClass('is-active')) {
-                    // Deselect
-                    $pill.removeClass('is-active');
-                    if ($select.length) {
-                        $select.val('').trigger('change');
-                    }
-                    $container.closest('.variation-row').find('.selected-variation-value').text('');
-                } else {
-                    // Select new
-                    $container.find('.maze-size-pill').removeClass('is-active');
-                    $pill.addClass('is-active');
-
-                    if ($select.length) {
-                        $select.val(selectedVal).trigger('change');
-                    }
-
-                    // Update visual label
-                    $container.closest('.variation-row').find('.selected-variation-value').text('// ' + $pill.text().trim());
+                if ($select.length) {
+                    $select.val(selectedVal).trigger('change');
                 }
-            });
+            }
+        });
 
-            // Sync when WooCommerce resets or changes variations
+        // Sync when WooCommerce resets or changes variations
+        const $variationsForm = $('.variations_form');
+        if ($variationsForm.length) {
             $variationsForm.on('reset_data', function () {
-                $('.maze-size-pill').removeClass('is-active');
+                $('.maze-size-pill').removeClass('is-active selected');
                 $('.selected-variation-value').text('');
             });
 
-            // Sync pills when select changes externally
             $variationsForm.on('change', '.variations select', function () {
                 const $sel = $(this);
                 const val = $sel.val();
-                const selId = $sel.attr('id') || $sel.attr('name');
                 const $row = $sel.closest('.variation-row');
                 const $pills = $row.find('.maze-size-pills');
 
-                if ($pills.length) {
-                    $pills.find('.maze-size-pill').removeClass('is-active');
-                    if (val) {
-                        $pills.find('.maze-size-pill[data-value="' + val + '"]').addClass('is-active');
-                        $row.find('.selected-variation-value').text('// ' + val.toUpperCase());
-                    }
+                if ($pills.length && val) {
+                    $pills.find('.maze-size-pill').removeClass('is-active selected');
+                    $pills.find('.maze-size-pill[data-value="' + val + '"]').addClass('is-active selected');
+                    $row.find('.selected-variation-value').text('// ' + val.toUpperCase());
                 }
             });
         }
 
-        // --- 4. Dynamic Bag Counter Pulse on Add To Cart ---
+        // --- 5. Dynamic Bag Counter Pulse on Add To Cart ---
         $(document.body).on('added_to_cart', function (event, fragments, cart_hash, $button) {
             const $counter = $('.maze-cart-count');
-            $counter.addClass('scale-125 ring-2 ring-black');
-            setTimeout(function () {
-                $counter.removeClass('scale-125 ring-2 ring-black');
-            }, 600);
+            if ($counter.length) {
+                $counter.addClass('scale-125 ring-2 ring-black');
+                setTimeout(function () {
+                    $counter.removeClass('scale-125 ring-2 ring-black');
+                }, 600);
+            }
         });
 
     });
