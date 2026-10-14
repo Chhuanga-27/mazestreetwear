@@ -14,31 +14,106 @@
 
     $(document).ready(function () {
 
-        // --- 1. Mobile Menu Toggle ---
+        // --- 1. Mobile Menu & Search Toggles ---
         const $mobileMenuBtn = $('#maze-mobile-menu-btn');
         const $mobileMenu = $('#maze-mobile-menu');
         const $hamburgerIcon = $('#maze-hamburger-icon');
         const $closeIcon = $('#maze-close-icon');
+        const $mobileSearchToggle = $('#maze-mobile-search-toggle');
 
-        if ($mobileMenuBtn.length && $mobileMenu.length) {
-            $mobileMenuBtn.on('click', function () {
-                const isExpanded = $(this).attr('aria-expanded') === 'true';
-                $(this).attr('aria-expanded', !isExpanded);
-                $mobileMenu.toggleClass('hidden');
-                $hamburgerIcon.toggleClass('hidden');
-                $closeIcon.toggleClass('hidden');
+        function toggleMobileMenu(open) {
+            if (!$mobileMenu.length) return;
+            const currentlyOpen = !$mobileMenu.hasClass('hidden');
+            const shouldOpen = typeof open === 'boolean' ? open : !currentlyOpen;
+
+            if (shouldOpen) {
+                $mobileMenu.removeClass('hidden');
+                $mobileMenuBtn.attr('aria-expanded', 'true');
+                $hamburgerIcon.addClass('hidden');
+                $closeIcon.removeClass('hidden');
+            } else {
+                $mobileMenu.addClass('hidden');
+                $mobileMenuBtn.attr('aria-expanded', 'false');
+                $hamburgerIcon.removeClass('hidden');
+                $closeIcon.addClass('hidden');
+            }
+        }
+
+        if ($mobileMenuBtn.length) {
+            $mobileMenuBtn.on('click', function (e) {
+                e.stopPropagation();
+                toggleMobileMenu();
             });
         }
 
-        // --- 2. Search Modal Toggle ---
-        const $searchToggle = $('#maze-search-toggle');
-        const $searchModal = $('#maze-search-modal');
+        if ($mobileSearchToggle.length) {
+            $mobileSearchToggle.on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMobileMenu(true);
+                setTimeout(function () {
+                    $mobileMenu.find('input[type="search"]').focus();
+                }, 100);
+            });
+        }
 
-        if ($searchToggle.length && $searchModal.length) {
-            $searchToggle.on('click', function () {
-                $searchModal.toggleClass('hidden');
-                if (!$searchModal.hasClass('hidden')) {
-                    $searchModal.find('input[type="search"]').focus();
+        // Close mobile dropdown when clicking outside
+        $(document).on('click', function (e) {
+            if ($mobileMenu.length && !$mobileMenu.hasClass('hidden')) {
+                if (!$(e.target).closest('#masthead').length) {
+                    toggleMobileMenu(false);
+                }
+            }
+        });
+
+        // Close mobile dropdown on ESC key
+        $(document).on('keydown', function (e) {
+            if (e.key === 'Escape' && $mobileMenu.length && !$mobileMenu.hasClass('hidden')) {
+                toggleMobileMenu(false);
+            }
+        });
+
+        // --- 2. Floating Header Scroll Hide/Reveal ---
+        // Disappears when scrolling down and appears when scrolling up
+        const $masthead = $('#masthead');
+        if ($masthead.length) {
+            let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+            let isTicking = false;
+            const threshold = 8; // Minimum scroll delta before reacting
+            const topBoundary = 25; // Always show header near page top
+
+            function updateHeaderOnScroll() {
+                const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+                // Never hide while mobile menu is open
+                const isMenuOpen = $mobileMenu.length && !$mobileMenu.hasClass('hidden');
+                if (isMenuOpen) {
+                    lastScrollY = currentScrollY;
+                    isTicking = false;
+                    return;
+                }
+
+                // If at the very top, always show header
+                if (currentScrollY <= topBoundary) {
+                    $masthead.removeClass('header--hidden');
+                } else if (Math.abs(currentScrollY - lastScrollY) > threshold) {
+                    if (currentScrollY > lastScrollY && currentScrollY > 70) {
+                        // Scrolling DOWN -> Header disappears
+                        $masthead.addClass('header--hidden');
+                    } else if (currentScrollY < lastScrollY) {
+                        // Scrolling UP -> Header appears
+                        $masthead.removeClass('header--hidden');
+                    }
+                }
+
+                lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+                isTicking = false;
+            }
+
+            $(window).on('scroll', function () {
+                if (!isTicking) {
+                    window.requestAnimationFrame(updateHeaderOnScroll);
+                    isTicking = true;
                 }
             });
         }

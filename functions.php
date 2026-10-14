@@ -134,7 +134,7 @@ function mazestreetwear_cart_count_fragments( $fragments ) {
     // Generate updated badge HTML fragment: Black bag badge with white number counter
     ob_start();
     ?>
-    <span class="maze-cart-count absolute -top-1.5 -right-2 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-mono font-bold tracking-tight text-white bg-black border border-black rounded-full transition-transform duration-200 <?php echo $count > 0 ? 'scale-100' : 'scale-90 opacity-75'; ?>">
+    <span class="maze-cart-count absolute -top-1.5 -right-2 inline-flex items-center justify-center min-w-[16px] h-[16px] px-1 text-[9px] font-mono font-bold tracking-tight text-white bg-black border border-white rounded-full transition-transform duration-200 <?php echo $count > 0 ? 'scale-100' : 'scale-90 opacity-80'; ?>">
         <?php echo esc_html( $count ); ?>
     </span>
     <?php

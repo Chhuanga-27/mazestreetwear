@@ -27,173 +27,198 @@ if ( ! defined( 'ABSPATH' ) ) {
     <?php esc_html_e( 'Skip to content', 'mazestreetwear' ); ?>
 </a>
 
-<!-- Top Streetwear Announcement Ticker -->
-<aside class="w-full bg-black text-white border-b border-black py-2 px-4 text-center overflow-hidden" aria-label="Announcement">
-    <div class="inline-flex items-center space-x-3 text-[11px] font-mono tracking-widest uppercase">
-        <span class="inline-block w-1.5 h-1.5 rounded-full bg-white animate-pulse" aria-hidden="true"></span>
-        <span>MAZE PROTOCOL // MONOCHROME ARCHIVE LIVE AT MAZESTW.IN</span>
-        <span class="text-white/40" aria-hidden="true">&bull;</span>
-        <span class="hidden sm:inline">WORLDWIDE DISPATCH &bull; STRICT ARCHIVAL SPECIFICATION</span>
-    </div>
-</aside>
+<!-- Floating Pill Header / Navigation Bar -->
+<header id="masthead" class="site-header fixed top-0 inset-x-0 z-50 pointer-events-none py-3 sm:py-4 px-3 sm:px-6">
+    <div class="max-w-7xl mx-auto pointer-events-auto">
 
-<!-- Main Header / Navigation Bar -->
-<header id="masthead" class="site-header sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-black transition-colors duration-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20">
+        <!-- Pill Navigation Bar Container -->
+        <div class="maze-pill-navbar bg-white/95 backdrop-blur-md border border-black rounded-full px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between shadow-sm transition-all duration-200">
 
-            <!-- Left: Brand Logo / Title -->
+            <!-- Left: Brand Logo / Stacked Typography -->
             <div class="flex-shrink-0 flex items-center">
                 <?php if ( has_custom_logo() ) : ?>
                     <div class="site-logo">
                         <?php the_custom_logo(); ?>
                     </div>
                 <?php else : ?>
-                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="group flex items-center space-x-2.5" rel="home">
-                        <span class="text-2xl font-black tracking-tighter uppercase font-sans text-black group-hover:opacity-75 transition-opacity duration-200">
-                            MAZE<span class="text-neutral-400">.</span>
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="group flex flex-col justify-center leading-none select-none" rel="home">
+                        <span class="text-base sm:text-lg font-black tracking-tight uppercase font-sans text-black group-hover:opacity-75 transition-opacity">
+                            MAZE
                         </span>
-                        <span class="hidden md:inline-block px-2 py-0.5 text-[9px] font-mono font-bold tracking-widest text-black border border-black uppercase group-hover:bg-black group-hover:text-white transition-colors duration-200">
-                            mazestw.in
+                        <span class="text-[9px] font-bold font-mono tracking-widest text-neutral-500 uppercase -mt-0.5">
+                            ARCHIVE
                         </span>
                     </a>
                 <?php endif; ?>
             </div>
 
-            <!-- Center: Streetwear Navigation Links -->
-            <nav id="site-navigation" class="hidden md:flex items-center space-x-8" aria-label="<?php esc_attr_e( 'Primary Navigation', 'mazestreetwear' ); ?>">
+            <!-- Center: Navigation Menu Links -->
+            <nav id="site-navigation" class="hidden md:flex items-center space-x-6 lg:space-x-8" aria-label="<?php esc_attr_e( 'Primary Navigation', 'mazestreetwear' ); ?>">
                 <?php
                 if ( has_nav_menu( 'primary' ) ) :
                     wp_nav_menu( array(
                         'theme_location' => 'primary',
                         'menu_id'        => 'primary-menu',
                         'container'      => false,
-                        'menu_class'     => 'flex items-center space-x-8 text-xs font-mono font-bold tracking-widest uppercase text-neutral-600',
+                        'menu_class'     => 'flex items-center space-x-6 lg:space-x-8 text-xs lg:text-[13px] font-bold font-sans tracking-wider uppercase text-neutral-800',
                         'fallback_cb'    => false,
                         'items_wrap'     => '<ul id="%1$s" class="%2$s">%3$s</ul>',
                     ) );
                 else :
                     $shop_page_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
                 ?>
-                    <ul class="flex items-center space-x-8 text-xs font-mono font-bold tracking-widest uppercase">
+                    <ul class="flex items-center space-x-6 lg:space-x-8 text-xs lg:text-[13px] font-bold font-sans tracking-wider uppercase text-neutral-800">
                         <li>
-                            <a href="<?php echo esc_url( $shop_page_url ); ?>" class="text-black hover:text-neutral-500 transition-colors duration-150 py-2 border-b-2 border-black">
-                                [ ALL APPAREL ]
+                            <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'womenswear', $shop_page_url ) ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                                WOMENSWEAR
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'hoodies', $shop_page_url ) ); ?>" class="text-neutral-700 hover:text-black transition-colors duration-150 py-2">
-                                HOODIES
+                            <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'menswear', $shop_page_url ) ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                                MENSWEAR
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'tees', $shop_page_url ) ); ?>" class="text-neutral-700 hover:text-black transition-colors duration-150 py-2">
-                                TEES
+                            <a href="<?php echo esc_url( home_url( '/archive/' ) ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                                KIDS
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( home_url( '/archive/' ) ); ?>" class="text-neutral-700 hover:text-black transition-colors duration-150 py-2">
-                                ARCHIVE
+                            <a href="<?php echo esc_url( add_query_arg( 'on_sale', '1', $shop_page_url ) ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                                SALE
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( home_url( '/contact-us/' ) ); ?>" class="text-neutral-700 hover:text-black transition-colors duration-150 py-2">
-                                CONTACT
+                            <a href="<?php echo esc_url( $shop_page_url ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                                DISCOVER
                             </a>
                         </li>
                     </ul>
                 <?php endif; ?>
             </nav>
 
-            <!-- Right: Search, Account & Dynamic Bag Counter -->
-            <div class="flex items-center space-x-4 sm:space-x-6">
+            <!-- Right: Search Pill, Wishlist, Bag & Mobile Menu Toggle -->
+            <div class="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
 
-                <!-- Search Link / Button -->
-                <button type="button" id="maze-search-toggle" class="text-black hover:text-neutral-600 transition-colors duration-150 p-1" aria-label="<?php esc_attr_e( 'Search Products', 'mazestreetwear' ); ?>">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <!-- Embedded Search Pill (Desktop/Tablet) -->
+                <form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="hidden sm:flex items-center relative">
+                    <input type="hidden" name="post_type" value="product">
+                    <div class="maze-search-pill relative flex items-center bg-neutral-100 hover:bg-neutral-200/70 focus-within:bg-white focus-within:ring-1 focus-within:ring-black rounded-full px-3 py-1.5 transition-all w-32 md:w-36 lg:w-44 border border-transparent focus-within:border-black">
+                        <svg class="w-3.5 h-3.5 text-neutral-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
+                        </svg>
+                        <input type="search" name="s" placeholder="<?php echo esc_attr_x( 'Search', 'placeholder', 'mazestreetwear' ); ?>" value="<?php echo get_search_query(); ?>" class="bg-transparent border-0 outline-none text-xs text-black placeholder-neutral-400 w-full p-0 font-sans focus:outline-none focus:ring-0">
+                    </div>
+                </form>
+
+                <!-- Mobile Search Toggle Button (Small screens < sm) -->
+                <button type="button" id="maze-mobile-search-toggle" class="sm:hidden text-black hover:opacity-60 transition-opacity p-1.5" aria-label="<?php esc_attr_e( 'Search Products', 'mazestreetwear' ); ?>">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
                     </svg>
                 </button>
 
-                <!-- Dynamic Bag Item Counter -->
+                <!-- Wishlist / Heart Icon -->
+                <?php
+                $wishlist_url = function_exists( 'YITH_WCWL' ) ? YITH_WCWL()->get_wishlist_url() : home_url( '/wishlist/' );
+                ?>
+                <a href="<?php echo esc_url( $wishlist_url ); ?>" class="text-black hover:opacity-60 transition-opacity p-1.5 flex items-center justify-center" aria-label="<?php esc_attr_e( 'Wishlist', 'mazestreetwear' ); ?>">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                    </svg>
+                </a>
+
+                <!-- Shopping Bag Icon with Dynamic Badge -->
                 <?php
                 $cart_url   = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' );
                 $cart_count = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart_contents_count() : 0;
                 ?>
-                <a href="<?php echo esc_url( $cart_url ); ?>" class="maze-bag-trigger group relative inline-flex items-center justify-center p-2 text-black hover:text-neutral-600 transition-colors duration-150" aria-label="<?php esc_attr_e( 'View Shopping Bag', 'mazestreetwear' ); ?>">
-                    <div class="relative">
-                        <!-- Streetwear Bag SVG Icon -->
-                        <svg class="w-6 h-6 transform group-hover:scale-105 transition-transform duration-150" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25c-.669 0-1.189-.578-1.119-1.243l1.263-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                <a href="<?php echo esc_url( $cart_url ); ?>" class="maze-bag-trigger group relative p-1.5 text-black hover:opacity-60 transition-opacity flex items-center justify-center" aria-label="<?php esc_attr_e( 'View Shopping Bag', 'mazestreetwear' ); ?>">
+                    <div class="relative flex items-center">
+                        <svg class="w-5 h-5 transform group-hover:scale-105 transition-transform duration-150" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25c-.669 0-1.189-.578-1.119-1.243l1.263-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
                         </svg>
-
-                        <!-- Dynamic Bag Item Counter Badge: Black bag badge with white number counter -->
-                        <span class="maze-cart-count absolute -top-1.5 -right-2 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-mono font-bold tracking-tight text-white bg-black border border-black rounded-full transition-transform duration-200 <?php echo $cart_count > 0 ? 'scale-100' : 'scale-90 opacity-75'; ?>">
+                        <span class="maze-cart-count absolute -top-1.5 -right-2 inline-flex items-center justify-center min-w-[16px] h-[16px] px-1 text-[9px] font-mono font-bold tracking-tight text-white bg-black border border-white rounded-full transition-transform duration-200 <?php echo $cart_count > 0 ? 'scale-100' : 'scale-90 opacity-80'; ?>">
                             <?php echo esc_html( $cart_count ); ?>
                         </span>
                     </div>
-                    <span class="hidden lg:inline-block ml-2 text-xs font-mono font-bold uppercase tracking-widest text-black group-hover:text-neutral-600">
-                        BAG
-                    </span>
                 </a>
 
-                <!-- Mobile Menu Button -->
-                <button type="button" id="maze-mobile-menu-btn" class="md:hidden inline-flex items-center justify-center p-2 text-black hover:text-neutral-600 focus:outline-none" aria-controls="maze-mobile-menu" aria-expanded="false" aria-label="<?php esc_attr_e( 'Toggle navigation menu', 'mazestreetwear' ); ?>">
-                    <svg id="maze-hamburger-icon" class="w-6 h-6 block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <!-- Mobile Menu Button (md:hidden) -->
+                <button type="button" id="maze-mobile-menu-btn" class="md:hidden inline-flex items-center justify-center p-1.5 text-black hover:opacity-60 focus:outline-none ml-0.5" aria-controls="maze-mobile-menu" aria-expanded="false" aria-label="<?php esc_attr_e( 'Toggle navigation menu', 'mazestreetwear' ); ?>">
+                    <svg id="maze-hamburger-icon" class="w-6 h-6 block" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
-                    <svg id="maze-close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg id="maze-close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
 
             </div>
         </div>
-    </div>
 
-    <!-- Mobile Drawer Navigation -->
-    <div id="maze-mobile-menu" class="hidden md:hidden border-t border-black bg-white px-4 pt-4 pb-6 space-y-4">
-        <?php
-        if ( has_nav_menu( 'primary' ) ) :
-            wp_nav_menu( array(
-                'theme_location' => 'primary',
-                'container'      => false,
-                'menu_class'     => 'flex flex-col space-y-3 text-sm font-mono font-bold tracking-widest uppercase text-black',
-            ) );
-        else :
-        ?>
-            <div class="flex flex-col space-y-3 text-sm font-mono font-bold tracking-widest uppercase">
-                <a href="<?php echo esc_url( $shop_page_url ); ?>" class="text-black hover:text-neutral-500 py-1.5 border-b border-neutral-200">
-                    [ ALL APPAREL ]
+        <!-- Mobile Floating Dropdown Menu -->
+        <div id="maze-mobile-menu" class="maze-mobile-dropdown hidden md:hidden mt-2 bg-white/98 backdrop-blur-md border border-black rounded-2xl p-5 shadow-2xl transition-all duration-200">
+            <!-- Mobile Search Form -->
+            <form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="relative mb-4">
+                <input type="hidden" name="post_type" value="product">
+                <div class="maze-search-pill relative flex items-center bg-neutral-100 rounded-full px-3.5 py-2.5 border border-black/10 focus-within:border-black focus-within:bg-white transition-all">
+                    <svg class="w-4 h-4 text-neutral-500 mr-2.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
+                    </svg>
+                    <input type="search" name="s" placeholder="<?php echo esc_attr_x( 'Search products, collections...', 'placeholder', 'mazestreetwear' ); ?>" value="<?php echo get_search_query(); ?>" class="bg-transparent border-0 outline-none text-xs text-black placeholder-neutral-400 w-full p-0 font-sans focus:outline-none focus:ring-0">
+                </div>
+            </form>
+
+            <!-- Navigation Links -->
+            <?php
+            if ( has_nav_menu( 'primary' ) ) :
+                wp_nav_menu( array(
+                    'theme_location' => 'primary',
+                    'container'      => false,
+                    'menu_class'     => 'flex flex-col space-y-3 text-sm font-sans font-bold tracking-wider uppercase text-black',
+                ) );
+            else :
+            ?>
+                <div class="flex flex-col space-y-3 text-sm font-sans font-bold tracking-wider uppercase">
+                    <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'womenswear', $shop_page_url ) ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                        WOMENSWEAR
+                    </a>
+                    <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'menswear', $shop_page_url ) ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                        MENSWEAR
+                    </a>
+                    <a href="<?php echo esc_url( home_url( '/archive/' ) ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                        KIDS
+                    </a>
+                    <a href="<?php echo esc_url( add_query_arg( 'on_sale', '1', $shop_page_url ) ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                        SALE
+                    </a>
+                    <a href="<?php echo esc_url( $shop_page_url ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                        DISCOVER
+                    </a>
+                    <a href="<?php echo esc_url( home_url( '/contact-us/' ) ); ?>" class="text-black hover:opacity-60 py-1.5 transition-opacity">
+                        CONTACT
+                    </a>
+                </div>
+            <?php endif; ?>
+
+            <!-- Mobile Quick Actions -->
+            <div class="pt-4 mt-2 border-t border-neutral-200 flex items-center justify-between text-xs font-mono font-bold tracking-widest uppercase">
+                <a href="<?php echo esc_url( $wishlist_url ); ?>" class="flex items-center space-x-2 text-black hover:opacity-60 transition-opacity">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
+                    <span>WISHLIST</span>
                 </a>
-                <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'hoodies', $shop_page_url ) ); ?>" class="text-neutral-700 hover:text-black py-1.5 border-b border-neutral-200">
-                    HOODIES
-                </a>
-                <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'tees', $shop_page_url ) ); ?>" class="text-neutral-700 hover:text-black py-1.5 border-b border-neutral-200">
-                    TEES
-                </a>
-                <a href="<?php echo esc_url( home_url( '/archive/' ) ); ?>" class="text-neutral-700 hover:text-black py-1.5 border-b border-neutral-200">
-                    ARCHIVE
-                </a>
-                <a href="<?php echo esc_url( home_url( '/contact-us/' ) ); ?>" class="text-neutral-700 hover:text-black py-1.5">
-                    CONTACT
+                <a href="<?php echo esc_url( $cart_url ); ?>" class="flex items-center space-x-2 text-black hover:opacity-60 transition-opacity">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25c-.669 0-1.189-.578-1.119-1.243l1.263-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" /></svg>
+                    <span>BAG (<?php echo esc_html( $cart_count ); ?>)</span>
                 </a>
             </div>
-        <?php endif; ?>
-    </div>
-
-    <!-- Search Overlay Container -->
-    <div id="maze-search-modal" class="hidden border-t border-black bg-white px-4 py-4 sm:px-6">
-        <div class="max-w-3xl mx-auto">
-            <form role="search" method="get" class="relative" action="<?php echo esc_url( home_url( '/' ) ); ?>">
-                <input type="hidden" name="post_type" value="product">
-                <input type="search" class="w-full bg-white border border-black text-black placeholder-neutral-400 font-mono text-sm px-4 py-3 pr-12 focus:outline-none focus:ring-1 focus:ring-black transition-colors" placeholder="<?php echo esc_attr_x( 'SEARCH GARMENT, SKU, OR ARCHIVE...', 'placeholder', 'mazestreetwear' ); ?>" value="<?php echo get_search_query(); ?>" name="s" />
-                <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-black hover:text-neutral-600 font-mono text-xs uppercase tracking-widest font-bold">
-                    <?php esc_html_e( 'GO', 'mazestreetwear' ); ?>
-                </button>
-            </form>
         </div>
+
     </div>
 </header>
 
-<div id="content" class="site-content flex-grow">
+<?php
+$maze_content_pt = ( is_front_page() || is_page_template( 'template-homepage.php' ) ) ? 'pt-0' : 'pt-24 sm:pt-28';
+?>
+<div id="content" class="site-content flex-grow <?php echo esc_attr( $maze_content_pt ); ?>">
