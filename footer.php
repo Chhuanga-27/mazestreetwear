@@ -178,12 +178,12 @@ if ( ! defined( 'ABSPATH' ) ) {
             <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1">
                 <span class="font-medium text-neutral-800">MAZE &copy;<?php echo esc_html( date( 'Y' ) ); ?></span>
                 <span class="text-neutral-300">&middot;</span>
-                <a href="<?php echo esc_url( home_url( '/privacy-policy' ) ); ?>" class="hover:text-black transition-colors">
+                <a href="<?php echo esc_url( ( function_exists( 'get_privacy_policy_url' ) && get_privacy_policy_url() ) ? get_privacy_policy_url() : home_url( '/privacy-policy' ) ); ?>" class="hover:text-black transition-colors">
                     <?php esc_html_e( 'Privacy Policy', 'mazestreetwear' ); ?>
                 </a>
                 <span class="text-neutral-300">&middot;</span>
-                <a href="<?php echo esc_url( home_url( '/terms' ) ); ?>" class="hover:text-black transition-colors">
-                    <?php esc_html_e( 'Terms of Service', 'mazestreetwear' ); ?>
+                <a href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) && wc_get_page_permalink( 'terms' ) ? wc_get_page_permalink( 'terms' ) : home_url( '/terms-and-conditions' ) ); ?>" class="hover:text-black transition-colors">
+                    <?php esc_html_e( 'Terms & Conditions', 'mazestreetwear' ); ?>
                 </a>
                 <span class="text-neutral-300 hidden md:inline">&middot;</span>
                 <a href="<?php echo esc_url( home_url( '/shipping-policy' ) ); ?>" class="hover:text-black transition-colors hidden md:inline">

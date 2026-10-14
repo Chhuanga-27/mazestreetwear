@@ -291,5 +291,43 @@
   .maze-action-cta:hover .maze-action-arrow {
     transform: translate(3px, -3px);
   }
+
+  /* Clean Monochrome Print Styles for Legal & Privacy Documents */
+  @media print {
+    #masthead,
+    #colophon,
+    .no-print,
+    .skip-link,
+    #maze-mobile-menu {
+      display: none !important;
+    }
+
+    body {
+      background: #ffffff !important;
+      color: #000000 !important;
+      font-size: 11pt !important;
+    }
+
+    .site-content {
+      padding-top: 0 !important;
+    }
+
+    main {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    a {
+      text-decoration: underline !important;
+      color: #000000 !important;
+    }
+
+    .shadow-brutal,
+    .shadow-brutal-sm,
+    .shadow-brutal-lg {
+      box-shadow: none !important;
+      border: 1px solid #000000 !important;
+    }
+  }
 }
 
