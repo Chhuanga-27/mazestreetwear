@@ -1,0 +1,20 @@
+/*
+Theme Name: Maze Streetwear
+Theme URI: https://mazestw.in
+Author: MAZE
+Author URI: https://mazestw.in
+Description: Custom minimalist streetwear WordPress theme engineered for mazestw.in. Built with Tailwind CSS and full native WooCommerce integration. Features an editorial dark aesthetic, responsive catalog grid, 2-column garment details, size selection pills, and dynamic bag counters.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: mazestreetwear
+Tags: e-commerce, streetwear, minimalist, dark-mode, woocommerce, responsive-layout, custom-header, full-width-template
+*/
+
+/*
+ * Base styles are compiled via Tailwind CSS pipeline into assets/css/bundle.css
+ * Run 'npm run build' or 'npm run dev' to compile styles.
+ */
