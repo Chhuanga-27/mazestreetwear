@@ -34,22 +34,15 @@ if ( ! defined( 'ABSPATH' ) ) {
         <!-- Pill Navigation Bar Container -->
         <div class="maze-pill-navbar bg-white/95 backdrop-blur-md border border-black rounded-full px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between shadow-sm transition-all duration-200">
 
-            <!-- Left: Brand Logo / Stacked Typography -->
+            <!-- Left: Brand Logo -->
             <div class="flex-shrink-0 flex items-center">
-                <?php if ( has_custom_logo() ) : ?>
-                    <div class="site-logo">
-                        <?php the_custom_logo(); ?>
-                    </div>
-                <?php else : ?>
-                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="group flex flex-col justify-center leading-none select-none" rel="home">
-                        <span class="text-base sm:text-lg font-black tracking-tight uppercase font-sans text-black group-hover:opacity-75 transition-opacity">
-                            MAZE
-                        </span>
-                        <span class="text-[9px] font-bold font-mono tracking-widest text-neutral-500 uppercase -mt-0.5">
-                            ARCHIVE
-                        </span>
-                    </a>
-                <?php endif; ?>
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="group flex items-center select-none" rel="home" aria-label="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>">
+                    <img 
+                        src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>" 
+                        alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" 
+                        class="h-[18px] sm:h-5 md:h-[22px] w-auto max-w-[140px] sm:max-w-[180px] md:max-w-[220px] object-contain transition-opacity duration-150 group-hover:opacity-75"
+                    />
+                </a>
             </div>
 
             <!-- Center: Navigation Menu Links -->
