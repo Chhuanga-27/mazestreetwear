@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$terms_url = function_exists( 'wc_get_page_permalink' ) && wc_get_page_permalink( 'terms' ) ? wc_get_page_permalink( 'terms' ) : home_url( '/terms-and-conditions' );
+$terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_get_terms_url() : home_url( '/terms-and-conditions/' );
 ?>
 
 <!-- Schema.org JSON-LD for Terms & Conditions SEO -->
@@ -239,7 +239,7 @@ $terms_url = function_exists( 'wc_get_page_permalink' ) && wc_get_page_permalink
                     </span>
                     <ul class="space-y-2 text-xs font-sans">
                         <li>
-                            <a href="<?php echo esc_url( ( function_exists( 'get_privacy_policy_url' ) && get_privacy_policy_url() ) ? get_privacy_policy_url() : home_url( '/privacy-policy' ) ); ?>" class="text-neutral-700 hover:text-black underline-offset-4 hover:underline flex items-center justify-between">
+                            <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? mazestreetwear_get_privacy_policy_url() : home_url( '/privacy-policy/' ) ); ?>" class="text-neutral-700 hover:text-black underline-offset-4 hover:underline flex items-center justify-between">
                                 <span><?php esc_html_e( 'Privacy Policy', 'mazestreetwear' ); ?></span>
                                 <span class="text-neutral-400 font-mono text-[11px]">&rarr;</span>
                             </a>

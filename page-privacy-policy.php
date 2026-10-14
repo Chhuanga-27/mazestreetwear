@@ -22,7 +22,7 @@ get_header();
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "Privacy Policy - Maze Streetwear",
-  "url": "<?php echo esc_url( home_url( '/privacy-policy' ) ); ?>",
+  "url": "<?php echo esc_url( function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? mazestreetwear_get_privacy_policy_url() : home_url( '/privacy-policy/' ) ); ?>",
   "description": "Official Privacy Policy of Maze Streetwear detailing data collection, PayU payment security, Indian IT Act 2000 compliance, and Grievance Officer contact details.",
   "datePublished": "2026-10-15",
   "dateModified": "2026-10-15",
@@ -233,7 +233,7 @@ get_header();
                     </span>
                     <ul class="space-y-2 text-xs font-sans">
                         <li>
-                            <a href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) && wc_get_page_permalink( 'terms' ) ? wc_get_page_permalink( 'terms' ) : home_url( '/terms-and-conditions' ) ); ?>" class="text-neutral-700 hover:text-black underline-offset-4 hover:underline flex items-center justify-between">
+                            <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_get_terms_url() : home_url( '/terms-and-conditions/' ) ); ?>" class="text-neutral-700 hover:text-black underline-offset-4 hover:underline flex items-center justify-between">
                                 <span><?php esc_html_e( 'Terms & Conditions', 'mazestreetwear' ); ?></span>
                                 <span class="text-neutral-400 font-mono text-[11px]">&rarr;</span>
                             </a>

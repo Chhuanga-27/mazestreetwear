@@ -187,3 +187,321 @@ function mazestreetwear_breadcrumbs_defaults( $defaults ) {
     return $defaults;
 }
 add_filter( 'woocommerce_breadcrumb_defaults', 'mazestreetwear_breadcrumbs_defaults' );
+
+/**
+ * ============================================================================
+ * LEGAL PAGES ROUTING, AUTO-PUBLISHING & SAFE URL HELPERS
+ * Ensures Privacy Policy and Terms & Conditions load reliably without 404
+ * or accidental redirection to the homepage.
+ * ============================================================================
+ */
+
+/**
+ * Safe Legal Link Helper: Privacy Policy
+ */
+function mazestreetwear_get_privacy_policy_url() {
+    // 1. Check if a published page exists with slug 'privacy-policy'
+    $page = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+    if ( $page && 'publish' === $page->post_status ) {
+        return get_permalink( $page->ID );
+    }
+
+    // 2. Check WordPress core privacy policy setting
+    $privacy_id = (int) get_option( 'wp_page_for_privacy_policy' );
+    if ( $privacy_id > 0 && 'publish' === get_post_status( $privacy_id ) ) {
+        return get_permalink( $privacy_id );
+    }
+
+    // 3. Fallback to /privacy-policy/ permalink
+    return home_url( '/privacy-policy/' );
+}
+
+/**
+ * Safe Legal Link Helper: Terms & Conditions
+ */
+function mazestreetwear_get_terms_url() {
+    $front_page_id = (int) get_option( 'page_on_front' );
+
+    // 1. Check WooCommerce terms page setting (must be valid, published, and NOT front page)
+    if ( function_exists( 'wc_terms_and_conditions_page_id' ) ) {
+        $wc_terms_id = (int) wc_terms_and_conditions_page_id();
+        if ( $wc_terms_id > 0 && $wc_terms_id !== $front_page_id && 'publish' === get_post_status( $wc_terms_id ) ) {
+            return get_permalink( $wc_terms_id );
+        }
+    }
+
+    // 2. Check if a published page exists with slug 'terms-and-conditions'
+    $page = get_page_by_path( 'terms-and-conditions', OBJECT, 'page' );
+    if ( $page && 'publish' === $page->post_status ) {
+        return get_permalink( $page->ID );
+    }
+
+    // 3. Check if a published page exists with slug 'terms'
+    $page_terms = get_page_by_path( 'terms', OBJECT, 'page' );
+    if ( $page_terms && 'publish' === $page_terms->post_status ) {
+        return get_permalink( $page_terms->ID );
+    }
+
+    // 4. Fallback to /terms-and-conditions/ permalink
+    return home_url( '/terms-and-conditions/' );
+}
+
+/**
+ * Register rewrite rules and query vars for legal pages.
+ */
+function mazestreetwear_legal_rewrite_rules() {
+    add_rewrite_rule( '^privacy-policy/?$', 'index.php?mazepage=privacy-policy', 'top' );
+    add_rewrite_rule( '^terms-and-conditions/?$', 'index.php?mazepage=terms-and-conditions', 'top' );
+    add_rewrite_rule( '^terms/?$', 'index.php?mazepage=terms-and-conditions', 'top' );
+}
+add_action( 'init', 'mazestreetwear_legal_rewrite_rules', 10 );
+
+function mazestreetwear_legal_query_vars( $vars ) {
+    $vars[] = 'mazepage';
+    return $vars;
+}
+add_filter( 'query_vars', 'mazestreetwear_legal_query_vars' );
+
+/**
+ * Prevent WordPress canonical redirect from bouncing /terms-and-conditions or /privacy-policy to homepage.
+ */
+function mazestreetwear_prevent_legal_canonical_redirect( $redirect_url, $requested_url ) {
+    if ( preg_match( '#/(privacy-policy|terms-and-conditions|terms)/?$#i', $requested_url ) ) {
+        return false;
+    }
+    return $redirect_url;
+}
+add_filter( 'redirect_canonical', 'mazestreetwear_prevent_legal_canonical_redirect', 10, 2 );
+
+/**
+ * Template routing fallback for legal pages.
+ * Ensures the custom templates are ALWAYS loaded even before rewrite rules or database records are synced.
+ */
+function mazestreetwear_legal_template_include( $template ) {
+    // 1. Check custom query var from rewrite rule
+    $mazepage = get_query_var( 'mazepage' );
+    if ( 'privacy-policy' === $mazepage ) {
+        global $wp_query;
+        if ( $wp_query ) {
+            $wp_query->is_404  = false;
+            $wp_query->is_page = true;
+        }
+        status_header( 200 );
+        $custom = get_template_directory() . '/page-privacy-policy.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
+    if ( 'terms-and-conditions' === $mazepage ) {
+        global $wp_query;
+        if ( $wp_query ) {
+            $wp_query->is_404  = false;
+            $wp_query->is_page = true;
+        }
+        status_header( 200 );
+        $custom = get_template_directory() . '/page-terms-and-conditions.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
+    // 2. Native WordPress template or page slug match
+    if ( is_page_template( 'page-privacy-policy.php' ) || is_page( 'privacy-policy' ) ) {
+        $custom = get_template_directory() . '/page-privacy-policy.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
+    if ( is_page_template( 'page-terms-and-conditions.php' ) || is_page( array( 'terms-and-conditions', 'terms' ) ) ) {
+        $custom = get_template_directory() . '/page-terms-and-conditions.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
+    // 3. Direct URI inspection (handles missing rewrite rules, subdirectory setups, or 404 state)
+    $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+    $path = trim( parse_url( $request_uri, PHP_URL_PATH ), '/' );
+
+    $site_path = trim( parse_url( home_url(), PHP_URL_PATH ), '/' );
+    if ( ! empty( $site_path ) && 0 === strpos( $path, $site_path ) ) {
+        $path = trim( substr( $path, strlen( $site_path ) ), '/' );
+    }
+
+    if ( $path === 'privacy-policy' || preg_match( '#(^|/)privacy-policy/?$#i', $path ) ) {
+        global $wp_query;
+        if ( $wp_query ) {
+            $wp_query->is_404  = false;
+            $wp_query->is_page = true;
+        }
+        status_header( 200 );
+        $custom = get_template_directory() . '/page-privacy-policy.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
+    if ( $path === 'terms-and-conditions' || $path === 'terms' || preg_match( '#(^|/)(terms-and-conditions|terms)/?$#i', $path ) ) {
+        global $wp_query;
+        if ( $wp_query ) {
+            $wp_query->is_404  = false;
+            $wp_query->is_page = true;
+        }
+        status_header( 200 );
+        $custom = get_template_directory() . '/page-terms-and-conditions.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
+    return $template;
+}
+add_filter( 'template_include', 'mazestreetwear_legal_template_include', 99 );
+
+/**
+ * Ensure document title is correct when legal pages are routed directly.
+ */
+function mazestreetwear_legal_document_title_parts( $title_parts ) {
+    $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+    $path = trim( parse_url( $request_uri, PHP_URL_PATH ), '/' );
+    $site_path = trim( parse_url( home_url(), PHP_URL_PATH ), '/' );
+    if ( ! empty( $site_path ) && 0 === strpos( $path, $site_path ) ) {
+        $path = trim( substr( $path, strlen( $site_path ) ), '/' );
+    }
+
+    if ( $path === 'privacy-policy' || preg_match( '#(^|/)privacy-policy/?$#i', $path ) || get_query_var( 'mazepage' ) === 'privacy-policy' ) {
+        $title_parts['title'] = __( 'Privacy Policy', 'mazestreetwear' );
+    } elseif ( $path === 'terms-and-conditions' || $path === 'terms' || preg_match( '#(^|/)(terms-and-conditions|terms)/?$#i', $path ) || get_query_var( 'mazepage' ) === 'terms-and-conditions' ) {
+        $title_parts['title'] = __( 'Terms & Conditions', 'mazestreetwear' );
+    }
+
+    return $title_parts;
+}
+add_filter( 'document_title_parts', 'mazestreetwear_legal_document_title_parts', 10 );
+
+/**
+ * Auto-publish and sync legal pages in WordPress database.
+ * If pages do not exist, or are stuck in Draft/Trash status, publishes them
+ * and links them to WordPress Privacy and WooCommerce Terms settings.
+ */
+function mazestreetwear_ensure_legal_pages_exist() {
+    // Only run if user is admin or on initial page loads, keep performance high
+    if ( ! is_admin() && get_transient( 'mazestreetwear_legal_pages_checked' ) ) {
+        return;
+    }
+
+    $updated = false;
+
+    // 1. Privacy Policy
+    $privacy_page  = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+    $wp_privacy_id = (int) get_option( 'wp_page_for_privacy_policy' );
+
+    if ( ! $privacy_page ) {
+        if ( $wp_privacy_id > 0 ) {
+            $existing = get_post( $wp_privacy_id );
+            if ( $existing ) {
+                if ( 'publish' !== $existing->post_status ) {
+                    wp_update_post( array(
+                        'ID'          => $wp_privacy_id,
+                        'post_status' => 'publish',
+                        'post_name'   => 'privacy-policy',
+                    ) );
+                    $updated = true;
+                }
+                update_post_meta( $wp_privacy_id, '_wp_page_template', 'page-privacy-policy.php' );
+            }
+        } else {
+            $new_privacy_id = wp_insert_post( array(
+                'post_title'     => __( 'Privacy Policy', 'mazestreetwear' ),
+                'post_name'      => 'privacy-policy',
+                'post_status'    => 'publish',
+                'post_type'      => 'page',
+                'comment_status' => 'closed',
+            ) );
+            if ( ! is_wp_error( $new_privacy_id ) && $new_privacy_id > 0 ) {
+                update_post_meta( $new_privacy_id, '_wp_page_template', 'page-privacy-policy.php' );
+                update_option( 'wp_page_for_privacy_policy', $new_privacy_id );
+                $updated = true;
+            }
+        }
+    } else {
+        if ( 'publish' !== $privacy_page->post_status ) {
+            wp_update_post( array(
+                'ID'          => $privacy_page->ID,
+                'post_status' => 'publish',
+            ) );
+            $updated = true;
+        }
+        update_post_meta( $privacy_page->ID, '_wp_page_template', 'page-privacy-policy.php' );
+        if ( $wp_privacy_id !== (int) $privacy_page->ID ) {
+            update_option( 'wp_page_for_privacy_policy', $privacy_page->ID );
+        }
+    }
+
+    // 2. Terms & Conditions
+    $terms_page = get_page_by_path( 'terms-and-conditions', OBJECT, 'page' );
+    if ( ! $terms_page ) {
+        $terms_page = get_page_by_path( 'terms', OBJECT, 'page' );
+    }
+
+    $wc_terms_id   = function_exists( 'wc_terms_and_conditions_page_id' ) ? (int) wc_terms_and_conditions_page_id() : (int) get_option( 'woocommerce_terms_page_id' );
+    $front_page_id = (int) get_option( 'page_on_front' );
+
+    // If wc_terms_id points to front page, reset it so it doesn't bounce to home
+    if ( $wc_terms_id > 0 && $wc_terms_id === $front_page_id ) {
+        $wc_terms_id = 0;
+        delete_option( 'woocommerce_terms_page_id' );
+    }
+
+    if ( ! $terms_page ) {
+        if ( $wc_terms_id > 0 && $wc_terms_id !== $front_page_id ) {
+            $existing_terms = get_post( $wc_terms_id );
+            if ( $existing_terms ) {
+                if ( 'publish' !== $existing_terms->post_status ) {
+                    wp_update_post( array(
+                        'ID'          => $wc_terms_id,
+                        'post_status' => 'publish',
+                    ) );
+                    $updated = true;
+                }
+                update_post_meta( $wc_terms_id, '_wp_page_template', 'page-terms-and-conditions.php' );
+            }
+        } else {
+            $new_terms_id = wp_insert_post( array(
+                'post_title'     => __( 'Terms & Conditions', 'mazestreetwear' ),
+                'post_name'      => 'terms-and-conditions',
+                'post_status'    => 'publish',
+                'post_type'      => 'page',
+                'comment_status' => 'closed',
+            ) );
+            if ( ! is_wp_error( $new_terms_id ) && $new_terms_id > 0 ) {
+                update_post_meta( $new_terms_id, '_wp_page_template', 'page-terms-and-conditions.php' );
+                update_option( 'woocommerce_terms_page_id', $new_terms_id );
+                $updated = true;
+            }
+        }
+    } else {
+        if ( 'publish' !== $terms_page->post_status ) {
+            wp_update_post( array(
+                'ID'          => $terms_page->ID,
+                'post_status' => 'publish',
+            ) );
+            $updated = true;
+        }
+        update_post_meta( $terms_page->ID, '_wp_page_template', 'page-terms-and-conditions.php' );
+        if ( $wc_terms_id !== (int) $terms_page->ID ) {
+            update_option( 'woocommerce_terms_page_id', $terms_page->ID );
+        }
+    }
+
+    if ( $updated ) {
+        flush_rewrite_rules( false );
+    }
+
+    set_transient( 'mazestreetwear_legal_pages_checked', 1, DAY_IN_SECONDS );
+}
+add_action( 'init', 'mazestreetwear_ensure_legal_pages_exist', 5 );
+add_action( 'after_switch_theme', 'mazestreetwear_ensure_legal_pages_exist' );
+
