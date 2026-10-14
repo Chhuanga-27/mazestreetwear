@@ -72,10 +72,10 @@ add_action( 'after_setup_theme', 'mazestreetwear_setup' );
 function mazestreetwear_scripts() {
     $theme_version = wp_get_theme()->get( 'Version' );
 
-    // Enqueue Google Fonts: Space Grotesk & JetBrains Mono for brutalist streetwear aesthetic
+    // Enqueue Google Fonts: Space Grotesk, Inter (Ultra Bold display) & JetBrains Mono for brutalist streetwear aesthetic
     wp_enqueue_style(
         'mazestreetwear-fonts',
-        'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap',
+        'https://fonts.googleapis.com/css2?family=Inter:wght@800;900&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap',
         array(),
         null
     );

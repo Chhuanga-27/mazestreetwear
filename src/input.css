@@ -262,5 +262,34 @@
     border-radius: 1.25rem !important;
     border: 1px solid #000000 !important;
   }
+
+  /* Editorial Modern Studio Footer Component Styles */
+  .maze-footer-brand-title {
+    font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+    font-weight: 900;
+    font-size: clamp(5.25rem, 25.5vw, 23rem);
+    line-height: 0.82;
+    letter-spacing: -0.055em;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .maze-social-pill {
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .maze-social-pill:hover {
+    background-color: #e5e5e7 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.08);
+  }
+
+  .maze-action-cta .maze-action-arrow {
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
+  }
+
+  .maze-action-cta:hover .maze-action-arrow {
+    transform: translate(3px, -3px);
+  }
 }
 

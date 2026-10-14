@@ -195,6 +195,32 @@
             }
         });
 
+        // --- 6. Live Time & Status Clock for Footer (Aizawl / India IST) ---
+        const $footerClock = $('#maze-footer-clock');
+        if ($footerClock.length) {
+            function updateMazeFooterClock() {
+                try {
+                    const now = new Date();
+                    const formatted = now.toLocaleTimeString('en-US', {
+                        timeZone: 'Asia/Kolkata',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                    $footerClock.text(formatted);
+                } catch (e) {
+                    const now = new Date();
+                    let hours = now.getHours();
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12 || 12;
+                    $footerClock.text(hours + ':' + minutes + ' ' + ampm);
+                }
+            }
+            updateMazeFooterClock();
+            setInterval(updateMazeFooterClock, 1000);
+        }
+
     });
 
 })(jQuery);
