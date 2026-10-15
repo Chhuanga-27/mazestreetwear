@@ -481,6 +481,17 @@
     -webkit-backface-visibility: hidden;
   }
 
+  /* Hero CTA Button with Smooth Radius on Each Corner */
+  .maze-hero-cta {
+    border-radius: 0.875rem !important;
+  }
+
+  @media (min-width: 640px) {
+    .maze-hero-cta {
+      border-radius: 1rem !important;
+    }
+  }
+
   /* Primary Navigation Menu & Dropdown Submenus */
   #primary-menu {
     list-style: none;

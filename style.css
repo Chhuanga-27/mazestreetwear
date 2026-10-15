@@ -176,3 +176,15 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-backface-visibility: hidden;
 }
 
+/* Hero CTA Button with Smooth Radius on Each Corner */
+.maze-hero-cta {
+  border-radius: 0.875rem !important;
+}
+
+@media (min-width: 640px) {
+  .maze-hero-cta {
+    border-radius: 1rem !important;
+  }
+}
+
+

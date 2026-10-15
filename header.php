@@ -333,6 +333,6 @@ $masthead_classes = $is_maze_home
 </header>
 
 <?php
-$maze_content_pt = 'pt-20 sm:pt-24 md:pt-28';
+$maze_content_pt = $is_maze_home ? 'pt-[74px] sm:pt-20' : 'pt-20 sm:pt-24 md:pt-28';
 ?>
 <div id="content" class="site-content flex-grow <?php echo esc_attr( $maze_content_pt ); ?>">

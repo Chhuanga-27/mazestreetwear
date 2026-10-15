@@ -25,7 +25,7 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 <main id="primary" class="site-main bg-white text-black min-h-screen">
 
     <!-- 1. Editorial Bento Box Hero Banner (Contained, Rounded Corners, HD) -->
-    <section class="w-full bg-white pt-2 sm:pt-3 md:pt-4 pb-8 sm:pb-12">
+    <section class="w-full bg-white pt-2 sm:pt-2.5 md:pt-3 pb-8 sm:pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="maze-hero-bento relative w-full aspect-[16/10] rounded-2xl sm:rounded-3xl lg:rounded-[32px] border border-black overflow-hidden bg-[#e8e8e8] shadow-sm group">
                 <img 
@@ -39,9 +39,9 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
                     class="w-full h-full object-cover object-center select-none transition-transform duration-700 ease-out group-hover:scale-[1.01]"
                 />
 
-                <!-- Centered CTA Button -->
+                <!-- Centered CTA Button with Radius on Each Corner -->
                 <div class="absolute left-1/2 -translate-x-1/2 bottom-5 sm:bottom-8 md:bottom-12 z-10">
-                    <a href="<?php echo esc_url( $shop_url ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-8 sm:px-10 py-3 sm:py-3.5 text-xs sm:text-sm md:text-base uppercase tracking-wider font-bold font-mono text-center shadow-sm">
+                    <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-hero-cta inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-8 sm:px-10 py-3 sm:py-3.5 text-xs sm:text-sm md:text-base uppercase tracking-wider font-bold font-mono text-center shadow-sm rounded-xl sm:rounded-2xl hover:shadow-md">
                         <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
                     </a>
                 </div>
