@@ -157,8 +157,7 @@ $masthead_classes = $is_maze_home
                         alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" 
                         width="160"
                         height="22"
-                        style="height: 20px !important; max-height: 22px !important; width: auto !important; max-width: 170px !important; object-fit: contain !important; display: block !important;"
-                        class="maze-logo-img h-5 md:h-[22px] w-auto max-w-[130px] sm:max-w-[160px] md:max-w-[180px] object-contain transition-opacity duration-150 group-hover:opacity-75"
+                        class="maze-logo-img h-3.5 sm:h-[18px] md:h-[22px] w-auto max-w-[115px] sm:max-w-[160px] md:max-w-[180px] object-contain transition-opacity duration-150 group-hover:opacity-75"
                     />
                 </a>
             </div>

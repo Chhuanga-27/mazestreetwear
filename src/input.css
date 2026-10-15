@@ -417,7 +417,7 @@
     border: 1px solid #000000 !important;
   }
 
-  /* Bulletproof Header Logo: Override WooCommerce .woocommerce-page img { height: auto } */
+  /* Responsive Bulletproof Header Logo: Elegant & balanced on mobile, bold on desktop */
   .site-header #masthead-logo,
   .site-header .maze-brand-logo,
   .site-header .maze-brand-logo img,
@@ -425,13 +425,41 @@
   #masthead img.maze-logo-img,
   body.woocommerce-page .site-header img,
   body.woocommerce .site-header img {
-    height: 20px !important;
-    max-height: 22px !important;
+    height: 13.5px !important;
+    max-height: 14px !important;
     width: auto !important;
-    max-width: 170px !important;
+    max-width: 115px !important;
     object-fit: contain !important;
     display: block !important;
     flex-shrink: 0 !important;
+  }
+
+  @media (min-width: 640px) {
+    .site-header #masthead-logo,
+    .site-header .maze-brand-logo,
+    .site-header .maze-brand-logo img,
+    .maze-pill-navbar img,
+    #masthead img.maze-logo-img,
+    body.woocommerce-page .site-header img,
+    body.woocommerce .site-header img {
+      height: 18px !important;
+      max-height: 20px !important;
+      max-width: 160px !important;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .site-header #masthead-logo,
+    .site-header .maze-brand-logo,
+    .site-header .maze-brand-logo img,
+    .maze-pill-navbar img,
+    #masthead img.maze-logo-img,
+    body.woocommerce-page .site-header img,
+    body.woocommerce .site-header img {
+      height: 20px !important;
+      max-height: 22px !important;
+      max-width: 175px !important;
+    }
   }
 
   .maze-search-pill {
@@ -454,13 +482,14 @@
     overflow: hidden !important;
     position: relative;
     background-color: #e8e8e8;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 4 / 3;
     isolation: isolate;
   }
 
   @media (min-width: 640px) {
     .maze-hero-bento {
       border-radius: 1.5rem !important;
+      aspect-ratio: 16 / 10;
     }
   }
 
@@ -474,21 +503,43 @@
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
-    object-position: center !important;
+    object-position: 48% center !important;
     image-rendering: -webkit-optimize-contrast;
+    image-rendering: high-quality;
     transform: translateZ(0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }
 
+  @media (min-width: 640px) {
+    .maze-hero-bento img {
+      object-position: center center !important;
+    }
+  }
+
   /* Hero CTA Button with Smooth Radius on Each Corner */
   .maze-hero-cta {
-    border-radius: 0.875rem !important;
+    border-radius: 0.625rem !important;
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.6875rem !important; /* 11px */
+    letter-spacing: 0.12em !important;
+    line-height: 1.2 !important;
   }
 
   @media (min-width: 640px) {
     .maze-hero-cta {
       border-radius: 1rem !important;
+      padding: 0.875rem 2.5rem !important;
+      font-size: 0.875rem !important;
+      letter-spacing: 0.05em !important;
+      line-height: inherit !important;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .maze-hero-cta {
+      padding: 0.875rem 2.5rem !important;
+      font-size: 1rem !important;
     }
   }
 
