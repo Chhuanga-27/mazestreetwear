@@ -273,6 +273,32 @@ function mazestreetwear_get_refund_policy_url() {
 }
 
 /**
+ * Safe Legal Link Helper: Shipping & Delivery Policy
+ */
+function mazestreetwear_get_shipping_policy_url() {
+    // 1. Check if a published page exists with slug 'shipping-policy'
+    $page = get_page_by_path( 'shipping-policy', OBJECT, 'page' );
+    if ( $page && 'publish' === $page->post_status ) {
+        return get_permalink( $page->ID );
+    }
+
+    // 2. Check if a published page exists with slug 'shipping'
+    $page_shipping = get_page_by_path( 'shipping', OBJECT, 'page' );
+    if ( $page_shipping && 'publish' === $page_shipping->post_status ) {
+        return get_permalink( $page_shipping->ID );
+    }
+
+    // 3. Check if a published page exists with slug 'delivery-policy'
+    $page_delivery = get_page_by_path( 'delivery-policy', OBJECT, 'page' );
+    if ( $page_delivery && 'publish' === $page_delivery->post_status ) {
+        return get_permalink( $page_delivery->ID );
+    }
+
+    // 4. Fallback to /shipping-policy/ permalink
+    return home_url( '/shipping-policy/' );
+}
+
+/**
  * Register rewrite rules and query vars for legal pages.
  */
 function mazestreetwear_legal_rewrite_rules() {
@@ -282,6 +308,9 @@ function mazestreetwear_legal_rewrite_rules() {
     add_rewrite_rule( '^refund-policy/?$', 'index.php?mazepage=refund-policy', 'top' );
     add_rewrite_rule( '^refunds/?$', 'index.php?mazepage=refund-policy', 'top' );
     add_rewrite_rule( '^returns/?$', 'index.php?mazepage=refund-policy', 'top' );
+    add_rewrite_rule( '^shipping-policy/?$', 'index.php?mazepage=shipping-policy', 'top' );
+    add_rewrite_rule( '^shipping/?$', 'index.php?mazepage=shipping-policy', 'top' );
+    add_rewrite_rule( '^delivery-policy/?$', 'index.php?mazepage=shipping-policy', 'top' );
 }
 add_action( 'init', 'mazestreetwear_legal_rewrite_rules', 10 );
 
@@ -295,7 +324,7 @@ add_filter( 'query_vars', 'mazestreetwear_legal_query_vars' );
  * Prevent WordPress canonical redirect from bouncing legal pages to homepage.
  */
 function mazestreetwear_prevent_legal_canonical_redirect( $redirect_url, $requested_url ) {
-    if ( preg_match( '#/(privacy-policy|terms-and-conditions|terms|refund-policy|refunds|returns)/?$#i', $requested_url ) ) {
+    if ( preg_match( '#/(privacy-policy|terms-and-conditions|terms|refund-policy|refunds|returns|shipping-policy|shipping|delivery-policy)/?$#i', $requested_url ) ) {
         return false;
     }
     return $redirect_url;
@@ -348,6 +377,19 @@ function mazestreetwear_legal_template_include( $template ) {
         }
     }
 
+    if ( 'shipping-policy' === $mazepage || 'shipping' === $mazepage || 'delivery-policy' === $mazepage ) {
+        global $wp_query;
+        if ( $wp_query ) {
+            $wp_query->is_404  = false;
+            $wp_query->is_page = true;
+        }
+        status_header( 200 );
+        $custom = get_template_directory() . '/page-shipping-policy.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
     // 2. Native WordPress template or page slug match
     if ( is_page_template( 'page-privacy-policy.php' ) || is_page( 'privacy-policy' ) ) {
         $custom = get_template_directory() . '/page-privacy-policy.php';
@@ -365,6 +407,13 @@ function mazestreetwear_legal_template_include( $template ) {
 
     if ( is_page_template( 'page-refund-policy.php' ) || is_page( array( 'refund-policy', 'refunds', 'returns' ) ) ) {
         $custom = get_template_directory() . '/page-refund-policy.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
+    if ( is_page_template( 'page-shipping-policy.php' ) || is_page( array( 'shipping-policy', 'shipping', 'delivery-policy' ) ) ) {
+        $custom = get_template_directory() . '/page-shipping-policy.php';
         if ( file_exists( $custom ) ) {
             return $custom;
         }
@@ -418,6 +467,19 @@ function mazestreetwear_legal_template_include( $template ) {
         }
     }
 
+    if ( $path === 'shipping-policy' || $path === 'shipping' || $path === 'delivery-policy' || preg_match( '#(^|/)(shipping-policy|shipping|delivery-policy)/?$#i', $path ) ) {
+        global $wp_query;
+        if ( $wp_query ) {
+            $wp_query->is_404  = false;
+            $wp_query->is_page = true;
+        }
+        status_header( 200 );
+        $custom = get_template_directory() . '/page-shipping-policy.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
     return $template;
 }
 add_filter( 'template_include', 'mazestreetwear_legal_template_include', 99 );
@@ -439,6 +501,8 @@ function mazestreetwear_legal_document_title_parts( $title_parts ) {
         $title_parts['title'] = __( 'Terms & Conditions', 'mazestreetwear' );
     } elseif ( $path === 'refund-policy' || $path === 'refunds' || $path === 'returns' || preg_match( '#(^|/)(refund-policy|refunds|returns)/?$#i', $path ) || in_array( get_query_var( 'mazepage' ), array( 'refund-policy', 'refunds' ), true ) ) {
         $title_parts['title'] = __( 'Refund & Returns Policy', 'mazestreetwear' );
+    } elseif ( $path === 'shipping-policy' || $path === 'shipping' || $path === 'delivery-policy' || preg_match( '#(^|/)(shipping-policy|shipping|delivery-policy)/?$#i', $path ) || in_array( get_query_var( 'mazepage' ), array( 'shipping-policy', 'shipping', 'delivery-policy' ), true ) ) {
+        $title_parts['title'] = __( 'Shipping & Delivery Policy', 'mazestreetwear' );
     }
 
     return $title_parts;
@@ -589,6 +653,35 @@ function mazestreetwear_ensure_legal_pages_exist() {
         update_post_meta( $refund_page->ID, '_wp_page_template', 'page-refund-policy.php' );
     }
 
+    // 4. Shipping & Delivery Policy
+    $shipping_page = get_page_by_path( 'shipping-policy', OBJECT, 'page' );
+    if ( ! $shipping_page ) {
+        $shipping_page = get_page_by_path( 'shipping', OBJECT, 'page' );
+    }
+
+    if ( ! $shipping_page ) {
+        $new_shipping_id = wp_insert_post( array(
+            'post_title'     => __( 'Shipping & Delivery Policy', 'mazestreetwear' ),
+            'post_name'      => 'shipping-policy',
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'comment_status' => 'closed',
+        ) );
+        if ( ! is_wp_error( $new_shipping_id ) && $new_shipping_id > 0 ) {
+            update_post_meta( $new_shipping_id, '_wp_page_template', 'page-shipping-policy.php' );
+            $updated = true;
+        }
+    } else {
+        if ( 'publish' !== $shipping_page->post_status ) {
+            wp_update_post( array(
+                'ID'          => $shipping_page->ID,
+                'post_status' => 'publish',
+            ) );
+            $updated = true;
+        }
+        update_post_meta( $shipping_page->ID, '_wp_page_template', 'page-shipping-policy.php' );
+    }
+
     if ( $updated ) {
         flush_rewrite_rules( false );
     }
@@ -597,4 +690,5 @@ function mazestreetwear_ensure_legal_pages_exist() {
 }
 add_action( 'init', 'mazestreetwear_ensure_legal_pages_exist', 5 );
 add_action( 'after_switch_theme', 'mazestreetwear_ensure_legal_pages_exist' );
+
 

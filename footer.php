@@ -186,7 +186,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <?php esc_html_e( 'Terms & Conditions', 'mazestreetwear' ); ?>
                 </a>
                 <span class="text-neutral-300 hidden md:inline">&middot;</span>
-                <a href="<?php echo esc_url( home_url( '/shipping-policy' ) ); ?>" class="hover:text-black transition-colors hidden md:inline">
+                <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_shipping_policy_url' ) ? mazestreetwear_get_shipping_policy_url() : home_url( '/shipping-policy/' ) ); ?>" class="hover:text-black transition-colors hidden md:inline">
                     <?php esc_html_e( 'Shipping Policy', 'mazestreetwear' ); ?>
                 </a>
                 <span class="text-neutral-300 hidden md:inline">&middot;</span>

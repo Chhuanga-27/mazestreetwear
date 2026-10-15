@@ -245,7 +245,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( home_url( '/shipping-policy' ) ); ?>" class="text-neutral-700 hover:text-black underline-offset-4 hover:underline flex items-center justify-between">
+                            <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_shipping_policy_url' ) ? mazestreetwear_get_shipping_policy_url() : home_url( '/shipping-policy/' ) ); ?>" class="text-neutral-700 hover:text-black underline-offset-4 hover:underline flex items-center justify-between">
                                 <span><?php esc_html_e( 'Shipping & Dispatch Policy', 'mazestreetwear' ); ?></span>
                                 <span class="text-neutral-400 font-mono text-[11px]">&rarr;</span>
                             </a>
