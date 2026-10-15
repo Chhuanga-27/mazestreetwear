@@ -17,6 +17,9 @@ $shop_page_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permal
 $wishlist_url  = function_exists( 'YITH_WCWL' ) ? YITH_WCWL()->get_wishlist_url() : home_url( '/wishlist/' );
 $cart_url      = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' );
 $cart_count    = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart_contents_count() : 0;
+$masthead_classes = $is_maze_home
+    ? 'pointer-events-none py-3 sm:py-4 bg-transparent'
+    : 'bg-white/95 backdrop-blur-md border-b border-black py-2.5 sm:py-3.5 shadow-sm';
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?> class="scroll-smooth bg-white text-black">
 <head>
@@ -36,7 +39,7 @@ $cart_count    = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_car
 <!-- Header / Navigation Bar -->
 <!-- On homepage: Transparent floating pill header over the hero banner -->
 <!-- On other pages: Full-width solid white backdrop with 1px border so content never bleeds through -->
-<header id="masthead" class="site-header fixed top-0 inset-x-0 z-50 transition-all duration-200 <?php echo $is_maze_home ? 'pointer-events-none py-3 sm:py-4 px-3 sm:px-6 bg-transparent' : 'bg-white/95 backdrop-blur-md border-b border-black py-2.5 sm:py-3.5 px-3 sm:px-6 shadow-sm'; ?>">
+<header id="masthead" class="site-header fixed top-0 inset-x-0 z-50 px-3 sm:px-6 transition-all duration-200 <?php echo esc_attr( $masthead_classes ); ?>">
     <div class="max-w-7xl mx-auto <?php echo $is_maze_home ? 'pointer-events-auto' : ''; ?>">
 
         <!-- Pill Navigation Bar Container -->
