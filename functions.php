@@ -299,7 +299,27 @@ function mazestreetwear_get_shipping_policy_url() {
 }
 
 /**
- * Register rewrite rules and query vars for legal pages.
+ * Safe Link Helper: Contact Us / Studio Desk
+ */
+function mazestreetwear_get_contact_url() {
+    // 1. Check if a published page exists with slug 'contact-us'
+    $page = get_page_by_path( 'contact-us', OBJECT, 'page' );
+    if ( $page && 'publish' === $page->post_status ) {
+        return get_permalink( $page->ID );
+    }
+
+    // 2. Check if a published page exists with slug 'contact'
+    $page_contact = get_page_by_path( 'contact', OBJECT, 'page' );
+    if ( $page_contact && 'publish' === $page_contact->post_status ) {
+        return get_permalink( $page_contact->ID );
+    }
+
+    // 3. Fallback to /contact-us/ permalink
+    return home_url( '/contact-us/' );
+}
+
+/**
+ * Register rewrite rules and query vars for legal and contact pages.
  */
 function mazestreetwear_legal_rewrite_rules() {
     add_rewrite_rule( '^privacy-policy/?$', 'index.php?mazepage=privacy-policy', 'top' );
@@ -311,6 +331,8 @@ function mazestreetwear_legal_rewrite_rules() {
     add_rewrite_rule( '^shipping-policy/?$', 'index.php?mazepage=shipping-policy', 'top' );
     add_rewrite_rule( '^shipping/?$', 'index.php?mazepage=shipping-policy', 'top' );
     add_rewrite_rule( '^delivery-policy/?$', 'index.php?mazepage=shipping-policy', 'top' );
+    add_rewrite_rule( '^contact-us/?$', 'index.php?mazepage=contact-us', 'top' );
+    add_rewrite_rule( '^contact/?$', 'index.php?mazepage=contact-us', 'top' );
 }
 add_action( 'init', 'mazestreetwear_legal_rewrite_rules', 10 );
 
@@ -321,10 +343,10 @@ function mazestreetwear_legal_query_vars( $vars ) {
 add_filter( 'query_vars', 'mazestreetwear_legal_query_vars' );
 
 /**
- * Prevent WordPress canonical redirect from bouncing legal pages to homepage.
+ * Prevent WordPress canonical redirect from bouncing legal and contact pages to homepage.
  */
 function mazestreetwear_prevent_legal_canonical_redirect( $redirect_url, $requested_url ) {
-    if ( preg_match( '#/(privacy-policy|terms-and-conditions|terms|refund-policy|refunds|returns|shipping-policy|shipping|delivery-policy)/?$#i', $requested_url ) ) {
+    if ( preg_match( '#/(privacy-policy|terms-and-conditions|terms|refund-policy|refunds|returns|shipping-policy|shipping|delivery-policy|contact-us|contact)/?$#i', $requested_url ) ) {
         return false;
     }
     return $redirect_url;
@@ -390,6 +412,19 @@ function mazestreetwear_legal_template_include( $template ) {
         }
     }
 
+    if ( 'contact-us' === $mazepage || 'contact' === $mazepage ) {
+        global $wp_query;
+        if ( $wp_query ) {
+            $wp_query->is_404  = false;
+            $wp_query->is_page = true;
+        }
+        status_header( 200 );
+        $custom = get_template_directory() . '/page-contact-us.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
     // 2. Native WordPress template or page slug match
     if ( is_page_template( 'page-privacy-policy.php' ) || is_page( 'privacy-policy' ) ) {
         $custom = get_template_directory() . '/page-privacy-policy.php';
@@ -414,6 +449,13 @@ function mazestreetwear_legal_template_include( $template ) {
 
     if ( is_page_template( 'page-shipping-policy.php' ) || is_page( array( 'shipping-policy', 'shipping', 'delivery-policy' ) ) ) {
         $custom = get_template_directory() . '/page-shipping-policy.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
+    if ( is_page_template( 'page-contact-us.php' ) || is_page( array( 'contact-us', 'contact' ) ) ) {
+        $custom = get_template_directory() . '/page-contact-us.php';
         if ( file_exists( $custom ) ) {
             return $custom;
         }
@@ -480,6 +522,19 @@ function mazestreetwear_legal_template_include( $template ) {
         }
     }
 
+    if ( $path === 'contact-us' || $path === 'contact' || preg_match( '#(^|/)(contact-us|contact)/?$#i', $path ) ) {
+        global $wp_query;
+        if ( $wp_query ) {
+            $wp_query->is_404  = false;
+            $wp_query->is_page = true;
+        }
+        status_header( 200 );
+        $custom = get_template_directory() . '/page-contact-us.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
     return $template;
 }
 add_filter( 'template_include', 'mazestreetwear_legal_template_include', 99 );
@@ -503,6 +558,8 @@ function mazestreetwear_legal_document_title_parts( $title_parts ) {
         $title_parts['title'] = __( 'Refund & Returns Policy', 'mazestreetwear' );
     } elseif ( $path === 'shipping-policy' || $path === 'shipping' || $path === 'delivery-policy' || preg_match( '#(^|/)(shipping-policy|shipping|delivery-policy)/?$#i', $path ) || in_array( get_query_var( 'mazepage' ), array( 'shipping-policy', 'shipping', 'delivery-policy' ), true ) ) {
         $title_parts['title'] = __( 'Shipping & Delivery Policy', 'mazestreetwear' );
+    } elseif ( $path === 'contact-us' || $path === 'contact' || preg_match( '#(^|/)(contact-us|contact)/?$#i', $path ) || in_array( get_query_var( 'mazepage' ), array( 'contact-us', 'contact' ), true ) ) {
+        $title_parts['title'] = __( 'Contact Us // Concierge Desk', 'mazestreetwear' );
     }
 
     return $title_parts;
@@ -682,6 +739,35 @@ function mazestreetwear_ensure_legal_pages_exist() {
         update_post_meta( $shipping_page->ID, '_wp_page_template', 'page-shipping-policy.php' );
     }
 
+    // 5. Contact Us Page
+    $contact_page = get_page_by_path( 'contact-us', OBJECT, 'page' );
+    if ( ! $contact_page ) {
+        $contact_page = get_page_by_path( 'contact', OBJECT, 'page' );
+    }
+
+    if ( ! $contact_page ) {
+        $new_contact_id = wp_insert_post( array(
+            'post_title'     => __( 'Contact Us', 'mazestreetwear' ),
+            'post_name'      => 'contact-us',
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'comment_status' => 'closed',
+        ) );
+        if ( ! is_wp_error( $new_contact_id ) && $new_contact_id > 0 ) {
+            update_post_meta( $new_contact_id, '_wp_page_template', 'page-contact-us.php' );
+            $updated = true;
+        }
+    } else {
+        if ( 'publish' !== $contact_page->post_status ) {
+            wp_update_post( array(
+                'ID'          => $contact_page->ID,
+                'post_status' => 'publish',
+            ) );
+            $updated = true;
+        }
+        update_post_meta( $contact_page->ID, '_wp_page_template', 'page-contact-us.php' );
+    }
+
     if ( $updated ) {
         flush_rewrite_rules( false );
     }
@@ -741,6 +827,104 @@ function mazestreetwear_ensure_default_categories() {
     }
 }
 add_action( 'init', 'mazestreetwear_ensure_default_categories', 10 );
+
+/**
+ * Automatically append Contact link to the primary menu if not already present.
+ */
+function mazestreetwear_add_contact_to_primary_menu( $items, $args ) {
+    if ( isset( $args->theme_location ) && 'primary' === $args->theme_location ) {
+        if ( false === stripos( $items, 'contact-us' ) && false === stripos( $items, 'contact' ) ) {
+            $contact_url  = mazestreetwear_get_contact_url();
+            $is_active    = ( is_page( 'contact-us' ) || is_page( 'contact' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'contact' ) ) );
+            $active_class = $is_active ? 'current-menu-item ' : '';
+            
+            if ( false !== strpos( $items, '<li' ) ) {
+                $items .= '<li class="menu-item ' . esc_attr( $active_class ) . '"><a href="' . esc_url( $contact_url ) . '" class="hover:text-black transition-colors duration-150 py-1' . ( $is_active ? ' font-black text-black' : '' ) . '">' . esc_html__( 'Contact', 'mazestreetwear' ) . '</a></li>';
+            } else {
+                $items .= '<a href="' . esc_url( $contact_url ) . '" class="text-black hover:opacity-60 py-1.5 transition-opacity' . ( $is_active ? ' font-black' : '' ) . '">' . esc_html__( 'Contact', 'mazestreetwear' ) . '</a>';
+            }
+        }
+    }
+    return $items;
+}
+add_filter( 'wp_nav_menu_items', 'mazestreetwear_add_contact_to_primary_menu', 10, 2 );
+
+/**
+ * Handle Contact Form Submissions (AJAX & Standard POST)
+ */
+function mazestreetwear_handle_contact_submission() {
+    // Nonce verification
+    if ( ! isset( $_POST['maze_contact_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['maze_contact_nonce'] ) ), 'maze_contact_action' ) ) {
+        if ( wp_doing_ajax() ) {
+            wp_send_json_error( array( 'message' => __( 'Security verification failed. Please refresh and try again.', 'mazestreetwear' ) ) );
+        }
+        return;
+    }
+
+    // Honeypot anti-spam check
+    if ( ! empty( $_POST['maze_website_url'] ) ) {
+        if ( wp_doing_ajax() ) {
+            wp_send_json_success( array( 'message' => __( 'Inquiry logged successfully.', 'mazestreetwear' ) ) );
+        }
+        return;
+    }
+
+    $name       = isset( $_POST['maze_name'] ) ? sanitize_text_field( wp_unslash( $_POST['maze_name'] ) ) : '';
+    $email      = isset( $_POST['maze_email'] ) ? sanitize_email( wp_unslash( $_POST['maze_email'] ) ) : '';
+    $phone      = isset( $_POST['maze_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['maze_phone'] ) ) : '';
+    $department = isset( $_POST['maze_department'] ) ? sanitize_text_field( wp_unslash( $_POST['maze_department'] ) ) : 'General Concierge';
+    $order_num  = isset( $_POST['maze_order'] ) ? sanitize_text_field( wp_unslash( $_POST['maze_order'] ) ) : '';
+    $subject    = isset( $_POST['maze_subject'] ) ? sanitize_text_field( wp_unslash( $_POST['maze_subject'] ) ) : '';
+    $message    = isset( $_POST['maze_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['maze_message'] ) ) : '';
+
+    if ( empty( $name ) || empty( $email ) || ! is_email( $email ) || empty( $message ) ) {
+        if ( wp_doing_ajax() ) {
+            wp_send_json_error( array( 'message' => __( 'Please fill in all required fields with a valid email address.', 'mazestreetwear' ) ) );
+        }
+        return;
+    }
+
+    $to           = 'enquiries@mazestw.in';
+    $mail_subject = sprintf( '[MAZE CONCIERGE] %s: %s', strtoupper( $department ), ! empty( $subject ) ? $subject : 'New Inquiry from ' . $name );
+    
+    $body  = "MAZE STREETWEAR - CONCIERGE TRANSMISSION\n";
+    $body .= "==========================================\n\n";
+    $body .= "Name: " . $name . "\n";
+    $body .= "Email: " . $email . "\n";
+    if ( ! empty( $phone ) ) {
+        $body .= "Phone: " . $phone . "\n";
+    }
+    $body .= "Department: " . $department . "\n";
+    if ( ! empty( $order_num ) ) {
+        $body .= "Order Reference: " . $order_num . "\n";
+    }
+    $body .= "Subject: " . $subject . "\n";
+    $body .= "Date / Time: " . current_time( 'mysql' ) . " (IST)\n\n";
+    $body .= "Message:\n" . $message . "\n\n";
+    $body .= "==========================================\n";
+    $body .= "Sent from mazestw.in Concierge Desk";
+
+    $headers = array(
+        'From: MAZE Concierge Desk <enquiries@mazestw.in>',
+        'Reply-To: ' . $name . ' <' . $email . '>',
+        'Content-Type: text/plain; charset=UTF-8',
+    );
+
+    // Send email to official desk
+    @wp_mail( $to, $mail_subject, $body, $headers );
+
+    if ( wp_doing_ajax() ) {
+        wp_send_json_success( array(
+            'message' => __( 'Transmission confirmed. Your inquiry has been routed to our concierge desk. We will respond to your email within 24 business hours.', 'mazestreetwear' ),
+            'name'    => $name,
+        ) );
+    }
+}
+add_action( 'wp_ajax_maze_contact_submission', 'mazestreetwear_handle_contact_submission' );
+add_action( 'wp_ajax_nopriv_maze_contact_submission', 'mazestreetwear_handle_contact_submission' );
+add_action( 'admin_post_maze_contact_submission', 'mazestreetwear_handle_contact_submission' );
+add_action( 'admin_post_nopriv_maze_contact_submission', 'mazestreetwear_handle_contact_submission' );
+
 
 
 

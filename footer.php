@@ -69,7 +69,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo esc_url( home_url( '/contact-us' ) ); ?>" class="hover:text-black transition-colors block">
+                        <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' ) ); ?>" class="hover:text-black transition-colors block">
                             <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
                         </a>
                     </li>
@@ -128,7 +128,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <div class="lg:col-span-3 space-y-6 flex flex-col justify-start">
 
                 <!-- Action 1: Call MAZE / Direct Concierge (Coral-Orange circle arrow accent) -->
-                <a href="<?php echo esc_url( home_url( '/contact-us' ) ); ?>" class="maze-action-cta group block">
+                <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' ) ); ?>" class="maze-action-cta group block">
                     <div class="flex items-center space-x-2.5">
                         <span class="text-base sm:text-lg font-bold font-sans tracking-tight text-[#ff3e18] group-hover:underline">
                             <?php esc_html_e( 'Call MAZE', 'mazestreetwear' ); ?>
@@ -192,6 +192,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <span class="text-neutral-300 hidden md:inline">&middot;</span>
                 <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazestreetwear_get_refund_policy_url() : home_url( '/refund-policy/' ) ); ?>" class="hover:text-black transition-colors hidden md:inline">
                     <?php esc_html_e( 'Refunds', 'mazestreetwear' ); ?>
+                </a>
+                <span class="text-neutral-300 hidden sm:inline">&middot;</span>
+                <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' ) ); ?>" class="hover:text-black transition-colors hidden sm:inline">
+                    <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
                 </a>
             </div>
 

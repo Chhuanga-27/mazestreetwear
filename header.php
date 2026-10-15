@@ -76,6 +76,8 @@ $masthead_classes = $is_maze_home
                     $tops_url        = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'tops' ) : home_url( '/product-category/tops/' );
                     $bottoms_url     = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'bottoms' ) : home_url( '/product-category/bottoms/' );
                     $accessories_url = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'accessories' ) : home_url( '/product-category/accessories/' );
+                    $contact_url     = function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' );
+                    $is_contact      = is_page( 'contact-us' ) || is_page( 'contact' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'contact' ) );
                 ?>
                     <ul class="flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-xs lg:text-[13px] font-bold font-sans tracking-wider uppercase text-neutral-800 whitespace-nowrap">
                         <li>
@@ -96,6 +98,11 @@ $masthead_classes = $is_maze_home
                         <li>
                             <a href="<?php echo esc_url( $accessories_url ); ?>" class="hover:text-black transition-colors duration-150 py-1">
                                 <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo esc_url( $contact_url ); ?>" class="hover:text-black transition-colors duration-150 py-1 <?php echo $is_contact ? 'text-black font-black underline underline-offset-4' : ''; ?>">
+                                <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                     </ul>
@@ -180,6 +187,8 @@ $masthead_classes = $is_maze_home
                 $tops_url        = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'tops' ) : home_url( '/product-category/tops/' );
                 $bottoms_url     = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'bottoms' ) : home_url( '/product-category/bottoms/' );
                 $accessories_url = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'accessories' ) : home_url( '/product-category/accessories/' );
+                $contact_url     = function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' );
+                $is_contact      = is_page( 'contact-us' ) || is_page( 'contact' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'contact' ) );
             ?>
                 <div class="flex flex-col space-y-3 text-sm font-sans font-bold tracking-wider uppercase">
                     <a href="<?php echo esc_url( $shop_page_url ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
@@ -194,7 +203,7 @@ $masthead_classes = $is_maze_home
                     <a href="<?php echo esc_url( $accessories_url ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
                         <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
                     </a>
-                    <a href="<?php echo esc_url( home_url( '/contact-us/' ) ); ?>" class="text-black hover:opacity-60 py-1.5 transition-opacity">
+                    <a href="<?php echo esc_url( $contact_url ); ?>" class="text-black hover:opacity-60 py-1.5 transition-opacity <?php echo $is_contact ? 'font-black underline underline-offset-4' : ''; ?>">
                         <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
                     </a>
                 </div>
