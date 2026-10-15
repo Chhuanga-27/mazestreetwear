@@ -73,14 +73,17 @@
             }
         });
 
-        // --- 2. Floating Header Scroll Hide/Reveal ---
-        // Disappears when scrolling down and appears when scrolling up
+        // --- 2. Floating Header Scroll Handler ---
+        // On internal pages, header stays permanently pinned and visible (never collapses).
+        // On homepage, smoothly stays visible and accessible without sudden disappearing.
         const $masthead = $('#masthead');
         if ($masthead.length) {
+            $masthead.removeClass('header--hidden');
             let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
             let isTicking = false;
-            const threshold = 8; // Minimum scroll delta before reacting
-            const topBoundary = 25; // Always show header near page top
+            const threshold = 12; // Minimum scroll delta before reacting
+            const topBoundary = 35; // Always show header near page top
+            const isHomePage = $('body').hasClass('home') || $('body').hasClass('front-page') || $('#primary .h-\\[85vh\\]').length > 0;
 
             function updateHeaderOnScroll() {
                 const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
@@ -93,15 +96,21 @@
                     return;
                 }
 
-                // If at the very top, always show header
+                // Internal pages: Always keep header visible and locked
+                if (!isHomePage) {
+                    $masthead.removeClass('header--hidden');
+                    lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+                    isTicking = false;
+                    return;
+                }
+
+                // Homepage: Smoothly show near top or on scroll up
                 if (currentScrollY <= topBoundary) {
                     $masthead.removeClass('header--hidden');
                 } else if (Math.abs(currentScrollY - lastScrollY) > threshold) {
-                    if (currentScrollY > lastScrollY && currentScrollY > 70) {
-                        // Scrolling DOWN -> Header disappears
+                    if (currentScrollY > lastScrollY && currentScrollY > 140) {
                         $masthead.addClass('header--hidden');
                     } else if (currentScrollY < lastScrollY) {
-                        // Scrolling UP -> Header appears
                         $masthead.removeClass('header--hidden');
                     }
                 }

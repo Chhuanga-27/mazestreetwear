@@ -179,8 +179,8 @@ add_action( 'woocommerce_after_main_content', 'mazestreetwear_wrapper_end', 10 )
  */
 function mazestreetwear_breadcrumbs_defaults( $defaults ) {
     $defaults['delimiter']   = '<span class="text-neutral-400 mx-2">/</span>';
-    $defaults['wrap_before'] = '<nav class="woocommerce-breadcrumb text-xs font-mono uppercase tracking-widest text-neutral-600 mb-6 flex flex-wrap items-center" aria-label="Breadcrumb">';
-    $defaults['wrap_after']  = '</nav>';
+    $defaults['wrap_before'] = '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6"><nav class="woocommerce-breadcrumb text-xs font-mono uppercase tracking-widest text-neutral-600 mb-6 flex flex-wrap items-center" aria-label="Breadcrumb">';
+    $defaults['wrap_after']  = '</nav></div>';
     $defaults['before']      = '<span class="text-black">';
     $defaults['after']       = '</span>';
     $defaults['home']        = _x( 'HOME', 'breadcrumb', 'mazestreetwear' );
