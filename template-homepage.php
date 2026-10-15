@@ -24,19 +24,28 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 
 <main id="primary" class="site-main bg-white text-black min-h-screen">
 
-    <!-- 1. Full-Width Editorial Hero Banner -->
-    <section class="relative w-full h-[85vh] min-h-[600px] bg-white border-b border-black overflow-hidden">
-        <img 
-            src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero.jpg' ); ?>" 
-            alt="<?php esc_attr_e( 'MAZE Editorial SS26', 'mazestreetwear' ); ?>" 
-            class="w-full h-full object-cover object-center select-none"
-        />
+    <!-- 1. Editorial Bento Box Hero Banner (Contained, Rounded Corners, HD) -->
+    <section class="w-full bg-white pt-2 sm:pt-3 md:pt-4 pb-8 sm:pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="maze-hero-bento relative w-full aspect-[16/10] rounded-2xl sm:rounded-3xl lg:rounded-[32px] border border-black overflow-hidden bg-[#e8e8e8] shadow-sm group">
+                <img 
+                    src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero.jpg' ); ?>" 
+                    alt="<?php esc_attr_e( 'MAZE Editorial SS26', 'mazestreetwear' ); ?>" 
+                    width="5765"
+                    height="3614"
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                    class="w-full h-full object-cover object-center select-none transition-transform duration-700 ease-out group-hover:scale-[1.01]"
+                />
 
-        <!-- Centered CTA Button -->
-        <div class="absolute left-1/2 -translate-x-1/2 bottom-16 sm:bottom-20 z-10">
-            <a href="<?php echo esc_url( $shop_url ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-9 py-3.5 text-sm sm:text-base uppercase tracking-wider font-bold font-mono text-center shadow-sm">
-                <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
-            </a>
+                <!-- Centered CTA Button -->
+                <div class="absolute left-1/2 -translate-x-1/2 bottom-5 sm:bottom-8 md:bottom-12 z-10">
+                    <a href="<?php echo esc_url( $shop_url ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-8 sm:px-10 py-3 sm:py-3.5 text-xs sm:text-sm md:text-base uppercase tracking-wider font-bold font-mono text-center shadow-sm">
+                        <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -44,7 +53,7 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     <section class="w-full bg-white border-b border-black">
         
         <!-- Section Header -->
-        <div class="max-w-7xl mx-auto border-x border-black">
+        <div class="max-w-7xl mx-auto border-x border-t border-black">
             <div class="px-4 sm:px-6 lg:px-8 py-5 sm:py-6 border-b border-black flex items-center justify-between bg-white">
                 <h2 class="text-base sm:text-lg lg:text-xl font-black font-sans uppercase tracking-wider text-black">
                     <?php esc_html_e( 'READY-TO-WEAR', 'mazestreetwear' ); ?>

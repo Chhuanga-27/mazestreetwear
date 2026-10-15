@@ -83,7 +83,7 @@
             let isTicking = false;
             const threshold = 12; // Minimum scroll delta before reacting
             const topBoundary = 35; // Always show header near page top
-            const isHomePage = $('body').hasClass('home') || $('body').hasClass('front-page') || $('#primary .h-\\[85vh\\]').length > 0;
+            const isHomePage = $('body').hasClass('home') || $('body').hasClass('front-page') || $('#primary .maze-hero-bento').length > 0 || $('#primary .h-\\[85vh\\]').length > 0;
 
             function updateHeaderOnScroll() {
                 const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;

@@ -27,6 +27,11 @@ $masthead_classes = $is_maze_home
     <!-- Preload Primary Didot Regular Web Font for Instant Rendering -->
     <link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/Didot.otf' ); ?>" as="font" type="font/otf" crossorigin>
 
+    <?php if ( $is_maze_home ) : ?>
+    <!-- Preload High-Definition Hero Bento Banner -->
+    <link rel="preload" as="image" href="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero.jpg' ); ?>" fetchpriority="high">
+    <?php endif; ?>
+
     <!-- Favicon & Site Icons (Multi-size ICO, High-res PNG, Apple Touch & Manifest) -->
     <link rel="shortcut icon" href="<?php echo esc_url( get_template_directory_uri() . '/favicon.ico' ); ?>" type="image/x-icon">
     <link rel="icon" href="<?php echo esc_url( get_template_directory_uri() . '/favicon.ico' ); ?>" type="image/x-icon">
@@ -328,6 +333,6 @@ $masthead_classes = $is_maze_home
 </header>
 
 <?php
-$maze_content_pt = $is_maze_home ? 'pt-0' : 'pt-20 sm:pt-24';
+$maze_content_pt = 'pt-20 sm:pt-24 md:pt-28';
 ?>
 <div id="content" class="site-content flex-grow <?php echo esc_attr( $maze_content_pt ); ?>">

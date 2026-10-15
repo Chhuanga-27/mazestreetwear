@@ -142,3 +142,37 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 !important;
 }
 
+/* Editorial Bento Box Hero Banner */
+.maze-hero-bento {
+  border-radius: 1rem !important;
+  border: 1px solid #000000 !important;
+  overflow: hidden !important;
+  position: relative;
+  background-color: #e8e8e8;
+  aspect-ratio: 16 / 10;
+  isolation: isolate;
+}
+
+@media (min-width: 640px) {
+  .maze-hero-bento {
+    border-radius: 1.5rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .maze-hero-bento {
+    border-radius: 2rem !important;
+  }
+}
+
+.maze-hero-bento img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  image-rendering: -webkit-optimize-contrast;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
