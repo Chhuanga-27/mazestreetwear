@@ -94,8 +94,19 @@
   select,
   textarea,
   optgroup,
-  h1, h2, h3, h4, h5, h6,
-  p, a, span, label, table, td, th {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a,
+  span,
+  label,
+  table,
+  td,
+  th {
     font-family: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif;
   }
 
@@ -104,7 +115,12 @@
     font-weight: 500;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: #000000;
     font-weight: 700;
     letter-spacing: -0.015em;
@@ -112,19 +128,23 @@
 
   /* High-Contrast Readability Overrides: Eliminate faint/pale text across the site */
   .text-neutral-400 {
-    color: #3f3f46 !important; /* was faint #a3a3a3 -> now crisp dark neutral 7.5:1+ contrast */
+    color: #3f3f46 !important;
+    /* was faint #a3a3a3 -> now crisp dark neutral 7.5:1+ contrast */
   }
 
   .text-neutral-500 {
-    color: #27272a !important; /* was #737373 -> now rich dark charcoal 11:1+ contrast */
+    color: #27272a !important;
+    /* was #737373 -> now rich dark charcoal 11:1+ contrast */
   }
 
   .text-neutral-600 {
-    color: #18181b !important; /* was #525252 -> now deep near-black */
+    color: #18181b !important;
+    /* was #525252 -> now deep near-black */
   }
 
   .text-neutral-700 {
-    color: #09090b !important; /* pitch black */
+    color: #09090b !important;
+    /* pitch black */
   }
 
   /* Accessible form input placeholder contrast */
@@ -135,20 +155,23 @@
 
   /* Mobile-first floor for tiny font utilities */
   .text-\[10px\] {
-    font-size: 0.75rem !important; /* 12px instead of unreadable 10px */
+    font-size: 0.75rem !important;
+    /* 12px instead of unreadable 10px */
     line-height: 1.15rem !important;
     font-weight: 600 !important;
   }
 
   .text-\[11px\] {
-    font-size: 0.8125rem !important; /* 13px instead of 11px */
+    font-size: 0.8125rem !important;
+    /* 13px instead of 11px */
     line-height: 1.25rem !important;
     font-weight: 600 !important;
   }
 
   @media (max-width: 639px) {
     .text-xs {
-      font-size: 0.8125rem !important; /* 13px floor on mobile screens */
+      font-size: 0.8125rem !important;
+      /* 13px floor on mobile screens */
       line-height: 1.25rem !important;
     }
   }
@@ -161,7 +184,8 @@
   input[type="number"],
   select,
   textarea {
-    font-size: 1rem !important; /* 16px minimum prevents iOS zoom jumping */
+    font-size: 1rem !important;
+    /* 16px minimum prevents iOS zoom jumping */
   }
 
   /* Custom minimal monochrome scrollbar */
@@ -169,13 +193,16 @@
     width: 5px;
     height: 5px;
   }
+
   ::-webkit-scrollbar-track {
     background: #ffffff;
   }
+
   ::-webkit-scrollbar-thumb {
     background: #000000;
     border-radius: 0px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: #333333;
   }
@@ -184,12 +211,14 @@
   details summary::-webkit-details-marker {
     display: none;
   }
+
   details summary {
     list-style: none;
   }
 }
 
 @layer components {
+
   /* Clean Rectangular Size Box (Filled Black when Selected) */
   .maze-size-pill {
     transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
@@ -198,7 +227,8 @@
     border: 1px solid #000000;
     border-radius: 0px !important;
     font-family: 'Didot', 'Didot Regular', serif;
-    font-size: 0.9375rem !important; /* 15px */
+    font-size: 0.9375rem !important;
+    /* 15px */
     font-weight: 700 !important;
     min-height: 44px;
     min-width: 44px;
@@ -234,7 +264,8 @@
     border: 1px solid #000000 !important;
     color: #000000 !important;
     font-family: 'Didot', 'Didot Regular', serif !important;
-    font-size: 0.875rem !important; /* 14px */
+    font-size: 0.875rem !important;
+    /* 14px */
     font-weight: 600 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.05em !important;
@@ -286,7 +317,8 @@
     letter-spacing: 0.12em !important;
     text-transform: uppercase !important;
     font-family: 'Didot', 'Didot Regular', serif !important;
-    font-size: 0.9375rem !important; /* 15px mobile */
+    font-size: 0.9375rem !important;
+    /* 15px mobile */
     font-weight: 700 !important;
     background-color: #000000 !important;
     color: #ffffff !important;
@@ -298,9 +330,11 @@
   }
 
   @media (min-width: 640px) {
+
     .button.single_add_to_cart_button,
     .button.alt {
-      font-size: 1rem !important; /* 16px desktop */
+      font-size: 1rem !important;
+      /* 16px desktop */
     }
   }
 
@@ -336,7 +370,8 @@
     border-right: 1px solid #000000;
     border-bottom: 1px solid #000000;
     font-family: 'Didot', 'Didot Regular', serif;
-    font-size: 0.875rem; /* 14px */
+    font-size: 0.875rem;
+    /* 14px */
     font-weight: 600;
     color: #000000;
     text-decoration: none;
@@ -364,7 +399,8 @@
     border: 1px solid #000000 !important;
     color: #000000 !important;
     font-family: 'Didot', 'Didot Regular', serif !important;
-    font-size: 0.9375rem !important; /* 15px */
+    font-size: 0.9375rem !important;
+    /* 15px */
     line-height: 1.5 !important;
     padding: 1rem 1.25rem !important;
     margin-bottom: 1.5rem !important;
@@ -378,7 +414,8 @@
     background: #000000 !important;
     color: #ffffff !important;
     padding: 0.45rem 1rem !important;
-    font-size: 0.8125rem !important; /* 13px */
+    font-size: 0.8125rem !important;
+    /* 13px */
     font-weight: 700 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.05em !important;
@@ -406,6 +443,7 @@
   body.admin-bar #masthead {
     top: 32px !important;
   }
+
   @media screen and (max-width: 782px) {
     body.admin-bar #masthead {
       top: 46px !important;
@@ -435,6 +473,7 @@
   }
 
   @media (min-width: 640px) {
+
     .site-header #masthead-logo,
     .site-header .maze-brand-logo,
     .site-header .maze-brand-logo img,
@@ -449,6 +488,7 @@
   }
 
   @media (min-width: 768px) {
+
     .site-header #masthead-logo,
     .site-header .maze-brand-logo,
     .site-header .maze-brand-logo img,
@@ -541,7 +581,8 @@
   .maze-hero-cta {
     border-radius: 0.625rem !important;
     padding: 0.5rem 1.25rem !important;
-    font-size: 0.6875rem !important; /* 11px */
+    font-size: 0.6875rem !important;
+    /* 11px */
     letter-spacing: 0.12em !important;
     line-height: 1.2 !important;
   }
@@ -605,21 +646,21 @@
     padding: 0;
   }
 
-  #primary-menu > li {
+  #primary-menu>li {
     position: relative;
     display: inline-flex;
     align-items: center;
   }
 
-  #primary-menu > li > a {
+  #primary-menu>li>a {
     display: inline-block;
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
     transition: color 0.15s ease;
   }
 
-  #primary-menu > li.current-menu-item > a,
-  #primary-menu > li.current-page-ancestor > a {
+  #primary-menu>li.current-menu-item>a,
+  #primary-menu>li.current-page-ancestor>a {
     color: #000000;
     font-weight: 800;
     text-decoration: underline;
@@ -644,8 +685,8 @@
     list-style: none;
   }
 
-  #primary-menu > li:hover > .sub-menu,
-  #primary-menu > li:focus-within > .sub-menu {
+  #primary-menu>li:hover>.sub-menu,
+  #primary-menu>li:focus-within>.sub-menu {
     display: block;
   }
 
@@ -656,7 +697,8 @@
   #primary-menu .sub-menu li a {
     display: block;
     padding: 0.65rem 1.25rem;
-    font-size: 0.875rem; /* 14px */
+    font-size: 0.875rem;
+    /* 14px */
     font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -701,7 +743,8 @@
   /* High-Contrast Bottom Legal & Navigation Links */
   .maze-legal-link {
     color: #000000 !important;
-    font-size: 0.9375rem !important; /* 15px mobile */
+    font-size: 0.9375rem !important;
+    /* 15px mobile */
     font-weight: 700 !important;
     text-decoration: none !important;
     letter-spacing: -0.01em;
@@ -712,7 +755,8 @@
 
   @media (min-width: 640px) {
     .maze-legal-link {
-      font-size: 1rem !important; /* 16px tablet/desktop */
+      font-size: 1rem !important;
+      /* 16px tablet/desktop */
     }
   }
 
@@ -724,6 +768,7 @@
 
   /* Clean Monochrome Print Styles for Legal & Privacy Documents */
   @media print {
+
     #masthead,
     #colophon,
     .no-print,
@@ -786,5 +831,3 @@
     padding: 0 !important;
   }
 }
-
-
