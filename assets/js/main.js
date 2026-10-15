@@ -14,12 +14,13 @@
 
     $(document).ready(function () {
 
-        // --- 1. Mobile Menu & Search Toggles ---
+        // --- 1. Mobile Mega Menu & Mobile Search Toggles ---
         const $mobileMenuBtn = $('#maze-mobile-menu-btn');
         const $mobileMenu = $('#maze-mobile-menu');
         const $hamburgerIcon = $('#maze-hamburger-icon');
         const $closeIcon = $('#maze-close-icon');
         const $mobileSearchToggle = $('#maze-mobile-search-toggle');
+        const $mobileSearchBar = $('#maze-mobile-search-bar');
 
         function toggleMobileMenu(open) {
             if (!$mobileMenu.length) return;
@@ -27,6 +28,10 @@
             const shouldOpen = typeof open === 'boolean' ? open : !currentlyOpen;
 
             if (shouldOpen) {
+                // If mobile search bar is open, close it
+                if ($mobileSearchBar.length && !$mobileSearchBar.hasClass('hidden')) {
+                    $mobileSearchBar.addClass('hidden');
+                }
                 $mobileMenu.removeClass('hidden');
                 $mobileMenuBtn.attr('aria-expanded', 'true');
                 $hamburgerIcon.addClass('hidden');
@@ -36,6 +41,23 @@
                 $mobileMenuBtn.attr('aria-expanded', 'false');
                 $hamburgerIcon.removeClass('hidden');
                 $closeIcon.addClass('hidden');
+            }
+        }
+
+        function toggleMobileSearch(open) {
+            if (!$mobileSearchBar.length) return;
+            const currentlyOpen = !$mobileSearchBar.hasClass('hidden');
+            const shouldOpen = typeof open === 'boolean' ? open : !currentlyOpen;
+
+            if (shouldOpen) {
+                // If mobile mega menu is open, close it
+                toggleMobileMenu(false);
+                $mobileSearchBar.removeClass('hidden');
+                setTimeout(function () {
+                    $mobileSearchBar.find('input[type="search"]').trigger('focus');
+                }, 100);
+            } else {
+                $mobileSearchBar.addClass('hidden');
             }
         }
 
@@ -50,26 +72,31 @@
             $mobileSearchToggle.on('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                toggleMobileMenu(true);
-                setTimeout(function () {
-                    $mobileMenu.find('input[type="search"]').focus();
-                }, 100);
+                toggleMobileSearch();
             });
         }
 
-        // Close mobile dropdown when clicking outside
+        // Close mobile dropdown and search bar when clicking outside
         $(document).on('click', function (e) {
-            if ($mobileMenu.length && !$mobileMenu.hasClass('hidden')) {
-                if (!$(e.target).closest('#masthead').length) {
+            if (!$(e.target).closest('#masthead').length) {
+                if ($mobileMenu.length && !$mobileMenu.hasClass('hidden')) {
                     toggleMobileMenu(false);
+                }
+                if ($mobileSearchBar.length && !$mobileSearchBar.hasClass('hidden')) {
+                    toggleMobileSearch(false);
                 }
             }
         });
 
-        // Close mobile dropdown on ESC key
+        // Close mobile dropdown and search bar on ESC key
         $(document).on('keydown', function (e) {
-            if (e.key === 'Escape' && $mobileMenu.length && !$mobileMenu.hasClass('hidden')) {
-                toggleMobileMenu(false);
+            if (e.key === 'Escape') {
+                if ($mobileMenu.length && !$mobileMenu.hasClass('hidden')) {
+                    toggleMobileMenu(false);
+                }
+                if ($mobileSearchBar.length && !$mobileSearchBar.hasClass('hidden')) {
+                    toggleMobileSearch(false);
+                }
             }
         });
 
