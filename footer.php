@@ -69,6 +69,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                         </a>
                     </li>
                     <li>
+                        <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_get_about_url() : home_url( '/about-us/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
+                            <?php esc_html_e( 'About Us', 'mazestreetwear' ); ?>
+                        </a>
+                    </li>
+                    <li>
                         <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
                             <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
                         </a>
@@ -192,6 +197,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <span class="text-neutral-500 font-black select-none" aria-hidden="true">&middot;</span>
                 <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazestreetwear_get_refund_policy_url() : home_url( '/refund-policy/' ) ); ?>" class="maze-legal-link text-black hover:underline underline-offset-4 transition-colors">
                     <?php esc_html_e( 'Refunds', 'mazestreetwear' ); ?>
+                </a>
+                <span class="text-neutral-500 font-black select-none" aria-hidden="true">&middot;</span>
+                <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_get_about_url() : home_url( '/about-us/' ) ); ?>" class="maze-legal-link text-black hover:underline underline-offset-4 transition-colors">
+                    <?php esc_html_e( 'About', 'mazestreetwear' ); ?>
                 </a>
                 <span class="text-neutral-500 font-black select-none" aria-hidden="true">&middot;</span>
                 <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' ) ); ?>" class="maze-legal-link text-black hover:underline underline-offset-4 transition-colors">

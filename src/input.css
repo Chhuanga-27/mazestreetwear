@@ -608,5 +608,32 @@
       border: 1px solid #000000 !important;
     }
   }
+
+  /* Complete Wishlist Suppression (Cart-Only Mode) */
+  .yith-wcwl-add-to-wishlist,
+  .yith-wcwl-wishlistaddedbrowse,
+  .yith-wcwl-wishlistexistsbrowse,
+  .tinv-wraper,
+  .tinvwl_add_to_wishlist_button,
+  .tinv-wishlist,
+  .woosw-btn,
+  .woosw-menu-item,
+  .add-to-wishlist-button,
+  .woocommerce-wishlist,
+  .wishlist-btn,
+  .wishlist-button,
+  .maze-wishlist-btn,
+  .menu-item-wishlist,
+  .wc-block-components-wishlist-button {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
+
 

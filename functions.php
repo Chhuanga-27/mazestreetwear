@@ -167,6 +167,53 @@ function mazestreetwear_wrapper_end() {
 add_action( 'woocommerce_after_main_content', 'mazestreetwear_wrapper_end', 10 );
 
 /**
+ * Wishlist Feature Suppression (Cart Only Focus)
+ * Completely unhooks and suppresses wishlist plugin outputs, shortcodes, and buttons,
+ * ensuring users only interact with the Cart / Bag.
+ */
+function mazestreetwear_disable_wishlist_features() {
+    // 1. YITH WooCommerce Wishlist unhooking & filters
+    add_filter( 'yith_wcwl_show_add_to_wishlist', '__return_false', 99 );
+    add_filter( 'yith_wcwl_positions', '__return_empty_array', 99 );
+    add_filter( 'yith_wcwl_is_wishlist_page', '__return_false', 99 );
+
+    // 2. TI WooCommerce Wishlist unhooking & filters
+    add_filter( 'tinvwl_allow_add_to_wishlist_single_product', '__return_false', 99 );
+    add_filter( 'tinvwl_allow_add_to_wishlist_catalog', '__return_false', 99 );
+    add_filter( 'tinvwl_view_addto_html', '__return_empty_string', 99 );
+
+    // 3. WPC Smart Wishlist for WooCommerce
+    add_filter( 'woosw_button_position', '__return_empty_string', 99 );
+
+    // Unhook YITH default action hooks if classes are present
+    if ( class_exists( 'YITH_WCWL_Frontend' ) ) {
+        remove_action( 'woocommerce_after_shop_loop_item', array( 'YITH_WCWL_Frontend', 'print_button' ), 7 );
+        remove_action( 'woocommerce_after_shop_loop_item', array( 'YITH_WCWL_Frontend', 'print_button' ), 15 );
+        remove_action( 'woocommerce_before_shop_loop_item', array( 'YITH_WCWL_Frontend', 'print_button' ), 5 );
+        remove_action( 'woocommerce_single_product_summary', array( 'YITH_WCWL_Frontend', 'print_button' ), 31 );
+        remove_action( 'woocommerce_after_add_to_cart_button', array( 'YITH_WCWL_Frontend', 'print_button' ), 31 );
+        remove_action( 'woocommerce_before_add_to_cart_button', array( 'YITH_WCWL_Frontend', 'print_button' ), 31 );
+    }
+}
+add_action( 'init', 'mazestreetwear_disable_wishlist_features', 10 );
+add_action( 'wp_loaded', 'mazestreetwear_disable_wishlist_features', 20 );
+
+/**
+ * Redirect any lingering /wishlist/ visits directly to Cart
+ */
+function mazestreetwear_redirect_wishlist_to_cart() {
+    if ( ! is_admin() && function_exists( 'is_page' ) ) {
+        if ( is_page( 'wishlist' ) || is_page( 'my-wishlist' ) || is_page( 'yith-wishlist' ) ) {
+            $cart_url = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' );
+            wp_safe_redirect( $cart_url, 301 );
+            exit;
+        }
+    }
+}
+add_action( 'template_redirect', 'mazestreetwear_redirect_wishlist_to_cart', 5 );
+
+
+/**
  * Filter WooCommerce breadcrumb defaults for minimalist monochrome aesthetic
  */
 function mazestreetwear_breadcrumbs_defaults( $defaults ) {
@@ -311,6 +358,26 @@ function mazestreetwear_get_contact_url() {
 }
 
 /**
+ * Safe Link Helper: About Us / Brand Manifesto
+ */
+function mazestreetwear_get_about_url() {
+    // 1. Check if a published page exists with slug 'about-us'
+    $page = get_page_by_path( 'about-us', OBJECT, 'page' );
+    if ( $page && 'publish' === $page->post_status ) {
+        return get_permalink( $page->ID );
+    }
+
+    // 2. Check if a published page exists with slug 'about'
+    $page_about = get_page_by_path( 'about', OBJECT, 'page' );
+    if ( $page_about && 'publish' === $page_about->post_status ) {
+        return get_permalink( $page_about->ID );
+    }
+
+    // 3. Fallback to /about-us/ permalink
+    return home_url( '/about-us/' );
+}
+
+/**
  * Register rewrite rules and query vars for legal and contact pages.
  */
 function mazestreetwear_legal_rewrite_rules() {
@@ -325,6 +392,8 @@ function mazestreetwear_legal_rewrite_rules() {
     add_rewrite_rule( '^delivery-policy/?$', 'index.php?mazepage=shipping-policy', 'top' );
     add_rewrite_rule( '^contact-us/?$', 'index.php?mazepage=contact-us', 'top' );
     add_rewrite_rule( '^contact/?$', 'index.php?mazepage=contact-us', 'top' );
+    add_rewrite_rule( '^about-us/?$', 'index.php?mazepage=about-us', 'top' );
+    add_rewrite_rule( '^about/?$', 'index.php?mazepage=about-us', 'top' );
 }
 add_action( 'init', 'mazestreetwear_legal_rewrite_rules', 10 );
 
@@ -338,7 +407,7 @@ add_filter( 'query_vars', 'mazestreetwear_legal_query_vars' );
  * Prevent WordPress canonical redirect from bouncing legal and contact pages to homepage.
  */
 function mazestreetwear_prevent_legal_canonical_redirect( $redirect_url, $requested_url ) {
-    if ( preg_match( '#/(privacy-policy|terms-and-conditions|terms|refund-policy|refunds|returns|shipping-policy|shipping|delivery-policy|contact-us|contact)/?$#i', $requested_url ) ) {
+    if ( preg_match( '#/(privacy-policy|terms-and-conditions|terms|refund-policy|refunds|returns|shipping-policy|shipping|delivery-policy|contact-us|contact|about-us|about)/?$#i', $requested_url ) ) {
         return false;
     }
     return $redirect_url;
@@ -417,6 +486,19 @@ function mazestreetwear_legal_template_include( $template ) {
         }
     }
 
+    if ( 'about-us' === $mazepage || 'about' === $mazepage ) {
+        global $wp_query;
+        if ( $wp_query ) {
+            $wp_query->is_404  = false;
+            $wp_query->is_page = true;
+        }
+        status_header( 200 );
+        $custom = get_template_directory() . '/page-about-us.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
     // 2. Native WordPress template or page slug match
     if ( is_page_template( 'page-privacy-policy.php' ) || is_page( 'privacy-policy' ) ) {
         $custom = get_template_directory() . '/page-privacy-policy.php';
@@ -448,6 +530,13 @@ function mazestreetwear_legal_template_include( $template ) {
 
     if ( is_page_template( 'page-contact-us.php' ) || is_page( array( 'contact-us', 'contact' ) ) ) {
         $custom = get_template_directory() . '/page-contact-us.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
+    if ( is_page_template( 'page-about-us.php' ) || is_page( array( 'about-us', 'about' ) ) ) {
+        $custom = get_template_directory() . '/page-about-us.php';
         if ( file_exists( $custom ) ) {
             return $custom;
         }
@@ -527,6 +616,19 @@ function mazestreetwear_legal_template_include( $template ) {
         }
     }
 
+    if ( $path === 'about-us' || $path === 'about' || preg_match( '#(^|/)(about-us|about)/?$#i', $path ) ) {
+        global $wp_query;
+        if ( $wp_query ) {
+            $wp_query->is_404  = false;
+            $wp_query->is_page = true;
+        }
+        status_header( 200 );
+        $custom = get_template_directory() . '/page-about-us.php';
+        if ( file_exists( $custom ) ) {
+            return $custom;
+        }
+    }
+
     return $template;
 }
 add_filter( 'template_include', 'mazestreetwear_legal_template_include', 99 );
@@ -552,6 +654,8 @@ function mazestreetwear_legal_document_title_parts( $title_parts ) {
         $title_parts['title'] = __( 'Shipping & Delivery Policy', 'mazestreetwear' );
     } elseif ( $path === 'contact-us' || $path === 'contact' || preg_match( '#(^|/)(contact-us|contact)/?$#i', $path ) || in_array( get_query_var( 'mazepage' ), array( 'contact-us', 'contact' ), true ) ) {
         $title_parts['title'] = __( 'Contact Us // Concierge Desk', 'mazestreetwear' );
+    } elseif ( $path === 'about-us' || $path === 'about' || preg_match( '#(^|/)(about-us|about)/?$#i', $path ) || in_array( get_query_var( 'mazepage' ), array( 'about-us', 'about' ), true ) ) {
+        $title_parts['title'] = __( 'About Us // MAZE', 'mazestreetwear' );
     }
 
     return $title_parts;
@@ -758,6 +862,35 @@ function mazestreetwear_ensure_legal_pages_exist() {
             $updated = true;
         }
         update_post_meta( $contact_page->ID, '_wp_page_template', 'page-contact-us.php' );
+    }
+
+    // 6. About Us Page
+    $about_page = get_page_by_path( 'about-us', OBJECT, 'page' );
+    if ( ! $about_page ) {
+        $about_page = get_page_by_path( 'about', OBJECT, 'page' );
+    }
+
+    if ( ! $about_page ) {
+        $new_about_id = wp_insert_post( array(
+            'post_title'     => __( 'About Us', 'mazestreetwear' ),
+            'post_name'      => 'about-us',
+            'post_status'    => 'publish',
+            'post_type'      => 'page',
+            'comment_status' => 'closed',
+        ) );
+        if ( ! is_wp_error( $new_about_id ) && $new_about_id > 0 ) {
+            update_post_meta( $new_about_id, '_wp_page_template', 'page-about-us.php' );
+            $updated = true;
+        }
+    } else {
+        if ( 'publish' !== $about_page->post_status ) {
+            wp_update_post( array(
+                'ID'          => $about_page->ID,
+                'post_status' => 'publish',
+            ) );
+            $updated = true;
+        }
+        update_post_meta( $about_page->ID, '_wp_page_template', 'page-about-us.php' );
     }
 
     if ( $updated ) {

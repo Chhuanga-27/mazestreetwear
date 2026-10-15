@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $is_maze_home  = is_front_page() || is_page_template( 'template-homepage.php' );
 $shop_page_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
-$wishlist_url  = function_exists( 'YITH_WCWL' ) ? YITH_WCWL()->get_wishlist_url() : home_url( '/wishlist/' );
 $cart_url      = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' );
 $cart_count    = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart_contents_count() : 0;
 $masthead_classes = $is_maze_home
@@ -175,7 +174,9 @@ $masthead_classes = $is_maze_home
                     $tops_url        = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'tops' ) : home_url( '/product-category/tops/' );
                     $bottoms_url     = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'bottoms' ) : home_url( '/product-category/bottoms/' );
                     $accessories_url = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'accessories' ) : home_url( '/product-category/accessories/' );
+                    $about_url       = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_get_about_url() : home_url( '/about-us/' );
                     $contact_url     = function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' );
+                    $is_about        = is_page( 'about-us' ) || is_page( 'about' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'about' ) );
                     $is_contact      = is_page( 'contact-us' ) || is_page( 'contact' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'contact' ) );
                 ?>
                     <ul class="flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-sm lg:text-[15px] font-bold font-sans tracking-wider uppercase text-black whitespace-nowrap">
@@ -200,6 +201,11 @@ $masthead_classes = $is_maze_home
                             </a>
                         </li>
                         <li>
+                            <a href="<?php echo esc_url( $about_url ); ?>" class="hover:text-black transition-colors duration-150 py-1 <?php echo $is_about ? 'text-black font-black underline underline-offset-4' : 'hover:underline underline-offset-4'; ?>">
+                                <?php esc_html_e( 'About', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                        <li>
                             <a href="<?php echo esc_url( $contact_url ); ?>" class="hover:text-black transition-colors duration-150 py-1 <?php echo $is_contact ? 'text-black font-black underline underline-offset-4' : 'hover:underline underline-offset-4'; ?>">
                                 <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
                             </a>
@@ -208,7 +214,7 @@ $masthead_classes = $is_maze_home
                 <?php endif; ?>
             </nav>
 
-            <!-- Right: Search Pill, Wishlist, Bag & Mobile Menu Toggle -->
+            <!-- Right: Search Pill, Bag & Mobile Menu Toggle -->
             <div class="flex-shrink-0 flex items-center space-x-1.5 sm:space-x-2.5 md:space-x-3.5 ml-2">
 
                 <!-- Embedded Search Pill (Desktop/Tablet) -->
@@ -228,13 +234,6 @@ $masthead_classes = $is_maze_home
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
                     </svg>
                 </button>
-
-                <!-- Wishlist / Heart Icon -->
-                <a href="<?php echo esc_url( $wishlist_url ); ?>" class="text-black hover:opacity-60 transition-opacity p-1.5 flex items-center justify-center" aria-label="<?php esc_attr_e( 'Wishlist', 'mazestreetwear' ); ?>">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                    </svg>
-                </a>
 
                 <!-- Shopping Bag Icon with Dynamic Badge -->
                 <a href="<?php echo esc_url( $cart_url ); ?>" class="maze-bag-trigger group relative p-1.5 text-black hover:opacity-60 transition-opacity flex items-center justify-center" aria-label="<?php esc_attr_e( 'View Shopping Bag', 'mazestreetwear' ); ?>">
@@ -286,7 +285,9 @@ $masthead_classes = $is_maze_home
                 $tops_url        = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'tops' ) : home_url( '/product-category/tops/' );
                 $bottoms_url     = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'bottoms' ) : home_url( '/product-category/bottoms/' );
                 $accessories_url = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'accessories' ) : home_url( '/product-category/accessories/' );
+                $about_url       = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_get_about_url() : home_url( '/about-us/' );
                 $contact_url     = function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' );
+                $is_about        = is_page( 'about-us' ) || is_page( 'about' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'about' ) );
                 $is_contact      = is_page( 'contact-us' ) || is_page( 'contact' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'contact' ) );
             ?>
                 <div class="flex flex-col space-y-2 text-base font-sans font-bold tracking-wider uppercase">
@@ -302,6 +303,9 @@ $masthead_classes = $is_maze_home
                     <a href="<?php echo esc_url( $accessories_url ); ?>" class="text-black hover:opacity-60 py-2.5 border-b border-neutral-100 transition-opacity">
                         <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
                     </a>
+                    <a href="<?php echo esc_url( $about_url ); ?>" class="text-black hover:opacity-60 py-2.5 border-b border-neutral-100 transition-opacity <?php echo $is_about ? 'font-black underline underline-offset-4' : ''; ?>">
+                        <?php esc_html_e( 'About', 'mazestreetwear' ); ?>
+                    </a>
                     <a href="<?php echo esc_url( $contact_url ); ?>" class="text-black hover:opacity-60 py-2.5 transition-opacity <?php echo $is_contact ? 'font-black underline underline-offset-4' : ''; ?>">
                         <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
                     </a>
@@ -309,14 +313,13 @@ $masthead_classes = $is_maze_home
             <?php endif; ?>
 
             <!-- Mobile Quick Actions -->
-            <div class="pt-4 mt-2 border-t border-neutral-200 flex items-center justify-between text-sm font-mono font-bold tracking-wider uppercase">
-                <a href="<?php echo esc_url( $wishlist_url ); ?>" class="flex items-center space-x-2 text-black hover:opacity-60 transition-opacity py-1.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
-                    <span>WISHLIST</span>
-                </a>
-                <a href="<?php echo esc_url( $cart_url ); ?>" class="flex items-center space-x-2 text-black hover:opacity-60 transition-opacity py-1.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25c-.669 0-1.189-.578-1.119-1.243l1.263-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" /></svg>
-                    <span>BAG (<?php echo esc_html( $cart_count ); ?>)</span>
+            <div class="pt-4 mt-2 border-t border-neutral-200 text-sm font-mono font-bold tracking-wider uppercase">
+                <a href="<?php echo esc_url( $cart_url ); ?>" class="flex items-center justify-between w-full text-black hover:opacity-60 transition-opacity py-2 px-1">
+                    <span class="flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25c-.669 0-1.189-.578-1.119-1.243l1.263-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" /></svg>
+                        <span>SHOPPING BAG</span>
+                    </span>
+                    <span class="text-xs px-2.5 py-0.5 bg-black text-white rounded-full font-mono font-bold"><?php echo esc_html( $cart_count ); ?></span>
                 </a>
             </div>
         </div>
