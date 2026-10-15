@@ -441,7 +441,7 @@ $ajax_url     = admin_url( 'admin-ajax.php' );
 
                     <!-- Order Reference (Optional / Conditional) -->
                     <div id="maze_order_wrap">
-                        <label for="maze_order" class="block text-xs font-mono font-bold uppercase tracking-wider text-black mb-1.5 flex items-center justify-between">
+                        <label for="maze_order" class="text-xs font-mono font-bold uppercase tracking-wider text-black mb-1.5 flex items-center justify-between">
                             <span><?php esc_html_e( 'Order Number / AWB Tracking (If applicable)', 'mazestreetwear' ); ?></span>
                             <span class="text-[10px] text-neutral-400 font-normal"><?php esc_html_e( 'Optional', 'mazestreetwear' ); ?></span>
                         </label>
@@ -450,7 +450,7 @@ $ajax_url     = admin_url( 'admin-ajax.php' );
                             id="maze_order" 
                             name="maze_order" 
                             placeholder="<?php echo esc_attr_x( 'e.g. #MAZE-1084 / DELHIVERY-129482', 'placeholder', 'mazestreetwear' ); ?>"
-                            class="w-full px-3.5 py-2.5 border border-black bg-white focus:bg-neutral-50 focus:outline-none focus:ring-1 focus:ring-black text-sm font-sans font-mono"
+                            class="w-full px-3.5 py-2.5 border border-black bg-white focus:bg-neutral-50 focus:outline-none focus:ring-1 focus:ring-black text-sm font-mono"
                         >
                     </div>
 

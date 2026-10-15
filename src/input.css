@@ -390,6 +390,30 @@
     transform: translate(3px, -3px);
   }
 
+  /* High-Contrast Bottom Legal & Navigation Links */
+  .maze-legal-link {
+    color: #111111 !important;
+    font-size: 0.875rem !important; /* 14px mobile */
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+    transition: color 0.15s ease, text-decoration 0.15s ease;
+    display: inline-block;
+  }
+
+  @media (min-width: 640px) {
+    .maze-legal-link {
+      font-size: 0.9375rem !important; /* 15px tablet/desktop */
+    }
+  }
+
+  .maze-legal-link:hover {
+    color: #000000 !important;
+    text-decoration: underline !important;
+    text-underline-offset: 4px;
+  }
+
   /* Clean Monochrome Print Styles for Legal & Privacy Documents */
   @media print {
     #masthead,
