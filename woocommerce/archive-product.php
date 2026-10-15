@@ -31,7 +31,7 @@ do_action( 'woocommerce_before_main_content' );
             <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-4">
                 <div>
                     <?php if ( apply_filters( 'woocommerce_show_page_title', true ) ) : ?>
-                        <h1 class="woocommerce-products-header__title page-title text-2xl sm:text-3xl font-bold font-sans uppercase tracking-tight text-black">
+                        <h1 class="woocommerce-products-header__title page-title text-2xl sm:text-4xl font-black font-sans uppercase tracking-tight text-black">
                             <?php woocommerce_page_title(); ?>
                         </h1>
                     <?php endif; ?>
@@ -51,12 +51,12 @@ do_action( 'woocommerce_before_main_content' );
 
         <!-- Minimalist Controls Bar: Lowercase Result Count & Minimalist Sorting Trigger -->
         <div class="border-b border-black bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-sans">
-                <div class="text-neutral-500 lowercase tracking-normal">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm sm:text-base font-sans">
+                <div class="text-black font-semibold lowercase tracking-normal text-sm sm:text-base">
                     <?php woocommerce_result_count(); ?>
                 </div>
 
-                <div class="maze-ordering-trigger-wrap">
+                <div class="maze-ordering-trigger-wrap text-sm sm:text-base font-medium">
                     <?php woocommerce_catalog_ordering(); ?>
                 </div>
             </div>
@@ -85,7 +85,7 @@ do_action( 'woocommerce_before_main_content' );
         </div>
 
         <!-- Minimalist Pagination -->
-        <div class="maze-pagination-wrap py-12 flex justify-center text-xs font-mono">
+        <div class="maze-pagination-wrap py-12 flex justify-center text-sm sm:text-base font-mono font-bold">
             <?php
             /**
              * Hook: woocommerce_after_shop_loop.
@@ -97,13 +97,13 @@ do_action( 'woocommerce_before_main_content' );
     <?php else : ?>
 
         <div class="max-w-xl mx-auto my-20 p-8 text-center border border-black bg-white">
-            <h2 class="text-xs font-mono uppercase font-bold tracking-widest text-black mb-2">
+            <h2 class="text-sm sm:text-base font-mono uppercase font-bold tracking-widest text-black mb-2">
                 <?php esc_html_e( 'NO PRODUCTS FOUND', 'mazestreetwear' ); ?>
             </h2>
-            <p class="text-xs font-sans text-neutral-600 mb-6">
+            <p class="text-sm sm:text-base font-sans text-neutral-800 font-medium mb-6">
                 <?php esc_html_e( 'The requested garment drop or category is currently empty.', 'mazestreetwear' ); ?>
             </p>
-            <a href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-colors px-6 py-2.5 text-xs uppercase tracking-widest font-mono">
+            <a href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-colors px-8 py-3.5 text-sm sm:text-base uppercase tracking-wider font-mono font-bold">
                 <?php esc_html_e( 'VIEW ALL GARMENTS', 'mazestreetwear' ); ?>
             </a>
             <?php do_action( 'woocommerce_no_products_found' ); ?>

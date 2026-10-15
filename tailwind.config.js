@@ -20,8 +20,8 @@ module.exports = {
           border: '#000000',
           'border-light': '#e5e5e5',
           accent: '#000000',
-          muted: '#737373',
-          subtle: '#a3a3a3',
+          muted: '#262626',
+          subtle: '#404040',
           light: '#f5f5f5'
         }
       },

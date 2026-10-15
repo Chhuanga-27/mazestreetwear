@@ -167,7 +167,7 @@ $masthead_classes = $is_maze_home
                         'theme_location' => 'primary',
                         'menu_id'        => 'primary-menu',
                         'container'      => false,
-                        'menu_class'     => 'flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-xs lg:text-[13px] font-bold font-sans tracking-wider uppercase text-neutral-800 whitespace-nowrap',
+                        'menu_class'     => 'flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-sm lg:text-[15px] font-bold font-sans tracking-wider uppercase text-black whitespace-nowrap',
                         'fallback_cb'    => false,
                         'items_wrap'     => '<ul id="%1$s" class="%2$s">%3$s</ul>',
                     ) );
@@ -178,29 +178,29 @@ $masthead_classes = $is_maze_home
                     $contact_url     = function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' );
                     $is_contact      = is_page( 'contact-us' ) || is_page( 'contact' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'contact' ) );
                 ?>
-                    <ul class="flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-xs lg:text-[13px] font-bold font-sans tracking-wider uppercase text-neutral-800 whitespace-nowrap">
+                    <ul class="flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-sm lg:text-[15px] font-bold font-sans tracking-wider uppercase text-black whitespace-nowrap">
                         <li>
-                            <a href="<?php echo esc_url( $shop_page_url ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                            <a href="<?php echo esc_url( $shop_page_url ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
                                 <?php esc_html_e( 'Shop All', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( $tops_url ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                            <a href="<?php echo esc_url( $tops_url ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
                                 <?php esc_html_e( 'Tops', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( $bottoms_url ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                            <a href="<?php echo esc_url( $bottoms_url ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
                                 <?php esc_html_e( 'Bottoms', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( $accessories_url ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                            <a href="<?php echo esc_url( $accessories_url ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
                                 <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( $contact_url ); ?>" class="hover:text-black transition-colors duration-150 py-1 <?php echo $is_contact ? 'text-black font-black underline underline-offset-4' : ''; ?>">
+                            <a href="<?php echo esc_url( $contact_url ); ?>" class="hover:text-black transition-colors duration-150 py-1 <?php echo $is_contact ? 'text-black font-black underline underline-offset-4' : 'hover:underline underline-offset-4'; ?>">
                                 <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
                             </a>
                         </li>
@@ -214,11 +214,11 @@ $masthead_classes = $is_maze_home
                 <!-- Embedded Search Pill (Desktop/Tablet) -->
                 <form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="hidden sm:flex items-center relative">
                     <input type="hidden" name="post_type" value="product">
-                    <div class="maze-search-pill relative flex items-center bg-neutral-100 hover:bg-neutral-200/70 focus-within:bg-white focus-within:ring-1 focus-within:ring-black rounded-full px-3 py-1.5 transition-all w-28 md:w-32 lg:w-40 border border-transparent focus-within:border-black">
-                        <svg class="w-3.5 h-3.5 text-neutral-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <div class="maze-search-pill relative flex items-center bg-neutral-100 hover:bg-neutral-200/80 focus-within:bg-white focus-within:ring-1 focus-within:ring-black rounded-full px-3.5 py-1.5 transition-all w-32 md:w-36 lg:w-44 border border-black/10 focus-within:border-black">
+                        <svg class="w-4 h-4 text-black mr-2 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
                         </svg>
-                        <input type="search" name="s" placeholder="<?php echo esc_attr_x( 'Search', 'placeholder', 'mazestreetwear' ); ?>" value="<?php echo get_search_query(); ?>" class="bg-transparent border-0 outline-none text-xs text-black placeholder-neutral-400 w-full p-0 font-sans focus:outline-none focus:ring-0">
+                        <input type="search" name="s" placeholder="<?php echo esc_attr_x( 'Search', 'placeholder', 'mazestreetwear' ); ?>" value="<?php echo get_search_query(); ?>" class="bg-transparent border-0 outline-none text-sm text-black placeholder-neutral-600 w-full p-0 font-sans font-medium focus:outline-none focus:ring-0">
                     </div>
                 </form>
 
@@ -242,7 +242,7 @@ $masthead_classes = $is_maze_home
                         <svg class="w-5 h-5 transform group-hover:scale-105 transition-transform duration-150" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25c-.669 0-1.189-.578-1.119-1.243l1.263-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
                         </svg>
-                        <span class="maze-cart-count absolute -top-1.5 -right-2 inline-flex items-center justify-center min-w-[16px] h-[16px] px-1 text-[9px] font-mono font-bold tracking-tight text-white bg-black border border-white rounded-full transition-transform duration-200 <?php echo $cart_count > 0 ? 'scale-100' : 'scale-90 opacity-80'; ?>">
+                        <span class="maze-cart-count absolute -top-1.5 -right-2.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-mono font-bold tracking-tight text-white bg-black border border-white rounded-full transition-transform duration-200 <?php echo $cart_count > 0 ? 'scale-100' : 'scale-90 opacity-80'; ?>">
                             <?php echo esc_html( $cart_count ); ?>
                         </span>
                     </div>
@@ -266,11 +266,11 @@ $masthead_classes = $is_maze_home
             <!-- Mobile Search Form -->
             <form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="relative mb-4">
                 <input type="hidden" name="post_type" value="product">
-                <div class="maze-search-pill relative flex items-center bg-neutral-100 rounded-full px-3.5 py-2.5 border border-black/10 focus-within:border-black focus-within:bg-white transition-all">
-                    <svg class="w-4 h-4 text-neutral-500 mr-2.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <div class="maze-search-pill relative flex items-center bg-neutral-100 rounded-full px-4 py-3 border border-black/10 focus-within:border-black focus-within:bg-white transition-all">
+                    <svg class="w-4 h-4 text-black mr-2.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
                     </svg>
-                    <input type="search" name="s" placeholder="<?php echo esc_attr_x( 'Search products, collections...', 'placeholder', 'mazestreetwear' ); ?>" value="<?php echo get_search_query(); ?>" class="bg-transparent border-0 outline-none text-xs text-black placeholder-neutral-400 w-full p-0 font-sans focus:outline-none focus:ring-0">
+                    <input type="search" name="s" placeholder="<?php echo esc_attr_x( 'Search products, collections...', 'placeholder', 'mazestreetwear' ); ?>" value="<?php echo get_search_query(); ?>" class="bg-transparent border-0 outline-none text-base text-black placeholder-neutral-600 w-full p-0 font-sans focus:outline-none focus:ring-0">
                 </div>
             </form>
 
@@ -280,7 +280,7 @@ $masthead_classes = $is_maze_home
                 wp_nav_menu( array(
                     'theme_location' => 'primary',
                     'container'      => false,
-                    'menu_class'     => 'flex flex-col space-y-3 text-sm font-sans font-bold tracking-wider uppercase text-black',
+                    'menu_class'     => 'flex flex-col space-y-3.5 text-base font-sans font-bold tracking-wider uppercase text-black',
                 ) );
             else :
                 $tops_url        = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'tops' ) : home_url( '/product-category/tops/' );
@@ -289,32 +289,32 @@ $masthead_classes = $is_maze_home
                 $contact_url     = function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' );
                 $is_contact      = is_page( 'contact-us' ) || is_page( 'contact' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'contact' ) );
             ?>
-                <div class="flex flex-col space-y-3 text-sm font-sans font-bold tracking-wider uppercase">
-                    <a href="<?php echo esc_url( $shop_page_url ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                <div class="flex flex-col space-y-2 text-base font-sans font-bold tracking-wider uppercase">
+                    <a href="<?php echo esc_url( $shop_page_url ); ?>" class="text-black hover:opacity-60 py-2.5 border-b border-neutral-100 transition-opacity">
                         <?php esc_html_e( 'Shop All', 'mazestreetwear' ); ?>
                     </a>
-                    <a href="<?php echo esc_url( $tops_url ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                    <a href="<?php echo esc_url( $tops_url ); ?>" class="text-black hover:opacity-60 py-2.5 border-b border-neutral-100 transition-opacity">
                         <?php esc_html_e( 'Tops', 'mazestreetwear' ); ?>
                     </a>
-                    <a href="<?php echo esc_url( $bottoms_url ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                    <a href="<?php echo esc_url( $bottoms_url ); ?>" class="text-black hover:opacity-60 py-2.5 border-b border-neutral-100 transition-opacity">
                         <?php esc_html_e( 'Bottoms', 'mazestreetwear' ); ?>
                     </a>
-                    <a href="<?php echo esc_url( $accessories_url ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                    <a href="<?php echo esc_url( $accessories_url ); ?>" class="text-black hover:opacity-60 py-2.5 border-b border-neutral-100 transition-opacity">
                         <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
                     </a>
-                    <a href="<?php echo esc_url( $contact_url ); ?>" class="text-black hover:opacity-60 py-1.5 transition-opacity <?php echo $is_contact ? 'font-black underline underline-offset-4' : ''; ?>">
+                    <a href="<?php echo esc_url( $contact_url ); ?>" class="text-black hover:opacity-60 py-2.5 transition-opacity <?php echo $is_contact ? 'font-black underline underline-offset-4' : ''; ?>">
                         <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
                     </a>
                 </div>
             <?php endif; ?>
 
             <!-- Mobile Quick Actions -->
-            <div class="pt-4 mt-2 border-t border-neutral-200 flex items-center justify-between text-xs font-mono font-bold tracking-widest uppercase">
-                <a href="<?php echo esc_url( $wishlist_url ); ?>" class="flex items-center space-x-2 text-black hover:opacity-60 transition-opacity">
+            <div class="pt-4 mt-2 border-t border-neutral-200 flex items-center justify-between text-sm font-mono font-bold tracking-wider uppercase">
+                <a href="<?php echo esc_url( $wishlist_url ); ?>" class="flex items-center space-x-2 text-black hover:opacity-60 transition-opacity py-1.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
                     <span>WISHLIST</span>
                 </a>
-                <a href="<?php echo esc_url( $cart_url ); ?>" class="flex items-center space-x-2 text-black hover:opacity-60 transition-opacity">
+                <a href="<?php echo esc_url( $cart_url ); ?>" class="flex items-center space-x-2 text-black hover:opacity-60 transition-opacity py-1.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25c-.669 0-1.189-.578-1.119-1.243l1.263-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" /></svg>
                     <span>BAG (<?php echo esc_html( $cart_count ); ?>)</span>
                 </a>

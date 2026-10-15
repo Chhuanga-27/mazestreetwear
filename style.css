@@ -60,5 +60,59 @@ textarea,
 h1, h2, h3, h4, h5, h6,
 p, a, span, label, table, td, th {
   font-family: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (min-width: 640px) {
+  html {
+    font-size: 16.5px;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+body {
+  color: #000000;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+p {
+  color: #111111;
+  font-weight: 500;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #000000;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+/* Eliminate faint low-contrast text */
+.text-neutral-400 {
+  color: #3f3f46 !important;
+}
+
+.text-neutral-500 {
+  color: #27272a !important;
+}
+
+.text-neutral-600 {
+  color: #18181b !important;
+}
+
+.text-neutral-700 {
+  color: #09090b !important;
 }
 

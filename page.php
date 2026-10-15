@@ -20,8 +20,8 @@ get_header();
 
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                 <header class="entry-header mb-10 pb-6 border-b border-black">
-                    <div class="inline-flex items-center space-x-2 text-[11px] font-mono font-bold tracking-widest text-black uppercase mb-2 border border-black px-2.5 py-0.5 bg-white">
-                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-black"></span>
+                    <div class="inline-flex items-center space-x-2 text-xs sm:text-sm font-mono font-bold tracking-widest text-black uppercase mb-3 border border-black px-3 py-1 bg-white">
+                        <span class="inline-block w-2 h-2 rounded-full bg-black"></span>
                         <span><?php esc_html_e( 'MAZE PROTOCOL // OFFICIAL DOCS', 'mazestreetwear' ); ?></span>
                     </div>
                     <h1 class="entry-title text-3xl sm:text-5xl font-black font-sans uppercase tracking-tight text-black">
@@ -29,12 +29,12 @@ get_header();
                     </h1>
                 </header>
 
-                <div class="entry-content prose prose-neutral max-w-none font-sans text-sm sm:text-base text-neutral-800 leading-relaxed space-y-6">
+                <div class="entry-content prose prose-neutral max-w-none font-sans text-base sm:text-lg text-neutral-900 leading-relaxed space-y-6 font-normal">
                     <?php
                     the_content();
 
                     wp_link_pages( array(
-                        'before' => '<div class="page-links font-mono text-xs pt-6 border-t border-neutral-200">' . esc_html__( 'Pages:', 'mazestreetwear' ),
+                        'before' => '<div class="page-links font-mono text-sm font-bold pt-6 border-t border-black">' . esc_html__( 'Pages:', 'mazestreetwear' ),
                         'after'  => '</div>',
                     ) );
                     ?>

@@ -56,27 +56,27 @@ $refund_url = function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazest
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- Top Breadcrumbs & Utility Bar -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-neutral-200 text-xs font-mono gap-4 no-print">
-            <nav aria-label="<?php esc_attr_e( 'Breadcrumb', 'mazestreetwear' ); ?>" class="flex items-center space-x-2 text-neutral-500">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-black text-sm font-mono gap-4 no-print">
+            <nav aria-label="<?php esc_attr_e( 'Breadcrumb', 'mazestreetwear' ); ?>" class="flex items-center space-x-2 text-neutral-700 font-semibold">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="hover:text-black transition-colors uppercase">
                     <?php esc_html_e( 'Home', 'mazestreetwear' ); ?>
                 </a>
-                <span class="text-neutral-300">/</span>
-                <span class="text-neutral-400 uppercase"><?php esc_html_e( 'Legal & Support', 'mazestreetwear' ); ?></span>
-                <span class="text-neutral-300">/</span>
+                <span class="text-neutral-400">/</span>
+                <span class="text-neutral-700 uppercase"><?php esc_html_e( 'Legal & Support', 'mazestreetwear' ); ?></span>
+                <span class="text-neutral-400">/</span>
                 <span class="text-black font-bold uppercase tracking-wider"><?php esc_html_e( 'Refund & Exchange Policy', 'mazestreetwear' ); ?></span>
             </nav>
 
-            <div class="flex items-center space-x-3 text-neutral-600">
-                <button type="button" onclick="window.print()" class="inline-flex items-center space-x-1.5 hover:text-black transition-colors px-2.5 py-1 border border-neutral-200 hover:border-black bg-white rounded-none">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <div class="flex items-center space-x-3 text-neutral-800 font-bold">
+                <button type="button" onclick="window.print()" class="inline-flex items-center space-x-1.5 hover:text-black transition-colors px-3 py-1.5 border border-black hover:bg-neutral-100 bg-white rounded-none text-xs uppercase tracking-wider">
+                    <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75V4.5a2.25 2.25 0 012.25-2.25h6a2.25 2.25 0 012.25 2.25v2.25m-10.5 0h10.5m-10.5 0H4.5A2.25 2.25 0 002.25 9v6a2.25 2.25 0 002.25 2.25h2.25m10.5-10.5H19.5A2.25 2.25 0 0121.75 9v6a2.25 2.25 0 01-2.25 2.25h-2.25m-10.5 0v3.75A2.25 2.25 0 008.25 21h7.5a2.25 2.25 0 002.25-2.25V17.25m-12 0h12" />
                     </svg>
                     <span><?php esc_html_e( 'PRINT / PDF', 'mazestreetwear' ); ?></span>
                 </button>
 
-                <button type="button" id="maze-copy-refund-url-btn" class="inline-flex items-center space-x-1.5 hover:text-black transition-colors px-2.5 py-1 border border-neutral-200 hover:border-black bg-white rounded-none">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <button type="button" id="maze-copy-refund-url-btn" class="inline-flex items-center space-x-1.5 hover:text-black transition-colors px-3 py-1.5 border border-black hover:bg-neutral-100 bg-white rounded-none text-xs uppercase tracking-wider">
+                    <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-3.35l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
                     </svg>
                     <span id="maze-copy-refund-url-text"><?php esc_html_e( 'SHARE LINK', 'mazestreetwear' ); ?></span>
@@ -87,11 +87,11 @@ $refund_url = function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazest
         <!-- Editorial Document Header -->
         <header class="mb-12 pb-8 border-b-2 border-black">
             <div class="flex flex-wrap items-center gap-2 mb-4">
-                <span class="inline-flex items-center space-x-2 text-[10px] sm:text-xs font-mono font-bold tracking-widest text-black uppercase border border-black px-3 py-1 bg-white">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="inline-flex items-center space-x-2 text-xs sm:text-sm font-mono font-bold tracking-widest text-black uppercase border border-black px-3.5 py-1.5 bg-white">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span><?php esc_html_e( 'MAZE PROTOCOL // RETURN & EXCHANGE POLICY REF: RET-2026-V1', 'mazestreetwear' ); ?></span>
                 </span>
-                <span class="inline-block text-[10px] sm:text-xs font-mono font-bold tracking-widest text-white uppercase border border-black px-3 py-1 bg-black">
+                <span class="inline-block text-xs sm:text-sm font-mono font-bold tracking-widest text-white uppercase border border-black px-3.5 py-1.5 bg-black">
                     <?php esc_html_e( 'STORE CREDIT & EXCHANGES ONLY // NO CASH REFUNDS', 'mazestreetwear' ); ?>
                 </span>
             </div>
@@ -100,22 +100,22 @@ $refund_url = function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazest
                 <?php esc_html_e( 'Refund & Exchange Policy', 'mazestreetwear' ); ?>
             </h1>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-neutral-200 font-mono text-xs text-neutral-700">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-black font-mono text-xs sm:text-sm text-neutral-800">
                 <div>
-                    <span class="block text-[10px] uppercase tracking-wider text-neutral-400"><?php esc_html_e( 'Effective Date', 'mazestreetwear' ); ?></span>
-                    <strong class="font-bold text-black text-sm"><?php esc_html_e( 'October 15, 2026', 'mazestreetwear' ); ?></strong>
+                    <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Effective Date', 'mazestreetwear' ); ?></span>
+                    <strong class="font-black text-black text-sm sm:text-base"><?php esc_html_e( 'October 15, 2026', 'mazestreetwear' ); ?></strong>
                 </div>
                 <div>
-                    <span class="block text-[10px] uppercase tracking-wider text-neutral-400"><?php esc_html_e( 'Last Updated', 'mazestreetwear' ); ?></span>
-                    <strong class="font-bold text-black text-sm"><?php esc_html_e( 'October 15, 2026', 'mazestreetwear' ); ?></strong>
+                    <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Last Updated', 'mazestreetwear' ); ?></span>
+                    <strong class="font-black text-black text-sm sm:text-base"><?php esc_html_e( 'October 15, 2026', 'mazestreetwear' ); ?></strong>
                 </div>
                 <div>
-                    <span class="block text-[10px] uppercase tracking-wider text-neutral-400"><?php esc_html_e( 'Return Window', 'mazestreetwear' ); ?></span>
-                    <strong class="font-bold text-black text-sm"><?php esc_html_e( '7 Calendar Days Post-Delivery', 'mazestreetwear' ); ?></strong>
+                    <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Return Window', 'mazestreetwear' ); ?></span>
+                    <strong class="font-black text-black text-sm sm:text-base"><?php esc_html_e( '7 Calendar Days Post-Delivery', 'mazestreetwear' ); ?></strong>
                 </div>
                 <div>
-                    <span class="block text-[10px] uppercase tracking-wider text-neutral-400"><?php esc_html_e( 'Support Desk', 'mazestreetwear' ); ?></span>
-                    <a href="mailto:enquiries@mazestw.in" class="font-bold text-black hover:underline text-sm">
+                    <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Support Desk', 'mazestreetwear' ); ?></span>
+                    <a href="mailto:enquiries@mazestw.in" class="font-black text-black hover:underline text-sm sm:text-base">
                         enquiries@mazestw.in
                     </a>
                 </div>
@@ -127,33 +127,33 @@ $refund_url = function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazest
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-black">
                 
                 <div class="p-5 bg-white">
-                    <span class="text-[11px] font-mono font-bold tracking-widest text-neutral-400 block mb-1">01 // COMPENSATION</span>
-                    <h2 class="text-sm font-bold uppercase font-sans tracking-tight text-black mb-1.5"><?php esc_html_e( 'Store Credit Only', 'mazestreetwear' ); ?></h2>
-                    <p class="text-xs text-neutral-600 leading-relaxed font-sans">
+                    <span class="text-xs font-mono font-bold tracking-widest text-neutral-700 block mb-1">01 // COMPENSATION</span>
+                    <h2 class="text-base font-bold uppercase font-sans tracking-tight text-black mb-2"><?php esc_html_e( 'Store Credit Only', 'mazestreetwear' ); ?></h2>
+                    <p class="text-sm text-neutral-800 leading-relaxed font-sans font-normal">
                         <?php esc_html_e( 'No cash, bank, or UPI reversals. Approved returns are compensated via digital store credit vouchers or direct size exchanges.', 'mazestreetwear' ); ?>
                     </p>
                 </div>
 
                 <div class="p-5 bg-white">
-                    <span class="text-[11px] font-mono font-bold tracking-widest text-neutral-400 block mb-1">02 // INITIATION TIMEFRAME</span>
-                    <h2 class="text-sm font-bold uppercase font-sans tracking-tight text-black mb-1.5"><?php esc_html_e( '7 Calendar Days', 'mazestreetwear' ); ?></h2>
-                    <p class="text-xs text-neutral-600 leading-relaxed font-sans">
+                    <span class="text-xs font-mono font-bold tracking-widest text-neutral-700 block mb-1">02 // INITIATION TIMEFRAME</span>
+                    <h2 class="text-base font-bold uppercase font-sans tracking-tight text-black mb-2"><?php esc_html_e( '7 Calendar Days', 'mazestreetwear' ); ?></h2>
+                    <p class="text-sm text-neutral-800 leading-relaxed font-sans font-normal">
                         <?php esc_html_e( 'Requests must be logged within 7 days from courier delivery confirmation. Submissions after 7 days will not be reviewed.', 'mazestreetwear' ); ?>
                     </p>
                 </div>
 
                 <div class="p-5 bg-white">
-                    <span class="text-[11px] font-mono font-bold tracking-widest text-neutral-400 block mb-1">03 // GARMENT INTEGRITY</span>
-                    <h2 class="text-sm font-bold uppercase font-sans tracking-tight text-black mb-1.5"><?php esc_html_e( 'Pristine & Unworn', 'mazestreetwear' ); ?></h2>
-                    <p class="text-xs text-neutral-600 leading-relaxed font-sans">
+                    <span class="text-xs font-mono font-bold tracking-widest text-neutral-700 block mb-1">03 // GARMENT INTEGRITY</span>
+                    <h2 class="text-base font-bold uppercase font-sans tracking-tight text-black mb-2"><?php esc_html_e( 'Pristine & Unworn', 'mazestreetwear' ); ?></h2>
+                    <p class="text-sm text-neutral-800 leading-relaxed font-sans font-normal">
                         <?php esc_html_e( 'Must be unworn, unwashed, and unaltered with all woven neck labels, care tags, stickers, and original polybags intact.', 'mazestreetwear' ); ?>
                     </p>
                 </div>
 
                 <div class="p-5 bg-white">
-                    <span class="text-[11px] font-mono font-bold tracking-widest text-neutral-400 block mb-1">04 // DAMAGE / DEFECTS</span>
-                    <h2 class="text-sm font-bold uppercase font-sans tracking-tight text-black mb-1.5"><?php esc_html_e( '48-Hour Report Window', 'mazestreetwear' ); ?></h2>
-                    <p class="text-xs text-neutral-600 leading-relaxed font-sans">
+                    <span class="text-xs font-mono font-bold tracking-widest text-neutral-700 block mb-1">04 // DAMAGE / DEFECTS</span>
+                    <h2 class="text-base font-bold uppercase font-sans tracking-tight text-black mb-2"><?php esc_html_e( '48-Hour Report Window', 'mazestreetwear' ); ?></h2>
+                    <p class="text-sm text-neutral-800 leading-relaxed font-sans font-normal">
                         <?php esc_html_e( 'Transit damage or incorrect deliveries must be reported within 48 hours of delivery with photo or unboxing video proof.', 'mazestreetwear' ); ?>
                     </p>
                 </div>
@@ -170,82 +170,82 @@ $refund_url = function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazest
                 <!-- Table of Contents -->
                 <div class="border border-black p-5 sm:p-6 bg-white">
                     <div class="flex items-center justify-between pb-3 mb-4 border-b border-black">
-                        <span class="text-xs font-mono font-bold uppercase tracking-wider text-black">
+                        <span class="text-sm font-mono font-bold uppercase tracking-wider text-black">
                             <?php esc_html_e( 'DOCUMENT INDEX', 'mazestreetwear' ); ?>
                         </span>
-                        <span class="text-[10px] font-mono text-neutral-500">9 SECTIONS</span>
+                        <span class="text-xs font-mono font-bold text-neutral-700">9 SECTIONS</span>
                     </div>
 
-                    <nav class="space-y-1 font-mono text-xs">
-                        <a href="#section-1" class="maze-refund-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                    <nav class="space-y-1 font-mono text-xs sm:text-sm">
+                        <a href="#section-1" class="maze-refund-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>01. Store Credit Only</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-2" class="maze-refund-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-2" class="maze-refund-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>02. Return & Exchange Window</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-3" class="maze-refund-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-3" class="maze-refund-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>03. Eligible Return Conditions</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-4" class="maze-refund-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-4" class="maze-refund-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>04. Quality Rejection Criteria</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-5" class="maze-refund-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-5" class="maze-refund-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>05. Shipping, Taxes & Deductions</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-6" class="maze-refund-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-6" class="maze-refund-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>06. Transit Responsibility</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-7" class="maze-refund-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-7" class="maze-refund-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>07. Damaged / Defective Pieces</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-8" class="maze-refund-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-8" class="maze-refund-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>08. How to Request an Exchange</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-9" class="maze-refund-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-9" class="maze-refund-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>09. Customer Support Desk</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
                     </nav>
                 </div>
 
                 <!-- Quick Help / Support Capsule -->
                 <div class="border border-black p-5 sm:p-6 bg-neutral-50 text-black">
-                    <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500 block mb-1">
+                    <span class="text-xs font-mono font-bold uppercase tracking-widest text-neutral-700 block mb-1">
                         <?php esc_html_e( 'NEED ASSISTANCE?', 'mazestreetwear' ); ?>
                     </span>
                     <h3 class="text-base font-bold font-sans uppercase tracking-tight mb-2">
                         <?php esc_html_e( 'Returns & Operations Desk', 'mazestreetwear' ); ?>
                     </h3>
-                    <p class="text-xs text-neutral-600 font-sans leading-relaxed mb-4">
+                    <p class="text-sm text-neutral-800 font-sans leading-relaxed mb-4 font-normal">
                         <?php esc_html_e( 'To initiate a size exchange or store credit request, email our team with your order number.', 'mazestreetwear' ); ?>
                     </p>
 
-                    <div class="space-y-2 font-mono text-xs">
-                        <a href="mailto:enquiries@mazestw.in?subject=Return%20Request%20-%20Order%20%23[Your%20Order%20Number]&body=Registered%20Customer%20Name:%0D%0APhone%20Number:%0D%0AOrder%20Number:%0D%0AGarment%20Item:%0D%0ARequest%20Type%20(Exchange%20Size%20/%20Store%20Credit):%0D%0AReason%20for%20Return:" class="flex items-center justify-between p-2.5 bg-black text-white hover:bg-neutral-800 transition-colors group">
-                            <span class="font-medium"><?php esc_html_e( 'START RETURN EMAIL', 'mazestreetwear' ); ?></span>
-                            <span class="text-[11px] uppercase tracking-wider group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                    <div class="space-y-2.5 font-mono text-xs sm:text-sm">
+                        <a href="mailto:enquiries@mazestw.in?subject=Return%20Request%20-%20Order%20%23[Your%20Order%20Number]&body=Registered%20Customer%20Name:%0D%0APhone%20Number:%0D%0AOrder%20Number:%0D%0AGarment%20Item:%0D%0ARequest%20Type%20(Exchange%20Size%20/%20Store%20Credit):%0D%0AReason%20for%20Return:" class="flex items-center justify-between p-3 bg-black text-white hover:bg-neutral-800 transition-colors group font-bold">
+                            <span><?php esc_html_e( 'START RETURN EMAIL', 'mazestreetwear' ); ?></span>
+                            <span class="text-xs uppercase tracking-wider group-hover:translate-x-0.5 transition-transform">&rarr;</span>
                         </a>
                         <div class="flex items-center justify-between p-2.5 bg-white border border-black text-black">
-                            <span class="font-medium truncate mr-2">enquiries@mazestw.in</span>
-                            <button type="button" id="maze-copy-support-email-btn" class="text-[10px] uppercase font-bold tracking-wider hover:underline flex-shrink-0">
+                            <span class="font-bold truncate mr-2">enquiries@mazestw.in</span>
+                            <button type="button" id="maze-copy-support-email-btn" class="text-xs uppercase font-bold tracking-wider hover:underline flex-shrink-0">
                                 <span id="maze-copy-support-email-text"><?php esc_html_e( 'COPY', 'mazestreetwear' ); ?></span>
                             </button>
                         </div>
                         <a href="https://wa.me/918787324795" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 bg-white border border-black hover:bg-black hover:text-white transition-colors group">
-                            <span class="font-medium">+91 8787324795</span>
-                            <span class="text-[11px] uppercase tracking-wider group-hover:translate-x-0.5 transition-transform">WhatsApp &rarr;</span>
+                            <span class="font-bold">+91 8787324795</span>
+                            <span class="text-xs uppercase tracking-wider group-hover:translate-x-0.5 transition-transform font-bold">WhatsApp &rarr;</span>
                         </a>
                     </div>
 
-                    <div class="pt-3 mt-4 border-t border-neutral-200 text-[11px] font-mono text-neutral-500">
+                    <div class="pt-3 mt-4 border-t border-black text-xs font-mono font-bold text-neutral-700">
                         <?php esc_html_e( 'Mon – Sat: 10:00 AM – 6:00 PM IST', 'mazestreetwear' ); ?>
                     </div>
                 </div>

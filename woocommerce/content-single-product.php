@@ -71,8 +71,8 @@ if ( post_password_required() ) {
 
                 <?php } else { ?>
                     <div class="w-full aspect-[3/4] max-w-lg mx-auto flex flex-col items-center justify-center text-neutral-300">
-                        <span class="text-4xl font-light font-sans tracking-widest text-neutral-300">MAZE</span>
-                        <span class="text-[10px] font-mono uppercase tracking-widest text-neutral-400 mt-2">[ product cutout ]</span>
+                        <span class="text-4xl font-light font-sans tracking-widest text-neutral-400">MAZE</span>
+                        <span class="text-xs font-mono uppercase tracking-widest text-neutral-600 font-bold mt-2">[ product cutout ]</span>
                     </div>
                 <?php } ?>
             </div>
@@ -81,18 +81,18 @@ if ( post_password_required() ) {
             <div class="lg:col-span-5 p-6 sm:p-10 lg:p-12 flex flex-col justify-start bg-white">
 
                 <!-- Product Title in clean sans-serif -->
-                <h1 class="text-2xl sm:text-3xl font-normal font-sans tracking-tight text-black">
+                <h1 class="text-2xl sm:text-4xl font-bold font-sans tracking-tight text-black">
                     <?php the_title(); ?>
                 </h1>
 
                 <!-- Price in bold minimal typography -->
-                <div class="text-xl sm:text-2xl font-bold font-sans text-black tracking-tight mt-3 mb-6">
+                <div class="text-2xl sm:text-3xl font-black font-sans text-black tracking-tight mt-3 mb-6">
                     <?php echo $product->get_price_html(); ?>
                 </div>
 
                 <!-- Product Short Description / Lead Spec (if exists) -->
                 <?php if ( $product->get_short_description() ) : ?>
-                    <div class="text-xs font-sans text-neutral-600 leading-relaxed mb-6">
+                    <div class="text-sm sm:text-base font-sans text-neutral-800 leading-relaxed font-medium mb-6">
                         <?php echo apply_filters( 'woocommerce_short_description', $product->get_short_description() ); ?>
                     </div>
                 <?php endif; ?>
@@ -111,22 +111,22 @@ if ( post_password_required() ) {
                             <!-- Sizing Selector: Clean rectangular size boxes with 1px black borders -->
                             <div class="size-selector-wrap">
                                 <div class="flex items-center justify-between mb-2.5">
-                                    <span class="text-xs font-mono uppercase tracking-wider text-black font-bold">
+                                    <span class="text-sm font-mono uppercase tracking-wider text-black font-bold">
                                         <?php esc_html_e( 'SIZE', 'mazestreetwear' ); ?>
-                                        <span class="selected-size-label ml-2 text-black font-normal">// S</span>
+                                        <span class="selected-size-label ml-2 text-black font-bold">// S</span>
                                     </span>
                                 </div>
                                 <div class="maze-size-pills flex flex-wrap gap-2.5">
-                                    <button type="button" class="maze-size-pill is-active selected px-5 py-3 text-xs font-mono uppercase border border-black bg-black text-white cursor-pointer transition-colors" data-value="S">S</button>
-                                    <button type="button" class="maze-size-pill px-5 py-3 text-xs font-mono uppercase border border-black bg-white text-black hover:bg-neutral-100 cursor-pointer transition-colors" data-value="M">M</button>
-                                    <button type="button" class="maze-size-pill px-5 py-3 text-xs font-mono uppercase border border-black bg-white text-black hover:bg-neutral-100 cursor-pointer transition-colors" data-value="L">L</button>
-                                    <button type="button" class="maze-size-pill px-5 py-3 text-xs font-mono uppercase border border-black bg-white text-black hover:bg-neutral-100 cursor-pointer transition-colors" data-value="XL">XL</button>
+                                    <button type="button" class="maze-size-pill is-active selected px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black bg-black text-white cursor-pointer transition-colors" data-value="S">S</button>
+                                    <button type="button" class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black bg-white text-black hover:bg-neutral-100 cursor-pointer transition-colors" data-value="M">M</button>
+                                    <button type="button" class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black bg-white text-black hover:bg-neutral-100 cursor-pointer transition-colors" data-value="L">L</button>
+                                    <button type="button" class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black bg-white text-black hover:bg-neutral-100 cursor-pointer transition-colors" data-value="XL">XL</button>
                                 </div>
                             </div>
 
                             <!-- "ADD TO BAG" Button: Solid black rectangular button full width -->
                             <div class="pt-2">
-                                <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt bg-black text-white hover:bg-neutral-800 text-xs uppercase tracking-widest py-4 w-full border border-black rounded-none font-mono transition-colors duration-150 cursor-pointer block text-center">
+                                <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt bg-black text-white hover:bg-neutral-800 text-sm sm:text-base font-bold uppercase tracking-wider py-4 w-full border border-black rounded-none font-mono transition-colors duration-150 cursor-pointer block text-center">
                                     <?php esc_html_e( 'ADD TO BAG', 'mazestreetwear' ); ?>
                                 </button>
                             </div>
@@ -143,12 +143,12 @@ if ( post_password_required() ) {
                 <div class="mt-10 border-t border-black">
                     <!-- 1. Fabric & Fit -->
                     <details class="group border-b border-black" open>
-                        <summary class="flex justify-between items-center py-4 cursor-pointer list-none text-xs font-mono font-bold uppercase tracking-wider text-black select-none">
+                        <summary class="flex justify-between items-center py-4 sm:py-5 cursor-pointer list-none text-sm sm:text-base font-mono font-bold uppercase tracking-wider text-black select-none">
                             <span><?php esc_html_e( 'FABRIC & FIT', 'mazestreetwear' ); ?></span>
-                            <span class="text-sm font-mono group-open:hidden">+</span>
-                            <span class="text-sm font-mono hidden group-open:inline">&minus;</span>
+                            <span class="text-base sm:text-lg font-mono font-bold group-open:hidden">+</span>
+                            <span class="text-base sm:text-lg font-mono font-bold hidden group-open:inline">&minus;</span>
                         </summary>
-                        <div class="pb-4 text-xs font-sans text-neutral-700 leading-relaxed space-y-2">
+                        <div class="pb-5 text-sm sm:text-base font-sans text-neutral-900 leading-relaxed space-y-2">
                             <p><?php esc_html_e( '100% custom-milled 450GSM loopback French terry cotton. Engineered for substantial drape and enduring structural silhouette.', 'mazestreetwear' ); ?></p>
                             <p><?php esc_html_e( 'Boxy archival proportions with dropped shoulder seams and relaxed body cut. Pre-shrunk fabric to prevent deformation.', 'mazestreetwear' ); ?></p>
                         </div>
@@ -156,12 +156,12 @@ if ( post_password_required() ) {
 
                     <!-- 2. Shipping & Delivery -->
                     <details class="group border-b border-black">
-                        <summary class="flex justify-between items-center py-4 cursor-pointer list-none text-xs font-mono font-bold uppercase tracking-wider text-black select-none">
+                        <summary class="flex justify-between items-center py-4 sm:py-5 cursor-pointer list-none text-sm sm:text-base font-mono font-bold uppercase tracking-wider text-black select-none">
                             <span><?php esc_html_e( 'SHIPPING & DELIVERY', 'mazestreetwear' ); ?></span>
-                            <span class="text-sm font-mono group-open:hidden">+</span>
-                            <span class="text-sm font-mono hidden group-open:inline">&minus;</span>
+                            <span class="text-base sm:text-lg font-mono font-bold group-open:hidden">+</span>
+                            <span class="text-base sm:text-lg font-mono font-bold hidden group-open:inline">&minus;</span>
                         </summary>
-                        <div class="pb-4 text-xs font-sans text-neutral-700 leading-relaxed space-y-2">
+                        <div class="pb-5 text-sm sm:text-base font-sans text-neutral-900 leading-relaxed space-y-2">
                             <p><?php esc_html_e( 'Dispatched within 24 to 48 hours worldwide. Tracked express shipping provided with delivery confirmation.', 'mazestreetwear' ); ?></p>
                             <p><?php esc_html_e( 'Complimentary shipping on orders exceeding specified minimum threshold. Customs and duties handled seamlessly.', 'mazestreetwear' ); ?></p>
                         </div>
@@ -169,12 +169,12 @@ if ( post_password_required() ) {
 
                     <!-- 3. Care -->
                     <details class="group border-b border-black">
-                        <summary class="flex justify-between items-center py-4 cursor-pointer list-none text-xs font-mono font-bold uppercase tracking-wider text-black select-none">
+                        <summary class="flex justify-between items-center py-4 sm:py-5 cursor-pointer list-none text-sm sm:text-base font-mono font-bold uppercase tracking-wider text-black select-none">
                             <span><?php esc_html_e( 'CARE', 'mazestreetwear' ); ?></span>
-                            <span class="text-sm font-mono group-open:hidden">+</span>
-                            <span class="text-sm font-mono hidden group-open:inline">&minus;</span>
+                            <span class="text-base sm:text-lg font-mono font-bold group-open:hidden">+</span>
+                            <span class="text-base sm:text-lg font-mono font-bold hidden group-open:inline">&minus;</span>
                         </summary>
-                        <div class="pb-4 text-xs font-sans text-neutral-700 leading-relaxed space-y-2">
+                        <div class="pb-5 text-sm sm:text-base font-sans text-neutral-900 leading-relaxed space-y-2">
                             <p><?php esc_html_e( 'Cold machine wash (30°C / 86°F) inside out with mild detergent.', 'mazestreetwear' ); ?></p>
                             <p><?php esc_html_e( 'Hang dry in shade. Do not tumble dry. Cool iron on reverse side avoiding prints or rubberized branding.', 'mazestreetwear' ); ?></p>
                         </div>
@@ -196,10 +196,10 @@ if ( post_password_required() ) {
         <div class="w-full bg-white border-b border-black">
             <div class="max-w-7xl mx-auto border-x border-black">
                 <div class="px-4 sm:px-6 lg:px-8 py-5 border-b border-black flex justify-between items-center">
-                    <h2 class="text-sm font-bold font-sans uppercase tracking-wider text-black">
+                    <h2 class="text-base sm:text-lg font-bold font-sans uppercase tracking-wider text-black">
                         <?php esc_html_e( 'YOU MAY ALSO LIKE', 'mazestreetwear' ); ?>
                     </h2>
-                    <a href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) ); ?>" class="text-xs font-sans text-black hover:opacity-60 transition-opacity">
+                    <a href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) ); ?>" class="text-sm sm:text-base font-bold font-sans text-black hover:opacity-60 transition-opacity">
                         <?php esc_html_e( 'see more →', 'mazestreetwear' ); ?>
                     </a>
                 </div>

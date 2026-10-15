@@ -34,7 +34,7 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 
         <!-- Centered CTA Button -->
         <div class="absolute left-1/2 -translate-x-1/2 bottom-16 sm:bottom-20 z-10">
-            <a href="<?php echo esc_url( $shop_url ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-8 py-3 text-xs uppercase tracking-widest font-mono text-center">
+            <a href="<?php echo esc_url( $shop_url ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-9 py-3.5 text-sm sm:text-base uppercase tracking-wider font-bold font-mono text-center shadow-sm">
                 <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
             </a>
         </div>
@@ -45,12 +45,12 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
         
         <!-- Section Header -->
         <div class="max-w-7xl mx-auto border-x border-black">
-            <div class="px-4 sm:px-6 lg:px-8 py-5 border-b border-black flex items-center justify-between bg-white">
-                <h2 class="text-sm sm:text-base font-bold font-sans uppercase tracking-wider text-black">
+            <div class="px-4 sm:px-6 lg:px-8 py-5 sm:py-6 border-b border-black flex items-center justify-between bg-white">
+                <h2 class="text-base sm:text-lg lg:text-xl font-black font-sans uppercase tracking-wider text-black">
                     <?php esc_html_e( 'READY-TO-WEAR', 'mazestreetwear' ); ?>
                 </h2>
 
-                <a href="<?php echo esc_url( $shop_url ); ?>" class="text-xs font-sans text-black hover:opacity-60 transition-opacity">
+                <a href="<?php echo esc_url( $shop_url ); ?>" class="text-sm sm:text-base font-bold font-sans text-black hover:underline underline-offset-4 transition-all">
                     <?php esc_html_e( 'see more →', 'mazestreetwear' ); ?>
                 </a>
             </div>
@@ -154,11 +154,11 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
                                 </div>
 
                                 <!-- Bottom Metadata Bar: thin top black border, title lowercase on left, price on right -->
-                                <div class="border-t border-black px-3 py-2.5 flex justify-between items-baseline text-xs font-sans bg-white mt-auto">
-                                    <span class="text-black font-normal lowercase tracking-tight line-clamp-1 mr-2 group-hover:opacity-60 transition-opacity">
+                                <div class="border-t border-black px-4 py-3 flex justify-between items-baseline text-sm sm:text-base font-sans bg-white mt-auto">
+                                    <span class="text-black font-semibold lowercase tracking-tight line-clamp-1 mr-2 group-hover:opacity-60 transition-opacity">
                                         <?php echo esc_html( $item['title'] ); ?>
                                     </span>
-                                    <span class="text-black font-normal whitespace-nowrap font-sans text-right">
+                                    <span class="text-black font-bold whitespace-nowrap font-sans text-right">
                                         <?php echo esc_html( $item['price'] ); ?>
                                     </span>
                                 </div>
@@ -173,14 +173,14 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     <!-- 3. Minimalist Architectural Statement -->
     <section class="w-full bg-white py-16 sm:py-24">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-            <span class="inline-block text-[11px] font-mono uppercase tracking-widest text-neutral-500">
+            <span class="inline-block text-xs sm:text-sm font-mono uppercase tracking-wider font-bold text-neutral-800">
                 <?php esc_html_e( 'MAZE ARCHIVE SPECIFICATION // 2026', 'mazestreetwear' ); ?>
             </span>
-            <p class="text-lg sm:text-2xl font-sans font-light tracking-tight text-black leading-snug">
+            <p class="text-xl sm:text-2xl lg:text-3xl font-sans font-normal tracking-tight text-black leading-relaxed max-w-3xl mx-auto">
                 <?php esc_html_e( 'Architectural garments engineered with uncompromising precision. Pure pitch black on optic white canvas, stripped of all transient distraction.', 'mazestreetwear' ); ?>
             </p>
             <div class="pt-4">
-                <a href="<?php echo esc_url( $shop_url ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-8 py-3 text-xs uppercase tracking-widest font-mono">
+                <a href="<?php echo esc_url( $shop_url ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-9 py-3.5 text-sm sm:text-base font-bold uppercase tracking-wider font-mono shadow-sm">
                     <?php esc_html_e( 'EXPLORE CATALOG', 'mazestreetwear' ); ?>
                 </a>
             </div>

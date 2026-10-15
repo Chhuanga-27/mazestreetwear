@@ -38,17 +38,17 @@ if ( empty( $product ) || ! $product->is_visible() ) {
             <?php else : ?>
                 <div class="w-full h-full flex flex-col items-center justify-center text-neutral-300 select-none">
                     <span class="text-3xl font-light font-sans tracking-widest text-neutral-300 group-hover:text-black transition-colors">MAZE</span>
-                    <span class="text-[10px] font-mono uppercase tracking-widest text-neutral-400 mt-2">[ archive ]</span>
+                    <span class="text-xs font-mono font-bold uppercase tracking-widest text-neutral-600 mt-2">[ archive ]</span>
                 </div>
             <?php endif; ?>
         </div>
 
         <!-- Bottom Metadata Bar: thin top black border, title lowercase on left, price on right -->
-        <div class="border-t border-black px-3 py-2.5 flex justify-between items-baseline text-xs font-sans bg-white mt-auto">
-            <span class="text-black font-normal lowercase tracking-tight line-clamp-1 mr-2 group-hover:opacity-60 transition-opacity">
+        <div class="border-t border-black px-4 py-3 flex justify-between items-baseline text-sm sm:text-base font-sans bg-white mt-auto">
+            <span class="text-black font-semibold lowercase tracking-tight line-clamp-1 mr-2 group-hover:opacity-60 transition-opacity">
                 <?php the_title(); ?>
             </span>
-            <span class="text-black font-normal whitespace-nowrap font-sans text-right">
+            <span class="text-black font-bold whitespace-nowrap font-sans text-right">
                 <?php echo $product->get_price_html(); ?>
             </span>
         </div>

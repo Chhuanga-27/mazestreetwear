@@ -57,27 +57,27 @@ $account_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- Top Breadcrumbs & Utility Bar -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-neutral-200 text-xs font-mono gap-4 no-print">
-            <nav aria-label="<?php esc_attr_e( 'Breadcrumb', 'mazestreetwear' ); ?>" class="flex items-center space-x-2 text-neutral-500">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-black text-sm font-mono gap-4 no-print">
+            <nav aria-label="<?php esc_attr_e( 'Breadcrumb', 'mazestreetwear' ); ?>" class="flex items-center space-x-2 text-neutral-700 font-semibold">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="hover:text-black transition-colors uppercase">
                     <?php esc_html_e( 'Home', 'mazestreetwear' ); ?>
                 </a>
-                <span class="text-neutral-300">/</span>
-                <span class="text-neutral-400 uppercase"><?php esc_html_e( 'Legal & Support', 'mazestreetwear' ); ?></span>
-                <span class="text-neutral-300">/</span>
+                <span class="text-neutral-400">/</span>
+                <span class="text-neutral-700 uppercase"><?php esc_html_e( 'Legal & Support', 'mazestreetwear' ); ?></span>
+                <span class="text-neutral-400">/</span>
                 <span class="text-black font-bold uppercase tracking-wider"><?php esc_html_e( 'Shipping & Delivery Policy', 'mazestreetwear' ); ?></span>
             </nav>
 
-            <div class="flex items-center space-x-3 text-neutral-600">
-                <button type="button" onclick="window.print()" class="inline-flex items-center space-x-1.5 hover:text-black transition-colors px-2.5 py-1 border border-neutral-200 hover:border-black bg-white rounded-none">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <div class="flex items-center space-x-3 text-neutral-800 font-bold">
+                <button type="button" onclick="window.print()" class="inline-flex items-center space-x-1.5 hover:text-black transition-colors px-3 py-1.5 border border-black hover:bg-neutral-100 bg-white rounded-none text-xs uppercase tracking-wider">
+                    <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75V4.5a2.25 2.25 0 012.25-2.25h6a2.25 2.25 0 012.25 2.25v2.25m-10.5 0h10.5m-10.5 0H4.5A2.25 2.25 0 002.25 9v6a2.25 2.25 0 002.25 2.25h2.25m10.5-10.5H19.5A2.25 2.25 0 0121.75 9v6a2.25 2.25 0 01-2.25 2.25h-2.25m-10.5 0v3.75A2.25 2.25 0 008.25 21h7.5a2.25 2.25 0 002.25-2.25V17.25m-12 0h12" />
                     </svg>
                     <span><?php esc_html_e( 'PRINT / PDF', 'mazestreetwear' ); ?></span>
                 </button>
 
-                <button type="button" id="maze-copy-shipping-url-btn" class="inline-flex items-center space-x-1.5 hover:text-black transition-colors px-2.5 py-1 border border-neutral-200 hover:border-black bg-white rounded-none">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <button type="button" id="maze-copy-shipping-url-btn" class="inline-flex items-center space-x-1.5 hover:text-black transition-colors px-3 py-1.5 border border-black hover:bg-neutral-100 bg-white rounded-none text-xs uppercase tracking-wider">
+                    <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-3.35l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
                     </svg>
                     <span id="maze-copy-shipping-url-text"><?php esc_html_e( 'SHARE LINK', 'mazestreetwear' ); ?></span>
@@ -88,11 +88,11 @@ $account_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
         <!-- Editorial Document Header -->
         <header class="mb-12 pb-8 border-b-2 border-black">
             <div class="flex flex-wrap items-center gap-2 mb-4">
-                <span class="inline-flex items-center space-x-2 text-[10px] sm:text-xs font-mono font-bold tracking-widest text-black uppercase border border-black px-3 py-1 bg-white">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="inline-flex items-center space-x-2 text-xs sm:text-sm font-mono font-bold tracking-widest text-black uppercase border border-black px-3.5 py-1.5 bg-white">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span><?php esc_html_e( 'MAZE PROTOCOL // SHIPPING & DISPATCH REF: SHIP-2026-V1', 'mazestreetwear' ); ?></span>
                 </span>
-                <span class="inline-block text-[10px] sm:text-xs font-mono font-bold tracking-widest text-white uppercase border border-black px-3 py-1 bg-black">
+                <span class="inline-block text-xs sm:text-sm font-mono font-bold tracking-widest text-white uppercase border border-black px-3.5 py-1.5 bg-black">
                     <?php esc_html_e( 'DOMESTIC INDIA FULFILLMENT // EXPRESS COURIER TRACKED', 'mazestreetwear' ); ?>
                 </span>
             </div>
@@ -101,22 +101,22 @@ $account_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
                 <?php esc_html_e( 'Shipping & Delivery Policy', 'mazestreetwear' ); ?>
             </h1>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-neutral-200 font-mono text-xs text-neutral-700">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-black font-mono text-xs sm:text-sm text-neutral-800">
                 <div>
-                    <span class="block text-[10px] uppercase tracking-wider text-neutral-400"><?php esc_html_e( 'Effective Date', 'mazestreetwear' ); ?></span>
-                    <strong class="font-bold text-black text-sm"><?php esc_html_e( 'October 15, 2026', 'mazestreetwear' ); ?></strong>
+                    <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Effective Date', 'mazestreetwear' ); ?></span>
+                    <strong class="font-black text-black text-sm sm:text-base"><?php esc_html_e( 'October 15, 2026', 'mazestreetwear' ); ?></strong>
                 </div>
                 <div>
-                    <span class="block text-[10px] uppercase tracking-wider text-neutral-400"><?php esc_html_e( 'Last Updated', 'mazestreetwear' ); ?></span>
-                    <strong class="font-bold text-black text-sm"><?php esc_html_e( 'October 15, 2026', 'mazestreetwear' ); ?></strong>
+                    <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Last Updated', 'mazestreetwear' ); ?></span>
+                    <strong class="font-black text-black text-sm sm:text-base"><?php esc_html_e( 'October 15, 2026', 'mazestreetwear' ); ?></strong>
                 </div>
                 <div>
-                    <span class="block text-[10px] uppercase tracking-wider text-neutral-400"><?php esc_html_e( 'Fulfillment Window', 'mazestreetwear' ); ?></span>
-                    <strong class="font-bold text-black text-sm"><?php esc_html_e( '24 to 48 Business Hours', 'mazestreetwear' ); ?></strong>
+                    <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Fulfillment Window', 'mazestreetwear' ); ?></span>
+                    <strong class="font-black text-black text-sm sm:text-base"><?php esc_html_e( '24 to 48 Business Hours', 'mazestreetwear' ); ?></strong>
                 </div>
                 <div>
-                    <span class="block text-[10px] uppercase tracking-wider text-neutral-400"><?php esc_html_e( 'Support Desk', 'mazestreetwear' ); ?></span>
-                    <a href="mailto:enquiries@mazestw.in" class="font-bold text-black hover:underline text-sm">
+                    <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Support Desk', 'mazestreetwear' ); ?></span>
+                    <a href="mailto:enquiries@mazestw.in" class="font-black text-black hover:underline text-sm sm:text-base">
                         enquiries@mazestw.in
                     </a>
                 </div>
@@ -128,33 +128,33 @@ $account_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-black">
                 
                 <div class="p-5 bg-white">
-                    <span class="text-[11px] font-mono font-bold tracking-widest text-neutral-400 block mb-1">01 // COVERAGE</span>
-                    <h2 class="text-sm font-bold uppercase font-sans tracking-tight text-black mb-1.5"><?php esc_html_e( 'All India Pincodes', 'mazestreetwear' ); ?></h2>
-                    <p class="text-xs text-neutral-600 leading-relaxed font-sans">
+                    <span class="text-xs font-mono font-bold tracking-widest text-neutral-700 block mb-1">01 // COVERAGE</span>
+                    <h2 class="text-base font-bold uppercase font-sans tracking-tight text-black mb-2"><?php esc_html_e( 'All India Pincodes', 'mazestreetwear' ); ?></h2>
+                    <p class="text-sm text-neutral-800 leading-relaxed font-sans font-normal">
                         <?php esc_html_e( 'Nationwide domestic fulfillment supported by Delhivery, Blue Dart, DTDC, and India Post.', 'mazestreetwear' ); ?>
                     </p>
                 </div>
 
                 <div class="p-5 bg-white">
-                    <span class="text-[11px] font-mono font-bold tracking-widest text-neutral-400 block mb-1">02 // DISPATCH SPEED</span>
-                    <h2 class="text-sm font-bold uppercase font-sans tracking-tight text-black mb-1.5"><?php esc_html_e( '24 – 48 Business Hours', 'mazestreetwear' ); ?></h2>
-                    <p class="text-xs text-neutral-600 leading-relaxed font-sans">
+                    <span class="text-xs font-mono font-bold tracking-widest text-neutral-700 block mb-1">02 // DISPATCH SPEED</span>
+                    <h2 class="text-base font-bold uppercase font-sans tracking-tight text-black mb-2"><?php esc_html_e( '24 – 48 Business Hours', 'mazestreetwear' ); ?></h2>
+                    <p class="text-sm text-neutral-800 leading-relaxed font-sans font-normal">
                         <?php esc_html_e( 'Prepaid orders undergo strict quality inspection and are handed to carriers within 1 to 2 business days.', 'mazestreetwear' ); ?>
                     </p>
                 </div>
 
                 <div class="p-5 bg-white">
-                    <span class="text-[11px] font-mono font-bold tracking-widest text-neutral-400 block mb-1">03 // TRANSIT TIME</span>
-                    <h2 class="text-sm font-bold uppercase font-sans tracking-tight text-black mb-1.5"><?php esc_html_e( '2 – 7 Business Days', 'mazestreetwear' ); ?></h2>
-                    <p class="text-xs text-neutral-600 leading-relaxed font-sans">
+                    <span class="text-xs font-mono font-bold tracking-widest text-neutral-700 block mb-1">03 // TRANSIT TIME</span>
+                    <h2 class="text-base font-bold uppercase font-sans tracking-tight text-black mb-2"><?php esc_html_e( '2 – 7 Business Days', 'mazestreetwear' ); ?></h2>
+                    <p class="text-sm text-neutral-800 leading-relaxed font-sans font-normal">
                         <?php esc_html_e( '2 to 4 days for Tier 1 metros; 4 to 7 days for Tier 2/3 cities; 6 to 9 days for remote regional areas.', 'mazestreetwear' ); ?>
                     </p>
                 </div>
 
                 <div class="p-5 bg-white">
-                    <span class="text-[11px] font-mono font-bold tracking-widest text-neutral-400 block mb-1">04 // PARCEL SECURITY</span>
-                    <h2 class="text-sm font-bold uppercase font-sans tracking-tight text-black mb-1.5"><?php esc_html_e( 'Tamper-Evident Polybags', 'mazestreetwear' ); ?></h2>
-                    <p class="text-xs text-neutral-600 leading-relaxed font-sans">
+                    <span class="text-xs font-mono font-bold tracking-widest text-neutral-700 block mb-1">04 // PARCEL SECURITY</span>
+                    <h2 class="text-base font-bold uppercase font-sans tracking-tight text-black mb-2"><?php esc_html_e( 'Tamper-Evident Polybags', 'mazestreetwear' ); ?></h2>
+                    <p class="text-sm text-neutral-800 leading-relaxed font-sans font-normal">
                         <?php esc_html_e( 'High-security sealed packaging. Inspect before receiving and reject immediately if torn or compromised.', 'mazestreetwear' ); ?>
                     </p>
                 </div>
@@ -171,80 +171,80 @@ $account_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
                 <!-- Table of Contents -->
                 <div class="border border-black p-5 sm:p-6 bg-white">
                     <div class="flex items-center justify-between pb-3 mb-4 border-b border-black">
-                        <span class="text-xs font-mono font-bold uppercase tracking-wider text-black">
+                        <span class="text-sm font-mono font-bold uppercase tracking-wider text-black">
                             <?php esc_html_e( 'DOCUMENT INDEX', 'mazestreetwear' ); ?>
                         </span>
-                        <span class="text-[10px] font-mono text-neutral-500">8 SECTIONS</span>
+                        <span class="text-xs font-mono font-bold text-neutral-700">8 SECTIONS</span>
                     </div>
 
-                    <nav class="space-y-1 font-mono text-xs">
-                        <a href="#section-1" class="maze-shipping-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                    <nav class="space-y-1 font-mono text-xs sm:text-sm">
+                        <a href="#section-1" class="maze-shipping-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>01. Serviceable Areas & Coverage</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-2" class="maze-shipping-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-2" class="maze-shipping-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>02. Processing & Dispatch Timelines</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-3" class="maze-shipping-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-3" class="maze-shipping-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>03. Estimated Delivery Timelines</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-4" class="maze-shipping-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-4" class="maze-shipping-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>04. Shipping Charges & Thresholds</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-5" class="maze-shipping-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-5" class="maze-shipping-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>05. Tracking Your Shipment</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-6" class="maze-shipping-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-6" class="maze-shipping-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>06. Failed Delivery & Address Errors</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-7" class="maze-shipping-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-7" class="maze-shipping-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>07. Package Tampering & Verification</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-8" class="maze-shipping-toc-link flex items-center justify-between py-2 px-2 hover:bg-neutral-100 transition-colors text-black font-medium border-l-2 border-transparent hover:border-black">
+                        <a href="#section-8" class="maze-shipping-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
                             <span>08. Shipping Support Desk</span>
-                            <span class="text-neutral-400">&rarr;</span>
+                            <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
                     </nav>
                 </div>
 
                 <!-- Carrier Tracking Hub Capsule -->
                 <div class="border border-black p-5 sm:p-6 bg-neutral-50 text-black">
-                    <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500 block mb-1">
+                    <span class="text-xs font-mono font-bold uppercase tracking-widest text-neutral-700 block mb-1">
                         <?php esc_html_e( 'CONSIGNMENT LOOKUP', 'mazestreetwear' ); ?>
                     </span>
                     <h3 class="text-base font-bold font-sans uppercase tracking-tight mb-2">
                         <?php esc_html_e( 'Official Courier Portals', 'mazestreetwear' ); ?>
                     </h3>
-                    <p class="text-xs text-neutral-600 font-sans leading-relaxed mb-4">
+                    <p class="text-sm text-neutral-800 font-sans leading-relaxed mb-4 font-normal">
                         <?php esc_html_e( 'Track your unique Air Waybill (AWB) directly on our carrier partner portals or access live updates from your account dashboard.', 'mazestreetwear' ); ?>
                     </p>
 
-                    <div class="grid grid-cols-2 gap-2 font-mono text-xs mb-3">
-                        <a href="https://www.delhivery.com/tracking" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2 bg-white border border-black hover:bg-black hover:text-white transition-colors group">
-                            <span class="font-medium text-[11px]">Delhivery</span>
-                            <span class="text-[10px] group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                    <div class="grid grid-cols-2 gap-2.5 font-mono text-xs sm:text-sm mb-3">
+                        <a href="https://www.delhivery.com/tracking" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 bg-white border border-black hover:bg-black hover:text-white transition-colors group">
+                            <span class="font-bold text-xs sm:text-sm">Delhivery</span>
+                            <span class="text-xs group-hover:translate-x-0.5 transition-transform">&rarr;</span>
                         </a>
-                        <a href="https://www.bluedart.com/tracking" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2 bg-white border border-black hover:bg-black hover:text-white transition-colors group">
-                            <span class="font-medium text-[11px]">Blue Dart</span>
-                            <span class="text-[10px] group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                        <a href="https://www.bluedart.com/tracking" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 bg-white border border-black hover:bg-black hover:text-white transition-colors group">
+                            <span class="font-bold text-xs sm:text-sm">Blue Dart</span>
+                            <span class="text-xs group-hover:translate-x-0.5 transition-transform">&rarr;</span>
                         </a>
-                        <a href="https://www.dtdc.in/tracking.asp" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2 bg-white border border-black hover:bg-black hover:text-white transition-colors group">
-                            <span class="font-medium text-[11px]">DTDC</span>
-                            <span class="text-[10px] group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                        <a href="https://www.dtdc.in/tracking.asp" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 bg-white border border-black hover:bg-black hover:text-white transition-colors group">
+                            <span class="font-bold text-xs sm:text-sm">DTDC</span>
+                            <span class="text-xs group-hover:translate-x-0.5 transition-transform">&rarr;</span>
                         </a>
-                        <a href="https://www.indiapost.gov.in/_layouts/15/dpt.cpt.content/tracking.aspx" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2 bg-white border border-black hover:bg-black hover:text-white transition-colors group">
-                            <span class="font-medium text-[11px]">India Post</span>
-                            <span class="text-[10px] group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                        <a href="https://www.indiapost.gov.in/_layouts/15/dpt.cpt.content/tracking.aspx" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 bg-white border border-black hover:bg-black hover:text-white transition-colors group">
+                            <span class="font-bold text-xs sm:text-sm">India Post</span>
+                            <span class="text-xs group-hover:translate-x-0.5 transition-transform">&rarr;</span>
                         </a>
                     </div>
 
-                    <a href="<?php echo esc_url( $account_url ); ?>" class="block w-full text-center py-2.5 bg-black text-white hover:bg-neutral-800 font-mono text-xs font-bold uppercase tracking-wider transition-colors">
+                    <a href="<?php echo esc_url( $account_url ); ?>" class="block w-full text-center py-3 bg-black text-white hover:bg-neutral-800 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors">
                         <?php esc_html_e( 'MY ACCOUNT ORDERS →', 'mazestreetwear' ); ?>
                     </a>
                 </div>
