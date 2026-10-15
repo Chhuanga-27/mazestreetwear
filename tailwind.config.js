@@ -26,8 +26,11 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Space Grotesk', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+        sans: ['Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', 'serif'],
+        mono: ['Didot', 'Didot Regular', 'Didot LT STD', 'Georgia', 'serif'],
+        serif: ['Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', 'serif'],
+        didot: ['Didot', 'Didot Regular', 'Didot LT STD', 'Georgia', 'serif'],
+        'didot-title': ['Didot Title', 'Didot', 'Didot Regular', 'Georgia', 'serif']
       },
       letterSpacing: {
         ultra: '0.25em',

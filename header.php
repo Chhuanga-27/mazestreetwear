@@ -25,7 +25,9 @@ $masthead_classes = $is_maze_home
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="profile" href="https://gmpg.org/xfn/11">
+    <!-- Preload Primary Didot Regular & Bold Web Fonts for Instant Rendering -->
+    <link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/Didot.otf' ); ?>" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/Didot-Bold.otf' ); ?>" as="font" type="font/otf" crossorigin>
 
     <!-- Favicon & Site Icons (Multi-size ICO, High-res PNG, Apple Touch & Manifest) -->
     <link rel="shortcut icon" href="<?php echo esc_url( get_template_directory_uri() . '/favicon.ico' ); ?>" type="image/x-icon">

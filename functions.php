@@ -72,15 +72,7 @@ add_action( 'after_setup_theme', 'mazestreetwear_setup' );
 function mazestreetwear_scripts() {
     $theme_version = wp_get_theme()->get( 'Version' );
 
-    // Enqueue Google Fonts: Space Grotesk, Inter (Ultra Bold display) & JetBrains Mono for brutalist streetwear aesthetic
-    wp_enqueue_style(
-        'mazestreetwear-fonts',
-        'https://fonts.googleapis.com/css2?family=Inter:wght@800;900&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap',
-        array(),
-        null
-    );
-
-    // Compiled Tailwind CSS Bundle
+    // Compiled Tailwind CSS Bundle (includes Didot typography and font-face definitions)
     $bundle_css_path = get_template_directory() . '/assets/css/bundle.css';
     $bundle_version  = file_exists( $bundle_css_path ) ? filemtime( $bundle_css_path ) : $theme_version;
 

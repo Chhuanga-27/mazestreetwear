@@ -18,3 +18,63 @@ Tags: e-commerce, streetwear, minimalist, brutalist, monochrome, black-and-white
  * Base styles are compiled via Tailwind CSS pipeline into assets/css/bundle.css
  * Run 'npm run build' or 'npm run dev' to compile styles.
  */
+
+@font-face {
+  font-family: 'Didot';
+  src: url('assets/fonts/Didot.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didot Regular';
+  src: url('assets/fonts/Didot.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didot';
+  src: url('assets/fonts/Didot-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didot Bold';
+  src: url('assets/fonts/Didot-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didot';
+  src: url('assets/fonts/Didot-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didot Title';
+  src: url('assets/fonts/Didot-Title.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea,
+h1, h2, h3, h4, h5, h6,
+p, a, span, label, table, td, th {
+  font-family: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif !important;
+}
+

@@ -2,6 +2,65 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* ==========================================================================
+   Didot Font Family Definitions (Didot Regular, Bold, Italic, Title)
+   ========================================================================== */
+@font-face {
+  font-family: 'Didot';
+  src: url('../fonts/Didot.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didot Regular';
+  src: url('../fonts/Didot.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didot';
+  src: url('../fonts/Didot-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didot Bold';
+  src: url('../fonts/Didot-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didot';
+  src: url('../fonts/Didot-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didot Italic';
+  src: url('../fonts/Didot-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Didot Title';
+  src: url('../fonts/Didot-Title.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --color-maze-bg: #ffffff;
@@ -10,19 +69,35 @@
     --color-maze-border: #000000;
     --color-maze-border-light: #000000;
     --color-maze-accent: #000000;
+    --font-didot: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif;
   }
 
   html {
     background-color: #ffffff;
     color: #000000;
-    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    font-family: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif;
     color-scheme: light;
   }
 
   body {
     background-color: #ffffff;
     color: #000000;
+    font-family: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif;
     overflow-x: hidden;
+  }
+
+  /* Universal typography reset to Didot Regular */
+  *,
+  ::before,
+  ::after,
+  input,
+  button,
+  select,
+  textarea,
+  optgroup,
+  h1, h2, h3, h4, h5, h6,
+  p, a, span, label, table, td, th {
+    font-family: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif;
   }
 
   /* Custom minimal monochrome scrollbar */
@@ -58,7 +133,7 @@
     color: #000000;
     border: 1px solid #000000;
     border-radius: 0px !important;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Didot', 'Didot Regular', serif;
   }
 
   .maze-size-pill:hover {
@@ -87,7 +162,7 @@
     background-color: #ffffff !important;
     border: 1px solid #000000 !important;
     color: #000000 !important;
-    font-family: 'JetBrains Mono', monospace !important;
+    font-family: 'Didot', 'Didot Regular', serif !important;
     font-size: 0.6875rem !important;
     font-weight: 500 !important;
     text-transform: uppercase !important;
@@ -139,7 +214,7 @@
     border-radius: 0 !important;
     letter-spacing: 0.15em !important;
     text-transform: uppercase !important;
-    font-family: 'JetBrains Mono', monospace !important;
+    font-family: 'Didot', 'Didot Regular', serif !important;
     font-size: 0.75rem !important;
     font-weight: 700 !important;
     background-color: #000000 !important;
@@ -180,7 +255,7 @@
     padding: 0.5rem 0.85rem;
     border-right: 1px solid #000000;
     border-bottom: 1px solid #000000;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Didot', 'Didot Regular', serif;
     font-size: 0.75rem;
     color: #000000;
     text-decoration: none;
@@ -207,7 +282,7 @@
     background-color: #ffffff !important;
     border: 1px solid #000000 !important;
     color: #000000 !important;
-    font-family: 'JetBrains Mono', monospace !important;
+    font-family: 'Didot', 'Didot Regular', serif !important;
     font-size: 0.75rem !important;
     padding: 0.85rem 1rem !important;
     margin-bottom: 1.5rem !important;
@@ -363,7 +438,7 @@
 
   /* Editorial Modern Studio Footer Component Styles */
   .maze-footer-brand-title {
-    font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Didot Title', 'Didot', 'Didot Regular', serif;
     font-weight: 900;
     font-size: clamp(5.25rem, 25.5vw, 23rem);
     line-height: 0.82;
