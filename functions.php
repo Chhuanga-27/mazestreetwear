@@ -691,4 +691,56 @@ function mazestreetwear_ensure_legal_pages_exist() {
 add_action( 'init', 'mazestreetwear_ensure_legal_pages_exist', 5 );
 add_action( 'after_switch_theme', 'mazestreetwear_ensure_legal_pages_exist' );
 
+/**
+ * Safe Helper to retrieve product category archive URL
+ *
+ * Checks if the term exists in 'product_cat' taxonomy, returning its canonical permalink.
+ * If not yet created or WP error, gracefully falls back to /product-category/{slug}/
+ *
+ * @param string $slug Product category slug.
+ * @return string Category archive URL.
+ */
+function mazestreetwear_get_product_cat_url( $slug ) {
+    if ( taxonomy_exists( 'product_cat' ) ) {
+        $term = get_term_by( 'slug', $slug, 'product_cat' );
+        if ( ! $term ) {
+            $term = get_term_by( 'name', $slug, 'product_cat' );
+        }
+        if ( $term && ! is_wp_error( $term ) ) {
+            $link = get_term_link( $term, 'product_cat' );
+            if ( ! is_wp_error( $link ) ) {
+                return $link;
+            }
+        }
+    }
+    return home_url( '/product-category/' . sanitize_title( $slug ) . '/' );
+}
+
+/**
+ * Automatically ensure standard storefront product categories exist in WooCommerce
+ * Tops, Bottoms, and Accessories will be registered if not already present.
+ */
+function mazestreetwear_ensure_default_categories() {
+    if ( ! taxonomy_exists( 'product_cat' ) ) {
+        return;
+    }
+
+    $default_cats = array(
+        'tops'        => __( 'Tops', 'mazestreetwear' ),
+        'bottoms'     => __( 'Bottoms', 'mazestreetwear' ),
+        'accessories' => __( 'Accessories', 'mazestreetwear' ),
+    );
+
+    foreach ( $default_cats as $slug => $name ) {
+        if ( ! term_exists( $slug, 'product_cat' ) && ! term_exists( $name, 'product_cat' ) ) {
+            wp_insert_term( $name, 'product_cat', array(
+                'slug'        => $slug,
+                'description' => sprintf( __( 'Minimalist street-ready %s collection.', 'mazestreetwear' ), $name ),
+            ) );
+        }
+    }
+}
+add_action( 'init', 'mazestreetwear_ensure_default_categories', 10 );
+
+
 

@@ -45,22 +45,22 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <ul class="space-y-2.5 text-xs sm:text-sm font-sans font-medium text-neutral-600">
                     <li>
                         <a href="<?php echo esc_url( $shop_url ); ?>" class="hover:text-black transition-colors block">
-                            <?php esc_html_e( 'All Apparel', 'mazestreetwear' ); ?>
+                            <?php esc_html_e( 'Shop All', 'mazestreetwear' ); ?>
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'hoodies', $shop_url ) ); ?>" class="hover:text-black transition-colors block">
-                            <?php esc_html_e( 'Hoodies & Sweats', 'mazestreetwear' ); ?>
+                        <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'tops' ) : home_url( '/product-category/tops/' ) ); ?>" class="hover:text-black transition-colors block">
+                            <?php esc_html_e( 'Tops', 'mazestreetwear' ); ?>
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'tees', $shop_url ) ); ?>" class="hover:text-black transition-colors block">
-                            <?php esc_html_e( 'Heavyweight Tees', 'mazestreetwear' ); ?>
+                        <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'bottoms' ) : home_url( '/product-category/bottoms/' ) ); ?>" class="hover:text-black transition-colors block">
+                            <?php esc_html_e( 'Bottoms', 'mazestreetwear' ); ?>
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'outerwear', $shop_url ) ); ?>" class="hover:text-black transition-colors block">
-                            <?php esc_html_e( 'Cargo & Pants', 'mazestreetwear' ); ?>
+                        <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'accessories' ) : home_url( '/product-category/accessories/' ) ); ?>" class="hover:text-black transition-colors block">
+                            <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
                         </a>
                     </li>
                     <li>

@@ -260,6 +260,23 @@
     border: 1px solid #000000 !important;
   }
 
+  /* Bulletproof Header Logo: Override WooCommerce .woocommerce-page img { height: auto } */
+  .site-header #masthead-logo,
+  .site-header .maze-brand-logo,
+  .site-header .maze-brand-logo img,
+  .maze-pill-navbar img,
+  #masthead img.maze-logo-img,
+  body.woocommerce-page .site-header img,
+  body.woocommerce .site-header img {
+    height: 20px !important;
+    max-height: 22px !important;
+    width: auto !important;
+    max-width: 170px !important;
+    object-fit: contain !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+  }
+
   .maze-search-pill {
     border-radius: 9999px !important;
   }

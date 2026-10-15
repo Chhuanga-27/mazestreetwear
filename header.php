@@ -47,11 +47,15 @@ $masthead_classes = $is_maze_home
 
             <!-- Left: Brand Logo -->
             <div class="flex-shrink-0 flex items-center mr-2 sm:mr-4">
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="group flex items-center select-none" rel="home" aria-label="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>">
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="maze-brand-logo group flex items-center select-none flex-shrink-0" rel="home" aria-label="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>">
                     <img 
+                        id="masthead-logo"
                         src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>" 
                         alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" 
-                        class="h-[18px] sm:h-5 md:h-[22px] w-auto max-w-[130px] sm:max-w-[170px] md:max-w-[200px] object-contain transition-opacity duration-150 group-hover:opacity-75"
+                        width="160"
+                        height="22"
+                        style="height: 20px !important; max-height: 22px !important; width: auto !important; max-width: 170px !important; object-fit: contain !important; display: block !important;"
+                        class="maze-logo-img h-5 md:h-[22px] w-auto max-w-[130px] sm:max-w-[160px] md:max-w-[180px] object-contain transition-opacity duration-150 group-hover:opacity-75"
                     />
                 </a>
             </div>
@@ -69,31 +73,29 @@ $masthead_classes = $is_maze_home
                         'items_wrap'     => '<ul id="%1$s" class="%2$s">%3$s</ul>',
                     ) );
                 else :
+                    $tops_url        = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'tops' ) : home_url( '/product-category/tops/' );
+                    $bottoms_url     = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'bottoms' ) : home_url( '/product-category/bottoms/' );
+                    $accessories_url = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'accessories' ) : home_url( '/product-category/accessories/' );
                 ?>
                     <ul class="flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-xs lg:text-[13px] font-bold font-sans tracking-wider uppercase text-neutral-800 whitespace-nowrap">
                         <li>
-                            <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'womenswear', $shop_page_url ) ); ?>" class="hover:text-black transition-colors duration-150 py-1">
-                                WOMENSWEAR
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'menswear', $shop_page_url ) ); ?>" class="hover:text-black transition-colors duration-150 py-1">
-                                MENSWEAR
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo esc_url( home_url( '/archive/' ) ); ?>" class="hover:text-black transition-colors duration-150 py-1">
-                                KIDS
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo esc_url( add_query_arg( 'on_sale', '1', $shop_page_url ) ); ?>" class="hover:text-black transition-colors duration-150 py-1">
-                                SALE
-                            </a>
-                        </li>
-                        <li>
                             <a href="<?php echo esc_url( $shop_page_url ); ?>" class="hover:text-black transition-colors duration-150 py-1">
-                                DISCOVER
+                                <?php esc_html_e( 'Shop All', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo esc_url( $tops_url ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                                <?php esc_html_e( 'Tops', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo esc_url( $bottoms_url ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                                <?php esc_html_e( 'Bottoms', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo esc_url( $accessories_url ); ?>" class="hover:text-black transition-colors duration-150 py-1">
+                                <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                     </ul>
@@ -175,25 +177,25 @@ $masthead_classes = $is_maze_home
                     'menu_class'     => 'flex flex-col space-y-3 text-sm font-sans font-bold tracking-wider uppercase text-black',
                 ) );
             else :
+                $tops_url        = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'tops' ) : home_url( '/product-category/tops/' );
+                $bottoms_url     = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'bottoms' ) : home_url( '/product-category/bottoms/' );
+                $accessories_url = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'accessories' ) : home_url( '/product-category/accessories/' );
             ?>
                 <div class="flex flex-col space-y-3 text-sm font-sans font-bold tracking-wider uppercase">
-                    <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'womenswear', $shop_page_url ) ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
-                        WOMENSWEAR
-                    </a>
-                    <a href="<?php echo esc_url( add_query_arg( 'filter_cat', 'menswear', $shop_page_url ) ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
-                        MENSWEAR
-                    </a>
-                    <a href="<?php echo esc_url( home_url( '/archive/' ) ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
-                        KIDS
-                    </a>
-                    <a href="<?php echo esc_url( add_query_arg( 'on_sale', '1', $shop_page_url ) ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
-                        SALE
-                    </a>
                     <a href="<?php echo esc_url( $shop_page_url ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
-                        DISCOVER
+                        <?php esc_html_e( 'Shop All', 'mazestreetwear' ); ?>
+                    </a>
+                    <a href="<?php echo esc_url( $tops_url ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                        <?php esc_html_e( 'Tops', 'mazestreetwear' ); ?>
+                    </a>
+                    <a href="<?php echo esc_url( $bottoms_url ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                        <?php esc_html_e( 'Bottoms', 'mazestreetwear' ); ?>
+                    </a>
+                    <a href="<?php echo esc_url( $accessories_url ); ?>" class="text-black hover:opacity-60 py-1.5 border-b border-neutral-100 transition-opacity">
+                        <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
                     </a>
                     <a href="<?php echo esc_url( home_url( '/contact-us/' ) ); ?>" class="text-black hover:opacity-60 py-1.5 transition-opacity">
-                        CONTACT
+                        <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
                     </a>
                 </div>
             <?php endif; ?>
