@@ -26,11 +26,10 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', 'serif'],
+        sans: ['Didot', 'Didot Regular', 'Didot LT STD', 'Georgia', 'serif'],
         mono: ['Didot', 'Didot Regular', 'Didot LT STD', 'Georgia', 'serif'],
-        serif: ['Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', 'serif'],
-        didot: ['Didot', 'Didot Regular', 'Didot LT STD', 'Georgia', 'serif'],
-        'didot-title': ['Didot Title', 'Didot', 'Didot Regular', 'Georgia', 'serif']
+        serif: ['Didot', 'Didot Regular', 'Didot LT STD', 'Georgia', 'serif'],
+        didot: ['Didot', 'Didot Regular', 'Didot LT STD', 'Georgia', 'serif']
       },
       letterSpacing: {
         ultra: '0.25em',
