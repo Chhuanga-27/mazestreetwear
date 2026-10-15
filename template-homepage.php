@@ -49,11 +49,155 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
         </div>
     </section>
 
-    <!-- 2. Architectural Product Card Grid -->
+    <?php
+    // Editorial Showcase Garments (Dynamic WooCommerce integration with pristine high-res defaults)
+    $showcase_item_1 = array(
+        'title'     => 'PUFFER GILET',
+        'price'     => 'INR 1999',
+        'image'     => get_template_directory_uri() . '/assets/images/product-puffer-gilet.jpg',
+        'permalink' => $shop_url,
+    );
+
+    $showcase_item_2 = array(
+        'title'     => 'ARCHIVE HOODIE',
+        'price'     => 'INR 2499',
+        'image'     => get_template_directory_uri() . '/assets/images/product-archive-hoodie.jpg',
+        'permalink' => $shop_url,
+    );
+
+    if ( class_exists( 'WooCommerce' ) ) {
+        // Look for puffer-gilet first or query latest published garments
+        $puffer_post = get_page_by_path( 'puffer-gilet', OBJECT, 'product' );
+        if ( ! $puffer_post ) {
+            $puffer_q = new WP_Query( array(
+                'post_type'      => 'product',
+                'post_status'    => 'publish',
+                'posts_per_page' => 1,
+                's'              => 'Puffer Gilet',
+            ) );
+            if ( $puffer_q->have_posts() ) {
+                $puffer_q->the_post();
+                $puffer_post = get_post();
+                wp_reset_postdata();
+            }
+        }
+
+        if ( $puffer_post ) {
+            $wc_p1 = wc_get_product( $puffer_post->ID );
+            if ( $wc_p1 ) {
+                $showcase_item_1['title']     = $wc_p1->get_name();
+                $showcase_item_1['price']     = $wc_p1->get_price_html();
+                $showcase_item_1['permalink'] = $wc_p1->get_permalink();
+                if ( has_post_thumbnail( $puffer_post->ID ) ) {
+                    $showcase_item_1['image'] = get_the_post_thumbnail_url( $puffer_post->ID, 'full' );
+                }
+            }
+        } else {
+            // Use 1st published WooCommerce product if available
+            $first_q = new WP_Query( array(
+                'post_type'      => 'product',
+                'post_status'    => 'publish',
+                'posts_per_page' => 1,
+            ) );
+            if ( $first_q->have_posts() ) {
+                $first_q->the_post();
+                $wc_first = wc_get_product( get_the_ID() );
+                if ( $wc_first ) {
+                    $showcase_item_1['title']     = $wc_first->get_name();
+                    $showcase_item_1['price']     = $wc_first->get_price_html();
+                    $showcase_item_1['permalink'] = $wc_first->get_permalink();
+                    if ( has_post_thumbnail( get_the_ID() ) ) {
+                        $showcase_item_1['image'] = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+                    }
+                }
+                wp_reset_postdata();
+            }
+        }
+
+        // 2nd showcase product
+        $second_q = new WP_Query( array(
+            'post_type'      => 'product',
+            'post_status'    => 'publish',
+            'posts_per_page' => 1,
+            'offset'         => 1,
+        ) );
+        if ( $second_q->have_posts() ) {
+            $second_q->the_post();
+            $wc_sec = wc_get_product( get_the_ID() );
+            if ( $wc_sec ) {
+                $showcase_item_2['title']     = $wc_sec->get_name();
+                $showcase_item_2['price']     = $wc_sec->get_price_html();
+                $showcase_item_2['permalink'] = $wc_sec->get_permalink();
+                if ( has_post_thumbnail( get_the_ID() ) ) {
+                    $showcase_item_2['image'] = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+                }
+            }
+            wp_reset_postdata();
+        }
+    }
+    ?>
+
+    <!-- 2. Featured Editorial Showcase - Product 1 (Product Image on Left, Title & Price on Right) -->
+    <section class="maze-showcase-section w-full bg-white border-b border-black">
+        <div class="max-w-7xl mx-auto border-x border-t border-black">
+            <a href="<?php echo esc_url( $showcase_item_1['permalink'] ); ?>" class="maze-showcase-card group grid grid-cols-2 bg-white overflow-hidden focus:outline-none" aria-label="<?php echo esc_attr( $showcase_item_1['title'] ); ?>">
+                <!-- Left: Product Image -->
+                <div class="maze-showcase-media relative w-full aspect-[4/5] bg-[#eae7e1] overflow-hidden">
+                    <img 
+                        src="<?php echo esc_url( $showcase_item_1['image'] ); ?>" 
+                        alt="<?php echo esc_attr( $showcase_item_1['title'] ); ?>" 
+                        loading="lazy"
+                        decoding="async"
+                        class="w-full h-full object-cover object-center select-none transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                </div>
+
+                <!-- Right: Product Information -->
+                <div class="maze-showcase-info flex flex-col justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-6 sm:py-10 bg-white select-none">
+                    <h2 class="maze-showcase-title text-base sm:text-2xl md:text-3xl lg:text-5xl font-normal uppercase tracking-wider text-black group-hover:opacity-60 transition-opacity">
+                        <?php echo esc_html( $showcase_item_1['title'] ); ?>
+                    </h2>
+                    <div class="maze-showcase-price text-xs sm:text-base md:text-xl lg:text-3xl font-normal uppercase tracking-wide text-black mt-1.5 sm:mt-3 md:mt-4">
+                        <?php echo wp_kses_post( $showcase_item_1['price'] ); ?>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 3. Featured Editorial Showcase - Product 2 (Title & Price on Left, Product Image on Right) -->
+    <section class="maze-showcase-section w-full bg-white border-b border-black">
+        <div class="max-w-7xl mx-auto border-x border-black">
+            <a href="<?php echo esc_url( $showcase_item_2['permalink'] ); ?>" class="maze-showcase-card group grid grid-cols-2 bg-white overflow-hidden focus:outline-none" aria-label="<?php echo esc_attr( $showcase_item_2['title'] ); ?>">
+                <!-- Left: Product Information -->
+                <div class="maze-showcase-info flex flex-col justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-6 sm:py-10 bg-white select-none">
+                    <h2 class="maze-showcase-title text-base sm:text-2xl md:text-3xl lg:text-5xl font-normal uppercase tracking-wider text-black group-hover:opacity-60 transition-opacity">
+                        <?php echo esc_html( $showcase_item_2['title'] ); ?>
+                    </h2>
+                    <div class="maze-showcase-price text-xs sm:text-base md:text-xl lg:text-3xl font-normal uppercase tracking-wide text-black mt-1.5 sm:mt-3 md:mt-4">
+                        <?php echo wp_kses_post( $showcase_item_2['price'] ); ?>
+                    </div>
+                </div>
+
+                <!-- Right: Product Image -->
+                <div class="maze-showcase-media relative w-full aspect-[4/5] bg-[#eae7e1] overflow-hidden">
+                    <img 
+                        src="<?php echo esc_url( $showcase_item_2['image'] ); ?>" 
+                        alt="<?php echo esc_attr( $showcase_item_2['title'] ); ?>" 
+                        loading="lazy"
+                        decoding="async"
+                        class="w-full h-full object-cover object-center select-none transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 4. Architectural Product Card Grid -->
     <section class="w-full bg-white border-b border-black">
         
         <!-- Section Header -->
-        <div class="max-w-7xl mx-auto border-x border-t border-black">
+        <div class="max-w-7xl mx-auto border-x border-black">
             <div class="px-4 sm:px-6 lg:px-8 py-5 sm:py-6 border-b border-black flex items-center justify-between bg-white">
                 <h2 class="text-base sm:text-lg lg:text-xl font-black font-sans uppercase tracking-wider text-black">
                     <?php esc_html_e( 'READY-TO-WEAR', 'mazestreetwear' ); ?>

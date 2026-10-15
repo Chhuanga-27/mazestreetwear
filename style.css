@@ -255,4 +255,39 @@ body.woocommerce .site-header img {
   }
 }
 
+/* Editorial Single Product Showcase (Alternating Split Sections) */
+.maze-showcase-card {
+  text-decoration: none !important;
+  color: #000000 !important;
+}
+
+.maze-showcase-media {
+  aspect-ratio: 4 / 5;
+}
+
+.maze-showcase-media img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.maze-showcase-title {
+  font-family: Didot, "Didot Regular", "Didot LT STD", Georgia, serif !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1.15 !important;
+}
+
+.maze-showcase-price {
+  font-family: Didot, "Didot Regular", "Didot LT STD", Georgia, serif !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.05em !important;
+}
+
 
