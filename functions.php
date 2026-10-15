@@ -925,6 +925,32 @@ add_action( 'wp_ajax_nopriv_maze_contact_submission', 'mazestreetwear_handle_con
 add_action( 'admin_post_maze_contact_submission', 'mazestreetwear_handle_contact_submission' );
 add_action( 'admin_post_nopriv_maze_contact_submission', 'mazestreetwear_handle_contact_submission' );
 
+/**
+ * Default Favicon & Site Icon Support for Maze Streetwear
+ * Ensures WordPress core, REST API, feeds, and third-party plugins use the custom MAZE emblem favicon
+ * when no icon is uploaded in Appearance > Customize.
+ */
+function mazestreetwear_filter_site_icon_url( $url, $size, $blog_id ) {
+    if ( ! empty( $url ) ) {
+        return $url;
+    }
 
+    $theme_dir = get_template_directory_uri();
 
-
+    if ( $size <= 16 ) {
+        return $theme_dir . '/assets/images/favicon-16x16.png';
+    } elseif ( $size <= 32 ) {
+        return $theme_dir . '/assets/images/favicon-32x32.png';
+    } elseif ( $size <= 48 ) {
+        return $theme_dir . '/assets/images/favicon-48x48.png';
+    } elseif ( $size <= 96 ) {
+        return $theme_dir . '/assets/images/favicon-96x96.png';
+    } elseif ( $size <= 180 ) {
+        return $theme_dir . '/assets/images/apple-touch-icon.png';
+    } elseif ( $size <= 192 ) {
+        return $theme_dir . '/assets/images/android-chrome-192x192.png';
+    } else {
+        return $theme_dir . '/assets/images/android-chrome-512x512.png';
+    }
+}
+add_filter( 'get_site_icon_url', 'mazestreetwear_filter_site_icon_url', 10, 3 );

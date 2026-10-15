@@ -26,6 +26,104 @@ $masthead_classes = $is_maze_home
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="profile" href="https://gmpg.org/xfn/11">
+
+    <!-- Favicon & Site Icons (Multi-size ICO, High-res PNG, Apple Touch & Manifest) -->
+    <link rel="shortcut icon" href="<?php echo esc_url( get_template_directory_uri() . '/favicon.ico' ); ?>" type="image/x-icon">
+    <link rel="icon" href="<?php echo esc_url( get_template_directory_uri() . '/favicon.ico' ); ?>" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( get_template_directory_uri() . '/assets/images/favicon-16x16.png' ); ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( get_template_directory_uri() . '/assets/images/favicon-32x32.png' ); ?>">
+    <!-- Google Search Favicon Specifications (Multiples of 48px square) -->
+    <link rel="icon" type="image/png" sizes="48x48" href="<?php echo esc_url( get_template_directory_uri() . '/assets/images/favicon-48x48.png' ); ?>">
+    <link rel="icon" type="image/png" sizes="96x96" href="<?php echo esc_url( get_template_directory_uri() . '/assets/images/favicon-96x96.png' ); ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url( get_template_directory_uri() . '/assets/images/apple-touch-icon.png' ); ?>">
+    <link rel="manifest" href="<?php echo esc_url( get_template_directory_uri() . '/site.webmanifest' ); ?>">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-title" content="MAZE">
+    <meta name="application-name" content="Maze Streetwear">
+
+    <?php
+    $maze_current_url = home_url( add_query_arg( array(), $GLOBALS['wp']->request ?? '' ) );
+    $maze_page_title  = wp_get_document_title();
+    $maze_meta_desc   = get_bloginfo( 'description' ) ? get_bloginfo( 'description' ) : 'Official online store of Maze Streetwear — Contemporary oversized cuts, heavy hoodies, bottoms, and brutalist apparel.';
+    $maze_logo_url    = get_template_directory_uri() . '/assets/images/maze_logo.png';
+    $maze_og_img      = get_template_directory_uri() . '/assets/images/og-image.png';
+    ?>
+
+    <!-- Search Engine & Social Media Sharing (Google, WhatsApp, Twitter/X, Instagram) -->
+    <meta property="og:site_name" content="Maze Streetwear">
+    <meta property="og:type" content="<?php echo is_singular( 'product' ) ? 'product' : ( is_singular() ? 'article' : 'website' ); ?>">
+    <meta property="og:title" content="<?php echo esc_attr( $maze_page_title ); ?>">
+    <meta property="og:description" content="<?php echo esc_attr( $maze_meta_desc ); ?>">
+    <meta property="og:url" content="<?php echo esc_url( $maze_current_url ); ?>">
+    <meta property="og:image" content="<?php echo esc_url( $maze_og_img ); ?>">
+    <meta property="og:image:secure_url" content="<?php echo esc_url( $maze_og_img ); ?>">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Maze Streetwear Brand Emblem">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php echo esc_attr( $maze_page_title ); ?>">
+    <meta name="twitter:description" content="<?php echo esc_attr( $maze_meta_desc ); ?>">
+    <meta name="twitter:image" content="<?php echo esc_url( $maze_og_img ); ?>">
+
+    <!-- Google Search Structured Data (Site Name, Brand Identity & Official Logo) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "<?php echo esc_url( home_url( '/#website' ) ); ?>",
+          "url": "<?php echo esc_url( home_url( '/' ) ); ?>",
+          "name": "Maze Streetwear",
+          "alternateName": ["MAZE", "mazestw.in", "MAZE STREETWEAR", "Maze Clothing"],
+          "description": "<?php echo esc_js( $maze_meta_desc ); ?>",
+          "publisher": {
+            "@id": "<?php echo esc_url( home_url( '/#organization' ) ); ?>"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "<?php echo esc_url( home_url( '/?s={search_term_string}' ) ); ?>"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "ClothingStore",
+          "@id": "<?php echo esc_url( home_url( '/#organization' ) ); ?>",
+          "name": "Maze Streetwear",
+          "alternateName": ["MAZE", "mazestw.in"],
+          "url": "<?php echo esc_url( home_url( '/' ) ); ?>",
+          "logo": {
+            "@type": "ImageObject",
+            "@id": "<?php echo esc_url( home_url( '/#logo' ) ); ?>",
+            "url": "<?php echo esc_url( $maze_logo_url ); ?>",
+            "contentUrl": "<?php echo esc_url( $maze_logo_url ); ?>",
+            "caption": "Maze Streetwear Official Brand Logo",
+            "inLanguage": "en-US",
+            "width": 1524,
+            "height": 168
+          },
+          "image": "<?php echo esc_url( $maze_og_img ); ?>",
+          "description": "Contemporary streetwear brand offering oversized tees, heavy hoodies, bottoms, and brutalist luxury apparel.",
+          "telephone": "+918787324795",
+          "email": "enquiries@mazestw.in",
+          "priceRange": "₹₹",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Bungkawn Vengthar, A-25",
+            "addressLocality": "Aizawl",
+            "addressRegion": "Mizoram",
+            "postalCode": "796005",
+            "addressCountry": "IN"
+          }
+        }
+      ]
+    }
+    </script>
+
     <?php wp_head(); ?>
 </head>
 
