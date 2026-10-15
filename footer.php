@@ -190,7 +190,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <?php esc_html_e( 'Shipping Policy', 'mazestreetwear' ); ?>
                 </a>
                 <span class="text-neutral-300 hidden md:inline">&middot;</span>
-                <a href="<?php echo esc_url( home_url( '/refund-policy' ) ); ?>" class="hover:text-black transition-colors hidden md:inline">
+                <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazestreetwear_get_refund_policy_url() : home_url( '/refund-policy/' ) ); ?>" class="hover:text-black transition-colors hidden md:inline">
                     <?php esc_html_e( 'Refunds', 'mazestreetwear' ); ?>
                 </a>
             </div>

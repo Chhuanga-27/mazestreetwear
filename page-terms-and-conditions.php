@@ -251,8 +251,8 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( home_url( '/refund-policy' ) ); ?>" class="text-neutral-700 hover:text-black underline-offset-4 hover:underline flex items-center justify-between">
-                                <span><?php esc_html_e( 'Refund & Exchange Terms', 'mazestreetwear' ); ?></span>
+                            <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazestreetwear_get_refund_policy_url() : home_url( '/refund-policy/' ) ); ?>" class="text-neutral-700 hover:text-black underline-offset-4 hover:underline flex items-center justify-between">
+                                <span><?php esc_html_e( 'Refund & Exchange Policy', 'mazestreetwear' ); ?></span>
                                 <span class="text-neutral-400 font-mono text-[11px]">&rarr;</span>
                             </a>
                         </li>
