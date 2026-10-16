@@ -113,56 +113,38 @@ function mazestreetwear_scripts()
         true
     );
 
-    // Pass data to JS (e.g. AJAX URLs, cart status)
+    // Pass data to JS
     wp_localize_script('mazestreetwear-main', 'mazeData', array(
-        'ajaxUrl'   => admin_url('admin-ajax.php'),
-        'nonce'     => wp_create_nonce('maze_cart_nonce'),
-        'cartUrl'   => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
-        'shopUrl'   => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
-        'cartCount' => mazestreetwear_get_cart_count(),
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce'   => wp_create_nonce('maze_cart_nonce'),
+        'cartUrl' => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
+        'shopUrl' => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
     ));
 }
 add_action('wp_enqueue_scripts', 'mazestreetwear_scripts');
 
 /**
- * Safe and validated WooCommerce cart item count helper.
- * Filters out invalid, deleted, or unverified products from session counts.
+ * ============================================================================
+ * WOOCOMMERCE CART CORE (CLEAN RESET)
+ * Standard WooCommerce cart item count, dynamic fragments, and size data
+ * ============================================================================
+ */
+
+/**
+ * Return live total items count in WooCommerce cart
+ *
+ * @return int
  */
 function mazestreetwear_get_cart_count()
 {
-    if (! function_exists('WC') || ! WC()->cart) {
-        return 0;
+    if (function_exists('WC') && WC()->cart) {
+        return WC()->cart->get_cart_contents_count();
     }
-
-    if (WC()->cart->is_empty()) {
-        return 0;
-    }
-
-    $raw_count = WC()->cart->get_cart_contents_count();
-    if ($raw_count <= 0) {
-        return 0;
-    }
-
-    // Verify whether products in cart actually exist in the database
-    $valid_count = 0;
-    $cart_contents = WC()->cart->get_cart();
-    if (empty($cart_contents)) {
-        return 0;
-    }
-
-    foreach ($cart_contents as $cart_item) {
-        if (! empty($cart_item['data']) && is_object($cart_item['data']) && $cart_item['data']->exists()) {
-            $valid_count += isset($cart_item['quantity']) ? (int) $cart_item['quantity'] : 1;
-        }
-    }
-
-    return $valid_count;
+    return 0;
 }
 
 /**
- * Dynamic WooCommerce AJAX Cart Count Fragment
- * Updates the shopping bag count badge dynamically on AJAX add-to-cart events without page reloads.
- * Automatically hides badge when cart is empty.
+ * Update the shopping bag count badge dynamically via standard WooCommerce fragments
  *
  * @param array $fragments Existing fragments.
  * @return array
@@ -172,7 +154,6 @@ function mazestreetwear_cart_count_fragments($fragments)
     $count = mazestreetwear_get_cart_count();
     $is_empty = ($count <= 0);
 
-    // Generate updated badge HTML fragment: Black bag badge with white number counter
     ob_start();
 ?>
     <span class="maze-cart-count absolute -top-1.5 -right-2.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-mono font-bold tracking-tight text-white bg-black border border-white rounded-full transition-all duration-200 <?php echo $is_empty ? 'hidden' : 'scale-100'; ?>" data-count="<?php echo esc_attr($count); ?>" <?php echo $is_empty ? 'style="display:none;"' : ''; ?>>
@@ -186,216 +167,54 @@ function mazestreetwear_cart_count_fragments($fragments)
 add_filter('woocommerce_add_to_cart_fragments', 'mazestreetwear_cart_count_fragments');
 
 /**
- * Direct Single-Product AJAX Add to Bag Handler (Simple & Variable)
+ * Ensure guest customer session is always initiated to prevent lost cart items & cookie desync
  */
-function mazestreetwear_ajax_add_to_cart()
-{
-    check_ajax_referer('maze_cart_nonce', 'security');
-
-    if (! function_exists('WC') || ! WC()->cart) {
-        wp_send_json_error(array('message' => __('WooCommerce is not active.', 'mazestreetwear')));
-    }
-
-    // Ensure customer session is properly initialized for guest users
-    if (WC()->session && ! WC()->session->has_session()) {
-        WC()->session->set_customer_session_cookie(true);
-    }
-
-    $product_id   = isset($_POST['product_id']) ? absint($_POST['product_id']) : (isset($_POST['add-to-cart']) ? absint($_POST['add-to-cart']) : 0);
-    $quantity     = isset($_POST['quantity']) ? (function_exists('wc_stock_amount') ? wc_stock_amount(wp_unslash($_POST['quantity'])) : absint($_POST['quantity'])) : 1;
-    $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
-    $variations   = array();
-
-    if (! $product_id) {
-        wp_send_json_error(array('message' => __('Invalid product.', 'mazestreetwear')));
-    }
-
-    // Collect variation attributes
-    foreach ($_POST as $key => $value) {
-        if (0 === strpos($key, 'attribute_')) {
-            $variations[sanitize_title($key)] = wp_unslash($value);
+add_action('init', function () {
+    if (function_exists('WC') && ! is_admin()) {
+        if (WC()->session && ! WC()->session->has_session()) {
+            WC()->session->set_customer_session_cookie(true);
         }
     }
-
-    $product = function_exists('wc_get_product') ? wc_get_product($variation_id ? $variation_id : $product_id) : null;
-    if (! $product) {
-        wp_send_json_error(array('message' => __('Product not found.', 'mazestreetwear')));
-    }
-
-    $passed_validation = apply_filters('woocommerce_add_to_cart_validation', true, $product_id, $quantity, $variation_id, $variations);
-
-    if ($passed_validation) {
-        $cart_item_key = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $variations);
-        if ($cart_item_key) {
-            do_action('woocommerce_ajax_added_to_cart', $product_id);
-
-            // Ensure cookies (cart hash, items count, session) are set in response headers
-            WC()->cart->maybe_set_cart_cookies();
-
-            $fragments  = apply_filters('woocommerce_add_to_cart_fragments', array());
-            $cart_hash  = WC()->cart->get_cart_hash();
-            $cart_count = mazestreetwear_get_cart_count();
-
-            wp_send_json(array(
-                'error'      => false,
-                'fragments'  => $fragments,
-                'cart_hash'  => $cart_hash,
-                'cart_count' => $cart_count,
-                'cart_url'   => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
-                'message'    => __('Product successfully added to your bag.', 'mazestreetwear'),
-            ));
-        } else {
-            $notices = function_exists('wc_get_notices') ? wc_get_notices('error') : array();
-            $raw_msg = ! empty($notices) ? $notices[0]['notice'] : __('This product could not be added to your bag.', 'mazestreetwear');
-
-            // Clean up message: strip HTML tags, decode HTML entities like &mdash;, and remove trailing "View cart"
-            $msg = html_entity_decode(wp_strip_all_tags($raw_msg), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-            $msg = preg_replace('/\s*(View cart|View basket)\s*$/i', '', $msg);
-
-            if (function_exists('wc_clear_notices')) {
-                wc_clear_notices();
-            }
-
-            // Ensure cookies remain valid
-            WC()->cart->maybe_set_cart_cookies();
-
-            // Detect whether this item is already in cart (stock limit conflict)
-            $already_in_cart = false;
-            $target_id = $variation_id ? $variation_id : $product_id;
-            if (! WC()->cart->is_empty()) {
-                foreach (WC()->cart->get_cart() as $cart_item) {
-                    if ((int) $cart_item['product_id'] === $product_id || (! empty($cart_item['variation_id']) && (int) $cart_item['variation_id'] === $target_id)) {
-                        $already_in_cart = true;
-                        break;
-                    }
-                }
-            }
-
-            $fragments  = apply_filters('woocommerce_add_to_cart_fragments', array());
-            $cart_hash  = WC()->cart->get_cart_hash();
-            $cart_count = mazestreetwear_get_cart_count();
-
-            wp_send_json_error(array(
-                'message'         => $msg,
-                'already_in_cart' => $already_in_cart,
-                'cart_count'      => $cart_count,
-                'fragments'       => $fragments,
-                'cart_hash'       => $cart_hash,
-                'cart_url'        => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
-            ));
-        }
-    } else {
-        $notices = function_exists('wc_get_notices') ? wc_get_notices('error') : array();
-        $raw_msg = ! empty($notices) ? $notices[0]['notice'] : __('Please select all required product options.', 'mazestreetwear');
-        $msg = html_entity_decode(wp_strip_all_tags($raw_msg), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        $msg = preg_replace('/\s*(View cart|View basket)\s*$/i', '', $msg);
-
-        if (function_exists('wc_clear_notices')) {
-            wc_clear_notices();
-        }
-
-        $fragments  = apply_filters('woocommerce_add_to_cart_fragments', array());
-        $cart_count = mazestreetwear_get_cart_count();
-
-        wp_send_json_error(array(
-            'message'    => $msg,
-            'cart_count' => $cart_count,
-            'fragments'  => $fragments,
-            'cart_url'   => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
-        ));
-    }
-}
-add_action('wp_ajax_maze_ajax_add_to_cart', 'mazestreetwear_ajax_add_to_cart');
-add_action('wp_ajax_nopriv_maze_ajax_add_to_cart', 'mazestreetwear_ajax_add_to_cart');
-
-/**
- * Lightweight Cart Count & Fragment AJAX sync endpoint
- */
-function mazestreetwear_ajax_get_cart_fragments()
-{
-    $count = mazestreetwear_get_cart_count();
-    $fragments = apply_filters('woocommerce_add_to_cart_fragments', array());
-    $cart_hash = (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_hash() : '';
-
-    wp_send_json_success(array(
-        'cart_count' => $count,
-        'fragments'  => $fragments,
-        'cart_hash'  => $cart_hash,
-        'cart_url'   => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
-    ));
-}
-add_action('wp_ajax_maze_get_cart_fragments', 'mazestreetwear_ajax_get_cart_fragments');
-add_action('wp_ajax_nopriv_maze_get_cart_fragments', 'mazestreetwear_ajax_get_cart_fragments');
+}, 5);
 
 /**
  * Preserve custom selected_size in cart item data for simple products
- *
- * @param array $cart_item_data Cart item data.
- * @param int   $product_id     Product ID.
- * @param int   $variation_id   Variation ID.
- * @return array
  */
-function mazestreetwear_add_custom_cart_item_data($cart_item_data, $product_id, $variation_id)
-{
+add_filter('woocommerce_add_cart_item_data', function ($cart_item_data, $product_id) {
     if (! empty($_POST['selected_size'])) {
         $cart_item_data['selected_size'] = sanitize_text_field(wp_unslash($_POST['selected_size']));
+        $cart_item_data['unique_key']    = md5(microtime() . wp_rand());
     }
     return $cart_item_data;
-}
-add_filter('woocommerce_add_cart_item_data', 'mazestreetwear_add_custom_cart_item_data', 10, 3);
+}, 10, 2);
 
 /**
  * Display custom selected_size in cart and checkout
- *
- * @param array $item_data Existing item data.
- * @param array $cart_item Cart item data.
- * @return array
  */
-function mazestreetwear_display_custom_cart_item_data($item_data, $cart_item)
-{
+add_filter('woocommerce_get_item_data', function ($item_data, $cart_item) {
     if (! empty($cart_item['selected_size'])) {
         $item_data[] = array(
-            'key'   => __('Size', 'mazestreetwear'),
-            'value' => function_exists('wc_clean') ? wc_clean($cart_item['selected_size']) : sanitize_text_field($cart_item['selected_size']),
+            'key'     => __('Size', 'mazestreetwear'),
+            'value'   => sanitize_text_field($cart_item['selected_size']),
+            'display' => '',
         );
     }
     return $item_data;
-}
-add_filter('woocommerce_get_item_data', 'mazestreetwear_display_custom_cart_item_data', 10, 2);
+}, 10, 2);
 
 /**
  * Save custom selected_size to order line item
- *
- * @param \WC_Order_Item_Product $item          Order item.
- * @param string                $cart_item_key Cart item key.
- * @param array                 $values        Cart item values.
- * @param \WC_Order             $order         Order object.
  */
-function mazestreetwear_save_custom_order_item_meta($item, $cart_item_key, $values, $order)
-{
+add_action('woocommerce_checkout_create_order_line_item', function ($item, $cart_item_key, $values, $order) {
     if (! empty($values['selected_size']) && is_object($item) && method_exists($item, 'add_meta_data')) {
         $item->add_meta_data(__('Size', 'mazestreetwear'), $values['selected_size'], true);
     }
-}
-add_action('woocommerce_checkout_create_order_line_item', 'mazestreetwear_save_custom_order_item_meta', 10, 4);
+}, 10, 4);
 
-/**
- * Allow clearing the cart via URL query parameter ?empty-cart=1 for instant debugging/testing
- */
-function mazestreetwear_empty_cart_listener()
-{
-    if (isset($_GET['empty-cart']) && function_exists('WC') && WC()->cart) {
-        WC()->cart->empty_cart();
-        $redirect = remove_query_arg('empty-cart');
-        wp_safe_redirect($redirect);
-        exit;
-    }
-}
 /**
  * Prevent caching on WooCommerce Cart and Checkout pages
  */
-function mazestreetwear_prevent_cart_caching()
-{
+add_action('template_redirect', function () {
     if (! is_admin() && function_exists('is_cart') && function_exists('is_checkout')) {
         if (is_cart() || is_checkout() || (function_exists('is_wc_endpoint_url') && is_wc_endpoint_url())) {
             if (! defined('DONOTCACHEPAGE')) {
@@ -412,12 +231,22 @@ function mazestreetwear_prevent_cart_caching()
                 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0, private');
                 header('Pragma: no-cache');
                 header('Expires: Wed, 11 Jan 1984 05:00:00 GMT');
-                header('X-LiteSpeed-Cache-Control: no-cache');
             }
         }
     }
-}
-add_action('template_redirect', 'mazestreetwear_prevent_cart_caching', 1);
+}, 1);
+
+/**
+ * Allow clearing the cart via URL query parameter ?empty-cart=1 for instant debugging/testing
+ */
+add_action('init', function () {
+    if (isset($_GET['empty-cart']) && function_exists('WC') && WC()->cart) {
+        WC()->cart->empty_cart();
+        $redirect = remove_query_arg('empty-cart');
+        wp_safe_redirect($redirect);
+        exit;
+    }
+}, 20);
 
 
 /**

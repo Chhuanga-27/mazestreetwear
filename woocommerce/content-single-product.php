@@ -16,11 +16,12 @@ defined( 'ABSPATH' ) || exit;
 
 global $product;
 
-/**
- * Hook: woocommerce_before_single_product.
- */
-do_action( 'woocommerce_before_single_product' );
+?>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 pt-4">
+    <?php do_action( 'woocommerce_before_single_product' ); ?>
+</div>
 
+<?php
 if ( post_password_required() ) {
     echo get_the_password_form(); // WPCS: XSS ok.
     return;
