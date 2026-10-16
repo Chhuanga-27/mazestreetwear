@@ -244,6 +244,309 @@ if ( ! defined( 'ABSPATH' ) ) {
 })();
 </script>
 
+<script id="maze-cart-live-sync">
+(function () {
+    'use strict';
+
+    // Helper: update WooCommerce sessionStorage cache
+    function updateSessionStorageFragments(count) {
+        try {
+            if (!window.sessionStorage) return;
+            var isHidden = (count <= 0);
+            var str = String(count);
+            var html = '<span class="maze-cart-count absolute -top-1.5 -right-2.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-mono font-bold tracking-tight text-white bg-black border border-white rounded-full transition-all duration-200 ' + (isHidden ? 'hidden' : 'scale-100') + '" data-count="' + str + '"' + (isHidden ? ' style="display:none;"' : '') + '>' + str + '</span>';
+
+            for (var i = 0; i < sessionStorage.length; i++) {
+                var key = sessionStorage.key(i);
+                if (key && (key.indexOf('wc_fragments') !== -1 || key.indexOf('wc_cart_hash') !== -1)) {
+                    var val = sessionStorage.getItem(key);
+                    if (val && val.indexOf('{') !== -1) {
+                        try {
+                            var parsed = JSON.parse(val);
+                            if (parsed && typeof parsed === 'object') {
+                                parsed['span.maze-cart-count'] = html;
+                                sessionStorage.setItem(key, JSON.stringify(parsed));
+                            }
+                        } catch (e) {}
+                    }
+                }
+            }
+        } catch (e) {}
+    }
+
+    // Helper: live DOM update for header badge
+    window.syncMazeCartBadge = function (count) {
+        var badges = document.querySelectorAll('.maze-cart-count');
+        if (!badges.length) return;
+
+        var num;
+        if (typeof count !== 'undefined' && count !== null) {
+            num = parseInt(count, 10);
+        } else {
+            var first = badges[0];
+            var dVal = first.getAttribute('data-count');
+            var tVal = (first.textContent || '').trim();
+            num = dVal ? parseInt(dVal, 10) : (tVal ? parseInt(tVal, 10) : 0);
+        }
+
+        if (isNaN(num) || num <= 0) {
+            badges.forEach(function (el) {
+                el.textContent = '0';
+                el.setAttribute('data-count', '0');
+                el.classList.add('hidden');
+                el.style.display = 'none';
+            });
+            updateSessionStorageFragments(0);
+        } else {
+            badges.forEach(function (el) {
+                el.textContent = String(num);
+                el.setAttribute('data-count', String(num));
+                el.classList.remove('hidden');
+                el.style.display = 'inline-flex';
+            });
+            updateSessionStorageFragments(num);
+        }
+    };
+
+    // Helper: calculate total items currently in Cart DOM
+    function calculateCartQuantity(excludeNode) {
+        var cartContainer = document.querySelector('.wp-block-woocommerce-cart, .wc-block-cart, .woocommerce-cart-form');
+        if (!cartContainer) return null;
+
+        if (document.querySelector('.wc-block-cart__empty-cart-wrapper, .cart-empty, .wc-block-cart--is-empty')) {
+            return 0;
+        }
+
+        var total = 0;
+        var found = false;
+
+        // 1. Cart Block items
+        var blockRows = document.querySelectorAll('.wc-block-cart-items__row, .wc-block-cart-item, [class*="wc-block-cart-items__row"]');
+        if (blockRows.length > 0) {
+            found = true;
+            blockRows.forEach(function (row) {
+                if (excludeNode && (row === excludeNode || row.contains(excludeNode) || excludeNode.contains(row))) {
+                    return; // Skip item being removed
+                }
+                var input = row.querySelector('input.wc-block-components-quantity-selector__input, input[type="number"], input.qty');
+                if (input) {
+                    var q = parseInt(input.value, 10);
+                    total += (!isNaN(q) && q > 0) ? q : 1;
+                } else {
+                    total += 1;
+                }
+            });
+            return total;
+        }
+
+        // 2. Classic cart items
+        var classicRows = document.querySelectorAll('.woocommerce-cart-form .cart_item');
+        if (classicRows.length > 0) {
+            found = true;
+            classicRows.forEach(function (row) {
+                if (excludeNode && (row === excludeNode || row.contains(excludeNode) || excludeNode.contains(row))) {
+                    return;
+                }
+                var input = row.querySelector('input.qty');
+                if (input) {
+                    var q = parseInt(input.value, 10);
+                    total += (!isNaN(q) && q > 0) ? q : 1;
+                } else {
+                    total += 1;
+                }
+            });
+            return total;
+        }
+
+        if (!found && cartContainer) {
+            return 0;
+        }
+
+        return null;
+    }
+
+    // Helper: extract count from Store API response JSON
+    function extractCount(data) {
+        if (!data || typeof data !== 'object') return null;
+        if (typeof data.items_count === 'number') return data.items_count;
+        if (typeof data.itemsCount === 'number') return data.itemsCount;
+        if (typeof data.cart_count === 'number') return data.cart_count;
+        if (typeof data.count === 'number') return data.count;
+        if (data.totals && typeof data.totals.total_items !== 'undefined') {
+            var t = parseInt(data.totals.total_items, 10);
+            if (!isNaN(t)) return t;
+        }
+        if (Array.isArray(data.items)) {
+            return data.items.reduce(function (sum, it) {
+                var q = parseInt(it.quantity, 10);
+                return sum + (!isNaN(q) && q > 0 ? q : 1);
+            }, 0);
+        }
+        return null;
+    }
+
+    // 1. Instant 0ms Optimistic Click Listener (CAPTURE PHASE - catches click before React/Gutenberg)
+    document.addEventListener('click', function (e) {
+        var removeSelector = [
+            '.wc-block-cart-item__remove-link',
+            '.wc-block-cart__remove-item',
+            'button.wc-block-cart-item__remove-link',
+            'button[class*="remove-link"]',
+            'button[class*="remove_link"]',
+            'button[class*="remove-item"]',
+            'button[class*="remove_item"]',
+            'button[aria-label*="Remove" i]',
+            'button[aria-label*="Delete" i]',
+            '.woocommerce-cart-form a.remove',
+            'a.remove_from_cart_button',
+            'a.remove'
+        ].join(',');
+
+        var removeBtn = e.target.closest(removeSelector);
+        if (removeBtn) {
+            var row = removeBtn.closest('.wc-block-cart-items__row, .wc-block-cart-item, tr.cart_item, tr, li.wc-block-cart-item, [class*="cart-item"]');
+            var remaining = calculateCartQuantity(row || removeBtn);
+            if (remaining !== null) {
+                window.syncMazeCartBadge(remaining);
+            } else {
+                var first = document.querySelector('.maze-cart-count');
+                var cur = first ? (parseInt(first.getAttribute('data-count'), 10) || 0) : 0;
+                window.syncMazeCartBadge(Math.max(0, cur - 1));
+            }
+        }
+
+        // Handle plus / minus quantity buttons
+        if (e.target.closest('.wc-block-components-quantity-selector__button--plus, button[class*="quantity-selector__button--plus"]')) {
+            setTimeout(function () {
+                var c = calculateCartQuantity();
+                if (c !== null) window.syncMazeCartBadge(c);
+            }, 50);
+        }
+        if (e.target.closest('.wc-block-components-quantity-selector__button--minus, button[class*="quantity-selector__button--minus"]')) {
+            setTimeout(function () {
+                var c = calculateCartQuantity();
+                if (c !== null) window.syncMazeCartBadge(c);
+            }, 50);
+        }
+    }, true);
+
+    // 2. Input change listener for quantities
+    document.addEventListener('input', function (e) {
+        if (e.target && (e.target.matches('input.wc-block-components-quantity-selector__input') || e.target.matches('input.qty'))) {
+            setTimeout(function () {
+                var c = calculateCartQuantity();
+                if (c !== null) window.syncMazeCartBadge(c);
+            }, 50);
+        }
+    }, true);
+
+    // 3. Network Interceptor: Window.fetch (catches WooCommerce Store API cart responses)
+    if (window.fetch) {
+        var originalFetch = window.fetch;
+        window.fetch = function () {
+            var url = (arguments[0] && typeof arguments[0] === 'string') 
+                ? arguments[0] 
+                : (arguments[0] && arguments[0].url ? arguments[0].url : '');
+            var promise = originalFetch.apply(this, arguments);
+
+            if (url && (url.indexOf('/wc/store/') !== -1 || url.indexOf('wc-ajax=') !== -1 || url.indexOf('maze_get_cart_fragments') !== -1)) {
+                promise.then(function (res) {
+                    try {
+                        res.clone().json().then(function (data) {
+                            var count = extractCount(data);
+                            if (count !== null) {
+                                window.syncMazeCartBadge(count);
+                            }
+                        }).catch(function () {});
+                    } catch (e) {}
+                }).catch(function () {});
+            }
+            return promise;
+        };
+    }
+
+    // 4. Network Interceptor: XMLHttpRequest
+    (function () {
+        var origOpen = XMLHttpRequest.prototype.open;
+        var origSend = XMLHttpRequest.prototype.send;
+        XMLHttpRequest.prototype.open = function (m, u) {
+            this._mazeSyncUrl = u;
+            return origOpen.apply(this, arguments);
+        };
+        XMLHttpRequest.prototype.send = function () {
+            this.addEventListener('load', function () {
+                try {
+                    if (this._mazeSyncUrl && (this._mazeSyncUrl.indexOf('/wc/store/') !== -1 || this._mazeSyncUrl.indexOf('wc-ajax=') !== -1)) {
+                        var data = JSON.parse(this.responseText);
+                        var count = extractCount(data);
+                        if (count !== null) window.syncMazeCartBadge(count);
+                    }
+                } catch (e) {}
+            });
+            return origSend.apply(this, arguments);
+        };
+    })();
+
+    // 5. WordPress Data Store Subscription (wc/store/cart)
+    function initWpStoreSubscription() {
+        if (window.wp && window.wp.data && window.wp.data.subscribe) {
+            try {
+                var store = (window.wc && window.wc.wcBlocksData && window.wc.wcBlocksData.cartStore) ? window.wc.wcBlocksData.cartStore : 'wc/store/cart';
+                var last = null;
+                window.wp.data.subscribe(function () {
+                    try {
+                        var cart = window.wp.data.select(store).getCartData();
+                        var count = extractCount(cart);
+                        if (count !== null && count !== last) {
+                            last = count;
+                            window.syncMazeCartBadge(count);
+                        }
+                    } catch (err) {}
+                });
+                return true;
+            } catch (e) {}
+        }
+        return false;
+    }
+    var wpAttempts = 0;
+    var wpTimer = setInterval(function () {
+        wpAttempts++;
+        if (initWpStoreSubscription() || wpAttempts > 30) clearInterval(wpTimer);
+    }, 150);
+
+    // 6. DOM MutationObserver
+    var observer = new MutationObserver(function () {
+        var c = calculateCartQuantity();
+        if (c !== null) {
+            window.syncMazeCartBadge(c);
+        }
+    });
+    function attachObserver() {
+        var target = document.querySelector('.wp-block-woocommerce-cart, .wc-block-cart, .woocommerce-cart-form, main#primary, body');
+        if (target) {
+            observer.observe(target, { childList: true, subtree: true });
+        }
+    }
+
+    // 7. Initial verification on page load
+    function initLiveBadge() {
+        attachObserver();
+        var c = calculateCartQuantity();
+        if (c !== null) {
+            window.syncMazeCartBadge(c);
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLiveBadge);
+    } else {
+        initLiveBadge();
+    }
+    setTimeout(initLiveBadge, 200);
+    setTimeout(initLiveBadge, 600);
+})();
+</script>
+
 <?php wp_footer(); ?>
 </body>
 </html>
