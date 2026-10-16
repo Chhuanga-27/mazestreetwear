@@ -268,7 +268,78 @@
             });
         }
 
-        // --- 5. Clean Native WooCommerce Cart Badge Synchronization ---
+        // --- 5. Comprehensive Cart Synchronization (Store API + Cart Blocks + Classic Cart) ---
+
+        // Extract total items count from Store API response, Cart data, or WooCommerce fragments
+        function extractMazeCartCount(data) {
+            if (!data || typeof data !== 'object') return null;
+
+            if (typeof data.items_count === 'number') return data.items_count;
+            if (typeof data.itemsCount === 'number') return data.itemsCount;
+            if (typeof data.cart_count === 'number') return data.cart_count;
+            if (typeof data.count === 'number') return data.count;
+
+            if (data.totals && typeof data.totals.total_items !== 'undefined') {
+                const t = parseInt(data.totals.total_items, 10);
+                if (!isNaN(t)) return t;
+            }
+
+            if (Array.isArray(data.items)) {
+                return data.items.reduce(function (sum, item) {
+                    const q = parseInt(item.quantity, 10);
+                    return sum + (!isNaN(q) && q > 0 ? q : 1);
+                }, 0);
+            }
+
+            if (data.fragments && data.fragments['span.maze-cart-count']) {
+                const $temp = $('<div>').html(data.fragments['span.maze-cart-count']);
+                const c = parseInt($temp.find('.maze-cart-count').text().trim(), 10);
+                if (!isNaN(c)) return c;
+            }
+
+            return null;
+        }
+
+        // Keep WooCommerce sessionStorage fragments aligned so navigating pages never restores stale count
+        function updateWcFragmentsInSessionStorage(count) {
+            try {
+                if (!window.sessionStorage) return;
+                const isHidden = (count <= 0);
+                const countStr = String(count);
+                const newHtml = '<span class="maze-cart-count absolute -top-1.5 -right-2.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-mono font-bold tracking-tight text-white bg-black border border-white rounded-full transition-all duration-200 ' + (isHidden ? 'hidden' : 'scale-100') + '" data-count="' + countStr + '"' + (isHidden ? ' style="display:none;"' : '') + '>' + countStr + '</span>';
+
+                for (let i = 0; i < sessionStorage.length; i++) {
+                    const key = sessionStorage.key(i);
+                    if (key && (key.indexOf('wc_fragments') !== -1 || key.indexOf('wc_cart_hash') !== -1)) {
+                        const item = sessionStorage.getItem(key);
+                        if (item && item.indexOf('{') !== -1) {
+                            try {
+                                const parsed = JSON.parse(item);
+                                if (parsed && typeof parsed === 'object') {
+                                    parsed['span.maze-cart-count'] = newHtml;
+                                    sessionStorage.setItem(key, JSON.stringify(parsed));
+                                }
+                            } catch (e) {}
+                        }
+                    }
+                }
+            } catch (e) {}
+        }
+
+        // Clear stale fragments cache when explicit desync is detected
+        function clearWcFragmentsCache() {
+            try {
+                if (!window.sessionStorage) return;
+                for (let i = sessionStorage.length - 1; i >= 0; i--) {
+                    const key = sessionStorage.key(i);
+                    if (key && (key.indexOf('wc_fragments') !== -1 || key.indexOf('wc_cart_hash') !== -1)) {
+                        sessionStorage.removeItem(key);
+                    }
+                }
+            } catch (e) {}
+        }
+
+        // Live visual update of the shopping bag counter badge in the header
         function syncMazeCartBadge(count) {
             const $counter = $('.maze-cart-count');
             if (!$counter.length) return;
@@ -284,40 +355,92 @@
 
             if (isNaN(num) || num <= 0) {
                 $counter.text('0').attr('data-count', '0').addClass('hidden').css('display', 'none');
+                updateWcFragmentsInSessionStorage(0);
             } else {
                 $counter.text(num).attr('data-count', String(num)).removeClass('hidden').css('display', 'inline-flex');
+                updateWcFragmentsInSessionStorage(num);
             }
         }
 
-        // Calculate quantity directly from cart table items if on Cart page
-        function getCartPageTotalQuantity() {
-            const $cartForm = $('.woocommerce-cart-form');
-            if (!$cartForm.length) return null;
-            if ($('.cart-empty').length) return 0;
+        // Bag Counter Pulse Animation
+        function pulseMazeCartBadge() {
+            const $counter = $('.maze-cart-count');
+            if ($counter.length && !$counter.hasClass('hidden')) {
+                $counter.addClass('scale-125 ring-2 ring-black');
+                setTimeout(function () {
+                    $counter.removeClass('scale-125 ring-2 ring-black');
+                }, 400);
+            }
+        }
 
-            let total = 0;
-            const $items = $cartForm.find('.cart_item');
-            if (!$items.length) {
+        // Calculate quantity directly from rendered DOM items (supports both Cart Block and Classic Cart)
+        function calculateCartQuantityFromDOM(excludeElement) {
+            const $cartBlock = $('.wp-block-woocommerce-cart, .wc-block-cart');
+            const $classicForm = $('.woocommerce-cart-form');
+
+            if (!$cartBlock.length && !$classicForm.length) {
+                return null;
+            }
+
+            // Check if cart is in empty state
+            if ($('.wc-block-cart__empty-cart-wrapper, .cart-empty, .wc-block-cart--is-empty').length) {
                 return 0;
             }
-            $items.each(function () {
-                const $input = $(this).find('input.qty');
-                if ($input.length) {
-                    const q = parseInt($input.val(), 10);
-                    if (!isNaN(q) && q > 0) total += q;
-                } else {
-                    total += 1;
-                }
-            });
-            return total;
+
+            let total = 0;
+            let rowsFound = false;
+
+            // 1. Check WooCommerce Cart Block rows
+            const $blockRows = $('.wc-block-cart-items__row, .wc-block-cart-item, [class*="wc-block-cart-items__row"]');
+            if ($blockRows.length) {
+                rowsFound = true;
+                $blockRows.each(function () {
+                    if (excludeElement && (this === excludeElement || $.contains(this, excludeElement) || $.contains(excludeElement, this))) {
+                        return; // Skip item currently being deleted
+                    }
+                    const $input = $(this).find('input.wc-block-components-quantity-selector__input, input[type="number"]');
+                    if ($input.length) {
+                        const q = parseInt($input.val(), 10);
+                        total += (!isNaN(q) && q > 0) ? q : 1;
+                    } else {
+                        total += 1;
+                    }
+                });
+                return total;
+            }
+
+            // 2. Check Classic WooCommerce Cart rows
+            const $classicRows = $classicForm.find('.cart_item');
+            if ($classicRows.length) {
+                rowsFound = true;
+                $classicRows.each(function () {
+                    if (excludeElement && (this === excludeElement || $.contains(this, excludeElement) || $.contains(excludeElement, this))) {
+                        return; // Skip item currently being deleted
+                    }
+                    const $input = $(this).find('input.qty');
+                    if ($input.length) {
+                        const q = parseInt($input.val(), 10);
+                        total += (!isNaN(q) && q > 0) ? q : 1;
+                    } else {
+                        total += 1;
+                    }
+                });
+                return total;
+            }
+
+            if (!rowsFound && ($cartBlock.length || $classicForm.length)) {
+                return 0;
+            }
+
+            return null;
         }
 
-        // Live refresh of cart fragments from WooCommerce server endpoint
+        // Fallback: Fetch refreshed fragments from server endpoint
         function refreshMazeCartFragments() {
             const endpointUrl = (window.wc_cart_fragments_params && window.wc_cart_fragments_params.wc_ajax_url)
                 ? window.wc_cart_fragments_params.wc_ajax_url.toString().replace('%%endpoint%%', 'get_refreshed_fragments')
-                : ((typeof mazeData !== 'undefined' && mazeData.wcAjaxUrl)
-                    ? mazeData.wcAjaxUrl.replace('%%endpoint%%', 'get_refreshed_fragments')
+                : ((typeof mazeData !== 'undefined' && mazeData.ajaxUrl)
+                    ? mazeData.ajaxUrl + '?action=maze_get_cart_fragments'
                     : '/?wc-ajax=get_refreshed_fragments');
 
             $.ajax({
@@ -325,59 +448,258 @@
                 type: 'POST',
                 dataType: 'json',
                 success: function (data) {
+                    const count = extractMazeCartCount(data);
+                    if (count !== null) {
+                        syncMazeCartBadge(count);
+                    }
                     if (data && data.fragments) {
                         $.each(data.fragments, function (key, val) {
                             $(key).replaceWith(val);
                         });
-                        syncMazeCartBadge();
+                        syncMazeCartBadge(count);
                     }
                 }
             });
         }
 
-        // Initialize sync on DOM ready
-        syncMazeCartBadge();
+        // Intercept Store API via window.fetch (captures Gutenberg/React Cart Block API requests)
+        if (window.fetch) {
+            const originalFetch = window.fetch;
+            window.fetch = function () {
+                const url = (arguments[0] && typeof arguments[0] === 'string')
+                    ? arguments[0]
+                    : (arguments[0] && arguments[0].url ? arguments[0].url : '');
 
-        // 1. Instant optimistic update when clicking delete (a.remove) on Cart page
-        $(document).on('click', '.woocommerce-cart-form a.remove, a.remove_from_cart_button', function () {
-            const $row = $(this).closest('.cart_item');
-            let removedQty = 1;
-            const $qtyInput = $row.find('input.qty');
-            if ($qtyInput.length) {
-                const q = parseInt($qtyInput.val(), 10);
-                if (!isNaN(q) && q > 0) removedQty = q;
+                const promise = originalFetch.apply(this, arguments);
+
+                if (url && (url.indexOf('/wc/store/') !== -1 || url.indexOf('wc-ajax=') !== -1 || url.indexOf('maze_get_cart_fragments') !== -1)) {
+                    promise.then(function (res) {
+                        try {
+                            const clone = res.clone();
+                            clone.json().then(function (data) {
+                                const count = extractMazeCartCount(data);
+                                if (count !== null) {
+                                    syncMazeCartBadge(count);
+                                    pulseMazeCartBadge();
+                                }
+                            }).catch(function () {});
+                        } catch (e) {}
+                    }).catch(function () {});
+                }
+
+                return promise;
+            };
+        }
+
+        // Intercept Store API via XMLHttpRequest
+        (function interceptXhr() {
+            const originalOpen = XMLHttpRequest.prototype.open;
+            const originalSend = XMLHttpRequest.prototype.send;
+
+            XMLHttpRequest.prototype.open = function (method, url) {
+                this._mazeRequestUrl = url;
+                return originalOpen.apply(this, arguments);
+            };
+
+            XMLHttpRequest.prototype.send = function () {
+                this.addEventListener('load', function () {
+                    try {
+                        if (this._mazeRequestUrl && (this._mazeRequestUrl.indexOf('/wc/store/') !== -1 || this._mazeRequestUrl.indexOf('wc-ajax=') !== -1)) {
+                            const data = JSON.parse(this.responseText);
+                            const count = extractMazeCartCount(data);
+                            if (count !== null) {
+                                syncMazeCartBadge(count);
+                                pulseMazeCartBadge();
+                            }
+                        }
+                    } catch (e) {}
+                });
+                return originalSend.apply(this, arguments);
+            };
+        })();
+
+        // Intercept Store API via WordPress apiFetch middleware if available
+        if (window.wp && window.wp.apiFetch && typeof window.wp.apiFetch.use === 'function') {
+            try {
+                window.wp.apiFetch.use(function (options, next) {
+                    return next(options).then(function (response) {
+                        try {
+                            const count = extractMazeCartCount(response);
+                            if (count !== null) {
+                                syncMazeCartBadge(count);
+                                pulseMazeCartBadge();
+                            }
+                        } catch (e) {}
+                        return response;
+                    });
+                });
+            } catch (e) {}
+        }
+
+        // Subscribe to WordPress Gutenberg Data Store (`wc/store/cart`)
+        function initWpCartDataSubscription() {
+            if (!window.wp || !window.wp.data || typeof window.wp.data.subscribe !== 'function') return false;
+
+            const cartStore = (window.wc && window.wc.wcBlocksData && window.wc.wcBlocksData.cartStore)
+                ? window.wc.wcBlocksData.cartStore
+                : 'wc/store/cart';
+
+            try {
+                const store = window.wp.data.select(cartStore);
+                if (!store || typeof store.getCartData !== 'function') return false;
+            } catch (e) {
+                return false;
             }
-            const currentCount = parseInt($('.maze-cart-count').attr('data-count') || $('.maze-cart-count').text().trim(), 10) || 0;
-            const optimisticCount = Math.max(0, currentCount - removedQty);
-            syncMazeCartBadge(optimisticCount);
+
+            let lastSeenCount = null;
+            try {
+                window.wp.data.subscribe(function () {
+                    try {
+                        const store = window.wp.data.select(cartStore);
+                        if (!store || typeof store.getCartData !== 'function') return;
+                        const cartData = store.getCartData();
+                        const count = extractMazeCartCount(cartData);
+                        if (count !== null && count !== lastSeenCount) {
+                            lastSeenCount = count;
+                            syncMazeCartBadge(count);
+                        }
+                    } catch (err) {}
+                });
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // Retry subscription setup to account for asynchronous Gutenberg script loading
+        let wpSubTries = 0;
+        const wpSubInterval = setInterval(function () {
+            wpSubTries++;
+            if (initWpCartDataSubscription() || wpSubTries > 30) {
+                clearInterval(wpSubInterval);
+            }
+        }, 150);
+
+        // 1. Instant 0ms Optimistic Update on clicking Delete / Trash / Remove button (Cart Block & Classic Cart)
+        $(document).on('click', [
+            '.wc-block-cart-item__remove-link',
+            '.wc-block-cart__remove-item',
+            'button.wc-block-cart-item__remove-link',
+            'button[class*="remove-link"]',
+            'button[class*="remove_link"]',
+            'button[class*="remove-item"]',
+            'button[class*="remove_item"]',
+            'button[aria-label*="Remove" i]',
+            'button[aria-label*="Delete" i]',
+            '.woocommerce-cart-form a.remove',
+            'a.remove_from_cart_button',
+            'a.remove'
+        ].join(', '), function () {
+            const $btn = $(this);
+            const $row = $btn.closest('.wc-block-cart-items__row, .wc-block-cart-item, tr.cart_item, tr, li.wc-block-cart-item, [class*="cart-item"]');
+            const targetEl = $row.length ? $row[0] : this;
+
+            // Recalculate remaining count excluding the item being removed
+            const remainingCount = calculateCartQuantityFromDOM(targetEl);
+            if (remainingCount !== null) {
+                syncMazeCartBadge(remainingCount);
+            } else {
+                let removedQty = 1;
+                if ($row.length) {
+                    const $qty = $row.find('input.wc-block-components-quantity-selector__input, input.qty, input[type="number"]');
+                    if ($qty.length) {
+                        const q = parseInt($qty.val(), 10);
+                        if (!isNaN(q) && q > 0) removedQty = q;
+                    }
+                }
+                const current = parseInt($('.maze-cart-count').first().attr('data-count') || $('.maze-cart-count').first().text().trim(), 10) || 0;
+                syncMazeCartBadge(Math.max(0, current - removedQty));
+            }
+            clearWcFragmentsCache();
         });
 
-        // 2. Comprehensive listener for all WooCommerce cart mutation events
-        $(document.body).on('wc_fragments_refreshed wc_fragments_loaded added_to_cart removed_from_cart updated_wc_div updated_cart_totals', function (event, fragments) {
+        // 2. Quantity adjustment buttons (+ / -) & input listeners
+        $(document).on('click', '.wc-block-components-quantity-selector__button--plus, button[class*="quantity-selector__button--plus"]', function () {
+            setTimeout(function () {
+                const count = calculateCartQuantityFromDOM();
+                if (count !== null) syncMazeCartBadge(count);
+            }, 50);
+        });
+
+        $(document).on('click', '.wc-block-components-quantity-selector__button--minus, button[class*="quantity-selector__button--minus"]', function () {
+            setTimeout(function () {
+                const count = calculateCartQuantityFromDOM();
+                if (count !== null) syncMazeCartBadge(count);
+            }, 50);
+        });
+
+        $(document).on('change input blur', 'input.wc-block-components-quantity-selector__input, input.qty', function () {
+            setTimeout(function () {
+                const count = calculateCartQuantityFromDOM();
+                if (count !== null) syncMazeCartBadge(count);
+            }, 60);
+        });
+
+        // 3. MutationObserver on Cart Block container to catch DOM mutations automatically
+        function initCartBlockObserver() {
+            const target = document.querySelector('.wp-block-woocommerce-cart, .wc-block-cart, .woocommerce-cart-form, main#primary');
+            if (!target) return;
+
+            let debounceTimer = null;
+            const observer = new MutationObserver(function () {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(function () {
+                    const count = calculateCartQuantityFromDOM();
+                    if (count !== null) {
+                        syncMazeCartBadge(count);
+                    }
+                }, 80);
+            });
+
+            observer.observe(target, { childList: true, subtree: true });
+        }
+        initCartBlockObserver();
+
+        // 4. Native WooCommerce Blocks CustomEvents & Classic jQuery Cart Mutation Events
+        const cartEvents = [
+            'wc_fragments_refreshed',
+            'wc_fragments_loaded',
+            'added_to_cart',
+            'removed_from_cart',
+            'updated_wc_div',
+            'updated_cart_totals',
+            'wc-blocks_added_to_cart',
+            'wc-blocks_cart_item_removed',
+            'wc-blocks_cart_item_quantity_changed'
+        ].join(' ');
+
+        $(document.body).on(cartEvents, function (event, fragments) {
             if (fragments && fragments['span.maze-cart-count']) {
                 const $temp = $('<div>').html(fragments['span.maze-cart-count']);
                 const count = parseInt($temp.find('.maze-cart-count').text().trim(), 10);
                 syncMazeCartBadge(count);
             } else {
-                const pageQty = getCartPageTotalQuantity();
+                const pageQty = calculateCartQuantityFromDOM();
                 if (pageQty !== null) {
                     syncMazeCartBadge(pageQty);
+                } else {
+                    refreshMazeCartFragments();
                 }
-                refreshMazeCartFragments();
             }
         });
 
         // Bag Counter Pulse on Add To Cart
-        $(document.body).on('added_to_cart', function () {
-            const $counter = $('.maze-cart-count');
-            if ($counter.length) {
-                syncMazeCartBadge();
-                $counter.addClass('scale-125 ring-2 ring-black');
-                setTimeout(function () {
-                    $counter.removeClass('scale-125 ring-2 ring-black');
-                }, 600);
-            }
+        $(document.body).on('added_to_cart wc-blocks_added_to_cart', function () {
+            pulseMazeCartBadge();
         });
+
+        // Initial sync on DOM ready (if on Cart page with items already rendered, sync with actual items)
+        const initialCartPageQty = calculateCartQuantityFromDOM();
+        if (initialCartPageQty !== null) {
+            syncMazeCartBadge(initialCartPageQty);
+        } else {
+            syncMazeCartBadge();
+        }
 
         // Ensure variation size is chosen before submitting variable products
         $(document).on('submit', 'form.variations_form', function (e) {

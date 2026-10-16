@@ -177,6 +177,26 @@ function mazestreetwear_cart_count_fragments($fragments)
 add_filter('woocommerce_add_to_cart_fragments', 'mazestreetwear_cart_count_fragments');
 
 /**
+ * Lightweight Cart Count & Fragment AJAX sync endpoint
+ */
+function mazestreetwear_ajax_get_cart_fragments()
+{
+    $count = mazestreetwear_get_cart_count();
+    $fragments = apply_filters('woocommerce_add_to_cart_fragments', array());
+    $cart_hash = (function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_hash() : '';
+
+    wp_send_json_success(array(
+        'cart_count'  => $count,
+        'items_count' => $count,
+        'fragments'   => $fragments,
+        'cart_hash'   => $cart_hash,
+        'cart_url'    => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
+    ));
+}
+add_action('wp_ajax_maze_get_cart_fragments', 'mazestreetwear_ajax_get_cart_fragments');
+add_action('wp_ajax_nopriv_maze_get_cart_fragments', 'mazestreetwear_ajax_get_cart_fragments');
+
+/**
  * Ensure guest customer session is always initiated to prevent lost cart items & cookie desync
  */
 add_action('init', function () {
