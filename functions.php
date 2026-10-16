@@ -96,12 +96,13 @@ function mazestreetwear_scripts()
 
     // Theme JavaScript (Streetwear interactions, mobile menu, dynamic size pill variation sync)
     $main_js_path = get_template_directory() . '/assets/js/main.js';
-    $js_version   = time(); // Cache-busting timestamp to guarantee immediate loading in browser
+    $js_version   = file_exists($main_js_path) ? filemtime($main_js_path) : $theme_version;
 
     // Enqueue WooCommerce cart fragments script if WooCommerce is active
     $deps = array('jquery');
     if (function_exists('is_woocommerce') || function_exists('WC')) {
         wp_enqueue_script('wc-cart-fragments');
+        $deps[] = 'wc-cart-fragments';
     }
 
     wp_enqueue_script(
