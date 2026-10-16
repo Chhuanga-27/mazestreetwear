@@ -770,12 +770,46 @@
             syncMazeCartBadge();
         }
 
-        // Ensure variation size is chosen before submitting variable products
-        $(document).on('submit', 'form.variations_form', function (e) {
+        // Floating Brutalist Toast Notification
+        function showMazeToast(productName, cartUrl) {
+            let $container = $('#maze-toast-container');
+            if (!$container.length) {
+                $container = $('<div id="maze-toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none" style="z-index:99999;"></div>');
+                $('body').append($container);
+            }
+
+            const name = productName || 'Garment';
+            const url = cartUrl || ((typeof mazeData !== 'undefined' && mazeData.cartUrl) ? mazeData.cartUrl : '/cart/');
+
+            const $toast = $(`
+                <div class="maze-cart-toast pointer-events-auto bg-black text-white p-4 border border-white shadow-2xl flex items-center justify-between gap-4 max-w-sm rounded-none font-mono transition-opacity duration-300">
+                    <div class="text-xs tracking-wider uppercase">
+                        <span class="text-neutral-400 font-bold">// Drop Added</span><br>
+                        <strong class="text-white font-bold">${name}</strong>
+                    </div>
+                    <a href="${url}" class="px-3.5 py-2 bg-white text-black text-xs font-bold tracking-widest uppercase hover:bg-neutral-200 transition-colors shrink-0 rounded-none border border-black inline-block text-center">
+                        VIEW BAG →
+                    </a>
+                </div>
+            `);
+
+            $container.append($toast);
+
+            setTimeout(function () {
+                $toast.fadeOut(300, function () {
+                    $(this).remove();
+                });
+            }, 3500);
+        }
+
+        // AJAX Add to Bag on Single Product Pages (Simple & Variable)
+        // Prevents full-page POST so browser history stays clean GET (eliminating Confirm Form Resubmission / ERR_CACHE_MISS)
+        $(document).on('submit', 'form.cart', function (e) {
             const $form = $(this);
+            const $submitBtn = $form.find('.single_add_to_cart_button');
             const $pills = $form.find('.maze-size-pills');
 
-            // If size pills exist and none is active
+            // 1. Check if size selection is required and made
             if ($pills.length && !$pills.find('.maze-size-pill.is-active').length) {
                 e.preventDefault();
                 $pills.addClass('ring-2 ring-black');
@@ -785,7 +819,7 @@
                 return false;
             }
 
-            // Sync select values from active pills before submission
+            // 2. Sync select values from active pills for variable products
             $form.find('.variation-row').each(function () {
                 const $row = $(this);
                 const $activePill = $row.find('.maze-size-pill.is-active');
@@ -796,12 +830,129 @@
                         const optVal = String($(this).val() || '').trim();
                         const optText = String($(this).text() || '').trim();
                         if (optVal && (optVal.toLowerCase() === val.toLowerCase() || optText.toLowerCase() === val.toLowerCase())) {
-                            $select.val(optVal);
+                            $select.val(optVal).trigger('change');
                             return false;
                         }
                     });
                 }
             });
+
+            // 3. For variable products, try resolving variation_id if not yet populated
+            const $varIdInput = $form.find('input[name="variation_id"]');
+            if ($varIdInput.length && (!parseInt($varIdInput.val(), 10) || parseInt($varIdInput.val(), 10) <= 0)) {
+                const variations = $form.data('product_variations');
+                if (Array.isArray(variations)) {
+                    const activePill = $form.find('.maze-size-pill.is-active').first();
+                    const activeVal = (activePill.data('value') || activePill.text().trim() || '').toLowerCase();
+                    if (activeVal) {
+                        for (let v = 0; v < variations.length; v++) {
+                            const variation = variations[v];
+                            if (variation && variation.attributes) {
+                                for (const attrKey in variation.attributes) {
+                                    const attrVal = String(variation.attributes[attrKey] || '').toLowerCase();
+                                    if (attrVal === activeVal || attrVal === '') {
+                                        $varIdInput.val(variation.variation_id);
+                                        break;
+                                    }
+                                }
+                            }
+                            if (parseInt($varIdInput.val(), 10) > 0) break;
+                        }
+                    }
+                }
+            }
+
+            // 4. Intercept submission for AJAX processing
+            e.preventDefault();
+
+            if ($submitBtn.hasClass('is-loading') || $submitBtn.prop('disabled')) {
+                return false;
+            }
+
+            const originalBtnHtml = $submitBtn.html();
+            $submitBtn.addClass('is-loading opacity-80').prop('disabled', true);
+            $submitBtn.html('<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> ADDING TO BAG...</span>');
+
+            const serialized = $form.serializeArray();
+            const formData = [];
+
+            // Add all form fields
+            let hasProductId = false;
+            let hasAction = false;
+            for (let i = 0; i < serialized.length; i++) {
+                formData.push(serialized[i]);
+                if (serialized[i].name === 'product_id' || serialized[i].name === 'add-to-cart') {
+                    hasProductId = true;
+                }
+                if (serialized[i].name === 'action') {
+                    hasAction = true;
+                }
+            }
+
+            if (!hasAction) {
+                formData.push({ name: 'action', value: 'maze_ajax_add_to_cart' });
+            }
+
+            if (!hasProductId) {
+                const btnVal = $submitBtn.val();
+                const pId = $form.data('product_id') || $form.find('input[name="product_id"]').val() || $form.find('input[name="add-to-cart"]').val() || btnVal;
+                if (pId) {
+                    formData.push({ name: 'product_id', value: pId });
+                    formData.push({ name: 'add-to-cart', value: pId });
+                }
+            }
+
+            // Ensure custom selected_size from simple product pills is included
+            const $sizeInput = $form.find('input[name="selected_size"]');
+            if ($sizeInput.length && !formData.some(item => item.name === 'selected_size')) {
+                formData.push({ name: 'selected_size', value: $sizeInput.val() });
+            }
+
+            const ajaxEndpoint = (typeof mazeData !== 'undefined' && mazeData.ajaxUrl) ? mazeData.ajaxUrl : '/wp-admin/admin-ajax.php';
+
+            $.ajax({
+                url: ajaxEndpoint,
+                type: 'POST',
+                data: $.param(formData),
+                dataType: 'json',
+                success: function (res) {
+                    if (res && res.success) {
+                        $submitBtn.removeClass('is-loading opacity-80');
+                        $submitBtn.html('<span class="inline-flex items-center justify-center gap-1.5 font-mono tracking-widest uppercase">ADDED TO BAG ✓</span>');
+
+                        const count = (res.data && res.data.cart_count !== undefined) ? res.data.cart_count : null;
+                        if (count !== null) {
+                            syncMazeCartBadge(count);
+                            pulseMazeCartBadge();
+                        }
+
+                        if (res.data && res.data.fragments) {
+                            $.each(res.data.fragments, function (key, val) {
+                                $(key).replaceWith(val);
+                            });
+                            if (count !== null) syncMazeCartBadge(count);
+                        }
+
+                        $(document.body).trigger('added_to_cart', [res.data.fragments, res.data.cart_hash, $submitBtn]);
+
+                        showMazeToast(res.data.product_name, res.data.cart_url);
+
+                        setTimeout(function () {
+                            $submitBtn.prop('disabled', false).html(originalBtnHtml);
+                        }, 2200);
+                    } else {
+                        const errorMsg = (res && res.data && res.data.message) ? res.data.message : 'Could not add garment to bag. Please try again.';
+                        alert(errorMsg);
+                        $submitBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalBtnHtml);
+                    }
+                },
+                error: function () {
+                    // Fallback to standard form submission if AJAX fails
+                    $form.off('submit').trigger('submit');
+                }
+            });
+
+            return false;
         });
 
         // --- 6. Live Time & Status Clock for Footer (Aizawl / India IST) ---
