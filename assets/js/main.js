@@ -268,7 +268,7 @@
             });
         }
 
-        // --- 5. Cart Badge Synchronization & Stale Fragment Clearer ---
+        // --- 5. Cart Badge Synchronization & Real-time Update ---
         function syncMazeCartBadge(count) {
             const $counter = $('.maze-cart-count');
             if (!$counter.length) return;
@@ -289,32 +289,53 @@
             }
         }
 
-        // Run sync immediately on DOM ready
-        syncMazeCartBadge();
+        // Initialize sync immediately on DOM ready using localized server count or DOM attribute
+        if (typeof mazeData !== 'undefined' && typeof mazeData.cartCount !== 'undefined') {
+            syncMazeCartBadge(mazeData.cartCount);
+        } else {
+            syncMazeCartBadge();
+        }
 
-        // Detect if WooCommerce session/cookie indicates an empty cart and clear stale sessionStorage fragments
-        try {
-            const cookies = document.cookie || '';
-            const hasCartItems = cookies.indexOf('woocommerce_items_in_cart') !== -1;
-            const match = cookies.match(/woocommerce_items_in_cart=([^;]+)/);
-            const cookieCount = match ? parseInt(match[1], 10) : 0;
+        // Elegant brutalist toast notification helper (replaces intrusive alert dialogs)
+        function showMazeToast(message, actionText, actionUrl, isError) {
+            $('.maze-cart-toast').remove();
 
-            if (!hasCartItems || cookieCount === 0) {
-                if (typeof window.sessionStorage !== 'undefined') {
-                    const keysToRemove = [];
-                    for (let i = 0; i < sessionStorage.length; i++) {
-                        const key = sessionStorage.key(i);
-                        if (key && (key.indexOf('wc_fragments') !== -1 || key.indexOf('wc_cart_hash') !== -1)) {
-                            keysToRemove.push(key);
-                        }
-                    }
-                    keysToRemove.forEach(function (k) {
-                        try { sessionStorage.removeItem(k); } catch (e) {}
-                    });
+            const borderClass = isError ? 'border-neutral-400' : 'border-white';
+            const pulseColor  = isError ? 'bg-amber-400' : 'bg-emerald-400';
+            const actionHtml  = (actionText && actionUrl)
+                ? `<a href="${actionUrl}" class="inline-flex items-center space-x-1.5 bg-white text-black px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider hover:bg-neutral-200 transition-colors">
+                    <span>${actionText}</span>
+                    <span aria-hidden="true">&rarr;</span>
+                   </a>`
+                : '';
+
+            const toastHtml = `
+                <div class="maze-cart-toast fixed bottom-5 right-5 sm:bottom-8 sm:right-8 z-50 bg-black text-white p-4 sm:p-5 border ${borderClass} shadow-2xl max-w-sm w-full font-mono text-xs uppercase" role="alert">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="inline-block w-2 h-2 rounded-full ${pulseColor} animate-pulse"></span>
+                            <span class="font-bold tracking-wider text-xs sm:text-sm text-white">MAZE PROTOCOL</span>
+                        </div>
+                        <button type="button" class="maze-toast-close text-neutral-400 hover:text-white text-lg leading-none cursor-pointer p-1" aria-label="Close notification">&times;</button>
+                    </div>
+                    <div class="mt-2.5 text-neutral-200 font-sans text-xs sm:text-sm normal-case leading-relaxed font-normal">
+                        ${message}
+                    </div>
+                    ${actionHtml ? `<div class="mt-3.5 pt-2 border-t border-neutral-800 flex items-center justify-end">${actionHtml}</div>` : ''}
+                </div>
+            `;
+
+            const $toast = $(toastHtml).appendTo('body');
+            $toast.find('.maze-toast-close').on('click', function () {
+                $toast.fadeOut(150, function () { $(this).remove(); });
+            });
+
+            setTimeout(function () {
+                if ($toast.length) {
+                    $toast.fadeOut(300, function () { $(this).remove(); });
                 }
-                syncMazeCartBadge(0);
-            }
-        } catch (e) {}
+            }, 6500);
+        }
 
         // Listen for all WooCommerce cart fragment events
         $(document.body).on('wc_fragments_refreshed wc_fragments_loaded added_to_cart removed_from_cart', function (event, fragments) {
@@ -339,6 +360,16 @@
             }
         });
 
+        // Trigger WooCommerce fragment refresh on load if cart hash exists
+        try {
+            if (typeof window.sessionStorage !== 'undefined') {
+                const cartHash = sessionStorage.getItem('wc_cart_hash');
+                if (cartHash) {
+                    $(document.body).trigger('wc_fragment_refresh');
+                }
+            }
+        } catch (e) {}
+
         // --- 6. Seamless Single-Product AJAX Add To Bag ---
         $(document).on('submit', 'form.cart', function (e) {
             const $form = $(this);
@@ -359,6 +390,7 @@
                     setTimeout(function () {
                         $pills.removeClass('ring-2 ring-black');
                     }, 1000);
+                    showMazeToast('Please select your preferred size before adding to bag.', null, null, true);
                     return;
                 }
             }
@@ -393,13 +425,19 @@
                     contentType: false,
                     dataType: 'json',
                     success: function (response) {
+                        const cartUrl = (response && response.cart_url) || (response && response.data && response.data.cart_url) || (mazeData && mazeData.cartUrl) || '/cart/';
+
                         if (response && response.fragments) {
                             // Update fragments
                             $.each(response.fragments, function (key, value) {
                                 $(key).replaceWith(value);
                             });
 
-                            syncMazeCartBadge();
+                            if (typeof response.cart_count !== 'undefined') {
+                                syncMazeCartBadge(response.cart_count);
+                            } else {
+                                syncMazeCartBadge();
+                            }
 
                             // Pulse badge
                             const $counter = $('.maze-cart-count');
@@ -410,16 +448,50 @@
 
                             // Success button state
                             $btn.text('ADDED // IN BAG');
+                            showMazeToast('Item successfully added to your shopping bag.', 'VIEW BAG', cartUrl, false);
+
                             setTimeout(function () {
                                 $btn.removeClass('is-adding').prop('disabled', false).html(originalBtnHtml);
-                            }, 1500);
+                            }, 2000);
 
                             $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $btn]);
                         } else if (response && response.success === false) {
-                            alert(response.data && response.data.message ? response.data.message : 'Could not add to bag.');
-                            $btn.removeClass('is-adding').prop('disabled', false).html(originalBtnHtml);
+                            const errData = response.data || {};
+                            const errMsg = errData.message || 'Could not add to bag.';
+
+                            // Synchronize badge if server supplied updated count or fragments
+                            if (errData.fragments) {
+                                $.each(errData.fragments, function (key, value) {
+                                    $(key).replaceWith(value);
+                                });
+                            }
+                            if (typeof errData.cart_count !== 'undefined') {
+                                syncMazeCartBadge(errData.cart_count);
+                            }
+
+                            if (errData.already_in_cart) {
+                                // Direct action when max stock is reached and item is already in bag
+                                $btn.text('ALREADY IN BAG // VIEW BAG').addClass('bg-neutral-800');
+                                $btn.removeClass('is-adding').prop('disabled', false);
+
+                                $btn.off('click.mazeViewBag').one('click.mazeViewBag', function (ev) {
+                                    if ($btn.text().indexOf('VIEW BAG') !== -1) {
+                                        ev.preventDefault();
+                                        window.location.href = cartUrl;
+                                    }
+                                });
+
+                                showMazeToast(errMsg, 'VIEW BAG', cartUrl, true);
+
+                                setTimeout(function () {
+                                    $btn.removeClass('bg-neutral-800').html(originalBtnHtml);
+                                }, 4000);
+                            } else {
+                                $btn.removeClass('is-adding').prop('disabled', false).html(originalBtnHtml);
+                                showMazeToast(errMsg, 'VIEW BAG', cartUrl, true);
+                            }
                         } else {
-                            // Graceful fallback
+                            // Fallback to standard form submission
                             $form.off('submit').submit();
                         }
                     },

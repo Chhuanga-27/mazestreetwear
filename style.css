@@ -303,5 +303,92 @@ body.woocommerce .site-header img {
   width: 100% !important;
 }
 
+/* Maze Toast Notification System */
+.maze-cart-toast {
+  animation: mazeToastSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
 
+@keyframes mazeToastSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+/* Brutalist Cart & Checkout Styling */
+.woocommerce table.shop_table {
+  border: 1px solid #000000 !important;
+  border-collapse: collapse !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  margin-bottom: 2rem !important;
+}
+
+.woocommerce table.shop_table th {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  font-family: Didot, "Didot Regular", monospace, serif !important;
+  font-size: 0.8125rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 0.75rem 1rem !important;
+  border: 1px solid #000000 !important;
+}
+
+.woocommerce table.shop_table td {
+  border: 1px solid #000000 !important;
+  padding: 1rem !important;
+  vertical-align: middle !important;
+  background-color: #ffffff !important;
+}
+
+.woocommerce table.shop_table td.product-name a {
+  font-weight: 700 !important;
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+.woocommerce table.shop_table td.product-name a:hover {
+  text-decoration: underline !important;
+}
+
+.woocommerce table.shop_table .quantity input.qty {
+  border: 1px solid #000000 !important;
+  border-radius: 0 !important;
+  padding: 0.5rem !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+}
+
+.woocommerce table.shop_table td.actions .button,
+.woocommerce .cart-collaterals .cart_totals .checkout-button,
+.woocommerce .return-to-shop .button {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #000000 !important;
+  border-radius: 0 !important;
+  font-family: Didot, "Didot Regular", monospace, serif !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 0.75rem 1.5rem !important;
+}
+
+.woocommerce table.shop_table td.actions .button:hover,
+.woocommerce .cart-collaterals .cart_totals .checkout-button:hover,
+.woocommerce .return-to-shop .button:hover {
+  background-color: #262626 !important;
+  color: #ffffff !important;
+}
+
+.woocommerce .cart-collaterals .cart_totals {
+  border: 1px solid #000000 !important;
+  padding: 1.5rem !important;
+  background-color: #ffffff !important;
+  box-shadow: 4px 4px 0px 0px #000000 !important;
+}

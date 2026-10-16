@@ -844,3 +844,158 @@
 .variations_button {
   width: 100% !important;
 }
+
+/* ==========================================================================
+   Maze Toast Notification System
+   ========================================================================== */
+.maze-cart-toast {
+  animation: mazeToastSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes mazeToastSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Brutalist WooCommerce Cart & Checkout Styling
+   ========================================================================== */
+.woocommerce-cart .woocommerce,
+.woocommerce-checkout .woocommerce {
+  width: 100%;
+}
+
+.woocommerce table.shop_table {
+  border: 1px solid #000000 !important;
+  border-collapse: collapse !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  margin-bottom: 2rem !important;
+}
+
+.woocommerce table.shop_table th {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  font-family: Didot, "Didot Regular", monospace, serif !important;
+  font-size: 0.8125rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 0.75rem 1rem !important;
+  border: 1px solid #000000 !important;
+}
+
+.woocommerce table.shop_table td {
+  border: 1px solid #000000 !important;
+  padding: 1rem !important;
+  vertical-align: middle !important;
+  background-color: #ffffff !important;
+}
+
+.woocommerce table.shop_table td.product-name a {
+  font-weight: 700 !important;
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+.woocommerce table.shop_table td.product-name a:hover {
+  text-decoration: underline !important;
+}
+
+.woocommerce table.shop_table .quantity input.qty {
+  border: 1px solid #000000 !important;
+  border-radius: 0 !important;
+  padding: 0.5rem !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  min-width: 50px !important;
+}
+
+.woocommerce table.shop_table td.actions {
+  padding: 1.25rem 1rem !important;
+  background-color: #fafafa !important;
+}
+
+.woocommerce table.shop_table td.actions .coupon {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  flex-wrap: wrap !important;
+}
+
+.woocommerce table.shop_table td.actions .coupon input.input-text {
+  border: 1px solid #000000 !important;
+  border-radius: 0 !important;
+  padding: 0.65rem 1rem !important;
+  font-family: inherit !important;
+  font-size: 0.875rem !important;
+  min-width: 180px !important;
+}
+
+.woocommerce table.shop_table td.actions .button,
+.woocommerce .cart-collaterals .cart_totals .checkout-button,
+.woocommerce .return-to-shop .button {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #000000 !important;
+  border-radius: 0 !important;
+  font-family: Didot, "Didot Regular", monospace, serif !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 0.75rem 1.5rem !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.woocommerce table.shop_table td.actions .button:hover,
+.woocommerce .cart-collaterals .cart_totals .checkout-button:hover,
+.woocommerce .return-to-shop .button:hover {
+  background-color: #262626 !important;
+  color: #ffffff !important;
+}
+
+.woocommerce .cart-collaterals .cart_totals {
+  border: 1px solid #000000 !important;
+  padding: 1.5rem !important;
+  background-color: #ffffff !important;
+  box-shadow: 4px 4px 0px 0px #000000 !important;
+}
+
+.woocommerce .cart-collaterals .cart_totals h2 {
+  font-size: 1.25rem !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+  margin-bottom: 1.25rem !important;
+  padding-bottom: 0.75rem !important;
+  border-bottom: 1px solid #000000 !important;
+}
+
+.woocommerce .cart-collaterals .cart_totals .checkout-button {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  padding: 1rem 1.5rem !important;
+  font-size: 1rem !important;
+  margin-top: 1rem !important;
+}
+
+.woocommerce .cart-empty,
+.woocommerce .return-to-shop {
+  text-align: center !important;
+}
+
+.woocommerce .cart-empty {
+  font-size: 1.125rem !important;
+  font-weight: 600 !important;
+  padding: 3rem 1.5rem !important;
+  border: 1px solid #000000 !important;
+  margin-bottom: 1.5rem !important;
+  background-color: #fafafa !important;
+}
