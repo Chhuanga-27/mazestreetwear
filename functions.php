@@ -115,13 +115,23 @@ function mazestreetwear_scripts()
 
     // Pass data to JS
     wp_localize_script('mazestreetwear-main', 'mazeData', array(
-        'ajaxUrl' => admin_url('admin-ajax.php'),
-        'nonce'   => wp_create_nonce('maze_cart_nonce'),
-        'cartUrl' => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
-        'shopUrl' => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
+        'ajaxUrl'   => admin_url('admin-ajax.php'),
+        'wcAjaxUrl' => class_exists('WC_AJAX') ? WC_AJAX::get_endpoint('%%endpoint%%') : home_url('/?wc-ajax=%%endpoint%%'),
+        'nonce'     => wp_create_nonce('maze_cart_nonce'),
+        'cartUrl'   => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
+        'shopUrl'   => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
     ));
 }
 add_action('wp_enqueue_scripts', 'mazestreetwear_scripts');
+
+/**
+ * Ensure WooCommerce cart fragments script remains active on Cart page for live header badge updates
+ */
+add_action('wp_enqueue_scripts', function () {
+    if (function_exists('WC')) {
+        wp_enqueue_script('wc-cart-fragments');
+    }
+}, 25);
 
 /**
  * ============================================================================
