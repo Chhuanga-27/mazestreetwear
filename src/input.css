@@ -408,6 +408,13 @@
     border-radius: 0px !important;
   }
 
+  /* Suppress WooCommerce Added-to-Cart notice / View Cart bar on single product and loops */
+  .single-product .woocommerce-message,
+  .woocommerce-message:has(.wc-forward),
+  .woocommerce-message:has(a[href*="cart"]) {
+    display: none !important;
+  }
+
   .woocommerce-message .button,
   .woocommerce-info .button {
     float: right;

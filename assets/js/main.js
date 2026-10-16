@@ -770,40 +770,16 @@
             syncMazeCartBadge();
         }
 
-        // Floating Brutalist Toast Notification
-        function showMazeToast(productName, cartUrl) {
-            let $container = $('#maze-toast-container');
-            if (!$container.length) {
-                $container = $('<div id="maze-toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none" style="z-index:99999;"></div>');
-                $('body').append($container);
-            }
+        // Cleanup any stray WooCommerce added-to-cart banners on page load
+        $('.woocommerce-message').filter(function () {
+            return $(this).find('.wc-forward, a[href*="cart"]').length > 0 || $(this).text().toLowerCase().indexOf('added to your cart') !== -1;
+        }).remove();
 
-            const name = productName || 'Garment';
-            const url = cartUrl || ((typeof mazeData !== 'undefined' && mazeData.cartUrl) ? mazeData.cartUrl : '/cart/');
-
-            const $toast = $(`
-                <div class="maze-cart-toast pointer-events-auto bg-black text-white p-4 border border-white shadow-2xl flex items-center justify-between gap-4 max-w-sm rounded-none font-mono transition-opacity duration-300">
-                    <div class="text-xs tracking-wider uppercase">
-                        <span class="text-neutral-400 font-bold">// Drop Added</span><br>
-                        <strong class="text-white font-bold">${name}</strong>
-                    </div>
-                    <a href="${url}" class="px-3.5 py-2 bg-white text-black text-xs font-bold tracking-widest uppercase hover:bg-neutral-200 transition-colors shrink-0 rounded-none border border-black inline-block text-center">
-                        VIEW BAG →
-                    </a>
-                </div>
-            `);
-
-            $container.append($toast);
-
-            setTimeout(function () {
-                $toast.fadeOut(300, function () {
-                    $(this).remove();
-                });
-            }, 3500);
-        }
+        // View Cart info toasts removed per user request: header cart icon handles cart access directly
+        function showMazeToast() {}
 
         // AJAX Add to Bag on Single Product Pages (Simple & Variable)
-        // Prevents full-page POST so browser history stays clean GET (eliminating Confirm Form Resubmission / ERR_CACHE_MISS)
+        // Eliminates full-page form POST, preventing browser ERR_CACHE_MISS / Confirm Form Resubmission on back navigation
         $(document).on('submit', 'form.cart', function (e) {
             const $form = $(this);
             const $submitBtn = $form.find('.single_add_to_cart_button');
@@ -875,37 +851,55 @@
 
             const serialized = $form.serializeArray();
             const formData = [];
+            let resolvedProductId = '';
 
-            // Add all form fields
-            let hasProductId = false;
-            let hasAction = false;
+            // Check button and hidden fields for product_id first
+            const $pIdInput = $form.find('input[name="product_id"]');
+            if ($pIdInput.length && $pIdInput.val()) {
+                resolvedProductId = $pIdInput.val();
+            } else if ($submitBtn.val()) {
+                resolvedProductId = $submitBtn.val();
+            } else if ($form.data('product_id')) {
+                resolvedProductId = $form.data('product_id');
+            } else {
+                const btnVal = $form.find('button[name="add-to-cart"]').val();
+                if (btnVal) resolvedProductId = btnVal;
+            }
+
+            // Process serialized fields: NEVER pass 'add-to-cart' in AJAX POST
+            // WooCommerce's WC_Form_Handler intercepts 'add-to-cart' and issues an HTTP 302 redirect
             for (let i = 0; i < serialized.length; i++) {
-                formData.push(serialized[i]);
-                if (serialized[i].name === 'product_id' || serialized[i].name === 'add-to-cart') {
-                    hasProductId = true;
-                }
-                if (serialized[i].name === 'action') {
-                    hasAction = true;
+                const item = serialized[i];
+                if (item.name === 'add-to-cart') {
+                    if (!resolvedProductId) resolvedProductId = item.value;
+                } else if (item.name === 'product_id') {
+                    if (!resolvedProductId) resolvedProductId = item.value;
+                } else if (item.name !== 'action') {
+                    formData.push(item);
                 }
             }
 
-            if (!hasAction) {
-                formData.push({ name: 'action', value: 'maze_ajax_add_to_cart' });
+            if (resolvedProductId) {
+                formData.push({ name: 'product_id', value: resolvedProductId });
             }
 
-            if (!hasProductId) {
-                const btnVal = $submitBtn.val();
-                const pId = $form.data('product_id') || $form.find('input[name="product_id"]').val() || $form.find('input[name="add-to-cart"]').val() || btnVal;
-                if (pId) {
-                    formData.push({ name: 'product_id', value: pId });
-                    formData.push({ name: 'add-to-cart', value: pId });
-                }
-            }
+            formData.push({ name: 'action', value: 'maze_ajax_add_to_cart' });
 
             // Ensure custom selected_size from simple product pills is included
             const $sizeInput = $form.find('input[name="selected_size"]');
             if ($sizeInput.length && !formData.some(item => item.name === 'selected_size')) {
                 formData.push({ name: 'selected_size', value: $sizeInput.val() });
+            }
+
+            // Ensure quantity is included
+            if (!formData.some(item => item.name === 'quantity')) {
+                const qVal = $form.find('input[name="quantity"]').val() || '1';
+                formData.push({ name: 'quantity', value: qVal });
+            }
+
+            // Pass nonce if available
+            if (typeof mazeData !== 'undefined' && mazeData.nonce) {
+                formData.push({ name: 'maze_nonce', value: mazeData.nonce });
             }
 
             const ajaxEndpoint = (typeof mazeData !== 'undefined' && mazeData.ajaxUrl) ? mazeData.ajaxUrl : '/wp-admin/admin-ajax.php';
@@ -915,6 +909,7 @@
                 type: 'POST',
                 data: $.param(formData),
                 dataType: 'json',
+                timeout: 10000,
                 success: function (res) {
                     if (res && res.success) {
                         $submitBtn.removeClass('is-loading opacity-80');
@@ -935,20 +930,20 @@
 
                         $(document.body).trigger('added_to_cart', [res.data.fragments, res.data.cart_hash, $submitBtn]);
 
-                        showMazeToast(res.data.product_name, res.data.cart_url);
-
                         setTimeout(function () {
                             $submitBtn.prop('disabled', false).html(originalBtnHtml);
-                        }, 2200);
+                        }, 1800);
                     } else {
                         const errorMsg = (res && res.data && res.data.message) ? res.data.message : 'Could not add garment to bag. Please try again.';
                         alert(errorMsg);
                         $submitBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalBtnHtml);
                     }
                 },
-                error: function () {
-                    // Fallback to standard form submission if AJAX fails
-                    $form.off('submit').trigger('submit');
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Add to bag error:', textStatus, errorThrown);
+                    // Reset button immediately so it never hangs indefinitely
+                    $submitBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalBtnHtml);
+                    refreshMazeCartFragments();
                 }
             });
 

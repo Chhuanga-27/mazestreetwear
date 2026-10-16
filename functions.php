@@ -285,6 +285,44 @@ add_action('init', function () {
 }, 20);
 
 /**
+ * Prevent WC_Form_Handler::add_to_cart_action from intercepting AJAX requests and issuing 302 redirects
+ */
+add_action('init', function () {
+    if (wp_doing_ajax() || (defined('DOING_AJAX') && DOING_AJAX) || (isset($_REQUEST['action']) && $_REQUEST['action'] === 'maze_ajax_add_to_cart')) {
+        remove_action('wp_loaded', array('WC_Form_Handler', 'add_to_cart_action'), 20);
+    }
+}, 5);
+
+/**
+ * Suppress WooCommerce "Added to Cart / View Cart" notice banner globally.
+ * The shopping bag badge in the header dynamically updates and pulses in real time.
+ */
+add_filter('wc_add_to_cart_message_html', '__return_false', 999);
+add_filter('woocommerce_add_to_cart_message_html', '__return_false', 999);
+add_filter('woocommerce_add_message', function ($message) {
+    if (is_string($message) && (stripos($message, 'added to your cart') !== false || stripos($message, 'wc-forward') !== false || stripos($message, 'view cart') !== false)) {
+        return false;
+    }
+    return $message;
+}, 999);
+add_filter('woocommerce_add_success', function ($message) {
+    if (is_string($message) && (stripos($message, 'added to your cart') !== false || stripos($message, 'wc-forward') !== false || stripos($message, 'view cart') !== false)) {
+        return false;
+    }
+    return $message;
+}, 999);
+
+// Clear any success notices (such as added to cart) before single product render
+add_action('woocommerce_before_single_product', function () {
+    if (function_exists('wc_clear_notices') && function_exists('wc_get_notices')) {
+        $notices = wc_get_notices('success');
+        if (! empty($notices)) {
+            wc_clear_notices();
+        }
+    }
+}, 5);
+
+/**
  * AJAX Add to Bag handler for Single Product pages (Simple & Variable)
  * Eliminates full-page form POST, preventing browser ERR_CACHE_MISS / Confirm Form Resubmission on back navigation
  */
@@ -346,13 +384,25 @@ function mazestreetwear_ajax_add_to_cart()
     $cart_item_key = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $variations, $cart_item_data);
 
     if ($cart_item_key) {
+        // Clear any notices queued so nothing shows up on page reload or notices output
+        if (function_exists('wc_clear_notices')) {
+            wc_clear_notices();
+        }
+
+        ob_start();
         do_action('woocommerce_ajax_added_to_cart', $product_id);
+        ob_end_clean();
 
         $count         = mazestreetwear_get_cart_count();
         $fragments     = apply_filters('woocommerce_add_to_cart_fragments', array());
         $cart_hash     = WC()->cart->get_cart_hash();
         $item_product  = wc_get_product($variation_id ? $variation_id : $product_id);
         $product_title = $item_product ? $item_product->get_name() : $product->get_name();
+
+        // Ensure output buffer has no stray characters or warnings before sending JSON
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
 
         wp_send_json_success(array(
             'cart_count'   => $count,
@@ -377,6 +427,9 @@ add_action('wp_ajax_nopriv_maze_ajax_add_to_cart', 'mazestreetwear_ajax_add_to_c
  * Prevents browser "Confirm Form Resubmission" (ERR_CACHE_MISS) on back-button navigation
  */
 add_filter('woocommerce_add_to_cart_redirect', function ($url) {
+    if (wp_doing_ajax() || (defined('DOING_AJAX') && DOING_AJAX) || (isset($_REQUEST['action']) && $_REQUEST['action'] === 'maze_ajax_add_to_cart')) {
+        return false;
+    }
     if ('yes' !== get_option('woocommerce_cart_redirect_after_add')) {
         $product_id = isset($_REQUEST['add-to-cart']) ? absint($_REQUEST['add-to-cart']) : 0;
         if ($product_id) {

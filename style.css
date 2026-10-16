@@ -392,3 +392,10 @@ body.woocommerce .site-header img {
   background-color: #ffffff !important;
   box-shadow: 4px 4px 0px 0px #000000 !important;
 }
+
+/* Suppress WooCommerce Added-to-Cart notice / View Cart bar on single product and loops */
+.single-product .woocommerce-message,
+.woocommerce-message:has(.wc-forward),
+.woocommerce-message:has(a[href*="cart"]) {
+  display: none !important;
+}
