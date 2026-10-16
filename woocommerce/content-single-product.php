@@ -99,44 +99,7 @@ if ( post_password_required() ) {
 
                 <!-- Add to Bag / Sizing Form -->
                 <div class="product-actions-area">
-                    <?php
-                    // Check if variable product
-                    if ( $product->is_type( 'variable' ) ) {
-                        woocommerce_variable_add_to_cart();
-                    } elseif ( $product->is_type( 'simple' ) ) {
-                        // For simple products, provide the Sizing selector & solid black full-width button
-                        ?>
-                        <form class="cart space-y-6" action="<?php echo esc_url( apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() ) ); ?>" method="post" enctype='multipart/form-data'>
-                            
-                            <!-- Sizing Selector: Clean rectangular size boxes with 1px black borders -->
-                            <div class="size-selector-wrap">
-                                <div class="flex items-center justify-between mb-2.5">
-                                    <span class="text-sm font-mono uppercase tracking-wider text-black font-bold">
-                                        <?php esc_html_e( 'SIZE', 'mazestreetwear' ); ?>
-                                        <span class="selected-size-label ml-2 text-black font-bold">// S</span>
-                                    </span>
-                                </div>
-                                <div class="maze-size-pills flex flex-wrap gap-2.5">
-                                    <button type="button" class="maze-size-pill is-active selected px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black bg-black text-white cursor-pointer transition-colors" data-value="S">S</button>
-                                    <button type="button" class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black bg-white text-black hover:bg-neutral-100 cursor-pointer transition-colors" data-value="M">M</button>
-                                    <button type="button" class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black bg-white text-black hover:bg-neutral-100 cursor-pointer transition-colors" data-value="L">L</button>
-                                    <button type="button" class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black bg-white text-black hover:bg-neutral-100 cursor-pointer transition-colors" data-value="XL">XL</button>
-                                </div>
-                            </div>
-
-                            <!-- "ADD TO BAG" Button: Solid black rectangular button full width -->
-                            <div class="pt-2">
-                                <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt bg-black text-white hover:bg-neutral-800 text-sm sm:text-base font-bold uppercase tracking-wider py-4 w-full border border-black rounded-none font-mono transition-colors duration-150 cursor-pointer block text-center">
-                                    <?php esc_html_e( 'ADD TO BAG', 'mazestreetwear' ); ?>
-                                </button>
-                            </div>
-                        </form>
-                        <?php
-                    } else {
-                        // Any other product type (grouped, external, etc.)
-                        woocommerce_template_single_add_to_cart();
-                    }
-                    ?>
+                    <?php woocommerce_template_single_add_to_cart(); ?>
                 </div>
 
                 <!-- Minimalist Accordions with Thin Black Top/Bottom Borders -->

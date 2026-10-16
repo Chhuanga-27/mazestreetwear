@@ -15,7 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 $is_maze_home  = is_front_page() || is_page_template( 'template-homepage.php' );
 $shop_page_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
 $cart_url      = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' );
-$cart_count    = ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart_contents_count() : 0;
+$cart_count    = function_exists( 'mazestreetwear_get_cart_count' ) ? mazestreetwear_get_cart_count() : ( ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart_contents_count() : 0 );
+$is_cart_empty = ( $cart_count <= 0 );
 $masthead_classes = $is_maze_home
     ? 'pointer-events-none py-3 sm:py-4 bg-transparent'
     : 'bg-white/95 backdrop-blur-md border-b border-black py-2.5 sm:py-3.5 shadow-sm';
@@ -245,7 +246,7 @@ $masthead_classes = $is_maze_home
                         <svg class="w-5 h-5 transform group-hover:scale-105 transition-transform duration-150" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25c-.669 0-1.189-.578-1.119-1.243l1.263-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
                         </svg>
-                        <span class="maze-cart-count absolute -top-1.5 -right-2.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-mono font-bold tracking-tight text-white bg-black border border-white rounded-full transition-transform duration-200 <?php echo $cart_count > 0 ? 'scale-100' : 'scale-90 opacity-80'; ?>">
+                        <span class="maze-cart-count absolute -top-1.5 -right-2.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-mono font-bold tracking-tight text-white bg-black border border-white rounded-full transition-all duration-200 <?php echo $is_cart_empty ? 'hidden' : 'scale-100'; ?>" data-count="<?php echo esc_attr( $cart_count ); ?>" <?php echo $is_cart_empty ? 'style="display:none;"' : ''; ?>>
                             <?php echo esc_html( $cart_count ); ?>
                         </span>
                     </div>

@@ -290,4 +290,18 @@ body.woocommerce .site-header img {
   letter-spacing: 0.05em !important;
 }
 
+/* ==========================================================================
+   Maze Cart Count Badge & Add to Bag Layout
+   ========================================================================== */
+.maze-cart-count.hidden,
+.maze-cart-count[data-count="0"] {
+  display: none !important;
+}
+
+.woocommerce-variation-add-to-cart,
+.variations_button {
+  width: 100% !important;
+}
+
+
 

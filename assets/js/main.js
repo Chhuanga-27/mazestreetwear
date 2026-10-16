@@ -172,18 +172,28 @@
         $(document).on('click', '.maze-size-pill', function (e) {
             e.preventDefault();
             const $pill = $(this);
+            if ($pill.hasClass('is-disabled') || $pill.is(':disabled')) {
+                return;
+            }
+
             const $container = $pill.closest('.maze-size-pills');
             const targetSelectName = $container.data('target-select');
-            const selectedVal = $pill.data('value') || $pill.text().trim();
+            const selectedVal = String($pill.data('value') || $pill.text().trim());
 
             // Set active state on pill
-            $container.find('.maze-size-pill').removeClass('is-active selected');
-            $pill.addClass('is-active selected');
+            $container.find('.maze-size-pill').removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
+            $pill.addClass('is-active selected bg-black text-white').removeClass('bg-white text-black');
 
             // Update visible label
             const $sizeLabel = $container.closest('.variation-row, .size-selector-wrap').find('.selected-variation-value, .selected-size-label');
             if ($sizeLabel.length) {
                 $sizeLabel.text('// ' + selectedVal.toUpperCase());
+            }
+
+            // Update simple product hidden input if present
+            const $hiddenInput = $container.closest('form').find('.maze-selected-size-input');
+            if ($hiddenInput.length) {
+                $hiddenInput.val(selectedVal);
             }
 
             // Sync with native select if variable product
@@ -193,7 +203,19 @@
                     $select = $container.closest('.variation-row').find('select');
                 }
                 if ($select.length) {
-                    $select.val(selectedVal).trigger('change');
+                    // Match option case-insensitively or by slug
+                    let matched = false;
+                    $select.find('option').each(function () {
+                        const optVal = String($(this).val());
+                        if (optVal.toLowerCase() === selectedVal.toLowerCase()) {
+                            $select.val(optVal).trigger('change');
+                            matched = true;
+                            return false;
+                        }
+                    });
+                    if (!matched) {
+                        $select.val(selectedVal).trigger('change');
+                    }
                 }
             }
         });
@@ -202,32 +224,211 @@
         const $variationsForm = $('.variations_form');
         if ($variationsForm.length) {
             $variationsForm.on('reset_data', function () {
-                $('.maze-size-pill').removeClass('is-active selected');
+                $('.maze-size-pill').removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
                 $('.selected-variation-value').text('');
             });
 
             $variationsForm.on('change', '.variations select', function () {
                 const $sel = $(this);
-                const val = $sel.val();
+                const val = String($sel.val() || '');
                 const $row = $sel.closest('.variation-row');
                 const $pills = $row.find('.maze-size-pills');
 
                 if ($pills.length && val) {
-                    $pills.find('.maze-size-pill').removeClass('is-active selected');
-                    $pills.find('.maze-size-pill[data-value="' + val + '"]').addClass('is-active selected');
+                    $pills.find('.maze-size-pill').removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
+                    $pills.find('.maze-size-pill').each(function () {
+                        if (String($(this).data('value')).toLowerCase() === val.toLowerCase()) {
+                            $(this).addClass('is-active selected bg-black text-white').removeClass('bg-white text-black');
+                        }
+                    });
                     $row.find('.selected-variation-value').text('// ' + val.toUpperCase());
                 }
             });
+
+            // On initial load: if no variation attribute is active, auto-select the first pill
+            $variationsForm.each(function () {
+                const $form = $(this);
+                $form.find('.variation-row').each(function () {
+                    const $row = $(this);
+                    const $activePill = $row.find('.maze-size-pill.is-active');
+                    if (!$activePill.length) {
+                        const $firstPill = $row.find('.maze-size-pill:not(.is-disabled)').first();
+                        if ($firstPill.length) {
+                            $firstPill.trigger('click');
+                        }
+                    } else {
+                        // Ensure native select has the active value
+                        const val = $activePill.data('value');
+                        const $sel = $row.find('select');
+                        if ($sel.length && val && !$sel.val()) {
+                            $sel.val(val).trigger('change');
+                        }
+                    }
+                });
+            });
         }
 
-        // --- 5. Dynamic Bag Counter Pulse on Add To Cart ---
+        // --- 5. Cart Badge Synchronization & Stale Fragment Clearer ---
+        function syncMazeCartBadge(count) {
+            const $counter = $('.maze-cart-count');
+            if (!$counter.length) return;
+
+            let num;
+            if (typeof count !== 'undefined' && count !== null) {
+                num = parseInt(count, 10);
+            } else {
+                const textVal = $counter.text().trim();
+                const dataVal = $counter.attr('data-count');
+                num = dataVal ? parseInt(dataVal, 10) : (textVal ? parseInt(textVal, 10) : 0);
+            }
+
+            if (isNaN(num) || num <= 0) {
+                $counter.text('0').attr('data-count', '0').addClass('hidden').css('display', 'none');
+            } else {
+                $counter.text(num).attr('data-count', String(num)).removeClass('hidden').css('display', 'inline-flex');
+            }
+        }
+
+        // Run sync immediately on DOM ready
+        syncMazeCartBadge();
+
+        // Detect if WooCommerce session/cookie indicates an empty cart and clear stale sessionStorage fragments
+        try {
+            const cookies = document.cookie || '';
+            const hasCartItems = cookies.indexOf('woocommerce_items_in_cart') !== -1;
+            const match = cookies.match(/woocommerce_items_in_cart=([^;]+)/);
+            const cookieCount = match ? parseInt(match[1], 10) : 0;
+
+            if (!hasCartItems || cookieCount === 0) {
+                if (typeof window.sessionStorage !== 'undefined') {
+                    const keysToRemove = [];
+                    for (let i = 0; i < sessionStorage.length; i++) {
+                        const key = sessionStorage.key(i);
+                        if (key && (key.indexOf('wc_fragments') !== -1 || key.indexOf('wc_cart_hash') !== -1)) {
+                            keysToRemove.push(key);
+                        }
+                    }
+                    keysToRemove.forEach(function (k) {
+                        try { sessionStorage.removeItem(k); } catch (e) {}
+                    });
+                }
+                syncMazeCartBadge(0);
+            }
+        } catch (e) {}
+
+        // Listen for all WooCommerce cart fragment events
+        $(document.body).on('wc_fragments_refreshed wc_fragments_loaded added_to_cart removed_from_cart', function (event, fragments) {
+            if (fragments && fragments['span.maze-cart-count']) {
+                const $temp = $('<div>').html(fragments['span.maze-cart-count']);
+                const count = parseInt($temp.find('.maze-cart-count').text().trim(), 10);
+                syncMazeCartBadge(count);
+            } else {
+                syncMazeCartBadge();
+            }
+        });
+
+        // Dynamic Bag Counter Pulse on Add To Cart
         $(document.body).on('added_to_cart', function (event, fragments, cart_hash, $button) {
             const $counter = $('.maze-cart-count');
             if ($counter.length) {
+                syncMazeCartBadge();
                 $counter.addClass('scale-125 ring-2 ring-black');
                 setTimeout(function () {
                     $counter.removeClass('scale-125 ring-2 ring-black');
                 }, 600);
+            }
+        });
+
+        // --- 6. Seamless Single-Product AJAX Add To Bag ---
+        $(document).on('submit', 'form.cart', function (e) {
+            const $form = $(this);
+            const $btn = $form.find('.single_add_to_cart_button');
+
+            // Skip external or grouped products
+            if ($form.closest('.product-type-external').length) {
+                return;
+            }
+
+            // For variable products, ensure variation is selected
+            if ($form.hasClass('variations_form')) {
+                const variationId = parseInt($form.find('input[name="variation_id"]').val(), 10);
+                if (!variationId || variationId <= 0) {
+                    e.preventDefault();
+                    const $pills = $form.find('.maze-size-pills');
+                    $pills.addClass('ring-2 ring-black');
+                    setTimeout(function () {
+                        $pills.removeClass('ring-2 ring-black');
+                    }, 1000);
+                    return;
+                }
+            }
+
+            // AJAX add-to-bag submission
+            if (typeof mazeData !== 'undefined' && mazeData.ajaxUrl) {
+                e.preventDefault();
+
+                if ($btn.hasClass('is-adding') || $btn.prop('disabled')) {
+                    return;
+                }
+
+                const originalBtnHtml = $btn.html();
+                $btn.addClass('is-adding').prop('disabled', true).text('ADDING TO BAG...');
+
+                const formData = new FormData($form[0]);
+                formData.append('action', 'maze_ajax_add_to_cart');
+                formData.append('security', mazeData.nonce || '');
+
+                if (!formData.has('add-to-cart')) {
+                    const addVal = $btn.val() || $form.find('input[name="add-to-cart"]').val() || $form.data('product_id');
+                    if (addVal) {
+                        formData.append('add-to-cart', addVal);
+                    }
+                }
+
+                $.ajax({
+                    url: mazeData.ajaxUrl,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response && response.fragments) {
+                            // Update fragments
+                            $.each(response.fragments, function (key, value) {
+                                $(key).replaceWith(value);
+                            });
+
+                            syncMazeCartBadge();
+
+                            // Pulse badge
+                            const $counter = $('.maze-cart-count');
+                            $counter.addClass('scale-125 ring-2 ring-black');
+                            setTimeout(function () {
+                                $counter.removeClass('scale-125 ring-2 ring-black');
+                            }, 600);
+
+                            // Success button state
+                            $btn.text('ADDED // IN BAG');
+                            setTimeout(function () {
+                                $btn.removeClass('is-adding').prop('disabled', false).html(originalBtnHtml);
+                            }, 1500);
+
+                            $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $btn]);
+                        } else if (response && response.success === false) {
+                            alert(response.data && response.data.message ? response.data.message : 'Could not add to bag.');
+                            $btn.removeClass('is-adding').prop('disabled', false).html(originalBtnHtml);
+                        } else {
+                            // Graceful fallback
+                            $form.off('submit').submit();
+                        }
+                    },
+                    error: function () {
+                        // Fallback to standard form submission on network issue
+                        $btn.removeClass('is-adding').prop('disabled', false).html(originalBtnHtml);
+                        $form.off('submit').submit();
+                    }
+                });
             }
         });
 

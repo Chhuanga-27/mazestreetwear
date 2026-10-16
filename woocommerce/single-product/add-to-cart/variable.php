@@ -13,6 +13,14 @@ defined( 'ABSPATH' ) || exit;
 
 global $product;
 
+/**
+ * @var \WC_Product_Variable $product
+ * @var array $attributes
+ * @var array $available_variations
+ */
+$attributes           = isset( $attributes ) ? $attributes : ( ( $product && method_exists( $product, 'get_variation_attributes' ) ) ? $product->get_variation_attributes() : array() );
+$available_variations = isset( $available_variations ) ? $available_variations : ( ( $product && method_exists( $product, 'get_available_variations' ) ) ? $product->get_available_variations() : array() );
+
 $attribute_keys  = array_keys( $attributes );
 $variations_json = wp_json_encode( $available_variations );
 $variations_attr = function_exists( 'wc_esc_json' ) ? wc_esc_json( $variations_json ) : _wp_specialchars( $variations_json, ENT_QUOTES, 'UTF-8', true );
@@ -30,12 +38,16 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
         <div class="variations space-y-5">
             <?php do_action( 'woocommerce_before_variations_table' ); ?>
 
-            <?php foreach ( $attributes as $attribute_name => $options ) : ?>
+            <?php foreach ( $attributes as $attribute_name => $options ) : 
+                $selected_attr = isset( $_REQUEST[ 'attribute_' . sanitize_title( $attribute_name ) ] ) ? wc_clean( wp_unslash( $_REQUEST[ 'attribute_' . sanitize_title( $attribute_name ) ] ) ) : $product->get_variation_default_attribute( $attribute_name );
+            ?>
                 <div class="variation-row" data-attribute="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>">
                     <div class="flex items-center justify-between mb-2">
                         <label for="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>" class="text-sm font-mono font-bold tracking-widest uppercase text-black">
                             <?php echo wc_attribute_label( $attribute_name ); // WPCS: XSS ok. ?>
-                            <span class="selected-variation-value text-black font-bold ml-2"></span>
+                            <span class="selected-variation-value text-black font-bold ml-2">
+                                <?php if ( ! empty( $selected_attr ) ) echo '// ' . esc_html( strtoupper( $selected_attr ) ); ?>
+                            </span>
                         </label>
                     </div>
 
@@ -47,9 +59,10 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                                 $terms = wc_get_product_terms( $product->get_id(), $attribute_name, array( 'fields' => 'all' ) );
                                 foreach ( $terms as $term ) {
                                     if ( in_array( $term->slug, $options, true ) ) {
+                                        $is_active = ( $selected_attr === $term->slug );
                                         ?>
                                         <button type="button"
-                                                class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black bg-white text-black hover:bg-neutral-100 transition-colors rounded-none cursor-pointer"
+                                                class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black transition-colors rounded-none cursor-pointer <?php echo $is_active ? 'is-active selected bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'; ?>"
                                                 data-value="<?php echo esc_attr( $term->slug ); ?>">
                                             <?php echo esc_html( $term->name ); ?>
                                         </button>
@@ -58,9 +71,10 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                                 }
                             } else {
                                 foreach ( $options as $option ) {
+                                    $is_active = ( $selected_attr === $option );
                                     ?>
                                     <button type="button"
-                                            class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black bg-white text-black hover:bg-neutral-100 transition-colors rounded-none cursor-pointer"
+                                            class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black transition-colors rounded-none cursor-pointer <?php echo $is_active ? 'is-active selected bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'; ?>"
                                             data-value="<?php echo esc_attr( $option ); ?>">
                                         <?php echo esc_html( $option ); ?>
                                     </button>
@@ -78,6 +92,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                             'options'   => $options,
                             'attribute' => $attribute_name,
                             'product'   => $product,
+                            'selected'  => $selected_attr,
                         ) );
                         ?>
                     </div>

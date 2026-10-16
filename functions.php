@@ -106,6 +106,7 @@ function mazestreetwear_scripts() {
     // Pass data to JS (e.g. AJAX URLs, cart status)
     wp_localize_script( 'mazestreetwear-main', 'mazeData', array(
         'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+        'nonce'     => wp_create_nonce( 'maze_cart_nonce' ),
         'cartUrl'   => function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '',
         'shopUrl'   => function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : '',
     ) );
@@ -113,20 +114,55 @@ function mazestreetwear_scripts() {
 add_action( 'wp_enqueue_scripts', 'mazestreetwear_scripts' );
 
 /**
- * Dynamic WooCommerce AJAX Cart Count Fragment
- * Updates the shopping bag count badge dynamically on AJAX add-to-cart events without page reloads.
+ * Safe and validated WooCommerce cart item count helper.
+ * Filters out invalid, deleted, or unverified products from session counts.
  */
-function mazestreetwear_cart_count_fragments( $fragments ) {
+function mazestreetwear_get_cart_count() {
     if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
-        return $fragments;
+        return 0;
     }
 
-    $count = WC()->cart->get_cart_contents_count();
+    if ( WC()->cart->is_empty() ) {
+        return 0;
+    }
+
+    $raw_count = WC()->cart->get_cart_contents_count();
+    if ( $raw_count <= 0 ) {
+        return 0;
+    }
+
+    // Verify whether products in cart actually exist in the database
+    $valid_count = 0;
+    $cart_contents = WC()->cart->get_cart();
+    if ( empty( $cart_contents ) ) {
+        return 0;
+    }
+
+    foreach ( $cart_contents as $cart_item ) {
+        if ( ! empty( $cart_item['data'] ) && is_object( $cart_item['data'] ) && $cart_item['data']->exists() ) {
+            $valid_count += isset( $cart_item['quantity'] ) ? (int) $cart_item['quantity'] : 1;
+        }
+    }
+
+    return $valid_count;
+}
+
+/**
+ * Dynamic WooCommerce AJAX Cart Count Fragment
+ * Updates the shopping bag count badge dynamically on AJAX add-to-cart events without page reloads.
+ * Automatically hides badge when cart is empty.
+ *
+ * @param array $fragments Existing fragments.
+ * @return array
+ */
+function mazestreetwear_cart_count_fragments( $fragments ) {
+    $count = mazestreetwear_get_cart_count();
+    $is_empty = ( $count <= 0 );
 
     // Generate updated badge HTML fragment: Black bag badge with white number counter
     ob_start();
     ?>
-    <span class="maze-cart-count absolute -top-1.5 -right-2 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[11px] sm:text-xs font-mono font-bold tracking-tight text-white bg-black border border-white rounded-full transition-transform duration-200 <?php echo $count > 0 ? 'scale-100' : 'scale-90 opacity-80'; ?>">
+    <span class="maze-cart-count absolute -top-1.5 -right-2.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-mono font-bold tracking-tight text-white bg-black border border-white rounded-full transition-all duration-200 <?php echo $is_empty ? 'hidden' : 'scale-100'; ?>" data-count="<?php echo esc_attr( $count ); ?>" <?php echo $is_empty ? 'style="display:none;"' : ''; ?>>
         <?php echo esc_html( $count ); ?>
     </span>
     <?php
@@ -135,6 +171,134 @@ function mazestreetwear_cart_count_fragments( $fragments ) {
     return $fragments;
 }
 add_filter( 'woocommerce_add_to_cart_fragments', 'mazestreetwear_cart_count_fragments' );
+
+/**
+ * Direct Single-Product AJAX Add to Bag Handler (Simple & Variable)
+ */
+function mazestreetwear_ajax_add_to_cart() {
+    check_ajax_referer( 'maze_cart_nonce', 'security' );
+
+    if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
+        wp_send_json_error( array( 'message' => __( 'WooCommerce is not active.', 'mazestreetwear' ) ) );
+    }
+
+    $product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : ( isset( $_POST['add-to-cart'] ) ? absint( $_POST['add-to-cart'] ) : 0 );
+    $quantity   = isset( $_POST['quantity'] ) ? ( function_exists( 'wc_stock_amount' ) ? wc_stock_amount( wp_unslash( $_POST['quantity'] ) ) : absint( $_POST['quantity'] ) ) : 1;
+    $variation_id = isset( $_POST['variation_id'] ) ? absint( $_POST['variation_id'] ) : 0;
+    $variations   = array();
+
+    if ( ! $product_id ) {
+        wp_send_json_error( array( 'message' => __( 'Invalid product.', 'mazestreetwear' ) ) );
+    }
+
+    // Collect variation attributes
+    foreach ( $_POST as $key => $value ) {
+        if ( 0 === strpos( $key, 'attribute_' ) ) {
+            $variations[ sanitize_title( $key ) ] = wp_unslash( $value );
+        }
+    }
+
+    $product = function_exists( 'wc_get_product' ) ? wc_get_product( $variation_id ? $variation_id : $product_id ) : null;
+    if ( ! $product ) {
+        wp_send_json_error( array( 'message' => __( 'Product not found.', 'mazestreetwear' ) ) );
+    }
+
+    $passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity, $variation_id, $variations );
+
+    if ( $passed_validation ) {
+        $cart_item_key = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variations );
+        if ( $cart_item_key ) {
+            do_action( 'woocommerce_ajax_added_to_cart', $product_id );
+
+            $fragments = apply_filters( 'woocommerce_add_to_cart_fragments', array() );
+            $cart_hash = WC()->cart->get_cart_hash();
+
+            wp_send_json( array(
+                'error'     => false,
+                'fragments' => $fragments,
+                'cart_hash' => $cart_hash,
+            ) );
+        } else {
+            $notices = function_exists( 'wc_get_notices' ) ? wc_get_notices( 'error' ) : array();
+            $msg = ! empty( $notices ) ? wp_strip_all_tags( $notices[0]['notice'] ) : __( 'This product could not be added to the bag.', 'mazestreetwear' );
+            if ( function_exists( 'wc_clear_notices' ) ) {
+                wc_clear_notices();
+            }
+            wp_send_json_error( array( 'message' => $msg ) );
+        }
+    } else {
+        $notices = function_exists( 'wc_get_notices' ) ? wc_get_notices( 'error' ) : array();
+        $msg = ! empty( $notices ) ? wp_strip_all_tags( $notices[0]['notice'] ) : __( 'Please select all required product options.', 'mazestreetwear' );
+        if ( function_exists( 'wc_clear_notices' ) ) {
+            wc_clear_notices();
+        }
+        wp_send_json_error( array( 'message' => $msg ) );
+    }
+}
+add_action( 'wp_ajax_maze_ajax_add_to_cart', 'mazestreetwear_ajax_add_to_cart' );
+add_action( 'wp_ajax_nopriv_maze_ajax_add_to_cart', 'mazestreetwear_ajax_add_to_cart' );
+
+/**
+ * Preserve custom selected_size in cart item data for simple products
+ *
+ * @param array $cart_item_data Cart item data.
+ * @param int   $product_id     Product ID.
+ * @param int   $variation_id   Variation ID.
+ * @return array
+ */
+function mazestreetwear_add_custom_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
+    if ( ! empty( $_POST['selected_size'] ) ) {
+        $cart_item_data['selected_size'] = sanitize_text_field( wp_unslash( $_POST['selected_size'] ) );
+    }
+    return $cart_item_data;
+}
+add_filter( 'woocommerce_add_cart_item_data', 'mazestreetwear_add_custom_cart_item_data', 10, 3 );
+
+/**
+ * Display custom selected_size in cart and checkout
+ *
+ * @param array $item_data Existing item data.
+ * @param array $cart_item Cart item data.
+ * @return array
+ */
+function mazestreetwear_display_custom_cart_item_data( $item_data, $cart_item ) {
+    if ( ! empty( $cart_item['selected_size'] ) ) {
+        $item_data[] = array(
+            'key'   => __( 'Size', 'mazestreetwear' ),
+            'value' => function_exists( 'wc_clean' ) ? wc_clean( $cart_item['selected_size'] ) : sanitize_text_field( $cart_item['selected_size'] ),
+        );
+    }
+    return $item_data;
+}
+add_filter( 'woocommerce_get_item_data', 'mazestreetwear_display_custom_cart_item_data', 10, 2 );
+
+/**
+ * Save custom selected_size to order line item
+ *
+ * @param \WC_Order_Item_Product $item          Order item.
+ * @param string                $cart_item_key Cart item key.
+ * @param array                 $values        Cart item values.
+ * @param \WC_Order             $order         Order object.
+ */
+function mazestreetwear_save_custom_order_item_meta( $item, $cart_item_key, $values, $order ) {
+    if ( ! empty( $values['selected_size'] ) && is_object( $item ) && method_exists( $item, 'add_meta_data' ) ) {
+        $item->add_meta_data( __( 'Size', 'mazestreetwear' ), $values['selected_size'], true );
+    }
+}
+add_action( 'woocommerce_checkout_create_order_line_item', 'mazestreetwear_save_custom_order_item_meta', 10, 4 );
+
+/**
+ * Allow clearing the cart via URL query parameter ?empty-cart=1 for instant debugging/testing
+ */
+function mazestreetwear_empty_cart_listener() {
+    if ( isset( $_GET['empty-cart'] ) && function_exists( 'WC' ) && WC()->cart ) {
+        WC()->cart->empty_cart();
+        $redirect = remove_query_arg( 'empty-cart' );
+        wp_safe_redirect( $redirect );
+        exit;
+    }
+}
+add_action( 'init', 'mazestreetwear_empty_cart_listener', 20 );
 
 /**
  * Custom WooCommerce hooks & layout customizations
@@ -215,6 +379,9 @@ add_action( 'template_redirect', 'mazestreetwear_redirect_wishlist_to_cart', 5 )
 
 /**
  * Filter WooCommerce breadcrumb defaults for minimalist monochrome aesthetic
+ *
+ * @param array $defaults Default breadcrumb settings.
+ * @return array
  */
 function mazestreetwear_breadcrumbs_defaults( $defaults ) {
     $defaults['delimiter']   = '<span class="text-neutral-400 mx-2">/</span>';
@@ -397,6 +564,12 @@ function mazestreetwear_legal_rewrite_rules() {
 }
 add_action( 'init', 'mazestreetwear_legal_rewrite_rules', 10 );
 
+/**
+ * Register custom query vars for legal and contact pages.
+ *
+ * @param array $vars Existing query vars.
+ * @return array
+ */
 function mazestreetwear_legal_query_vars( $vars ) {
     $vars[] = 'mazepage';
     return $vars;
@@ -405,6 +578,10 @@ add_filter( 'query_vars', 'mazestreetwear_legal_query_vars' );
 
 /**
  * Prevent WordPress canonical redirect from bouncing legal and contact pages to homepage.
+ *
+ * @param string $redirect_url  Redirect URL.
+ * @param string $requested_url Requested URL.
+ * @return string|false
  */
 function mazestreetwear_prevent_legal_canonical_redirect( $redirect_url, $requested_url ) {
     if ( preg_match( '#/(privacy-policy|terms-and-conditions|terms|refund-policy|refunds|returns|shipping-policy|shipping|delivery-policy|contact-us|contact|about-us|about)/?$#i', $requested_url ) ) {
@@ -417,6 +594,9 @@ add_filter( 'redirect_canonical', 'mazestreetwear_prevent_legal_canonical_redire
 /**
  * Template routing fallback for legal pages.
  * Ensures the custom templates are ALWAYS loaded even before rewrite rules or database records are synced.
+ *
+ * @param string $template Current template file path.
+ * @return string
  */
 function mazestreetwear_legal_template_include( $template ) {
     // 1. Check custom query var from rewrite rule
@@ -635,6 +815,9 @@ add_filter( 'template_include', 'mazestreetwear_legal_template_include', 99 );
 
 /**
  * Ensure document title is correct when legal pages are routed directly.
+ *
+ * @param array $title_parts Existing title parts.
+ * @return array
  */
 function mazestreetwear_legal_document_title_parts( $title_parts ) {
     $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
@@ -955,6 +1138,10 @@ add_action( 'init', 'mazestreetwear_ensure_default_categories', 10 );
 
 /**
  * Automatically append Contact link to the primary menu if not already present.
+ *
+ * @param string $items Menu items HTML.
+ * @param object $args  Menu arguments.
+ * @return string
  */
 function mazestreetwear_add_contact_to_primary_menu( $items, $args ) {
     if ( isset( $args->theme_location ) && 'primary' === $args->theme_location ) {
@@ -1054,6 +1241,11 @@ add_action( 'admin_post_nopriv_maze_contact_submission', 'mazestreetwear_handle_
  * Default Favicon & Site Icon Support for Maze Streetwear
  * Ensures WordPress core, REST API, feeds, and third-party plugins use the custom MAZE emblem favicon
  * when no icon is uploaded in Appearance > Customize.
+ *
+ * @param string $url     Site icon URL.
+ * @param int    $size    Site icon size in pixels.
+ * @param int    $blog_id Blog ID.
+ * @return string
  */
 function mazestreetwear_filter_site_icon_url( $url, $size, $blog_id ) {
     if ( ! empty( $url ) ) {
