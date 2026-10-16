@@ -169,29 +169,39 @@
         });
 
         // --- 4. Interactive Rectangular Size Boxes (Filled Black When Selected) ---
-        $(document).on('click', '.maze-size-pill', function (e) {
-            e.preventDefault();
-            const $pill = $(this);
-            if ($pill.hasClass('is-disabled') || $pill.is(':disabled') || $pill.hasClass('opacity-30')) {
-                return;
+        window.mazeSelectSize = function (btn, event) {
+            if (event) {
+                event.preventDefault();
             }
+            if (!btn) return;
 
+            const $pill = $(btn);
             const $container = $pill.closest('.maze-size-pills');
+            if (!$container.length) return;
+
             const targetSelectName = $container.data('target-select');
             const selectedVal = String($pill.data('value') || $pill.text().trim());
+            if (!selectedVal) return;
 
-            // 1. Visually activate this pill and deactivate siblings
-            $container.find('.maze-size-pill').removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
+            // 1. Immediately toggle classes & styles on all pills
+            $container.find('.maze-size-pill').each(function () {
+                $(this).removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
+                this.style.setProperty('background-color', '#ffffff', 'important');
+                this.style.setProperty('color', '#000000', 'important');
+            });
+
             $pill.addClass('is-active selected bg-black text-white').removeClass('bg-white text-black');
+            btn.style.setProperty('background-color', '#000000', 'important');
+            btn.style.setProperty('color', '#ffffff', 'important');
 
-            // 2. Update visible label (e.g. "// M")
+            // 2. Update visible text label (e.g. "// M")
             const $sizeLabel = $container.closest('.variation-row, .size-selector-wrap').find('.selected-variation-value, .selected-size-label');
             if ($sizeLabel.length) {
                 $sizeLabel.text('// ' + selectedVal.toUpperCase());
             }
 
             // 3. Simple Product: update hidden input value
-            const $hiddenInput = $container.closest('form').find('.maze-selected-size-input');
+            const $hiddenInput = $container.closest('form').find('.maze-selected-size-input, input[name="selected_size"]');
             if ($hiddenInput.length) {
                 $hiddenInput.val(selectedVal);
             }
@@ -221,6 +231,11 @@
                 });
                 $select.val(matchedVal).trigger('change');
             }
+        };
+
+        // Delegate click on size pills
+        $(document).on('click', '.maze-size-pill', function (e) {
+            window.mazeSelectSize(this, e);
         });
 
         // Sync pills when native WooCommerce select changes (e.g. programmatically or via browser)
@@ -232,16 +247,23 @@
 
             if ($pills.length) {
                 if (!val) {
-                    // Selection truly cleared
-                    $pills.find('.maze-size-pill').removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
+                    $pills.find('.maze-size-pill').each(function () {
+                        $(this).removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
+                        this.style.setProperty('background-color', '#ffffff', 'important');
+                        this.style.setProperty('color', '#000000', 'important');
+                    });
                     $row.find('.selected-variation-value').text('');
                 } else {
                     $pills.find('.maze-size-pill').each(function () {
                         const pillVal = String($(this).data('value') || $(this).text().trim()).toLowerCase();
                         if (pillVal === val.toLowerCase()) {
                             $(this).addClass('is-active selected bg-black text-white').removeClass('bg-white text-black');
+                            this.style.setProperty('background-color', '#000000', 'important');
+                            this.style.setProperty('color', '#ffffff', 'important');
                         } else {
                             $(this).removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
+                            this.style.setProperty('background-color', '#ffffff', 'important');
+                            this.style.setProperty('color', '#000000', 'important');
                         }
                     });
                     $row.find('.selected-variation-value').text('// ' + val.toUpperCase());
@@ -252,7 +274,11 @@
         // Clear button listener: unselect all pills when user explicitly clicks "CLEAR SELECTION"
         $(document).on('click', '.reset_variations', function () {
             const $form = $(this).closest('form.variations_form');
-            $form.find('.maze-size-pill').removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
+            $form.find('.maze-size-pill').each(function () {
+                $(this).removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
+                this.style.setProperty('background-color', '#ffffff', 'important');
+                this.style.setProperty('color', '#000000', 'important');
+            });
             $form.find('.selected-variation-value').text('');
         });
 
@@ -264,40 +290,6 @@
                     $mainImg.attr('src', variation.image.full_src || variation.image.src);
                 }
             }
-        });
-
-        // Mark out of stock / unavailable sizes when WooCommerce updates options
-        $(document).on('woocommerce_update_variation_values check_variations', 'form.variations_form', function () {
-            const $form = $(this);
-            $form.find('.variation-row').each(function () {
-                const $row = $(this);
-                const $select = $row.find('select');
-                const $pills = $row.find('.maze-size-pills');
-                if (!$select.length || !$pills.length) return;
-
-                $pills.find('.maze-size-pill').each(function () {
-                    const $pill = $(this);
-                    const pillVal = String($pill.data('value') || $pill.text().trim()).toLowerCase();
-                    let $opt = null;
-
-                    $select.find('option').each(function () {
-                        const optVal = String($(this).val() || '').toLowerCase();
-                        const optText = String($(this).text() || '').trim().toLowerCase();
-                        if (optVal === pillVal || optText === pillVal) {
-                            $opt = $(this);
-                            return false;
-                        }
-                    });
-
-                    if ($opt && $opt.length) {
-                        if ($opt.prop('disabled') || ($opt.hasClass('attached') && !$opt.hasClass('enabled'))) {
-                            $pill.addClass('is-disabled opacity-30 cursor-not-allowed line-through').removeClass('hover:bg-neutral-100');
-                        } else {
-                            $pill.removeClass('is-disabled opacity-30 cursor-not-allowed line-through').addClass('hover:bg-neutral-100');
-                        }
-                    }
-                });
-            });
         });
 
         // Initialize variation pills on page ready

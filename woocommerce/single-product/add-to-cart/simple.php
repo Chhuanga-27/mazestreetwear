@@ -84,7 +84,11 @@ if ( $product->is_in_stock() ) : ?>
                     <?php foreach ( $size_options as $idx => $s_opt ) : 
                         $is_s_active = ( 0 === $idx );
                     ?>
-                        <button type="button" class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black cursor-pointer transition-colors rounded-none <?php echo $is_s_active ? 'is-active selected bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'; ?>" data-value="<?php echo esc_attr( $s_opt ); ?>">
+                        <button type="button" 
+                                class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black cursor-pointer transition-colors rounded-none <?php echo $is_s_active ? 'is-active selected bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'; ?>"
+                                style="<?php echo $is_s_active ? 'background-color:#000000 !important; color:#ffffff !important;' : 'background-color:#ffffff !important; color:#000000 !important;'; ?>"
+                                data-value="<?php echo esc_attr( $s_opt ); ?>"
+                                onclick="window.mazeSelectSize ? window.mazeSelectSize(this, event) : null">
                             <?php echo esc_html( $s_opt ); ?>
                         </button>
                     <?php endforeach; ?>
@@ -119,6 +123,54 @@ if ( $product->is_in_stock() ) : ?>
 
         <?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
     </form>
+
+    <script>
+    window.mazeSelectSize = window.mazeSelectSize || function (btn, event) {
+        if (event) {
+            event.preventDefault();
+        }
+        if (!btn) return;
+
+        var container = btn.closest('.maze-size-pills');
+        if (!container) return;
+
+        var selectedVal = (btn.getAttribute('data-value') || btn.textContent || '').trim();
+        if (!selectedVal) return;
+
+        // 1. Immediately toggle classes and styles on all pills
+        var allPills = container.querySelectorAll('.maze-size-pill');
+        for (var i = 0; i < allPills.length; i++) {
+            var p = allPills[i];
+            p.classList.remove('is-active', 'selected', 'bg-black', 'text-white');
+            p.classList.add('bg-white', 'text-black');
+            p.style.setProperty('background-color', '#ffffff', 'important');
+            p.style.setProperty('color', '#000000', 'important');
+        }
+
+        btn.classList.add('is-active', 'selected', 'bg-black', 'text-white');
+        btn.classList.remove('bg-white', 'text-black');
+        btn.style.setProperty('background-color', '#000000', 'important');
+        btn.style.setProperty('color', '#ffffff', 'important');
+
+        // 2. Update visible text label (e.g. "// M")
+        var row = btn.closest('.variation-row') || btn.closest('.size-selector-wrap') || container.parentElement;
+        if (row) {
+            var label = row.querySelector('.selected-variation-value, .selected-size-label');
+            if (label) {
+                label.textContent = '// ' + selectedVal.toUpperCase();
+            }
+        }
+
+        // 3. Simple Product: update hidden input
+        var form = btn.closest('form');
+        if (form) {
+            var hiddenInput = form.querySelector('.maze-selected-size-input, input[name="selected_size"]');
+            if (hiddenInput) {
+                hiddenInput.value = selectedVal;
+            }
+        }
+    };
+    </script>
 
     <?php do_action( 'woocommerce_after_add_to_cart_form' ); ?>
 

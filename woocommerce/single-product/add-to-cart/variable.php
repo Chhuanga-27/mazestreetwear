@@ -76,7 +76,9 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                                         ?>
                                         <button type="button"
                                                 class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black transition-colors rounded-none cursor-pointer <?php echo $is_active ? 'is-active selected bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'; ?>"
-                                                data-value="<?php echo esc_attr( $term->slug ); ?>">
+                                                style="<?php echo $is_active ? 'background-color:#000000 !important; color:#ffffff !important;' : 'background-color:#ffffff !important; color:#000000 !important;'; ?>"
+                                                data-value="<?php echo esc_attr( $term->slug ); ?>"
+                                                onclick="window.mazeSelectSize ? window.mazeSelectSize(this, event) : null">
                                             <?php echo esc_html( $term->name ); ?>
                                         </button>
                                         <?php
@@ -88,7 +90,9 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                                     ?>
                                     <button type="button"
                                             class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black transition-colors rounded-none cursor-pointer <?php echo $is_active ? 'is-active selected bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'; ?>"
-                                            data-value="<?php echo esc_attr( $option ); ?>">
+                                            style="<?php echo $is_active ? 'background-color:#000000 !important; color:#ffffff !important;' : 'background-color:#ffffff !important; color:#000000 !important;'; ?>"
+                                            data-value="<?php echo esc_attr( $option ); ?>"
+                                            onclick="window.mazeSelectSize ? window.mazeSelectSize(this, event) : null">
                                         <?php echo esc_html( $option ); ?>
                                     </button>
                                     <?php
@@ -141,6 +145,95 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 
     <?php do_action( 'woocommerce_after_variations_form' ); ?>
 </form>
+
+<script>
+window.mazeSelectSize = window.mazeSelectSize || function (btn, event) {
+    if (event) {
+        event.preventDefault();
+    }
+    if (!btn) return;
+
+    var container = btn.closest('.maze-size-pills');
+    if (!container) return;
+
+    var selectedVal = (btn.getAttribute('data-value') || btn.textContent || '').trim();
+    if (!selectedVal) return;
+
+    // 1. Immediately toggle classes and styles on all pills
+    var allPills = container.querySelectorAll('.maze-size-pill');
+    for (var i = 0; i < allPills.length; i++) {
+        var p = allPills[i];
+        p.classList.remove('is-active', 'selected', 'bg-black', 'text-white');
+        p.classList.add('bg-white', 'text-black');
+        p.style.setProperty('background-color', '#ffffff', 'important');
+        p.style.setProperty('color', '#000000', 'important');
+    }
+
+    btn.classList.add('is-active', 'selected', 'bg-black', 'text-white');
+    btn.classList.remove('bg-white', 'text-black');
+    btn.style.setProperty('background-color', '#000000', 'important');
+    btn.style.setProperty('color', '#ffffff', 'important');
+
+    // 2. Update visible text label (e.g. "// M")
+    var row = btn.closest('.variation-row') || btn.closest('.size-selector-wrap') || container.parentElement;
+    if (row) {
+        var label = row.querySelector('.selected-variation-value, .selected-size-label');
+        if (label) {
+            label.textContent = '// ' + selectedVal.toUpperCase();
+        }
+    }
+
+    // 3. Simple Product: update hidden input
+    var form = btn.closest('form');
+    if (form) {
+        var hiddenInput = form.querySelector('.maze-selected-size-input, input[name="selected_size"]');
+        if (hiddenInput) {
+            hiddenInput.value = selectedVal;
+        }
+
+        // 4. Variable Product: find native select and update value
+        var targetSelectName = container.getAttribute('data-target-select');
+        var select = null;
+        if (row) {
+            select = row.querySelector('select');
+        }
+        if (!select && targetSelectName) {
+            select = document.getElementById(targetSelectName) || form.querySelector('select[name="attribute_' + targetSelectName + '"]');
+        }
+        if (!select) {
+            select = form.querySelector('select');
+        }
+
+        if (select) {
+            var matchedVal = selectedVal;
+            var options = select.options;
+            for (var j = 0; j < options.length; j++) {
+                var opt = options[j];
+                var optVal = (opt.value || '').trim().toLowerCase();
+                var optText = (opt.text || '').trim().toLowerCase();
+                var sLower = selectedVal.toLowerCase();
+                if (optVal === sLower || optText === sLower) {
+                    matchedVal = opt.value;
+                    break;
+                }
+            }
+            select.value = matchedVal;
+
+            try {
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+            } catch (err) {
+                var evt = document.createEvent('HTMLEvents');
+                evt.initEvent('change', true, true);
+                select.dispatchEvent(evt);
+            }
+
+            if (window.jQuery) {
+                window.jQuery(select).trigger('change');
+            }
+        }
+    }
+};
+</script>
 
 <?php
 do_action( 'woocommerce_after_add_to_cart_form' );

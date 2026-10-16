@@ -96,7 +96,7 @@ function mazestreetwear_scripts()
 
     // Theme JavaScript (Streetwear interactions, mobile menu, dynamic size pill variation sync)
     $main_js_path = get_template_directory() . '/assets/js/main.js';
-    $js_version   = file_exists($main_js_path) ? filemtime($main_js_path) : $theme_version;
+    $js_version   = time(); // Instant cache-busting to guarantee immediate execution in browser
 
     // Mazestreetwear-main JavaScript
     // CRITICAL: Depend strictly on 'jquery' so this script is GUARANTEED to load and execute
