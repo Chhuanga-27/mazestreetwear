@@ -172,7 +172,7 @@
         $(document).on('click', '.maze-size-pill', function (e) {
             e.preventDefault();
             const $pill = $(this);
-            if ($pill.hasClass('is-disabled') || $pill.is(':disabled')) {
+            if ($pill.hasClass('is-disabled') || $pill.is(':disabled') || $pill.hasClass('opacity-30')) {
                 return;
             }
 
@@ -180,93 +180,170 @@
             const targetSelectName = $container.data('target-select');
             const selectedVal = String($pill.data('value') || $pill.text().trim());
 
-            // Set active state on pill
+            // 1. Visually activate this pill and deactivate siblings
             $container.find('.maze-size-pill').removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
             $pill.addClass('is-active selected bg-black text-white').removeClass('bg-white text-black');
 
-            // Update visible label
+            // 2. Update visible label (e.g. "// M")
             const $sizeLabel = $container.closest('.variation-row, .size-selector-wrap').find('.selected-variation-value, .selected-size-label');
             if ($sizeLabel.length) {
                 $sizeLabel.text('// ' + selectedVal.toUpperCase());
             }
 
-            // Update simple product hidden input if present
+            // 3. Simple Product: update hidden input value
             const $hiddenInput = $container.closest('form').find('.maze-selected-size-input');
             if ($hiddenInput.length) {
                 $hiddenInput.val(selectedVal);
             }
 
-            // Sync with native select if variable product
-            if (targetSelectName) {
-                let $select = $('select#' + targetSelectName);
-                if (!$select.length) {
-                    $select = $container.closest('.variation-row').find('select');
-                }
-                if ($select.length) {
-                    // Match option case-insensitively or by slug
-                    let matched = false;
-                    $select.find('option').each(function () {
-                        const optVal = String($(this).val());
-                        if (optVal.toLowerCase() === selectedVal.toLowerCase()) {
-                            $select.val(optVal).trigger('change');
-                            matched = true;
-                            return false;
-                        }
-                    });
-                    if (!matched) {
-                        $select.val(selectedVal).trigger('change');
+            // 4. Variable Product: sync with native WooCommerce select
+            let $select = $container.closest('.variation-row').find('select');
+            if (!$select.length && targetSelectName) {
+                $select = $('select[name="attribute_' + targetSelectName + '"], select[data-attribute_name="attribute_' + targetSelectName + '"]');
+            }
+            if (!$select.length && targetSelectName) {
+                const el = document.getElementById(targetSelectName);
+                if (el) $select = $(el);
+            }
+            if (!$select.length) {
+                $select = $container.closest('form').find('select');
+            }
+
+            if ($select.length) {
+                let matchedVal = selectedVal;
+                $select.find('option').each(function () {
+                    const optVal = String($(this).val() || '').trim();
+                    const optText = String($(this).text() || '').trim();
+                    if (optVal && (optVal.toLowerCase() === selectedVal.toLowerCase() || optText.toLowerCase() === selectedVal.toLowerCase())) {
+                        matchedVal = optVal;
+                        return false;
                     }
-                }
+                });
+                $select.val(matchedVal).trigger('change');
             }
         });
 
-        // Sync when WooCommerce resets or changes variations
-        const $variationsForm = $('.variations_form');
-        if ($variationsForm.length) {
-            $variationsForm.on('reset_data', function () {
-                $('.maze-size-pill').removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
-                $('.selected-variation-value').text('');
-            });
+        // Sync pills when native WooCommerce select changes (e.g. programmatically or via browser)
+        $(document).on('change', 'form.variations_form select', function () {
+            const $sel = $(this);
+            const val = String($sel.val() || '').trim();
+            const $row = $sel.closest('.variation-row');
+            const $pills = $row.find('.maze-size-pills');
 
-            $variationsForm.on('change', '.variations select', function () {
-                const $sel = $(this);
-                const val = String($sel.val() || '');
-                const $row = $sel.closest('.variation-row');
-                const $pills = $row.find('.maze-size-pills');
-
-                if ($pills.length && val) {
+            if ($pills.length) {
+                if (!val) {
+                    // Selection truly cleared
                     $pills.find('.maze-size-pill').removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
+                    $row.find('.selected-variation-value').text('');
+                } else {
                     $pills.find('.maze-size-pill').each(function () {
-                        if (String($(this).data('value')).toLowerCase() === val.toLowerCase()) {
+                        const pillVal = String($(this).data('value') || $(this).text().trim()).toLowerCase();
+                        if (pillVal === val.toLowerCase()) {
                             $(this).addClass('is-active selected bg-black text-white').removeClass('bg-white text-black');
+                        } else {
+                            $(this).removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
                         }
                     });
                     $row.find('.selected-variation-value').text('// ' + val.toUpperCase());
                 }
-            });
+            }
+        });
 
-            // On initial load: if no variation attribute is active, auto-select the first pill
-            $variationsForm.each(function () {
+        // Clear button listener: unselect all pills when user explicitly clicks "CLEAR SELECTION"
+        $(document).on('click', '.reset_variations', function () {
+            const $form = $(this).closest('form.variations_form');
+            $form.find('.maze-size-pill').removeClass('is-active selected bg-black text-white').addClass('bg-white text-black');
+            $form.find('.selected-variation-value').text('');
+        });
+
+        // Sync variation image when a valid variation is matched
+        $(document).on('found_variation', 'form.variations_form', function (event, variation) {
+            if (variation && variation.image && variation.image.src) {
+                const $mainImg = $('#maze-main-product-image');
+                if ($mainImg.length) {
+                    $mainImg.attr('src', variation.image.full_src || variation.image.src);
+                }
+            }
+        });
+
+        // Mark out of stock / unavailable sizes when WooCommerce updates options
+        $(document).on('woocommerce_update_variation_values check_variations', 'form.variations_form', function () {
+            const $form = $(this);
+            $form.find('.variation-row').each(function () {
+                const $row = $(this);
+                const $select = $row.find('select');
+                const $pills = $row.find('.maze-size-pills');
+                if (!$select.length || !$pills.length) return;
+
+                $pills.find('.maze-size-pill').each(function () {
+                    const $pill = $(this);
+                    const pillVal = String($pill.data('value') || $pill.text().trim()).toLowerCase();
+                    let $opt = null;
+
+                    $select.find('option').each(function () {
+                        const optVal = String($(this).val() || '').toLowerCase();
+                        const optText = String($(this).text() || '').trim().toLowerCase();
+                        if (optVal === pillVal || optText === pillVal) {
+                            $opt = $(this);
+                            return false;
+                        }
+                    });
+
+                    if ($opt && $opt.length) {
+                        if ($opt.prop('disabled') || ($opt.hasClass('attached') && !$opt.hasClass('enabled'))) {
+                            $pill.addClass('is-disabled opacity-30 cursor-not-allowed line-through').removeClass('hover:bg-neutral-100');
+                        } else {
+                            $pill.removeClass('is-disabled opacity-30 cursor-not-allowed line-through').addClass('hover:bg-neutral-100');
+                        }
+                    }
+                });
+            });
+        });
+
+        // Initialize variation pills on page ready
+        function initVariationPills() {
+            $('form.variations_form').each(function () {
                 const $form = $(this);
                 $form.find('.variation-row').each(function () {
                     const $row = $(this);
-                    const $activePill = $row.find('.maze-size-pill.is-active');
-                    if (!$activePill.length) {
-                        const $firstPill = $row.find('.maze-size-pill:not(.is-disabled)').first();
-                        if ($firstPill.length) {
-                            $firstPill.trigger('click');
+                    const $select = $row.find('select');
+                    let $activePill = $row.find('.maze-size-pill.is-active');
+
+                    if ($activePill.length) {
+                        const val = String($activePill.data('value') || $activePill.text().trim());
+                        if ($select.length && (!$select.val() || $select.val().toLowerCase() !== val.toLowerCase())) {
+                            let matchedVal = val;
+                            $select.find('option').each(function () {
+                                const optVal = String($(this).val() || '').trim();
+                                const optText = String($(this).text() || '').trim();
+                                if (optVal && (optVal.toLowerCase() === val.toLowerCase() || optText.toLowerCase() === val.toLowerCase())) {
+                                    matchedVal = optVal;
+                                    return false;
+                                }
+                            });
+                            $select.val(matchedVal).trigger('change');
                         }
+                    } else if ($select.length && $select.val()) {
+                        const curVal = String($select.val()).toLowerCase();
+                        $row.find('.maze-size-pill').each(function () {
+                            const pVal = String($(this).data('value') || $(this).text().trim()).toLowerCase();
+                            if (pVal === curVal) {
+                                $(this).addClass('is-active selected bg-black text-white').removeClass('bg-white text-black');
+                                $row.find('.selected-variation-value').text('// ' + curVal.toUpperCase());
+                            }
+                        });
                     } else {
-                        // Ensure native select has the active value
-                        const val = $activePill.data('value');
-                        const $sel = $row.find('select');
-                        if ($sel.length && val && !$sel.val()) {
-                            $sel.val(val).trigger('change');
+                        // Pre-select first available size box
+                        const $first = $row.find('.maze-size-pill:not(.is-disabled, .disabled, [disabled], .opacity-30)').first();
+                        if ($first.length) {
+                            $first.trigger('click');
                         }
                     }
                 });
             });
         }
+        initVariationPills();
+        setTimeout(initVariationPills, 120);
 
         // --- 5. Comprehensive Cart Synchronization (Store API + Cart Blocks + Classic Cart) ---
 
@@ -704,11 +781,10 @@
         // Ensure variation size is chosen before submitting variable products
         $(document).on('submit', 'form.variations_form', function (e) {
             const $form = $(this);
-            const varId = parseInt($form.find('input[name="variation_id"]').val(), 10);
             const $pills = $form.find('.maze-size-pills');
 
-            // If pills exist and none is active
-            if ($pills.length && !$pills.find('.maze-size-pill.is-active').length && (!varId || varId <= 0)) {
+            // If size pills exist and none is active
+            if ($pills.length && !$pills.find('.maze-size-pill.is-active').length) {
                 e.preventDefault();
                 $pills.addClass('ring-2 ring-black');
                 setTimeout(function () {
@@ -716,6 +792,24 @@
                 }, 1000);
                 return false;
             }
+
+            // Sync select values from active pills before submission
+            $form.find('.variation-row').each(function () {
+                const $row = $(this);
+                const $activePill = $row.find('.maze-size-pill.is-active');
+                const $select = $row.find('select');
+                if ($activePill.length && $select.length && !$select.val()) {
+                    const val = String($activePill.data('value') || $activePill.text().trim());
+                    $select.find('option').each(function () {
+                        const optVal = String($(this).val() || '').trim();
+                        const optText = String($(this).text() || '').trim();
+                        if (optVal && (optVal.toLowerCase() === val.toLowerCase() || optText.toLowerCase() === val.toLowerCase())) {
+                            $select.val(optVal);
+                            return false;
+                        }
+                    });
+                }
+            });
         });
 
         // --- 6. Live Time & Status Clock for Footer (Aizawl / India IST) ---

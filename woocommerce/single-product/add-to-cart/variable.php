@@ -40,6 +40,19 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 
             <?php foreach ( $attributes as $attribute_name => $options ) : 
                 $selected_attr = isset( $_REQUEST[ 'attribute_' . sanitize_title( $attribute_name ) ] ) ? wc_clean( wp_unslash( $_REQUEST[ 'attribute_' . sanitize_title( $attribute_name ) ] ) ) : $product->get_variation_default_attribute( $attribute_name );
+                if ( empty( $selected_attr ) && ! empty( $options ) ) {
+                    if ( taxonomy_is_product_attribute( $attribute_name ) ) {
+                        $terms = wc_get_product_terms( $product->get_id(), $attribute_name, array( 'fields' => 'all' ) );
+                        foreach ( $terms as $term ) {
+                            if ( in_array( $term->slug, $options, true ) ) {
+                                $selected_attr = $term->slug;
+                                break;
+                            }
+                        }
+                    } else {
+                        $selected_attr = reset( $options );
+                    }
+                }
             ?>
                 <div class="variation-row" data-attribute="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>">
                     <div class="flex items-center justify-between mb-2">

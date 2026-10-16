@@ -98,11 +98,17 @@ function mazestreetwear_scripts()
     $main_js_path = get_template_directory() . '/assets/js/main.js';
     $js_version   = file_exists($main_js_path) ? filemtime($main_js_path) : $theme_version;
 
-    // Enqueue WooCommerce cart fragments script if WooCommerce is active
+    // Mazestreetwear-main JavaScript
+    // CRITICAL: Depend strictly on 'jquery' so this script is GUARANTEED to load and execute
+    // across all templates (single product, cart, shop, front-page) without being suppressed.
     $deps = array('jquery');
-    if (function_exists('is_woocommerce') || function_exists('WC')) {
+
+    // Enqueue WooCommerce scripts if available
+    if (function_exists('WC')) {
         wp_enqueue_script('wc-cart-fragments');
-        $deps[] = 'wc-cart-fragments';
+    }
+    if (function_exists('is_product') && is_product()) {
+        wp_enqueue_script('wc-add-to-cart-variation');
     }
 
     wp_enqueue_script(
