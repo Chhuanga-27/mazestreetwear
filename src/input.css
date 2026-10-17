@@ -472,7 +472,10 @@
 
   .maze-pill-navbar {
     border-radius: 9999px !important;
-    border: 1px solid #000000 !important;
+    border: none !important;
+    border-width: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
   }
 
   /* Responsive Bulletproof Header Logo: Elegant & balanced on mobile, bold on desktop */
@@ -663,32 +666,57 @@
   }
 
   /* Primary Navigation Menu & Dropdown Submenus */
-  #primary-menu {
+  #primary-menu,
+  #site-navigation ul {
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  #primary-menu>li {
+  #primary-menu>li,
+  #site-navigation ul>li {
     position: relative;
     display: inline-flex;
     align-items: center;
   }
 
-  #primary-menu>li>a {
-    display: inline-block;
+  #primary-menu>li>a,
+  #site-navigation ul li a,
+  .maze-nav-link {
+    display: inline-block !important;
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
-    transition: color 0.15s ease;
+    font-family: var(--font-outfit) !important;
+    color: #000000 !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em !important;
+    text-transform: lowercase !important;
+    opacity: 1 !important;
+    transition: color 0.15s ease, opacity 0.15s ease;
+  }
+
+  #primary-menu>li>a::first-letter,
+  #site-navigation ul li a::first-letter,
+  .maze-nav-link::first-letter {
+    text-transform: uppercase !important;
+  }
+
+  #primary-menu>li>a:hover,
+  #site-navigation ul li a:hover,
+  .maze-nav-link:hover {
+    color: #000000 !important;
+    opacity: 0.6 !important;
   }
 
   #primary-menu>li.current-menu-item>a,
-  #primary-menu>li.current-page-ancestor>a {
-    color: #000000;
-    font-weight: 400;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    text-decoration-thickness: 1.5px;
+  #primary-menu>li.current-page-ancestor>a,
+  #site-navigation ul li.current-menu-item>a {
+    color: #000000 !important;
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+    text-underline-offset: 4px !important;
+    text-decoration-thickness: 1.5px !important;
+    opacity: 1 !important;
   }
 
   #primary-menu .sub-menu {
@@ -720,15 +748,18 @@
   #primary-menu .sub-menu li a {
     display: block;
     padding: 0.65rem 1.25rem;
-    font-family: var(--font-bebas) !important;
-    font-size: 1.0625rem;
-    /* 17px */
-    font-weight: 400;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #000000;
+    font-family: var(--font-outfit) !important;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-transform: lowercase;
+    color: #000000 !important;
     white-space: nowrap;
     transition: background-color 0.15s ease;
+  }
+
+  #primary-menu .sub-menu li a::first-letter {
+    text-transform: uppercase !important;
   }
 
   #primary-menu .sub-menu li a:hover {
@@ -1058,12 +1089,17 @@
    HOMEPAGE SPECIFIC REFINEMENTS (BORDERLESS HEADER, HERO & PRODUCT SECTIONS)
    ========================================================================== */
 
-/* 1. Header Outline: Remove all header outlines/borders on homepage */
+/* 1. Header Outline: Remove all header outlines/borders/shadows on homepage & site-wide */
+.maze-pill-navbar,
 body.home .maze-pill-navbar,
 body.front-page .maze-pill-navbar,
-body.page-template-template-homepage .maze-pill-navbar {
+body.page-template-template-homepage .maze-pill-navbar,
+.site-header .maze-pill-navbar,
+#masthead .maze-pill-navbar {
   border: none !important;
   border-width: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 body.home #masthead,

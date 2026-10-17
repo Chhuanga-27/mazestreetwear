@@ -152,7 +152,7 @@ $masthead_classes = $is_maze_home
     <div class="max-w-7xl mx-auto <?php echo $is_maze_home ? 'pointer-events-auto' : ''; ?>">
 
         <!-- Pill Navigation Bar Container -->
-        <div class="maze-pill-navbar w-full min-w-0 bg-[#FEFEF3]/95 backdrop-blur-md <?php echo $is_maze_home ? 'border-0' : 'border border-black'; ?> rounded-full px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between shadow-sm transition-all duration-200">
+        <div class="maze-pill-navbar w-full min-w-0 bg-[#FEFEF3]/95 backdrop-blur-md border-0 rounded-full px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between shadow-none transition-all duration-200">
 
             <!-- Left: Brand Logo -->
             <div class="flex-shrink-0 flex items-center mr-2 sm:mr-4">
@@ -176,7 +176,7 @@ $masthead_classes = $is_maze_home
                         'theme_location' => 'primary',
                         'menu_id'        => 'primary-menu',
                         'container'      => false,
-                        'menu_class'     => 'flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-base lg:text-lg font-normal font-bebas tracking-wider uppercase text-black whitespace-nowrap',
+                        'menu_class'     => 'flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-[15px] lg:text-base font-semibold font-outfit tracking-tight text-black whitespace-nowrap',
                         'fallback_cb'    => false,
                         'items_wrap'     => '<ul id="%1$s" class="%2$s">%3$s</ul>',
                     ) );
@@ -189,34 +189,34 @@ $masthead_classes = $is_maze_home
                     $is_about        = is_page( 'about-us' ) || is_page( 'about' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'about' ) );
                     $is_contact      = is_page( 'contact-us' ) || is_page( 'contact' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'contact' ) );
                 ?>
-                    <ul class="flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-base lg:text-lg font-normal font-bebas tracking-wider uppercase text-black whitespace-nowrap">
+                    <ul class="flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-[15px] lg:text-base font-semibold font-outfit tracking-tight text-black whitespace-nowrap">
                         <li>
-                            <a href="<?php echo esc_url( $shop_page_url ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
-                                <?php esc_html_e( 'Shop All', 'mazestreetwear' ); ?>
+                            <a href="<?php echo esc_url( $shop_page_url ); ?>" class="maze-nav-link inline-block text-black hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
+                                <?php esc_html_e( 'Shop all', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( $tops_url ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
+                            <a href="<?php echo esc_url( $tops_url ); ?>" class="maze-nav-link inline-block text-black hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
                                 <?php esc_html_e( 'Tops', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( $bottoms_url ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
+                            <a href="<?php echo esc_url( $bottoms_url ); ?>" class="maze-nav-link inline-block text-black hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
                                 <?php esc_html_e( 'Bottoms', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( $accessories_url ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
+                            <a href="<?php echo esc_url( $accessories_url ); ?>" class="maze-nav-link inline-block text-black hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
                                 <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( $about_url ); ?>" class="hover:text-black transition-colors duration-150 py-1 <?php echo $is_about ? 'text-black font-black underline underline-offset-4' : 'hover:underline underline-offset-4'; ?>">
+                            <a href="<?php echo esc_url( $about_url ); ?>" class="maze-nav-link inline-block text-black hover:text-black transition-colors duration-150 py-1 <?php echo $is_about ? 'font-bold underline underline-offset-4' : 'hover:underline underline-offset-4'; ?>">
                                 <?php esc_html_e( 'About', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo esc_url( $contact_url ); ?>" class="hover:text-black transition-colors duration-150 py-1 <?php echo $is_contact ? 'text-black font-black underline underline-offset-4' : 'hover:underline underline-offset-4'; ?>">
+                            <a href="<?php echo esc_url( $contact_url ); ?>" class="maze-nav-link inline-block text-black hover:text-black transition-colors duration-150 py-1 <?php echo $is_contact ? 'font-bold underline underline-offset-4' : 'hover:underline underline-offset-4'; ?>">
                                 <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
                             </a>
                         </li>
@@ -230,7 +230,7 @@ $masthead_classes = $is_maze_home
                 <!-- Embedded Search Pill (Desktop/Tablet) -->
                 <form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="hidden sm:flex items-center relative">
                     <input type="hidden" name="post_type" value="product">
-                    <div class="maze-search-pill relative flex items-center bg-neutral-100 hover:bg-neutral-200/80 focus-within:bg-white focus-within:ring-1 focus-within:ring-black rounded-full px-3.5 py-1.5 transition-all w-32 md:w-36 lg:w-44 <?php echo $is_maze_home ? 'border-0' : 'border border-black/10 focus-within:border-black'; ?>">
+                    <div class="maze-search-pill relative flex items-center bg-neutral-100 hover:bg-neutral-200/80 focus-within:bg-white focus-within:ring-1 focus-within:ring-black rounded-full px-3.5 py-1.5 transition-all w-32 md:w-36 lg:w-44 border-0">
                         <svg class="w-4 h-4 text-black mr-2 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
                         </svg>
@@ -305,28 +305,28 @@ $masthead_classes = $is_maze_home
             ?>
 
             <!-- Primary Navigation Categories -->
-            <div class="flex flex-col space-y-2 text-2xl sm:text-3xl font-normal font-bebas uppercase tracking-wide text-black">
-                <a href="<?php echo esc_url( $shop_page_url ); ?>" class="text-black hover:opacity-60 transition-opacity py-1 block">
-                    <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
+            <div class="flex flex-col space-y-2 text-2xl sm:text-3xl font-bold font-outfit tracking-tight text-black">
+                <a href="<?php echo esc_url( $shop_page_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1">
+                    <?php esc_html_e( 'Shop all', 'mazestreetwear' ); ?>
                 </a>
-                <a href="<?php echo esc_url( $tops_url ); ?>" class="text-black hover:opacity-60 transition-opacity py-1 block">
-                    <?php esc_html_e( 'TOPS', 'mazestreetwear' ); ?>
+                <a href="<?php echo esc_url( $tops_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1">
+                    <?php esc_html_e( 'Tops', 'mazestreetwear' ); ?>
                 </a>
-                <a href="<?php echo esc_url( $bottoms_url ); ?>" class="text-black hover:opacity-60 transition-opacity py-1 block">
-                    <?php esc_html_e( 'BOTTOMS', 'mazestreetwear' ); ?>
+                <a href="<?php echo esc_url( $bottoms_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1">
+                    <?php esc_html_e( 'Bottoms', 'mazestreetwear' ); ?>
                 </a>
-                <a href="<?php echo esc_url( $accessories_url ); ?>" class="text-black hover:opacity-60 transition-opacity py-1 block">
-                    <?php esc_html_e( 'ACCESSORIES', 'mazestreetwear' ); ?>
+                <a href="<?php echo esc_url( $accessories_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1">
+                    <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
                 </a>
             </div>
 
             <!-- Secondary Brand Pages -->
-            <div class="flex flex-col space-y-2 pt-6 text-xl sm:text-2xl font-normal font-bebas uppercase tracking-wide text-black">
-                <a href="<?php echo esc_url( $about_url ); ?>" class="text-black hover:opacity-60 transition-opacity py-1 block">
-                    <?php esc_html_e( 'ABOUT US', 'mazestreetwear' ); ?>
+            <div class="flex flex-col space-y-2 pt-6 text-xl sm:text-2xl font-semibold font-outfit tracking-tight text-black">
+                <a href="<?php echo esc_url( $about_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1">
+                    <?php esc_html_e( 'About us', 'mazestreetwear' ); ?>
                 </a>
-                <a href="<?php echo esc_url( $contact_url ); ?>" class="text-black hover:opacity-60 transition-opacity py-1 block">
-                    <?php esc_html_e( 'CONTACT US', 'mazestreetwear' ); ?>
+                <a href="<?php echo esc_url( $contact_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1">
+                    <?php esc_html_e( 'Contact us', 'mazestreetwear' ); ?>
                 </a>
             </div>
 

@@ -411,12 +411,17 @@ body.woocommerce .site-header img {
    HOMEPAGE SPECIFIC REFINEMENTS (BORDERLESS HEADER, HERO & PRODUCT SECTIONS)
    ========================================================================== */
 
-/* 1. Header Outline: Remove all header outlines/borders on homepage */
+/* 1. Header Outline: Remove all header outlines/borders/shadows on homepage & site-wide */
+.maze-pill-navbar,
 body.home .maze-pill-navbar,
 body.front-page .maze-pill-navbar,
-body.page-template-template-homepage .maze-pill-navbar {
+body.page-template-template-homepage .maze-pill-navbar,
+.site-header .maze-pill-navbar,
+#masthead .maze-pill-navbar {
   border: none !important;
   border-width: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 body.home #masthead,
@@ -428,7 +433,8 @@ body.page-template-template-homepage #masthead {
 
 body.home .site-header .maze-search-pill,
 body.front-page .site-header .maze-search-pill,
-body.page-template-template-homepage .site-header .maze-search-pill {
+body.page-template-template-homepage .site-header .maze-search-pill,
+.site-header .maze-search-pill {
   border: none !important;
   border-width: 0 !important;
 }
@@ -441,6 +447,62 @@ body.front-page #maze-mobile-menu,
 body.page-template-template-homepage #maze-mobile-menu {
   border: none !important;
   border-width: 0 !important;
+}
+
+/* Header Navigation Links: Outfit font, deep pitch black, sentence casing (only 1st word uppercase) */
+#site-navigation ul,
+#site-navigation ul li,
+#primary-menu,
+#primary-menu > li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#site-navigation ul li,
+#primary-menu > li {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+#site-navigation ul li a,
+#primary-menu > li > a,
+.maze-nav-link {
+  display: inline-block !important;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-family: var(--font-outfit) !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: lowercase !important;
+  opacity: 1 !important;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+#site-navigation ul li a::first-letter,
+#primary-menu > li > a::first-letter,
+.maze-nav-link::first-letter {
+  text-transform: uppercase !important;
+}
+
+#site-navigation ul li a:hover,
+#primary-menu > li > a:hover,
+.maze-nav-link:hover {
+  color: #000000 !important;
+  opacity: 0.6 !important;
+}
+
+#primary-menu > li.current-menu-item > a,
+#primary-menu > li.current-page-ancestor > a,
+#site-navigation ul li.current-menu-item > a {
+  color: #000000 !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
+  text-decoration-thickness: 1.5px !important;
+  opacity: 1 !important;
 }
 
 /* 2. Hero Section: Full width, no black outline, no border radius */
