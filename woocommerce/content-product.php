@@ -20,7 +20,7 @@ if ( empty( $product ) || ! $product->is_visible() ) {
     return;
 }
 ?>
-<article <?php wc_product_class( 'maze-product-card bg-[#FEFEF3] border border-black -ml-px -mt-px relative group flex flex-col justify-between rounded-none', $product ); ?>>
+<article <?php wc_product_class( 'maze-product-card bg-[#FEFEF3] relative group flex flex-col justify-between rounded-none', $product ); ?>>
     <a href="<?php the_permalink(); ?>" class="flex flex-col h-full w-full group focus:outline-none" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
         <!-- Image Area: Tall aspect ratio (aspect-[3/4]), product cutout with generous padding and object-contain -->
         <div class="relative w-full aspect-[3/4] bg-[#FEFEF3] p-6 sm:p-8 flex items-center justify-center overflow-hidden">

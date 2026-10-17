@@ -95,11 +95,14 @@ function mazestreetwear_scripts()
     );
 
     // Core theme style.css for metadata/fallbacks
+    $style_css_path = get_stylesheet_directory() . '/style.css';
+    $style_version  = file_exists($style_css_path) ? filemtime($style_css_path) : $theme_version;
+
     wp_enqueue_style(
         'mazestreetwear-style',
         get_stylesheet_uri(),
         array('mazestreetwear-tailwind'),
-        $theme_version
+        $style_version
     );
 
     // Theme JavaScript (Streetwear interactions, mobile menu, dynamic size pill variation sync)

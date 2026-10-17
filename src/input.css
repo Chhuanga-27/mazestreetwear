@@ -1154,3 +1154,49 @@ body.page-template-template-homepage #colophon > div {
   border-width: 0 !important;
   box-shadow: none !important;
 }
+
+/* 5. Architectural Product Card Grid: Uniform Pitch Black Hairline Borders */
+.maze-product-grid {
+  display: grid;
+  background-color: #FEFEF3;
+  margin: 0;
+  padding: 0;
+}
+
+.maze-product-grid .maze-product-card {
+  margin: 0 !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-bottom: 1px solid #000000 !important;
+  box-sizing: border-box;
+}
+
+/* Mobile (<640px): 1 column -> no vertical borders between cards; container provides left & right */
+@media (max-width: 639px) {
+  .maze-product-grid .maze-product-card {
+    border-right: none !important;
+    border-left: none !important;
+  }
+}
+
+/* Tablet (640px - 767px): 2 columns -> odd cards get 1px solid right border, even cards have no right border */
+@media (min-width: 640px) and (max-width: 767px) {
+  .maze-product-grid .maze-product-card {
+    border-right: none !important;
+    border-left: none !important;
+  }
+  .maze-product-grid .maze-product-card:nth-child(2n+1) {
+    border-right: 1px solid #000000 !important;
+  }
+}
+
+/* Desktop (>=768px): 4 columns -> cards 1, 2, 3 in each 4-card row get 1px solid right border, card 4 has none */
+@media (min-width: 768px) {
+  .maze-product-grid .maze-product-card {
+    border-right: 1px solid #000000 !important;
+    border-left: none !important;
+  }
+  .maze-product-grid .maze-product-card:nth-child(4n) {
+    border-right: none !important;
+  }
+}
