@@ -526,22 +526,13 @@ add_action('template_redirect', 'mazestreetwear_redirect_wishlist_to_cart', 5);
 
 
 /**
- * Filter WooCommerce breadcrumb defaults for minimalist monochrome aesthetic
- *
- * @param array $defaults Default breadcrumb settings.
- * @return array
+ * Remove WooCommerce breadcrumbs across all pages of the website
  */
-function mazestreetwear_breadcrumbs_defaults($defaults)
-{
-    $defaults['delimiter']   = '<span class="text-neutral-400 mx-2">/</span>';
-    $defaults['wrap_before'] = '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6"><nav class="woocommerce-breadcrumb text-xs font-mono uppercase tracking-widest text-neutral-600 mb-6 flex flex-wrap items-center" aria-label="Breadcrumb">';
-    $defaults['wrap_after']  = '</nav></div>';
-    $defaults['before']      = '<span class="text-black">';
-    $defaults['after']       = '</span>';
-    $defaults['home']        = _x('HOME', 'breadcrumb', 'mazestreetwear');
-    return $defaults;
-}
-add_filter('woocommerce_breadcrumb_defaults', 'mazestreetwear_breadcrumbs_defaults');
+remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
+add_action('init', function () {
+    remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
+});
+add_filter('woocommerce_get_breadcrumb', '__return_empty_array', 999);
 
 /**
  * ============================================================================

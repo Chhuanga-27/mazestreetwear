@@ -90,18 +90,8 @@ $ajax_url     = admin_url( 'admin-ajax.php' );
 <main id="primary" class="site-main min-h-screen bg-white text-black py-8 sm:py-14 lg:py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <!-- Top Breadcrumbs & Utility Bar -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-black text-sm font-mono gap-4 no-print">
-            <nav aria-label="<?php esc_attr_e( 'Breadcrumb', 'mazestreetwear' ); ?>" class="flex items-center space-x-2 text-neutral-700 font-semibold">
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="hover:text-black transition-colors uppercase">
-                    <?php esc_html_e( 'Home', 'mazestreetwear' ); ?>
-                </a>
-                <span class="text-neutral-400">/</span>
-                <span class="text-neutral-700 uppercase"><?php esc_html_e( 'Concierge & Studio', 'mazestreetwear' ); ?></span>
-                <span class="text-neutral-400">/</span>
-                <span class="text-black font-bold uppercase tracking-wider"><?php esc_html_e( 'Contact Us', 'mazestreetwear' ); ?></span>
-            </nav>
-
+        <!-- Top Utility Bar -->
+        <div class="flex items-center justify-end pb-6 mb-8 border-b border-black text-sm font-mono gap-4 no-print">
             <div class="flex items-center space-x-3 text-neutral-800 font-bold">
                 <button type="button" onclick="window.print()" class="inline-flex items-center space-x-1.5 hover:text-black transition-colors px-3 py-1.5 border border-black hover:bg-neutral-100 bg-white rounded-none text-xs uppercase tracking-wider">
                     <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">

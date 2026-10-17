@@ -399,3 +399,15 @@ body.woocommerce .site-header img {
 .woocommerce-message:has(a[href*="cart"]) {
   display: none !important;
 }
+
+/* Suppress all breadcrumbs across the website */
+.woocommerce-breadcrumb,
+.breadcrumb,
+.breadcrumbs,
+.site-breadcrumbs,
+[aria-label="Breadcrumb"],
+[aria-label="breadcrumb"],
+[aria-label="Breadcrumbs"],
+[aria-label="breadcrumbs"] {
+  display: none !important;
+}
