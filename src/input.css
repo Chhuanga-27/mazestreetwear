@@ -630,62 +630,61 @@
     }
   }
 
-  /* View All CTA Button */
+  /* View All CTA (Minimalist Text + Line) */
   .maze-view-all-btn {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     font-family: var(--font-bebas) !important;
-    border-radius: 0.625rem !important;
-    padding: 0.65rem 1.75rem !important;
-    font-size: 1.0625rem !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0.5rem 0 !important;
+    font-size: 1.25rem !important;
     letter-spacing: 0.08em !important;
-    line-height: 1.1 !important;
+    line-height: 1 !important;
     font-weight: 400 !important;
-    border: 1px solid #000000 !important;
-    background-color: #ffffff !important;
+    background-color: transparent !important;
     color: #000000 !important;
+    box-shadow: none !important;
     text-decoration: none !important;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition: opacity 0.2s ease !important;
   }
 
   .maze-view-all-btn:hover {
-    background-color: #000000 !important;
-    color: #ffffff !important;
+    background-color: transparent !important;
+    color: #000000 !important;
+    opacity: 0.6 !important;
   }
 
   .maze-view-all-btn .maze-view-all-line {
     display: inline-block;
-    width: 1.5rem;
+    width: 1.75rem;
     height: 1.5px;
-    background-color: currentColor;
+    background-color: #000000;
     margin-left: 0.65rem;
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .maze-view-all-btn:hover .maze-view-all-line {
-    transform: translateX(4px);
+    transform: translateX(6px);
   }
 
   @media (min-width: 640px) {
     .maze-view-all-btn {
-      border-radius: 1rem !important;
-      padding: 0.875rem 2.5rem !important;
-      font-size: 1.25rem !important;
-      line-height: inherit !important;
+      font-size: 1.5rem !important;
+      padding: 0.5rem 0 !important;
     }
 
     .maze-view-all-btn .maze-view-all-line {
-      width: 2rem;
+      width: 2.5rem;
       height: 2px;
-      margin-left: 0.75rem;
+      margin-left: 0.85rem;
     }
   }
 
   @media (min-width: 768px) {
     .maze-view-all-btn {
-      padding: 0.875rem 2.75rem !important;
-      font-size: 1.35rem !important;
+      font-size: 1.875rem !important;
     }
   }
 
