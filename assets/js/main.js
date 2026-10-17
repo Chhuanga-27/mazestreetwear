@@ -157,81 +157,139 @@
         // --- 3. Single Product Slidable Gallery & Tab Indicator Navigation ---
         function initProductGallerySlider() {
             const $slider = $('#maze-gallery-slider');
-            const $tabs = $('.maze-gallery-tab-item');
             if (!$slider.length) return;
 
             const sliderEl = $slider[0];
-            const slides = sliderEl.querySelectorAll('.maze-gallery-slide');
-            const totalSlides = slides.length;
+            let $slides = $slider.find('.maze-gallery-slide');
+            let totalSlides = $slides.length;
             if (totalSlides <= 1) return;
 
+            let currentIndex = 0;
+            let isAnimating = false;
+            let snapTimeout = null;
+
             function updateActiveTab(index) {
-                $tabs.each(function (i) {
+                currentIndex = index;
+                const $tabBtns = $('.maze-gallery-tab-item');
+                $tabBtns.each(function (i) {
                     const $tab = $(this);
-                    if (i === index) {
-                        $tab.removeClass('w-6 bg-neutral-300 hover:bg-neutral-500')
-                            .addClass('w-10 bg-black')
-                            .attr('aria-selected', 'true');
+                    const $bar = $tab.find('.maze-tab-bar');
+                    const isActive = (i === index);
+                    $tab.attr('aria-selected', isActive ? 'true' : 'false');
+                    if (isActive) {
+                        $bar.removeClass('w-6 bg-neutral-300 hover:bg-neutral-500').addClass('w-10 bg-black');
                     } else {
-                        $tab.removeClass('w-10 bg-black')
-                            .addClass('w-6 bg-neutral-300 hover:bg-neutral-500')
-                            .attr('aria-selected', 'false');
+                        $bar.removeClass('w-10 bg-black').addClass('w-6 bg-neutral-300 hover:bg-neutral-500');
                     }
                 });
             }
 
-            function getActiveIndex() {
-                const scrollLeft = sliderEl.scrollLeft;
-                const slideWidth = sliderEl.offsetWidth || 1;
-                const index = Math.round(scrollLeft / slideWidth);
-                return Math.max(0, Math.min(index, totalSlides - 1));
+            function scrollToSlide(targetIdx) {
+                if (targetIdx < 0) targetIdx = 0;
+                if (targetIdx >= totalSlides) targetIdx = totalSlides - 1;
+                currentIndex = targetIdx;
+
+                const slideNodes = sliderEl.querySelectorAll('.maze-gallery-slide');
+                const targetNode = slideNodes[targetIdx];
+                if (!targetNode) return;
+
+                const targetScrollLeft = targetNode.offsetLeft;
+
+                // Temporarily disable CSS scroll-snap so browser doesn't block programmatic animation
+                sliderEl.style.scrollSnapType = 'none';
+                isAnimating = true;
+
+                $slider.stop(true, false).animate({
+                    scrollLeft: targetScrollLeft
+                }, 300, 'swing', function () {
+                    sliderEl.style.scrollSnapType = 'x mandatory';
+                    setTimeout(function () {
+                        isAnimating = false;
+                    }, 50);
+                });
+
+                if (snapTimeout) clearTimeout(snapTimeout);
+                snapTimeout = setTimeout(function () {
+                    sliderEl.style.scrollSnapType = 'x mandatory';
+                    isAnimating = false;
+                }, 380);
+
+                updateActiveTab(targetIdx);
             }
 
-            // Tab click to slide
-            $(document).on('click', '.maze-gallery-tab-item', function (e) {
+            // Tab button click
+            $(document).off('click', '.maze-gallery-tab-item').on('click', '.maze-gallery-tab-item', function (e) {
                 e.preventDefault();
-                const targetIdx = parseInt($(this).data('slide-target'), 10);
-                if (!isNaN(targetIdx) && slides[targetIdx]) {
-                    const slideWidth = sliderEl.offsetWidth;
-                    sliderEl.scrollTo({
-                        left: targetIdx * slideWidth,
-                        behavior: 'smooth'
-                    });
-                    updateActiveTab(targetIdx);
+                e.stopPropagation();
+                const target = $(this).attr('data-slide-target');
+                const targetIdx = parseInt(target, 10);
+                if (!isNaN(targetIdx)) {
+                    scrollToSlide(targetIdx);
                 }
             });
 
-            // Arrow button navigation (Prev / Next)
-            $(document).on('click', '.maze-gallery-prev', function (e) {
+            // Arrow button navigation (Prev / Next with wrap-around)
+            $(document).off('click', '.maze-gallery-prev').on('click', '.maze-gallery-prev', function (e) {
                 e.preventDefault();
-                const currentIdx = getActiveIndex();
-                const prevIdx = Math.max(0, currentIdx - 1);
-                const slideWidth = sliderEl.offsetWidth;
-                sliderEl.scrollTo({
-                    left: prevIdx * slideWidth,
-                    behavior: 'smooth'
-                });
-                updateActiveTab(prevIdx);
+                e.stopPropagation();
+                const prevIdx = (currentIndex > 0) ? (currentIndex - 1) : (totalSlides - 1);
+                scrollToSlide(prevIdx);
             });
 
-            $(document).on('click', '.maze-gallery-next', function (e) {
+            $(document).off('click', '.maze-gallery-next').on('click', '.maze-gallery-next', function (e) {
                 e.preventDefault();
-                const currentIdx = getActiveIndex();
-                const nextIdx = Math.min(totalSlides - 1, currentIdx + 1);
-                const slideWidth = sliderEl.offsetWidth;
-                sliderEl.scrollTo({
-                    left: nextIdx * slideWidth,
-                    behavior: 'smooth'
-                });
-                updateActiveTab(nextIdx);
+                e.stopPropagation();
+                const nextIdx = (currentIndex < totalSlides - 1) ? (currentIndex + 1) : 0;
+                scrollToSlide(nextIdx);
             });
 
-            // Scroll / Swipe listener
+            // Desktop Mouse Drag Support
+            let isDown = false;
+            let startX = 0;
+            let scrollStart = 0;
+            let hasDragged = false;
+
+            sliderEl.addEventListener('mousedown', function (e) {
+                if (e.button !== 0) return;
+                isDown = true;
+                hasDragged = false;
+                sliderEl.style.scrollSnapType = 'none';
+                sliderEl.style.cursor = 'grabbing';
+                startX = e.pageX - sliderEl.offsetLeft;
+                scrollStart = sliderEl.scrollLeft;
+            });
+
+            window.addEventListener('mouseup', function () {
+                if (!isDown) return;
+                isDown = false;
+                sliderEl.style.cursor = '';
+                sliderEl.style.scrollSnapType = 'x mandatory';
+                if (hasDragged) {
+                    const slideWidth = sliderEl.clientWidth || 1;
+                    const activeIdx = Math.max(0, Math.min(Math.round(sliderEl.scrollLeft / slideWidth), totalSlides - 1));
+                    scrollToSlide(activeIdx);
+                }
+            });
+
+            sliderEl.addEventListener('mousemove', function (e) {
+                if (!isDown) return;
+                const x = e.pageX - sliderEl.offsetLeft;
+                const walk = (x - startX) * 1.3;
+                if (Math.abs(walk) > 6) {
+                    hasDragged = true;
+                    e.preventDefault();
+                }
+                sliderEl.scrollLeft = scrollStart - walk;
+            });
+
+            // Touch Swipe & Native Scroll listener on mobile
             let scrollTimer = null;
             sliderEl.addEventListener('scroll', function () {
+                if (isAnimating) return;
                 if (scrollTimer) clearTimeout(scrollTimer);
                 scrollTimer = setTimeout(function () {
-                    const activeIdx = getActiveIndex();
+                    const slideWidth = sliderEl.clientWidth || 1;
+                    const activeIdx = Math.max(0, Math.min(Math.round(sliderEl.scrollLeft / slideWidth), totalSlides - 1));
                     updateActiveTab(activeIdx);
                 }, 50);
             }, { passive: true });

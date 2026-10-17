@@ -91,10 +91,10 @@ $image_count = count( $gallery_images );
 
                         <?php if ( $image_count > 1 ) : ?>
                             <!-- Desktop Navigation Arrows (hidden on phone, visible on hover on desktop) -->
-                            <button type="button" class="maze-gallery-nav maze-gallery-prev hidden lg:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center bg-white/90 hover:bg-black hover:text-white border border-black transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-sm z-10" aria-label="<?php esc_attr_e( 'Previous image', 'mazestreetwear' ); ?>">
+                            <button type="button" class="maze-gallery-nav maze-gallery-prev hidden lg:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center bg-white/95 hover:bg-black hover:text-white text-black border border-black transition-all opacity-80 group-hover:opacity-100 cursor-pointer shadow-md z-20 select-none" aria-label="<?php esc_attr_e( 'Previous image', 'mazestreetwear' ); ?>">
                                 <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
                             </button>
-                            <button type="button" class="maze-gallery-nav maze-gallery-next hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center bg-white/90 hover:bg-black hover:text-white border border-black transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-sm z-10" aria-label="<?php esc_attr_e( 'Next image', 'mazestreetwear' ); ?>">
+                            <button type="button" class="maze-gallery-nav maze-gallery-next hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center bg-white/95 hover:bg-black hover:text-white text-black border border-black transition-all opacity-80 group-hover:opacity-100 cursor-pointer shadow-md z-20 select-none" aria-label="<?php esc_attr_e( 'Next image', 'mazestreetwear' ); ?>">
                                 <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
                             </button>
                         <?php endif; ?>
@@ -102,17 +102,18 @@ $image_count = count( $gallery_images );
 
                     <?php if ( $image_count > 1 ) : ?>
                         <!-- TAB Under the Image to Navigate Slides -->
-                        <div class="maze-gallery-tabs-wrap w-full flex items-center justify-center py-3.5 sm:py-4 bg-white border-b lg:border-b-0 border-neutral-200">
-                            <div id="maze-gallery-tabs" class="maze-gallery-tabs inline-flex items-center gap-2 px-2 py-1" role="tablist" aria-label="<?php esc_attr_e( 'Product image slides', 'mazestreetwear' ); ?>">
+                        <div class="maze-gallery-tabs-wrap w-full flex items-center justify-center py-2 sm:py-3 bg-white border-b lg:border-b-0 border-neutral-200">
+                            <div id="maze-gallery-tabs" class="maze-gallery-tabs inline-flex items-center gap-1.5 sm:gap-2 px-2 py-1" role="tablist" aria-label="<?php esc_attr_e( 'Product image slides', 'mazestreetwear' ); ?>">
                                 <?php for ( $i = 0; $i < $image_count; $i++ ) : ?>
                                     <button 
                                         type="button" 
                                         role="tab"
-                                        class="maze-gallery-tab-item h-1 sm:h-1.5 transition-all duration-300 cursor-pointer p-0 border-none outline-none <?php echo 0 === $i ? 'w-10 bg-black' : 'w-6 bg-neutral-300 hover:bg-neutral-500'; ?>"
+                                        class="maze-gallery-tab-item py-2 px-1 focus:outline-none cursor-pointer border-none bg-transparent transition-all"
                                         data-slide-target="<?php echo esc_attr( $i ); ?>"
                                         aria-label="<?php echo esc_attr( sprintf( __( 'Image %d of %d', 'mazestreetwear' ), $i + 1, $image_count ) ); ?>"
                                         aria-selected="<?php echo 0 === $i ? 'true' : 'false'; ?>"
                                     >
+                                        <span class="maze-tab-bar block h-1 sm:h-1.5 rounded-full transition-all duration-300 pointer-events-none <?php echo 0 === $i ? 'w-10 bg-black' : 'w-6 bg-neutral-300 hover:bg-neutral-500'; ?>"></span>
                                         <span class="sr-only"><?php echo esc_html( sprintf( __( 'Slide %d', 'mazestreetwear' ), $i + 1 ) ); ?></span>
                                     </button>
                                 <?php endfor; ?>

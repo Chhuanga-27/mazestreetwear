@@ -1386,26 +1386,21 @@ body.single-product .maze-single-product-editorial {
 .maze-gallery-track {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  cursor: grab;
 }
 
 .maze-gallery-slide {
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
+  scroll-snap-align: start;
 }
 
 .maze-gallery-tab-item {
-  border-radius: 9999px !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   position: relative;
+  touch-action: manipulation;
 }
 
-.maze-gallery-tab-item::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  bottom: -10px;
-  left: -4px;
-  right: -4px;
+.maze-tab-bar {
+  border-radius: 9999px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 @media (max-width: 1023px) {
