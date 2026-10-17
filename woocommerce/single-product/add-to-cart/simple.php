@@ -85,8 +85,8 @@ if ( $product->is_in_stock() ) : ?>
                         $is_s_active = ( 0 === $idx );
                     ?>
                         <button type="button" 
-                                class="maze-size-pill px-5 py-3 text-base sm:text-lg font-normal font-bebas uppercase border border-black cursor-pointer transition-colors rounded-none <?php echo $is_s_active ? 'is-active selected bg-black text-white' : 'bg-[#FEFEF3] text-black hover:bg-neutral-100'; ?>"
-                                style="<?php echo $is_s_active ? 'background-color:#000000 !important; color:#ffffff !important;' : 'background-color:#FEFEF3 !important; color:#000000 !important;'; ?>"
+                                class="maze-size-pill px-5 py-3 text-base sm:text-lg font-normal font-bebas uppercase border border-black cursor-pointer transition-colors rounded-none <?php echo $is_s_active ? 'is-active selected bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'; ?>"
+                                style="<?php echo $is_s_active ? 'background-color:#000000 !important; color:#ffffff !important;' : 'background-color:#ffffff !important; color:#000000 !important;'; ?>"
                                 data-value="<?php echo esc_attr( $s_opt ); ?>"
                                 onclick="window.mazeSelectSize ? window.mazeSelectSize(this, event) : null">
                             <?php echo esc_html( $s_opt ); ?>
@@ -142,8 +142,8 @@ if ( $product->is_in_stock() ) : ?>
         for (var i = 0; i < allPills.length; i++) {
             var p = allPills[i];
             p.classList.remove('is-active', 'selected', 'bg-black', 'text-white');
-            p.classList.add('bg-[#FEFEF3]', 'text-black');
-            p.style.setProperty('background-color', '#FEFEF3', 'important');
+            p.classList.add('bg-white', 'text-black');
+            p.style.setProperty('background-color', '#ffffff', 'important');
             p.style.setProperty('color', '#000000', 'important');
         }
 

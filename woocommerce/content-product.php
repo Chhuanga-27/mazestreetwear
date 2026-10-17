@@ -20,10 +20,10 @@ if ( empty( $product ) || ! $product->is_visible() ) {
     return;
 }
 ?>
-<article <?php wc_product_class( 'maze-product-card bg-[#FEFEF3] relative group flex flex-col justify-between rounded-none', $product ); ?>>
+<article <?php wc_product_class( 'maze-product-card bg-white relative group flex flex-col justify-between rounded-none', $product ); ?>>
     <a href="<?php the_permalink(); ?>" class="flex flex-col h-full w-full group focus:outline-none" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
         <!-- Image Area: Tall aspect ratio (aspect-[3/4]), product cutout with generous padding and object-contain -->
-        <div class="relative w-full aspect-[3/4] bg-[#FEFEF3] p-6 sm:p-8 flex items-center justify-center overflow-hidden">
+        <div class="relative w-full aspect-[3/4] bg-white p-6 sm:p-8 flex items-center justify-center overflow-hidden">
             <?php if ( has_post_thumbnail() ) : ?>
                 <?php
                 echo get_the_post_thumbnail(
@@ -44,7 +44,7 @@ if ( empty( $product ) || ! $product->is_visible() ) {
         </div>
 
         <!-- Bottom Metadata Bar: thin top black border, title lowercase on left, price on right -->
-        <div class="border-t border-black px-4 py-3 flex justify-between items-baseline text-sm sm:text-base font-outfit bg-[#FEFEF3] mt-auto">
+        <div class="border-t border-black px-4 py-3 flex justify-between items-baseline text-sm sm:text-base font-outfit bg-white mt-auto">
             <span class="text-black font-medium font-outfit lowercase tracking-tight line-clamp-1 mr-2 group-hover:opacity-60 transition-opacity">
                 <?php the_title(); ?>
             </span>

@@ -476,7 +476,7 @@ add_filter('woocommerce_product_single_add_to_cart_text', function () {
 // Custom wrapper start
 function mazestreetwear_wrapper_start()
 {
-    echo '<main id="primary" class="site-main min-h-screen bg-[#FEFEF3] text-black antialiased selection:bg-black selection:text-white">';
+    echo '<main id="primary" class="site-main min-h-screen bg-white text-black antialiased selection:bg-black selection:text-white">';
 }
 add_action('woocommerce_before_main_content', 'mazestreetwear_wrapper_start', 10);
 

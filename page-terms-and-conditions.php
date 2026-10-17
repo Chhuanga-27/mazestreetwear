@@ -52,7 +52,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
 }
 </script>
 
-<main id="primary" class="site-main min-h-screen bg-[#FEFEF3] text-black py-8 sm:py-14 lg:py-16">
+<main id="primary" class="site-main min-h-screen bg-white text-black py-8 sm:py-14 lg:py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- Top Utility Bar -->

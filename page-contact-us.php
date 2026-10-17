@@ -63,7 +63,7 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
 }
 </script>
 
-<main id="primary" class="site-main min-h-[75vh] bg-[#FEFEF3] text-black py-12 sm:py-20 lg:py-24">
+<main id="primary" class="site-main min-h-[75vh] bg-white text-black py-12 sm:py-20 lg:py-24">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- Minimal Header -->

@@ -5,10 +5,10 @@
 
 @layer base {
   :root {
-    --color-maze-bg: #FEFEF3;
+    --color-maze-bg: #ffffff;
     --color-maze-dark: #000000;
-    --color-maze-card: #FEFEF3;
-    --color-maze-ivory: #FEFEF3;
+    --color-maze-card: #ffffff;
+    --color-maze-ivory: #ffffff;
     --color-maze-border: #000000;
     --color-maze-border-light: #000000;
     --color-maze-accent: #000000;
@@ -23,7 +23,7 @@
   }
 
   html {
-    background-color: #FEFEF3 !important;
+    background-color: #ffffff !important;
     color: #000000;
     font-family: var(--font-outfit);
     color-scheme: light;
@@ -48,7 +48,7 @@
   }
 
   body {
-    background-color: #FEFEF3 !important;
+    background-color: #ffffff !important;
     color: #000000;
     font-family: var(--font-outfit);
     font-weight: 400;
@@ -201,7 +201,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #FEFEF3;
+    background: #ffffff;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -228,7 +228,7 @@
   /* Clean Rectangular Size Box (Filled Black when Selected) - Bebas Neue */
   .maze-size-pill {
     transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-    background-color: #FEFEF3;
+    background-color: #ffffff;
     color: #000000;
     border: 1px solid #000000;
     border-radius: 0px !important;
@@ -268,7 +268,7 @@
   /* Catalog Order By Minimalist Hairline Trigger */
   .woocommerce-ordering select.orderby,
   select.orderby {
-    background-color: #FEFEF3 !important;
+    background-color: #ffffff !important;
     border: 1px solid #000000 !important;
     color: #000000 !important;
     font-family: var(--font-bebas) !important;
@@ -407,7 +407,7 @@
   .woocommerce-message,
   .woocommerce-info,
   .woocommerce-error {
-    background-color: #FEFEF3 !important;
+    background-color: #ffffff !important;
     border: 1px solid #000000 !important;
     color: #000000 !important;
     font-family: var(--font-outfit) !important;
@@ -537,8 +537,8 @@
   #maze-mobile-menu {
     border-radius: 1.5rem !important;
     border: 1px solid #000000 !important;
-    background-color: #FEFEF3 !important;
-    background: #FEFEF3 !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
     color: #000000 !important;
     opacity: 1 !important;
     backdrop-filter: none !important;
@@ -549,8 +549,8 @@
   #maze-mobile-search-bar {
     border-radius: 1.25rem !important;
     border: 1px solid #000000 !important;
-    background-color: #FEFEF3 !important;
-    background: #FEFEF3 !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
     color: #000000 !important;
     opacity: 1 !important;
     backdrop-filter: none !important;
@@ -953,7 +953,7 @@
   border: 1px solid #000000 !important;
   padding: 1rem !important;
   vertical-align: middle !important;
-  background-color: #FEFEF3 !important;
+  background-color: #ffffff !important;
   font-family: var(--font-outfit) !important;
 }
 
@@ -980,7 +980,7 @@
 
 .woocommerce table.shop_table td.actions {
   padding: 1.25rem 1rem !important;
-  background-color: #FEFEF3 !important;
+  background-color: #ffffff !important;
 }
 
 .woocommerce table.shop_table td.actions .coupon {
@@ -1025,7 +1025,7 @@
 .woocommerce .cart-collaterals .cart_totals {
   border: 1px solid #000000 !important;
   padding: 1.5rem !important;
-  background-color: #FEFEF3 !important;
+  background-color: #ffffff !important;
   box-shadow: 4px 4px 0px 0px #000000 !important;
 }
 
@@ -1158,7 +1158,7 @@ body.page-template-template-homepage #colophon > div {
 /* 5. Architectural Product Card Grid: Uniform Pitch Black Hairline Borders */
 .maze-product-grid {
   display: grid;
-  background-color: #FEFEF3;
+  background-color: #ffffff;
   margin: 0;
   padding: 0;
 }

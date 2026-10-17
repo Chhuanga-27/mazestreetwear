@@ -12,21 +12,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        white: '#FEFEF3',
-        ivory: '#FEFEF3',
+        white: '#ffffff',
+        ivory: '#ffffff',
         maze: {
           black: '#000000',
-          white: '#FEFEF3',
-          ivory: '#FEFEF3',
-          bg: '#FEFEF3',
+          white: '#ffffff',
+          ivory: '#ffffff',
+          bg: '#ffffff',
           dark: '#111111',
-          card: '#FEFEF3',
+          card: '#ffffff',
           border: '#000000',
           'border-light': '#e5e5e5',
           accent: '#000000',
           muted: '#262626',
           subtle: '#404040',
-          light: '#FEFEF3'
+          light: '#ffffff'
         }
       },
       fontFamily: {

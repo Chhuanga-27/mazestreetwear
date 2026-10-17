@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-<main id="primary" class="site-main min-h-screen bg-[#FEFEF3] text-black py-12 sm:py-16">
+<main id="primary" class="site-main min-h-screen bg-white text-black py-12 sm:py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <?php if ( have_posts() ) : ?>

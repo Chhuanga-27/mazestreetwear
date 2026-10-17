@@ -28,14 +28,14 @@ if ( post_password_required() ) {
 }
 ?>
 
-<div id="product-<?php the_ID(); ?>" <?php wc_product_class( 'maze-single-product-editorial bg-[#FEFEF3] text-black', $product ); ?>>
+<div id="product-<?php the_ID(); ?>" <?php wc_product_class( 'maze-single-product-editorial bg-white text-black', $product ); ?>>
 
     <!-- 2-Column Garment Detail Frame with Thin Black Dividers -->
     <div class="w-full border-b border-black">
         <div class="max-w-7xl mx-auto border-x border-black grid grid-cols-1 lg:grid-cols-12 min-h-[700px]">
 
             <!-- Left Column: High-Resolution Clean Garment Image Against Pure White (Col Span 7) -->
-            <div class="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-black p-6 sm:p-10 lg:p-16 flex flex-col items-center justify-center bg-[#FEFEF3] relative">
+            <div class="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-black p-6 sm:p-10 lg:p-16 flex flex-col items-center justify-center bg-white relative">
                 <?php
                 if ( has_post_thumbnail() ) {
                     $image_id = get_post_thumbnail_id();
@@ -56,14 +56,14 @@ if ( post_password_required() ) {
                     if ( ! empty( $attachment_ids ) ) :
                         ?>
                         <div class="flex flex-wrap gap-2.5 mt-8 justify-center">
-                            <button type="button" class="maze-gallery-thumb border border-black p-1 w-14 h-18 sm:w-16 sm:h-20 bg-[#FEFEF3] cursor-pointer transition-all" data-img-src="<?php echo esc_url( $full_image_url ); ?>" aria-label="<?php esc_attr_e( 'Main image', 'mazestreetwear' ); ?>">
+                            <button type="button" class="maze-gallery-thumb border border-black p-1 w-14 h-18 sm:w-16 sm:h-20 bg-white cursor-pointer transition-all" data-img-src="<?php echo esc_url( $full_image_url ); ?>" aria-label="<?php esc_attr_e( 'Main image', 'mazestreetwear' ); ?>">
                                 <img src="<?php echo esc_url( $full_image_url ); ?>" class="w-full h-full object-contain" alt="" />
                             </button>
                             <?php foreach ( $attachment_ids as $attachment_id ) : 
                                 $thumb_url = wp_get_attachment_image_url( $attachment_id, 'woocommerce_thumbnail' );
                                 $large_url = wp_get_attachment_image_url( $attachment_id, 'full' );
                             ?>
-                                <button type="button" class="maze-gallery-thumb border border-neutral-300 hover:border-black p-1 w-14 h-18 sm:w-16 sm:h-20 bg-[#FEFEF3] cursor-pointer transition-all" data-img-src="<?php echo esc_url( $large_url ); ?>" aria-label="<?php esc_attr_e( 'Gallery thumbnail', 'mazestreetwear' ); ?>">
+                                <button type="button" class="maze-gallery-thumb border border-neutral-300 hover:border-black p-1 w-14 h-18 sm:w-16 sm:h-20 bg-white cursor-pointer transition-all" data-img-src="<?php echo esc_url( $large_url ); ?>" aria-label="<?php esc_attr_e( 'Gallery thumbnail', 'mazestreetwear' ); ?>">
                                     <img src="<?php echo esc_url( $thumb_url ); ?>" class="w-full h-full object-contain" alt="" />
                                 </button>
                             <?php endforeach; ?>
@@ -79,7 +79,7 @@ if ( post_password_required() ) {
             </div>
 
             <!-- Right Column: Minimalist Details Column (Col Span 5) -->
-            <div class="lg:col-span-5 p-6 sm:p-10 lg:p-12 flex flex-col justify-start bg-[#FEFEF3]">
+            <div class="lg:col-span-5 p-6 sm:p-10 lg:p-12 flex flex-col justify-start bg-white">
 
                 <!-- Product Title in bold architectural Bebas Neue -->
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-normal font-bebas tracking-wide uppercase text-black leading-tight">
@@ -157,7 +157,7 @@ if ( post_password_required() ) {
 
     if ( ! empty( $related_ids ) ) :
         ?>
-        <div class="w-full bg-[#FEFEF3] border-b border-black">
+        <div class="w-full bg-white border-b border-black">
             <div class="max-w-7xl mx-auto border-x border-black">
                 <div class="px-4 sm:px-6 lg:px-8 py-5 border-b border-black flex justify-between items-center">
                     <h2 class="text-xl sm:text-2xl font-normal font-bebas uppercase tracking-wider text-black">
@@ -168,7 +168,7 @@ if ( post_password_required() ) {
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 bg-[#FEFEF3] overflow-hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 bg-white overflow-hidden">
                     <?php
                     foreach ( $related_ids as $rel_id ) :
                         $post_object = get_post( $rel_id );
