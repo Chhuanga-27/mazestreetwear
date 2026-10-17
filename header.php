@@ -126,7 +126,10 @@ $masthead_classes = $is_maze_home
             "addressRegion": "Mizoram",
             "postalCode": "796005",
             "addressCountry": "IN"
-          }
+          },
+          "sameAs": [
+            "https://www.instagram.com/maze.stw?utm_source=ig_web_button_share_sheet&exln=ZDNlZDc0MzIxNw=="
+          ]
         }
       ]
     }
@@ -297,7 +300,8 @@ $masthead_classes = $is_maze_home
             $shipping_url    = function_exists( 'mazestreetwear_get_shipping_policy_url' ) ? mazestreetwear_get_shipping_policy_url() : home_url( '/shipping-policy/' );
             $privacy_url     = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? mazestreetwear_get_privacy_policy_url() : home_url( '/privacy-policy/' );
             $account_url     = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account/' );
-            $instagram_url   = 'https://instagram.com/mazestw.in';
+            $instagram_url   = 'https://www.instagram.com/maze.stw?utm_source=ig_web_button_share_sheet&exln=ZDNlZDc0MzIxNw==';
+            $contact_email   = 'enquiries@mazestw.in';
             ?>
 
             <!-- Primary Navigation Categories -->
@@ -326,7 +330,7 @@ $masthead_classes = $is_maze_home
                 </a>
             </div>
 
-            <!-- Utility & Social Links -->
+            <!-- Utility & Direct Desk Links -->
             <div class="pt-6 mt-6 border-t border-neutral-200 flex flex-col space-y-4">
                 <!-- Log In / My Account Link -->
                 <div>
@@ -347,14 +351,21 @@ $masthead_classes = $is_maze_home
                     <?php endif; ?>
                 </div>
 
-                <!-- Instagram Link -->
-                <div>
-                    <a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-black hover:opacity-60 transition-opacity" aria-label="<?php esc_attr_e( 'MAZE on Instagram', 'mazestreetwear' ); ?>">
-                        <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <!-- Instagram & Email Links -->
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3 pt-1">
+                    <a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-black hover:opacity-60 transition-opacity" aria-label="<?php esc_attr_e( 'MAZE on Instagram', 'mazestreetwear' ); ?>">
+                        <svg class="w-5 h-5 text-black flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                         </svg>
+                        <span class="text-xs font-mono font-bold uppercase tracking-wider">@maze.stw</span>
+                    </a>
+                    <a href="mailto:<?php echo esc_attr( $contact_email ); ?>" class="inline-flex items-center space-x-2 text-black hover:opacity-60 transition-opacity" aria-label="<?php esc_attr_e( 'Email MAZE', 'mazestreetwear' ); ?>">
+                        <svg class="w-5 h-5 text-black flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                        </svg>
+                        <span class="text-xs font-mono font-bold uppercase tracking-wider">enquiries@mazestw.in</span>
                     </a>
                 </div>
             </div>

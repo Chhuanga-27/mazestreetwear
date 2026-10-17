@@ -32,7 +32,7 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
       "@id": "<?php echo esc_url( $contact_url ); ?>#webpage",
       "url": "<?php echo esc_url( $contact_url ); ?>",
       "name": "Contact Us - Maze Streetwear",
-      "description": "Official contact directory for Maze Streetwear. Studio headquarters in Aizawl, Mizoram, direct email at enquiries@mazestw.in, and official Instagram @mazestw.in.",
+      "description": "Official contact directory for Maze Streetwear. Studio headquarters in Aizawl, Mizoram, direct email at enquiries@mazestw.in, and official Instagram @maze.stw.",
       "publisher": {
         "@id": "https://mazestw.in/#organization"
       }
@@ -56,7 +56,7 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
         "addressCountry": "IN"
       },
       "sameAs": [
-        "https://instagram.com/mazestw.in"
+        "https://www.instagram.com/maze.stw?utm_source=ig_web_button_share_sheet&exln=ZDNlZDc0MzIxNw=="
       ]
     }
   ]
@@ -180,8 +180,8 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
                     </h2>
 
                     <div class="mb-4">
-                        <a href="https://instagram.com/mazestw.in" target="_blank" rel="noopener noreferrer" class="text-base sm:text-lg font-outfit font-bold text-black hover:underline underline-offset-4 block">
-                            @mazestw.in
+                        <a href="https://www.instagram.com/maze.stw?utm_source=ig_web_button_share_sheet&exln=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="text-base sm:text-lg font-outfit font-bold text-black hover:underline underline-offset-4 block">
+                            @maze.stw
                         </a>
                         <p class="text-xs sm:text-sm font-outfit text-neutral-700 mt-2 leading-relaxed">
                             <?php esc_html_e( 'Direct messages, upcoming drop reveals, styling editorials, and community archive.', 'mazestreetwear' ); ?>
@@ -194,8 +194,8 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
                 </div>
 
                 <div class="pt-4 border-t border-neutral-200">
-                    <a href="https://instagram.com/mazestw.in" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1.5 text-xs sm:text-sm font-outfit font-semibold uppercase tracking-wider text-black hover:underline underline-offset-4">
-                        <span><?php esc_html_e( 'Follow @mazestw.in', 'mazestreetwear' ); ?></span>
+                    <a href="https://www.instagram.com/maze.stw?utm_source=ig_web_button_share_sheet&exln=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1.5 text-xs sm:text-sm font-outfit font-semibold uppercase tracking-wider text-black hover:underline underline-offset-4">
+                        <span><?php esc_html_e( 'Follow @maze.stw', 'mazestreetwear' ); ?></span>
                         <span aria-hidden="true">&nearr;</span>
                     </a>
                 </div>
