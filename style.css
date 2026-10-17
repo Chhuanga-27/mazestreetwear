@@ -449,56 +449,88 @@ body.page-template-template-homepage #maze-mobile-menu {
   border-width: 0 !important;
 }
 
-/* Header Navigation Links: Outfit font, deep pitch black, sentence casing (only 1st word uppercase) */
+/* Header Navigation Links: Clean streetwear spacing, Outfit font, pitch black, uppercase */
 #site-navigation ul,
-#site-navigation ul li,
-#primary-menu,
-#primary-menu > li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+#primary-menu {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: nowrap !important;
+  gap: 1.25rem !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+@media (min-width: 1024px) {
+  #site-navigation ul,
+  #primary-menu {
+    gap: 1.75rem !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  #site-navigation ul,
+  #primary-menu {
+    gap: 2.25rem !important;
+  }
 }
 
 #site-navigation ul li,
 #primary-menu > li {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
 }
 
 #site-navigation ul li a,
 #primary-menu > li > a,
 .maze-nav-link {
   display: inline-block !important;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
   font-family: var(--font-outfit) !important;
   color: #000000 !important;
-  font-weight: 600 !important;
-  letter-spacing: -0.01em !important;
-  text-transform: lowercase !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
   opacity: 1 !important;
-  transition: color 0.15s ease, opacity 0.15s ease;
+  white-space: nowrap !important;
+  transition: color 0.15s ease, opacity 0.15s ease, text-decoration 0.15s ease;
 }
 
-#site-navigation ul li a::first-letter,
-#primary-menu > li > a::first-letter,
-.maze-nav-link::first-letter {
-  text-transform: uppercase !important;
+#site-navigation ul li a,
+#primary-menu > li > a {
+  font-size: 0.8125rem !important;
+}
+
+@media (min-width: 1024px) {
+  #site-navigation ul li a,
+  #primary-menu > li > a {
+    font-size: 0.875rem !important;
+    letter-spacing: 0.09em !important;
+  }
 }
 
 #site-navigation ul li a:hover,
 #primary-menu > li > a:hover,
 .maze-nav-link:hover {
   color: #000000 !important;
-  opacity: 0.6 !important;
+  opacity: 0.55 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px !important;
 }
 
 #primary-menu > li.current-menu-item > a,
 #primary-menu > li.current-page-ancestor > a,
-#site-navigation ul li.current-menu-item > a {
+#site-navigation ul li.current-menu-item > a,
+#site-navigation ul li.current_page_item > a {
   color: #000000 !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   text-decoration: underline !important;
   text-underline-offset: 4px !important;
   text-decoration-thickness: 1.5px !important;
