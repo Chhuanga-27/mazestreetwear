@@ -19,14 +19,16 @@ $cart_count    = function_exists( 'mazestreetwear_get_cart_count' ) ? mazestreet
 $is_cart_empty = ( $cart_count <= 0 );
 $masthead_classes = $is_maze_home
     ? 'pointer-events-none py-3 sm:py-4 bg-transparent'
-    : 'bg-white/95 backdrop-blur-md border-b border-black py-2.5 sm:py-3.5 shadow-sm';
+    : 'bg-[#FEFEF3]/95 backdrop-blur-md border-b border-black py-2.5 sm:py-3.5 shadow-sm';
 ?><!DOCTYPE html>
-<html <?php language_attributes(); ?> class="scroll-smooth bg-white text-black">
+<html <?php language_attributes(); ?> class="scroll-smooth bg-[#FEFEF3] text-black">
 <head>
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Preload Primary Didot Regular Web Font for Instant Rendering -->
-    <link rel="preload" href="<?php echo esc_url( get_template_directory_uri() . '/assets/fonts/Didot.otf' ); ?>" as="font" type="font/otf" crossorigin>
+    <!-- Google Fonts Preconnect & Stylesheet: Outfit & Bebas Neue -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
 
     <?php if ( $is_maze_home ) : ?>
     <!-- Preload High-Definition Hero Bento Banner -->
@@ -133,7 +135,7 @@ $masthead_classes = $is_maze_home
     <?php wp_head(); ?>
 </head>
 
-<body <?php body_class( 'bg-white text-black font-sans antialiased selection:bg-black selection:text-white min-h-screen flex flex-col' ); ?>>
+<body <?php body_class( 'bg-[#FEFEF3] text-black font-sans antialiased selection:bg-black selection:text-white min-h-screen flex flex-col' ); ?>>
 <?php wp_body_open(); ?>
 
 <a class="skip-link screen-reader-text sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-black focus:text-white focus:font-mono focus:text-xs" href="#primary">
@@ -147,7 +149,7 @@ $masthead_classes = $is_maze_home
     <div class="max-w-7xl mx-auto <?php echo $is_maze_home ? 'pointer-events-auto' : ''; ?>">
 
         <!-- Pill Navigation Bar Container -->
-        <div class="maze-pill-navbar w-full min-w-0 bg-white/95 backdrop-blur-md border border-black rounded-full px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between shadow-sm transition-all duration-200">
+        <div class="maze-pill-navbar w-full min-w-0 bg-[#FEFEF3]/95 backdrop-blur-md border border-black rounded-full px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between shadow-sm transition-all duration-200">
 
             <!-- Left: Brand Logo -->
             <div class="flex-shrink-0 flex items-center mr-2 sm:mr-4">
@@ -171,7 +173,7 @@ $masthead_classes = $is_maze_home
                         'theme_location' => 'primary',
                         'menu_id'        => 'primary-menu',
                         'container'      => false,
-                        'menu_class'     => 'flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-sm lg:text-[15px] font-bold font-sans tracking-wider uppercase text-black whitespace-nowrap',
+                        'menu_class'     => 'flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-base lg:text-lg font-normal font-bebas tracking-wider uppercase text-black whitespace-nowrap',
                         'fallback_cb'    => false,
                         'items_wrap'     => '<ul id="%1$s" class="%2$s">%3$s</ul>',
                     ) );
@@ -184,7 +186,7 @@ $masthead_classes = $is_maze_home
                     $is_about        = is_page( 'about-us' ) || is_page( 'about' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'about' ) );
                     $is_contact      = is_page( 'contact-us' ) || is_page( 'contact' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'contact' ) );
                 ?>
-                    <ul class="flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-sm lg:text-[15px] font-bold font-sans tracking-wider uppercase text-black whitespace-nowrap">
+                    <ul class="flex items-center space-x-3 lg:space-x-6 xl:space-x-8 text-base lg:text-lg font-normal font-bebas tracking-wider uppercase text-black whitespace-nowrap">
                         <li>
                             <a href="<?php echo esc_url( $shop_page_url ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors duration-150 py-1">
                                 <?php esc_html_e( 'Shop All', 'mazestreetwear' ); ?>
@@ -229,7 +231,7 @@ $masthead_classes = $is_maze_home
                         <svg class="w-4 h-4 text-black mr-2 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
                         </svg>
-                        <input type="search" name="s" placeholder="<?php echo esc_attr_x( 'Search', 'placeholder', 'mazestreetwear' ); ?>" value="<?php echo get_search_query(); ?>" class="bg-transparent border-0 outline-none text-sm text-black placeholder-neutral-600 w-full p-0 font-sans font-medium focus:outline-none focus:ring-0">
+                        <input type="search" name="s" placeholder="<?php echo esc_attr_x( 'Search', 'placeholder', 'mazestreetwear' ); ?>" value="<?php echo get_search_query(); ?>" class="bg-transparent border-0 outline-none text-sm text-black placeholder-neutral-600 w-full p-0 font-outfit font-medium focus:outline-none focus:ring-0">
                     </div>
                 </form>
 
@@ -268,20 +270,20 @@ $masthead_classes = $is_maze_home
         </div>
 
         <!-- Discrete Mobile Search Bar Dropdown (Toggled by mobile search button in header pill) -->
-        <div id="maze-mobile-search-bar" class="hidden sm:hidden mt-2 bg-white border border-black rounded-2xl p-3 shadow-xl transition-all duration-200">
+        <div id="maze-mobile-search-bar" class="hidden sm:hidden mt-2 bg-[#FEFEF3] border border-black rounded-2xl p-3 shadow-xl transition-all duration-200">
             <form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="relative flex items-center">
                 <input type="hidden" name="post_type" value="product">
-                <div class="relative flex items-center w-full bg-neutral-100 rounded-full px-4 py-2.5 border border-black/15 focus-within:border-black focus-within:bg-white transition-all">
+                <div class="relative flex items-center w-full bg-neutral-100 rounded-full px-4 py-2.5 border border-black/15 focus-within:border-black focus-within:bg-[#FEFEF3] transition-all">
                     <svg class="w-4 h-4 text-black mr-2.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
                     </svg>
-                    <input type="search" name="s" placeholder="<?php echo esc_attr_x( 'Search products, collections...', 'placeholder', 'mazestreetwear' ); ?>" value="<?php echo get_search_query(); ?>" class="bg-transparent border-0 outline-none text-sm text-black placeholder-neutral-500 w-full p-0 font-sans focus:outline-none focus:ring-0">
+                    <input type="search" name="s" placeholder="<?php echo esc_attr_x( 'Search products, collections...', 'placeholder', 'mazestreetwear' ); ?>" value="<?php echo get_search_query(); ?>" class="bg-transparent border-0 outline-none text-sm text-black placeholder-neutral-500 w-full p-0 font-outfit focus:outline-none focus:ring-0">
                 </div>
             </form>
         </div>
 
-        <!-- Mobile Mega Menu Drawer (Solid Pure White Background & Black Text) -->
-        <div id="maze-mobile-menu" class="maze-mobile-dropdown hidden md:hidden mt-2 bg-white border border-black rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl transition-all duration-200 max-h-[82vh] overflow-y-auto">
+        <!-- Mobile Mega Menu Drawer (Solid Ivory White Background & Black Text) -->
+        <div id="maze-mobile-menu" class="maze-mobile-dropdown hidden md:hidden mt-2 bg-[#FEFEF3] border border-black rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl transition-all duration-200 max-h-[82vh] overflow-y-auto">
             
             <?php
             // Prepare Mega Menu Category and Policy URLs
@@ -299,7 +301,7 @@ $masthead_classes = $is_maze_home
             ?>
 
             <!-- Primary Navigation Categories -->
-            <div class="flex flex-col space-y-2 text-2xl sm:text-3xl font-black font-sans uppercase tracking-tight text-black">
+            <div class="flex flex-col space-y-2 text-2xl sm:text-3xl font-normal font-bebas uppercase tracking-wide text-black">
                 <a href="<?php echo esc_url( $shop_page_url ); ?>" class="text-black hover:opacity-60 transition-opacity py-1 block">
                     <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
                 </a>
@@ -315,7 +317,7 @@ $masthead_classes = $is_maze_home
             </div>
 
             <!-- Secondary Brand Pages -->
-            <div class="flex flex-col space-y-2 pt-6 text-xl sm:text-2xl font-black font-sans uppercase tracking-tight text-black">
+            <div class="flex flex-col space-y-2 pt-6 text-xl sm:text-2xl font-normal font-bebas uppercase tracking-wide text-black">
                 <a href="<?php echo esc_url( $about_url ); ?>" class="text-black hover:opacity-60 transition-opacity py-1 block">
                     <?php esc_html_e( 'ABOUT US', 'mazestreetwear' ); ?>
                 </a>
@@ -358,7 +360,7 @@ $masthead_classes = $is_maze_home
             </div>
 
             <!-- Legal / Policy Bar -->
-            <div class="pt-6 mt-6 border-t border-neutral-200 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-xs sm:text-sm font-semibold font-sans text-neutral-700">
+            <div class="pt-6 mt-6 border-t border-neutral-200 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-xs sm:text-sm font-medium font-outfit text-neutral-700">
                 <a href="<?php echo esc_url( $refund_url ); ?>" class="text-neutral-800 hover:text-black hover:underline transition-colors"><?php esc_html_e( 'Refund policy', 'mazestreetwear' ); ?></a>
                 <span class="text-neutral-400 select-none" aria-hidden="true">&bull;</span>
                 <a href="<?php echo esc_url( $terms_url ); ?>" class="text-neutral-800 hover:text-black hover:underline transition-colors"><?php esc_html_e( 'Terms of service', 'mazestreetwear' ); ?></a>

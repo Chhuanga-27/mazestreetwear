@@ -19,55 +19,24 @@ Tags: e-commerce, streetwear, minimalist, brutalist, monochrome, black-and-white
  * Run 'npm run build' or 'npm run dev' to compile styles.
  */
 
-@font-face {
-  font-family: 'Didot';
-  src: url('assets/fonts/Didot.otf') format('opentype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
-@font-face {
-  font-family: 'Didot Regular';
-  src: url('assets/fonts/Didot.otf') format('opentype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Didot';
-  src: url('assets/fonts/Didot.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Didot';
-  src: url('assets/fonts/Didot.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-html,
-body,
-button,
-input,
-select,
-textarea,
-h1, h2, h3, h4, h5, h6,
-p, a, span, label, table, td, th {
-  font-family: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  text-rendering: optimizeLegibility !important;
+:root {
+  --color-maze-bg: #FEFEF3;
+  --color-maze-card: #FEFEF3;
+  --color-maze-ivory: #FEFEF3;
+  --font-outfit: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-bebas: 'Bebas Neue', 'Impact', sans-serif;
+  --font-sans: var(--font-outfit);
+  --font-heading: var(--font-bebas);
+  --font-display: var(--font-bebas);
+  --font-body: var(--font-outfit);
 }
 
 html {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
+  background-color: #FEFEF3 !important;
 }
 
 @media (min-width: 640px) {
@@ -83,20 +52,39 @@ html {
 }
 
 body {
+  font-family: var(--font-outfit);
   color: #000000;
-  font-weight: 500;
+  background-color: #FEFEF3 !important;
+  font-weight: 400;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-p {
+p,
+li,
+blockquote {
+  font-family: var(--font-outfit);
   color: #111111;
-  font-weight: 500;
+  font-weight: 400;
+  line-height: 1.65;
 }
 
 h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-bebas);
   color: #000000;
-  font-weight: 700;
-  letter-spacing: -0.015em;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+}
+
+input,
+button,
+select,
+textarea,
+label {
+  font-family: var(--font-outfit);
 }
 
 /* Eliminate faint low-contrast text */
@@ -231,19 +219,21 @@ body.woocommerce .site-header img {
 
 /* Hero CTA Button with Smooth Radius on Each Corner */
 .maze-hero-cta {
+  font-family: var(--font-bebas) !important;
   border-radius: 0.625rem !important;
-  padding: 0.5rem 1.25rem !important;
-  font-size: 0.6875rem !important; /* 11px */
-  letter-spacing: 0.12em !important;
-  line-height: 1.2 !important;
+  padding: 0.65rem 1.5rem !important;
+  font-size: 1.0625rem !important; /* 17px mobile */
+  letter-spacing: 0.08em !important;
+  line-height: 1.1 !important;
+  font-weight: 400 !important;
 }
 
 @media (min-width: 640px) {
   .maze-hero-cta {
     border-radius: 1rem !important;
     padding: 0.875rem 2.5rem !important;
-    font-size: 0.875rem !important;
-    letter-spacing: 0.05em !important;
+    font-size: 1.25rem !important;
+    letter-spacing: 0.08em !important;
     line-height: inherit !important;
   }
 }
@@ -251,7 +241,7 @@ body.woocommerce .site-header img {
 @media (min-width: 768px) {
   .maze-hero-cta {
     padding: 0.875rem 2.5rem !important;
-    font-size: 1rem !important;
+    font-size: 1.35rem !important;
   }
 }
 
@@ -278,16 +268,16 @@ body.woocommerce .site-header img {
 }
 
 .maze-showcase-title {
-  font-family: Didot, "Didot Regular", "Didot LT STD", Georgia, serif !important;
+  font-family: var(--font-bebas) !important;
   font-weight: 400 !important;
   letter-spacing: 0.04em !important;
-  line-height: 1.15 !important;
+  line-height: 1.02 !important;
 }
 
 .maze-showcase-price {
-  font-family: Didot, "Didot Regular", "Didot LT STD", Georgia, serif !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.05em !important;
+  font-family: var(--font-outfit) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
 }
 
 /* ==========================================================================
@@ -332,8 +322,9 @@ body.woocommerce .site-header img {
 .woocommerce table.shop_table th {
   background-color: #000000 !important;
   color: #ffffff !important;
-  font-family: Didot, "Didot Regular", monospace, serif !important;
-  font-size: 0.8125rem !important;
+  font-family: var(--font-bebas) !important;
+  font-size: 1.0625rem !important;
+  font-weight: 400 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
   padding: 0.75rem 1rem !important;
@@ -344,11 +335,13 @@ body.woocommerce .site-header img {
   border: 1px solid #000000 !important;
   padding: 1rem !important;
   vertical-align: middle !important;
-  background-color: #ffffff !important;
+  background-color: #FEFEF3 !important;
+  font-family: var(--font-outfit) !important;
 }
 
 .woocommerce table.shop_table td.product-name a {
-  font-weight: 700 !important;
+  font-family: var(--font-outfit) !important;
+  font-weight: 600 !important;
   color: #000000 !important;
   text-decoration: none !important;
 }
@@ -361,6 +354,7 @@ body.woocommerce .site-header img {
   border: 1px solid #000000 !important;
   border-radius: 0 !important;
   padding: 0.5rem !important;
+  font-family: var(--font-outfit) !important;
   font-weight: 700 !important;
   text-align: center !important;
 }
@@ -372,8 +366,9 @@ body.woocommerce .site-header img {
   color: #ffffff !important;
   border: 1px solid #000000 !important;
   border-radius: 0 !important;
-  font-family: Didot, "Didot Regular", monospace, serif !important;
-  font-weight: 700 !important;
+  font-family: var(--font-bebas) !important;
+  font-weight: 400 !important;
+  font-size: 1.125rem !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
   padding: 0.75rem 1.5rem !important;
@@ -389,7 +384,7 @@ body.woocommerce .site-header img {
 .woocommerce .cart-collaterals .cart_totals {
   border: 1px solid #000000 !important;
   padding: 1.5rem !important;
-  background-color: #ffffff !important;
+  background-color: #FEFEF3 !important;
   box-shadow: 4px 4px 0px 0px #000000 !important;
 }
 

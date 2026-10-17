@@ -31,18 +31,18 @@ $protocol_badge = $is_wc_cart
             : __( 'MAZE PROTOCOL // OFFICIAL DOCS', 'mazestreetwear' ) ) );
 ?>
 
-<main id="primary" class="site-main min-h-screen bg-white text-black py-10 sm:py-16">
+<main id="primary" class="site-main min-h-screen bg-[#FEFEF3] text-black py-10 sm:py-16">
     <div class="<?php echo esc_attr( $container_classes ); ?>">
 
         <?php while ( have_posts() ) : the_post(); ?>
 
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                 <header class="entry-header mb-8 sm:mb-12 pb-5 border-b border-black">
-                    <div class="inline-flex items-center space-x-2 text-xs sm:text-sm font-mono font-bold tracking-widest text-black uppercase mb-3 border border-black px-3 py-1 bg-white">
+                    <div class="inline-flex items-center space-x-2 text-xs sm:text-sm font-mono font-bold tracking-widest text-black uppercase mb-3 border border-black px-3 py-1 bg-[#FEFEF3]">
                         <span class="inline-block w-2 h-2 rounded-full bg-black"></span>
                         <span><?php echo esc_html( $protocol_badge ); ?></span>
                     </div>
-                    <h1 class="entry-title text-3xl sm:text-5xl font-black font-sans uppercase tracking-tight text-black">
+                    <h1 class="entry-title text-3xl sm:text-5xl font-normal font-bebas uppercase tracking-wide text-black">
                         <?php the_title(); ?>
                     </h1>
                 </header>

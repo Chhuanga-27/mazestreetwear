@@ -32,7 +32,7 @@ global $product;
     do_action( 'woocommerce_after_add_to_cart_quantity' );
     ?>
 
-    <button type="submit" class="single_add_to_cart_button button alt bg-black text-white hover:bg-neutral-800 text-sm sm:text-base font-bold uppercase tracking-wider py-4 w-full border border-black rounded-none font-mono transition-colors duration-150 cursor-pointer block text-center">
+    <button type="submit" class="single_add_to_cart_button button alt bg-black text-white hover:bg-neutral-800 text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border border-black rounded-none font-bebas transition-colors duration-150 cursor-pointer block text-center">
         <?php echo esc_html( $product->single_add_to_cart_text() ? $product->single_add_to_cart_text() : __( 'ADD TO BAG', 'mazestreetwear' ) ); ?>
     </button>
 

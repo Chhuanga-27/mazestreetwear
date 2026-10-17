@@ -1,57 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* ==========================================================================
-   Didot Regular Web Font (Single Font File Across Entire Site)
-   ========================================================================== */
-@font-face {
-  font-family: 'Didot';
-  src: url('../fonts/Didot.otf') format('opentype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Didot Regular';
-  src: url('../fonts/Didot.otf') format('opentype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Didot';
-  src: url('../fonts/Didot.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Didot';
-  src: url('../fonts/Didot.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 @layer base {
   :root {
-    --color-maze-bg: #ffffff;
+    --color-maze-bg: #FEFEF3;
     --color-maze-dark: #000000;
-    --color-maze-card: #ffffff;
+    --color-maze-card: #FEFEF3;
+    --color-maze-ivory: #FEFEF3;
     --color-maze-border: #000000;
     --color-maze-border-light: #000000;
     --color-maze-accent: #000000;
-    --font-didot: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif;
+
+    /* Distinct Typography Design Tokens */
+    --font-outfit: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-bebas: 'Bebas Neue', 'Impact', sans-serif;
+    --font-sans: var(--font-outfit);
+    --font-heading: var(--font-bebas);
+    --font-display: var(--font-bebas);
+    --font-body: var(--font-outfit);
   }
 
   html {
-    background-color: #ffffff;
+    background-color: #FEFEF3 !important;
     color: #000000;
-    font-family: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif;
+    font-family: var(--font-outfit);
     color-scheme: light;
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
@@ -74,10 +48,10 @@
   }
 
   body {
-    background-color: #ffffff;
+    background-color: #FEFEF3 !important;
     color: #000000;
-    font-family: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif;
-    font-weight: 500;
+    font-family: var(--font-outfit);
+    font-weight: 400;
     font-size: 1rem;
     line-height: 1.6;
     overflow-x: hidden;
@@ -85,45 +59,77 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Universal typography reset to Didot Regular */
-  *,
-  ::before,
-  ::after,
-  input,
-  button,
-  select,
-  textarea,
-  optgroup,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
+  /* Body Copy, Editorial Text, Descriptions: Outfit */
   p,
-  a,
-  span,
-  label,
-  table,
-  td,
-  th {
-    font-family: 'Didot', 'Didot Regular', 'Didot LT STD', 'Hoefler Text', 'Bodoni MT', 'Georgia', serif;
-  }
-
-  p {
+  li,
+  blockquote,
+  figcaption {
+    font-family: var(--font-outfit);
     color: #111111;
-    font-weight: 500;
+    font-weight: 400;
+    line-height: 1.65;
   }
 
+  /* Headings: Bebas Neue for powerful architectural streetwear branding */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
+    font-family: var(--font-bebas);
     color: #000000;
-    font-weight: 700;
-    letter-spacing: -0.015em;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.05;
+  }
+
+  /* Responsive Fluid Heading Scales (Bebas Neue) */
+  h1 {
+    font-size: clamp(2.15rem, 5.5vw, 4.25rem);
+    letter-spacing: 0.03em;
+    line-height: 1.02;
+  }
+
+  h2 {
+    font-size: clamp(1.65rem, 3.8vw, 3rem);
+    letter-spacing: 0.04em;
+    line-height: 1.06;
+  }
+
+  h3 {
+    font-size: clamp(1.35rem, 2.8vw, 2.25rem);
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+  }
+
+  h4 {
+    font-size: clamp(1.15rem, 2.2vw, 1.75rem);
+    letter-spacing: 0.05em;
+    line-height: 1.15;
+  }
+
+  h5 {
+    font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+  }
+
+  h6 {
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+  }
+
+  /* UI Form Controls & Labels: Outfit for crisp readability */
+  input,
+  button,
+  select,
+  textarea,
+  optgroup,
+  label {
+    font-family: var(--font-outfit);
   }
 
   /* High-Contrast Readability Overrides: Eliminate faint/pale text across the site */
@@ -195,7 +201,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #ffffff;
+    background: #FEFEF3;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -219,19 +225,21 @@
 
 @layer components {
 
-  /* Clean Rectangular Size Box (Filled Black when Selected) */
+  /* Clean Rectangular Size Box (Filled Black when Selected) - Bebas Neue */
   .maze-size-pill {
     transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-    background-color: #ffffff;
+    background-color: #FEFEF3;
     color: #000000;
     border: 1px solid #000000;
     border-radius: 0px !important;
-    font-family: 'Didot', 'Didot Regular', serif;
-    font-size: 0.9375rem !important;
-    /* 15px */
-    font-weight: 700 !important;
-    min-height: 44px;
-    min-width: 44px;
+    font-family: var(--font-bebas) !important;
+    font-size: 1.125rem !important;
+    /* 18px */
+    font-weight: 400 !important;
+    letter-spacing: 0.06em !important;
+    line-height: 1 !important;
+    min-height: 46px;
+    min-width: 46px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -260,15 +268,15 @@
   /* Catalog Order By Minimalist Hairline Trigger */
   .woocommerce-ordering select.orderby,
   select.orderby {
-    background-color: #ffffff !important;
+    background-color: #FEFEF3 !important;
     border: 1px solid #000000 !important;
     color: #000000 !important;
-    font-family: 'Didot', 'Didot Regular', serif !important;
-    font-size: 0.875rem !important;
-    /* 14px */
-    font-weight: 600 !important;
+    font-family: var(--font-bebas) !important;
+    font-size: 1rem !important;
+    /* 16px */
+    font-weight: 400 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
+    letter-spacing: 0.06em !important;
     padding: 0.6rem 2.25rem 0.6rem 0.85rem !important;
     outline: none !important;
     border-radius: 0px !important;
@@ -286,12 +294,13 @@
     outline: none !important;
   }
 
-  /* Minimalist Editorial Price Tags */
+  /* Minimalist Editorial Price Tags (Outfit - complete currency symbol & number rendering) */
   .price,
   .woocommerce-Price-amount {
-    font-family: inherit !important;
+    font-family: var(--font-outfit) !important;
     color: #000000 !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
     text-decoration: none !important;
   }
 
@@ -301,29 +310,31 @@
     font-size: 0.9em !important;
     text-decoration: line-through !important;
     margin-right: 0.35rem !important;
+    font-weight: 500 !important;
   }
 
   .price ins,
   ins .woocommerce-Price-amount {
     text-decoration: none !important;
     color: #000000 !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
   }
 
-  /* Solid Black Full-Width Button Reset */
+  /* Solid Black Full-Width Button Reset (Bebas Neue Display) */
   .button.single_add_to_cart_button,
   .button.alt {
     border-radius: 0 !important;
-    letter-spacing: 0.12em !important;
+    letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
-    font-family: 'Didot', 'Didot Regular', serif !important;
-    font-size: 0.9375rem !important;
-    /* 15px mobile */
-    font-weight: 700 !important;
+    font-family: var(--font-bebas) !important;
+    font-size: 1.125rem !important;
+    /* 18px mobile */
+    font-weight: 400 !important;
+    line-height: 1.1 !important;
     background-color: #000000 !important;
     color: #ffffff !important;
     border: 1px solid #000000 !important;
-    padding: 1rem 1.75rem !important;
+    padding: 0.95rem 1.75rem !important;
     min-height: 48px !important;
     transition: background-color 0.15s ease !important;
     box-shadow: none !important;
@@ -333,8 +344,8 @@
 
     .button.single_add_to_cart_button,
     .button.alt {
-      font-size: 1rem !important;
-      /* 16px desktop */
+      font-size: 1.25rem !important;
+      /* 20px desktop */
     }
   }
 
@@ -369,10 +380,11 @@
     padding: 0.65rem 1rem;
     border-right: 1px solid #000000;
     border-bottom: 1px solid #000000;
-    font-family: 'Didot', 'Didot Regular', serif;
-    font-size: 0.875rem;
-    /* 14px */
-    font-weight: 600;
+    font-family: var(--font-bebas) !important;
+    font-size: 1.0625rem;
+    /* 17px */
+    font-weight: 400;
+    letter-spacing: 0.05em;
     color: #000000;
     text-decoration: none;
     transition: all 0.15s ease;
@@ -388,17 +400,17 @@
   .pagination .nav-links span.current {
     background-color: #000000;
     color: #ffffff;
-    font-weight: 700;
+    font-weight: 400;
   }
 
   /* WooCommerce Native Notices Minimalist Reset */
   .woocommerce-message,
   .woocommerce-info,
   .woocommerce-error {
-    background-color: #ffffff !important;
+    background-color: #FEFEF3 !important;
     border: 1px solid #000000 !important;
     color: #000000 !important;
-    font-family: 'Didot', 'Didot Regular', serif !important;
+    font-family: var(--font-outfit) !important;
     font-size: 0.9375rem !important;
     /* 15px */
     line-height: 1.5 !important;
@@ -421,11 +433,12 @@
     background: #000000 !important;
     color: #ffffff !important;
     padding: 0.45rem 1rem !important;
-    font-size: 0.8125rem !important;
-    /* 13px */
-    font-weight: 700 !important;
+    font-family: var(--font-bebas) !important;
+    font-size: 1rem !important;
+    /* 16px */
+    font-weight: 400 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
+    letter-spacing: 0.06em !important;
     border-radius: 0 !important;
     border: 1px solid #000000 !important;
   }
@@ -521,8 +534,8 @@
   #maze-mobile-menu {
     border-radius: 1.5rem !important;
     border: 1px solid #000000 !important;
-    background-color: #ffffff !important;
-    background: #ffffff !important;
+    background-color: #FEFEF3 !important;
+    background: #FEFEF3 !important;
     color: #000000 !important;
     opacity: 1 !important;
     backdrop-filter: none !important;
@@ -533,8 +546,8 @@
   #maze-mobile-search-bar {
     border-radius: 1.25rem !important;
     border: 1px solid #000000 !important;
-    background-color: #ffffff !important;
-    background: #ffffff !important;
+    background-color: #FEFEF3 !important;
+    background: #FEFEF3 !important;
     color: #000000 !important;
     opacity: 1 !important;
     backdrop-filter: none !important;
@@ -584,22 +597,25 @@
     }
   }
 
-  /* Hero CTA Button with Smooth Radius on Each Corner */
+  /* Hero CTA Button: Responsive Bebas Neue with Smooth Radius */
   .maze-hero-cta {
+    font-family: var(--font-bebas) !important;
     border-radius: 0.625rem !important;
-    padding: 0.5rem 1.25rem !important;
-    font-size: 0.6875rem !important;
-    /* 11px */
-    letter-spacing: 0.12em !important;
-    line-height: 1.2 !important;
+    padding: 0.65rem 1.5rem !important;
+    font-size: 1.0625rem !important;
+    /* 17px mobile - perfectly readable */
+    letter-spacing: 0.08em !important;
+    line-height: 1.1 !important;
+    font-weight: 400 !important;
   }
 
   @media (min-width: 640px) {
     .maze-hero-cta {
       border-radius: 1rem !important;
       padding: 0.875rem 2.5rem !important;
-      font-size: 0.875rem !important;
-      letter-spacing: 0.05em !important;
+      font-size: 1.25rem !important;
+      /* 20px desktop */
+      letter-spacing: 0.08em !important;
       line-height: inherit !important;
     }
   }
@@ -607,7 +623,7 @@
   @media (min-width: 768px) {
     .maze-hero-cta {
       padding: 0.875rem 2.5rem !important;
-      font-size: 1rem !important;
+      font-size: 1.35rem !important;
     }
   }
 
@@ -634,16 +650,16 @@
   }
 
   .maze-showcase-title {
-    font-family: Didot, "Didot Regular", "Didot LT STD", Georgia, serif !important;
+    font-family: var(--font-bebas) !important;
     font-weight: 400 !important;
     letter-spacing: 0.04em !important;
-    line-height: 1.15 !important;
+    line-height: 1.02 !important;
   }
 
   .maze-showcase-price {
-    font-family: Didot, "Didot Regular", "Didot LT STD", Georgia, serif !important;
-    font-weight: 400 !important;
-    letter-spacing: 0.05em !important;
+    font-family: var(--font-outfit) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
   }
 
   /* Primary Navigation Menu & Dropdown Submenus */
@@ -669,7 +685,7 @@
   #primary-menu>li.current-menu-item>a,
   #primary-menu>li.current-page-ancestor>a {
     color: #000000;
-    font-weight: 800;
+    font-weight: 400;
     text-decoration: underline;
     text-underline-offset: 4px;
     text-decoration-thickness: 1.5px;
@@ -682,7 +698,7 @@
     left: 0;
     margin-top: 0.5rem;
     min-width: 12rem;
-    background-color: rgba(255, 255, 255, 0.98);
+    background-color: rgba(254, 254, 243, 0.98);
     backdrop-filter: blur(12px);
     border: 1px solid #000000;
     border-radius: 0.75rem;
@@ -704,10 +720,11 @@
   #primary-menu .sub-menu li a {
     display: block;
     padding: 0.65rem 1.25rem;
-    font-size: 0.875rem;
-    /* 14px */
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    font-family: var(--font-bebas) !important;
+    font-size: 1.0625rem;
+    /* 17px */
+    font-weight: 400;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #000000;
     white-space: nowrap;
@@ -718,18 +735,19 @@
     background-color: #f5f5f5;
   }
 
-  /* Editorial Modern Studio Footer Component Styles */
+  /* Editorial Modern Studio Footer Component Styles - Bebas Neue */
   .maze-footer-brand-title {
-    font-family: 'Didot', 'Didot Regular', serif;
-    font-weight: 900;
-    font-size: clamp(5.25rem, 25.5vw, 23rem);
-    line-height: 0.82;
-    letter-spacing: -0.055em;
+    font-family: var(--font-bebas) !important;
+    font-weight: 400;
+    font-size: clamp(5.5rem, 26vw, 24rem);
+    line-height: 0.8;
+    letter-spacing: -0.01em;
     user-select: none;
     -webkit-user-select: none;
   }
 
   .maze-social-pill {
+    font-family: var(--font-outfit);
     transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -747,14 +765,15 @@
     transform: translate(3px, -3px);
   }
 
-  /* High-Contrast Bottom Legal & Navigation Links */
+  /* High-Contrast Bottom Legal & Navigation Links - Outfit */
   .maze-legal-link {
+    font-family: var(--font-outfit) !important;
     color: #000000 !important;
-    font-size: 0.9375rem !important;
-    /* 15px mobile */
-    font-weight: 700 !important;
+    font-size: 0.875rem !important;
+    /* 14px mobile */
+    font-weight: 500 !important;
     text-decoration: none !important;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
     line-height: 1.4;
     transition: color 0.15s ease, text-decoration 0.15s ease;
     display: inline-block;
@@ -762,8 +781,8 @@
 
   @media (min-width: 640px) {
     .maze-legal-link {
-      font-size: 1rem !important;
-      /* 16px tablet/desktop */
+      font-size: 0.9375rem !important;
+      /* 15px tablet/desktop */
     }
   }
 
@@ -890,8 +909,9 @@
 .woocommerce table.shop_table th {
   background-color: #000000 !important;
   color: #ffffff !important;
-  font-family: Didot, "Didot Regular", monospace, serif !important;
-  font-size: 0.8125rem !important;
+  font-family: var(--font-bebas) !important;
+  font-size: 1.0625rem !important;
+  font-weight: 400 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
   padding: 0.75rem 1rem !important;
@@ -902,11 +922,13 @@
   border: 1px solid #000000 !important;
   padding: 1rem !important;
   vertical-align: middle !important;
-  background-color: #ffffff !important;
+  background-color: #FEFEF3 !important;
+  font-family: var(--font-outfit) !important;
 }
 
 .woocommerce table.shop_table td.product-name a {
-  font-weight: 700 !important;
+  font-family: var(--font-outfit) !important;
+  font-weight: 600 !important;
   color: #000000 !important;
   text-decoration: none !important;
 }
@@ -919,6 +941,7 @@
   border: 1px solid #000000 !important;
   border-radius: 0 !important;
   padding: 0.5rem !important;
+  font-family: var(--font-outfit) !important;
   font-weight: 700 !important;
   text-align: center !important;
   min-width: 50px !important;
@@ -926,7 +949,7 @@
 
 .woocommerce table.shop_table td.actions {
   padding: 1.25rem 1rem !important;
-  background-color: #fafafa !important;
+  background-color: #FEFEF3 !important;
 }
 
 .woocommerce table.shop_table td.actions .coupon {
@@ -940,7 +963,7 @@
   border: 1px solid #000000 !important;
   border-radius: 0 !important;
   padding: 0.65rem 1rem !important;
-  font-family: inherit !important;
+  font-family: var(--font-outfit) !important;
   font-size: 0.875rem !important;
   min-width: 180px !important;
 }
@@ -952,8 +975,9 @@
   color: #ffffff !important;
   border: 1px solid #000000 !important;
   border-radius: 0 !important;
-  font-family: Didot, "Didot Regular", monospace, serif !important;
-  font-weight: 700 !important;
+  font-family: var(--font-bebas) !important;
+  font-weight: 400 !important;
+  font-size: 1.125rem !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
   padding: 0.75rem 1.5rem !important;
@@ -970,15 +994,16 @@
 .woocommerce .cart-collaterals .cart_totals {
   border: 1px solid #000000 !important;
   padding: 1.5rem !important;
-  background-color: #ffffff !important;
+  background-color: #FEFEF3 !important;
   box-shadow: 4px 4px 0px 0px #000000 !important;
 }
 
 .woocommerce .cart-collaterals .cart_totals h2 {
-  font-size: 1.25rem !important;
-  font-weight: 900 !important;
+  font-family: var(--font-bebas) !important;
+  font-size: 1.625rem !important;
+  font-weight: 400 !important;
   text-transform: uppercase !important;
-  letter-spacing: -0.01em !important;
+  letter-spacing: 0.04em !important;
   margin-bottom: 1.25rem !important;
   padding-bottom: 0.75rem !important;
   border-bottom: 1px solid #000000 !important;
@@ -989,7 +1014,7 @@
   width: 100% !important;
   text-align: center !important;
   padding: 1rem 1.5rem !important;
-  font-size: 1rem !important;
+  font-size: 1.25rem !important;
   margin-top: 1rem !important;
 }
 
@@ -999,12 +1024,22 @@
 }
 
 .woocommerce .cart-empty {
+  font-family: var(--font-outfit) !important;
   font-size: 1.125rem !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   padding: 3rem 1.5rem !important;
   border: 1px solid #000000 !important;
   margin-bottom: 1.5rem !important;
   background-color: #fafafa !important;
+}
+
+/* Explicit Utility Classes */
+.font-bebas {
+  font-family: var(--font-bebas) !important;
+}
+
+.font-outfit {
+  font-family: var(--font-outfit) !important;
 }
 
 /* Suppress all breadcrumbs across the website */

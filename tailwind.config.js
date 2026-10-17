@@ -12,24 +12,31 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        white: '#FEFEF3',
+        ivory: '#FEFEF3',
         maze: {
           black: '#000000',
-          white: '#ffffff',
+          white: '#FEFEF3',
+          ivory: '#FEFEF3',
+          bg: '#FEFEF3',
           dark: '#111111',
-          card: '#ffffff',
+          card: '#FEFEF3',
           border: '#000000',
           'border-light': '#e5e5e5',
           accent: '#000000',
           muted: '#262626',
           subtle: '#404040',
-          light: '#f5f5f5'
+          light: '#FEFEF3'
         }
       },
       fontFamily: {
-        sans: ['Didot', 'Didot Regular', 'Didot LT STD', 'Georgia', 'serif'],
-        mono: ['Didot', 'Didot Regular', 'Didot LT STD', 'Georgia', 'serif'],
-        serif: ['Didot', 'Didot Regular', 'Didot LT STD', 'Georgia', 'serif'],
-        didot: ['Didot', 'Didot Regular', 'Didot LT STD', 'Georgia', 'serif']
+        sans: ['Outfit', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+        outfit: ['Outfit', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+        bebas: ['"Bebas Neue"', 'Impact', 'sans-serif'],
+        display: ['"Bebas Neue"', 'Impact', 'sans-serif'],
+        heading: ['"Bebas Neue"', 'Impact', 'sans-serif'],
+        body: ['Outfit', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+        mono: ['Outfit', 'monospace']
       },
       letterSpacing: {
         ultra: '0.25em',

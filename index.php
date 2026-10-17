@@ -16,17 +16,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-<main id="primary" class="site-main min-h-screen bg-white text-black py-12 sm:py-16">
+<main id="primary" class="site-main min-h-screen bg-[#FEFEF3] text-black py-12 sm:py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <?php if ( have_posts() ) : ?>
 
             <?php if ( is_home() && ! is_front_page() ) : ?>
                 <header class="mb-10 pb-6 border-b-2 border-black">
-                    <div class="text-xs sm:text-sm font-mono font-bold tracking-widest text-neutral-800 uppercase mb-1">
+                    <div class="text-xs sm:text-sm font-outfit font-semibold tracking-widest text-neutral-800 uppercase mb-1">
                         [ ARCHIVE JOURNAL // 2026 ]
                     </div>
-                    <h1 class="page-title text-4xl sm:text-5xl font-black uppercase tracking-tight text-black">
+                    <h1 class="page-title text-4xl sm:text-6xl font-normal font-bebas uppercase tracking-wide text-black">
                         <?php single_post_title(); ?>
                     </h1>
                 </header>
@@ -45,21 +45,21 @@ get_header();
                                 </div>
                             <?php endif; ?>
 
-                            <div class="text-xs sm:text-sm font-mono font-bold tracking-widest uppercase text-neutral-700 mb-2">
+                            <div class="text-xs sm:text-sm font-outfit font-medium tracking-wider uppercase text-neutral-700 mb-2">
                                 <?php echo get_the_date( 'd.m.Y' ); ?>
                             </div>
 
-                            <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-tight text-black hover:text-neutral-700 transition-colors mb-3">
+                            <h2 class="text-2xl sm:text-3xl font-normal font-bebas uppercase tracking-wide text-black hover:text-neutral-700 transition-colors mb-3">
                                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                             </h2>
 
-                            <div class="text-sm font-mono text-neutral-800 leading-relaxed mb-4">
+                            <div class="text-sm sm:text-base font-outfit text-neutral-800 leading-relaxed mb-4">
                                 <?php the_excerpt(); ?>
                             </div>
                         </div>
 
                         <div class="pt-4 border-t border-black">
-                            <a href="<?php the_permalink(); ?>" class="text-sm font-mono font-bold uppercase tracking-wider text-black hover:text-neutral-700 transition-colors inline-flex items-center space-x-2">
+                            <a href="<?php the_permalink(); ?>" class="text-base font-bebas font-normal uppercase tracking-wider text-black hover:text-neutral-700 transition-colors inline-flex items-center space-x-2">
                                 <span><?php esc_html_e( 'READ ARCHIVE', 'mazestreetwear' ); ?></span>
                                 <span>&rarr;</span>
                             </a>
@@ -83,10 +83,10 @@ get_header();
         <?php else : ?>
 
             <div class="py-20 text-center border-2 border-black bg-neutral-50 p-8 max-w-xl mx-auto">
-                <span class="text-4xl mb-4 block font-mono font-bold text-neutral-600">[ 404 ]</span>
-                <h2 class="text-xl font-mono uppercase font-black tracking-widest text-black mb-2"><?php esc_html_e( 'NOTHING FOUND', 'mazestreetwear' ); ?></h2>
-                <p class="text-sm sm:text-base font-mono text-neutral-800 mb-6"><?php esc_html_e( 'No posts or archive drops match your query.', 'mazestreetwear' ); ?></p>
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-block bg-black text-white font-mono font-bold text-sm uppercase tracking-wider py-4 px-8 hover:bg-neutral-800 transition-colors border-2 border-black">
+                <span class="text-4xl mb-4 block font-bebas font-normal text-neutral-600">[ 404 ]</span>
+                <h2 class="text-2xl font-bebas uppercase font-normal tracking-wide text-black mb-2"><?php esc_html_e( 'NOTHING FOUND', 'mazestreetwear' ); ?></h2>
+                <p class="text-sm sm:text-base font-outfit text-neutral-800 mb-6"><?php esc_html_e( 'No posts or archive drops match your query.', 'mazestreetwear' ); ?></p>
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-block bg-black text-white font-bebas font-normal text-lg uppercase tracking-wider py-3.5 px-8 hover:bg-neutral-800 transition-colors border-2 border-black">
                     <?php esc_html_e( 'RETURN TO MAZE', 'mazestreetwear' ); ?>
                 </a>
             </div>

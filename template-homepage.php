@@ -22,10 +22,10 @@ get_header();
 $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
 ?>
 
-<main id="primary" class="site-main bg-white text-black min-h-screen">
+<main id="primary" class="site-main bg-[#FEFEF3] text-black min-h-screen">
 
     <!-- 1. Editorial Bento Box Hero Banner (Contained, Rounded Corners, HD) -->
-    <section class="w-full bg-white pt-2 sm:pt-2.5 md:pt-3 pb-8 sm:pb-12">
+    <section class="w-full bg-[#FEFEF3] pt-2 sm:pt-2.5 md:pt-3 pb-8 sm:pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="maze-hero-bento relative w-full aspect-[4/3] sm:aspect-[16/10] rounded-2xl sm:rounded-3xl lg:rounded-[32px] border border-black overflow-hidden bg-[#e8e8e8] shadow-sm group">
                 <img 
@@ -41,7 +41,7 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 
                 <!-- Centered CTA Button with Radius on Each Corner -->
                 <div class="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-8 md:bottom-12 z-10">
-                    <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-hero-cta inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-5 sm:px-10 py-2 sm:py-3.5 text-[11px] sm:text-sm md:text-base uppercase tracking-widest sm:tracking-wider font-bold font-mono text-center shadow-sm rounded-lg sm:rounded-2xl hover:shadow-md">
+                    <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-hero-cta inline-block border border-black bg-[#FEFEF3] text-black hover:bg-black hover:text-white transition-all px-6 sm:px-10 py-2.5 sm:py-3.5 text-base sm:text-lg md:text-xl uppercase tracking-wider font-normal font-bebas text-center shadow-sm rounded-lg sm:rounded-2xl hover:shadow-md">
                         <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
                     </a>
                 </div>
@@ -138,9 +138,9 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     ?>
 
     <!-- 2. Featured Editorial Showcase - Product 1 (Product Image on Left, Title & Price on Right) -->
-    <section class="maze-showcase-section w-full bg-white border-b border-black">
+    <section class="maze-showcase-section w-full bg-[#FEFEF3] border-b border-black">
         <div class="max-w-7xl mx-auto border-x border-t border-black">
-            <a href="<?php echo esc_url( $showcase_item_1['permalink'] ); ?>" class="maze-showcase-card group grid grid-cols-2 bg-white overflow-hidden focus:outline-none" aria-label="<?php echo esc_attr( $showcase_item_1['title'] ); ?>">
+            <a href="<?php echo esc_url( $showcase_item_1['permalink'] ); ?>" class="maze-showcase-card group grid grid-cols-2 bg-[#FEFEF3] overflow-hidden focus:outline-none" aria-label="<?php echo esc_attr( $showcase_item_1['title'] ); ?>">
                 <!-- Left: Product Image -->
                 <div class="maze-showcase-media relative w-full aspect-[4/5] bg-[#eae7e1] overflow-hidden">
                     <img 
@@ -153,11 +153,11 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
                 </div>
 
                 <!-- Right: Product Information -->
-                <div class="maze-showcase-info flex flex-col justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-6 sm:py-10 bg-white select-none">
-                    <h2 class="maze-showcase-title text-base sm:text-2xl md:text-3xl lg:text-5xl font-normal uppercase tracking-wider text-black group-hover:opacity-60 transition-opacity">
+                <div class="maze-showcase-info flex flex-col justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-6 sm:py-10 bg-[#FEFEF3] select-none">
+                    <h2 class="maze-showcase-title text-xl sm:text-3xl md:text-4xl lg:text-5xl font-normal font-bebas uppercase tracking-wide text-black group-hover:opacity-60 transition-opacity">
                         <?php echo esc_html( $showcase_item_1['title'] ); ?>
                     </h2>
-                    <div class="maze-showcase-price text-xs sm:text-base md:text-xl lg:text-3xl font-normal uppercase tracking-wide text-black mt-1.5 sm:mt-3 md:mt-4">
+                    <div class="maze-showcase-price text-sm sm:text-lg md:text-xl lg:text-2xl font-bold font-outfit uppercase tracking-normal text-black mt-1.5 sm:mt-3 md:mt-4">
                         <?php echo wp_kses_post( $showcase_item_1['price'] ); ?>
                     </div>
                 </div>
@@ -166,15 +166,15 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     </section>
 
     <!-- 3. Featured Editorial Showcase - Product 2 (Title & Price on Left, Product Image on Right) -->
-    <section class="maze-showcase-section w-full bg-white border-b border-black">
+    <section class="maze-showcase-section w-full bg-[#FEFEF3] border-b border-black">
         <div class="max-w-7xl mx-auto border-x border-black">
-            <a href="<?php echo esc_url( $showcase_item_2['permalink'] ); ?>" class="maze-showcase-card group grid grid-cols-2 bg-white overflow-hidden focus:outline-none" aria-label="<?php echo esc_attr( $showcase_item_2['title'] ); ?>">
+            <a href="<?php echo esc_url( $showcase_item_2['permalink'] ); ?>" class="maze-showcase-card group grid grid-cols-2 bg-[#FEFEF3] overflow-hidden focus:outline-none" aria-label="<?php echo esc_attr( $showcase_item_2['title'] ); ?>">
                 <!-- Left: Product Information -->
-                <div class="maze-showcase-info flex flex-col justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-6 sm:py-10 bg-white select-none">
-                    <h2 class="maze-showcase-title text-base sm:text-2xl md:text-3xl lg:text-5xl font-normal uppercase tracking-wider text-black group-hover:opacity-60 transition-opacity">
+                <div class="maze-showcase-info flex flex-col justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-6 sm:py-10 bg-[#FEFEF3] select-none">
+                    <h2 class="maze-showcase-title text-xl sm:text-3xl md:text-4xl lg:text-5xl font-normal font-bebas uppercase tracking-wide text-black group-hover:opacity-60 transition-opacity">
                         <?php echo esc_html( $showcase_item_2['title'] ); ?>
                     </h2>
-                    <div class="maze-showcase-price text-xs sm:text-base md:text-xl lg:text-3xl font-normal uppercase tracking-wide text-black mt-1.5 sm:mt-3 md:mt-4">
+                    <div class="maze-showcase-price text-sm sm:text-lg md:text-xl lg:text-2xl font-bold font-outfit uppercase tracking-normal text-black mt-1.5 sm:mt-3 md:mt-4">
                         <?php echo wp_kses_post( $showcase_item_2['price'] ); ?>
                     </div>
                 </div>
@@ -194,22 +194,22 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     </section>
 
     <!-- 4. Architectural Product Card Grid -->
-    <section class="w-full bg-white border-b border-black">
+    <section class="w-full bg-[#FEFEF3] border-b border-black">
         
         <!-- Section Header -->
         <div class="max-w-7xl mx-auto border-x border-black">
-            <div class="px-4 sm:px-6 lg:px-8 py-5 sm:py-6 border-b border-black flex items-center justify-between bg-white">
-                <h2 class="text-base sm:text-lg lg:text-xl font-black font-sans uppercase tracking-wider text-black">
+            <div class="px-4 sm:px-6 lg:px-8 py-5 sm:py-6 border-b border-black flex items-center justify-between bg-[#FEFEF3]">
+                <h2 class="text-xl sm:text-2xl lg:text-3xl font-normal font-bebas uppercase tracking-wider text-black">
                     <?php esc_html_e( 'READY-TO-WEAR', 'mazestreetwear' ); ?>
                 </h2>
 
-                <a href="<?php echo esc_url( $shop_url ); ?>" class="text-sm sm:text-base font-bold font-sans text-black hover:underline underline-offset-4 transition-all">
+                <a href="<?php echo esc_url( $shop_url ); ?>" class="text-sm sm:text-base font-semibold font-outfit text-black hover:underline underline-offset-4 transition-all">
                     <?php esc_html_e( 'see more →', 'mazestreetwear' ); ?>
                 </a>
             </div>
 
             <!-- Connected Hairline Border Grid: 4 columns on desktop -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 bg-white overflow-hidden">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 bg-[#FEFEF3] overflow-hidden">
                 <?php
                 $has_wc_products = false;
 
@@ -277,10 +277,10 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 
                     foreach ( $demo_items as $item ) :
                         ?>
-                        <article class="maze-product-card bg-white border border-black -ml-px -mt-px relative group flex flex-col justify-between rounded-none">
+                        <article class="maze-product-card bg-[#FEFEF3] border border-black -ml-px -mt-px relative group flex flex-col justify-between rounded-none">
                             <a href="<?php echo esc_url( $shop_url ); ?>" class="flex flex-col h-full w-full group focus:outline-none">
                                 <!-- Image Area: Tall aspect ratio (aspect-[3/4]) with generous padding and clean cutout -->
-                                <div class="relative w-full aspect-[3/4] bg-white p-6 sm:p-8 flex items-center justify-center overflow-hidden">
+                                <div class="relative w-full aspect-[3/4] bg-[#FEFEF3] p-6 sm:p-8 flex items-center justify-center overflow-hidden">
                                     <div class="w-full h-full flex flex-col items-center justify-center transition-transform duration-300 group-hover:scale-105">
                                         <svg class="w-28 h-36 text-black stroke-[1.2] fill-none stroke-current opacity-90 group-hover:opacity-100 transition-opacity" viewBox="0 0 100 130">
                                             <?php if ( $item['svg'] === 'dress' ) : ?>
@@ -307,7 +307,7 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
                                 </div>
 
                                 <!-- Bottom Metadata Bar: thin top black border, title lowercase on left, price on right -->
-                                <div class="border-t border-black px-4 py-3 flex justify-between items-baseline text-sm sm:text-base font-sans bg-white mt-auto">
+                                <div class="border-t border-black px-4 py-3 flex justify-between items-baseline text-sm sm:text-base font-sans bg-[#FEFEF3] mt-auto">
                                     <span class="text-black font-semibold lowercase tracking-tight line-clamp-1 mr-2 group-hover:opacity-60 transition-opacity">
                                         <?php echo esc_html( $item['title'] ); ?>
                                     </span>
@@ -324,16 +324,16 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     </section>
 
     <!-- 3. Minimalist Architectural Statement -->
-    <section class="w-full bg-white py-16 sm:py-24">
+    <section class="w-full bg-[#FEFEF3] py-16 sm:py-24">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-            <span class="inline-block text-xs sm:text-sm font-mono uppercase tracking-wider font-bold text-neutral-800">
+            <span class="inline-block text-xs sm:text-sm font-outfit uppercase tracking-wider font-semibold text-neutral-800">
                 <?php esc_html_e( 'MAZE ARCHIVE SPECIFICATION // 2026', 'mazestreetwear' ); ?>
             </span>
-            <p class="text-xl sm:text-2xl lg:text-3xl font-sans font-normal tracking-tight text-black leading-relaxed max-w-3xl mx-auto">
+            <p class="text-xl sm:text-2xl lg:text-3xl font-outfit font-normal tracking-tight text-black leading-relaxed max-w-3xl mx-auto">
                 <?php esc_html_e( 'Architectural garments engineered with uncompromising precision. Pure pitch black on optic white canvas, stripped of all transient distraction.', 'mazestreetwear' ); ?>
             </p>
             <div class="pt-4">
-                <a href="<?php echo esc_url( $shop_url ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-9 py-3.5 text-sm sm:text-base font-bold uppercase tracking-wider font-mono shadow-sm">
+                <a href="<?php echo esc_url( $shop_url ); ?>" class="inline-block border border-black bg-[#FEFEF3] text-black hover:bg-black hover:text-white transition-all px-9 py-3.5 text-base sm:text-lg font-normal uppercase tracking-wider font-bebas shadow-sm">
                     <?php esc_html_e( 'EXPLORE CATALOG', 'mazestreetwear' ); ?>
                 </a>
             </div>

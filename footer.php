@@ -14,8 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 </div><!-- #content -->
 
-<footer id="colophon" class="site-footer bg-[#efefef] text-black font-sans px-3 sm:px-6 lg:px-8 py-5 sm:py-8 lg:py-10 mt-auto">
-    <div class="max-w-[1400px] mx-auto bg-white rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-10 lg:p-14 border border-neutral-200/90 shadow-sm flex flex-col justify-between overflow-hidden">
+<footer id="colophon" class="site-footer bg-[#FEFEF3] text-black font-sans px-3 sm:px-6 lg:px-8 py-5 sm:py-8 lg:py-10 mt-auto">
+    <div class="max-w-[1400px] mx-auto bg-[#FEFEF3] rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-10 lg:p-14 border border-black/15 shadow-sm flex flex-col justify-between overflow-hidden">
 
         <!-- Top Section: 4-Column Editorial Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12 pb-8 sm:pb-12">
@@ -23,14 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
             <!-- Col 1: Brand Statement / Bio -->
             <div class="lg:col-span-4 space-y-3">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-block group mb-1">
-                    <span class="text-2xl sm:text-3xl font-black tracking-tighter uppercase font-sans text-black">
+                    <span class="text-2xl sm:text-3xl font-normal tracking-wide uppercase font-bebas text-black">
                         MAZE<span class="text-neutral-400">.</span>
                     </span>
                 </a>
-                <p class="text-base sm:text-lg lg:text-xl font-bold font-sans tracking-tight leading-snug text-black max-w-sm">
+                <p class="text-sm sm:text-base font-normal font-outfit tracking-normal leading-relaxed text-neutral-800 max-w-sm">
                     <?php esc_html_e( 'MAZE is an independent contemporary streetwear brand and design archive.', 'mazestreetwear' ); ?>
                 </p>
-                <div class="pt-2 flex items-center space-x-2 text-xs sm:text-sm font-mono text-neutral-800 font-bold uppercase tracking-wider">
+                <div class="pt-2 flex items-center space-x-2 text-xs sm:text-sm font-outfit text-neutral-800 font-semibold uppercase tracking-wider">
                     <span class="inline-block w-2 h-2 rounded-full bg-black"></span>
                     <span><?php esc_html_e( 'ARCHIVAL PRECISION // MAZESTW.IN', 'mazestreetwear' ); ?></span>
                 </div>
@@ -38,11 +38,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
             <!-- Col 2: Explore Navigation Links -->
             <div class="lg:col-span-2 space-y-3">
-                <span class="block text-xs sm:text-sm font-black uppercase tracking-wider text-black">
+                <span class="block text-sm sm:text-base font-normal uppercase tracking-wider font-bebas text-black">
                     <?php esc_html_e( 'Explore', 'mazestreetwear' ); ?>
                 </span>
                 <?php $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ); ?>
-                <ul class="space-y-3 text-base sm:text-[16px] font-sans font-bold text-black">
+                <ul class="space-y-2.5 text-sm sm:text-[15px] font-outfit font-medium text-black">
                     <li>
                         <a href="<?php echo esc_url( $shop_url ); ?>" class="hover:underline underline-offset-4 transition-colors block">
                             <?php esc_html_e( 'Shop All', 'mazestreetwear' ); ?>
@@ -83,7 +83,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
             <!-- Col 3: Follow us (Social Pills with Brand Icons) -->
             <div class="lg:col-span-3 space-y-3">
-                <span class="block text-xs sm:text-sm font-black uppercase tracking-wider text-black">
+                <span class="block text-sm sm:text-base font-normal uppercase tracking-wider font-bebas text-black">
                     <?php esc_html_e( 'Follow us', 'mazestreetwear' ); ?>
                 </span>
                 <div class="grid grid-cols-2 gap-2.5 max-w-xs">
@@ -135,7 +135,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <!-- Action 1: Call MAZE / Direct Concierge (Coral-Orange circle arrow accent) -->
                 <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' ) ); ?>" class="maze-action-cta group block">
                     <div class="flex items-center space-x-2.5">
-                        <span class="text-lg sm:text-xl font-bold font-sans tracking-tight text-[#ff3e18] group-hover:underline">
+                        <span class="text-xl sm:text-2xl font-normal font-bebas tracking-wide text-[#ff3e18] group-hover:underline">
                             <?php esc_html_e( 'Call MAZE', 'mazestreetwear' ); ?>
                         </span>
                         <span class="maze-action-arrow w-6 h-6 rounded-full bg-[#ff3e18] text-white flex items-center justify-center transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shadow-sm">
@@ -144,7 +144,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                             </svg>
                         </span>
                     </div>
-                    <span class="block text-sm font-sans font-bold text-neutral-800 mt-1">
+                    <span class="block text-sm font-outfit font-normal text-neutral-800 mt-0.5">
                         <?php esc_html_e( "Let's work together", 'mazestreetwear' ); ?>
                     </span>
                 </a>
@@ -152,7 +152,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <!-- Action 2: Archive & Drops (Black circle arrow) -->
                 <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-action-cta group block">
                     <div class="flex items-center space-x-2.5">
-                        <span class="text-lg sm:text-xl font-bold font-sans tracking-tight text-black group-hover:underline">
+                        <span class="text-xl sm:text-2xl font-normal font-bebas tracking-wide text-black group-hover:underline">
                             <?php esc_html_e( 'Archive & Drops', 'mazestreetwear' ); ?>
                         </span>
                         <span class="maze-action-arrow w-6 h-6 rounded-full bg-black text-white flex items-center justify-center transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shadow-sm">
@@ -161,7 +161,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                             </svg>
                         </span>
                     </div>
-                    <span class="block text-sm font-sans font-bold text-neutral-800 mt-1">
+                    <span class="block text-sm font-outfit font-normal text-neutral-800 mt-0.5">
                         <?php esc_html_e( 'Ready-to-wear catalog', 'mazestreetwear' ); ?>
                     </span>
                 </a>
@@ -178,10 +178,10 @@ if ( ! defined( 'ABSPATH' ) ) {
         </div>
 
         <!-- Bottom Meta & Legal Bar -->
-        <div class="pt-5 sm:pt-6 border-t border-neutral-300 flex flex-col md:flex-row items-center justify-between text-sm sm:text-base font-sans gap-4">
+        <div class="pt-5 sm:pt-6 border-t border-neutral-300 flex flex-col md:flex-row items-center justify-between text-xs sm:text-sm font-outfit gap-4">
             <!-- Left: Legal Links -->
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 sm:gap-x-4 gap-y-2 text-black font-semibold">
-                <span class="font-black text-black tracking-tight">MAZE &copy;<?php echo esc_html( date( 'Y' ) ); ?></span>
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 sm:gap-x-4 gap-y-2 text-black font-medium">
+                <span class="font-normal font-bebas text-base text-black tracking-wider">MAZE &copy;<?php echo esc_html( date( 'Y' ) ); ?></span>
                 <span class="text-neutral-500 font-black select-none" aria-hidden="true">&middot;</span>
                 <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? mazestreetwear_get_privacy_policy_url() : home_url( '/privacy-policy/' ) ); ?>" class="maze-legal-link text-black hover:underline underline-offset-4 transition-colors">
                     <?php esc_html_e( 'Privacy Policy', 'mazestreetwear' ); ?>

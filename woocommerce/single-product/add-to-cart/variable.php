@@ -31,7 +31,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
     <?php do_action( 'woocommerce_before_variations_form' ); ?>
 
     <?php if ( empty( $available_variations ) && false !== $available_variations ) : ?>
-        <p class="stock out-of-stock font-mono text-sm sm:text-base font-bold uppercase tracking-widest text-black bg-neutral-100 p-3 border border-black">
+        <p class="stock out-of-stock font-bebas text-base sm:text-lg font-normal uppercase tracking-wider text-black bg-neutral-100 p-3 border border-black">
             <?php echo esc_html( apply_filters( 'woocommerce_out_of_stock_message', __( 'This garment drop is currently out of stock and unavailable.', 'mazestreetwear' ) ) ); ?>
         </p>
     <?php else : ?>
@@ -56,9 +56,9 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
             ?>
                 <div class="variation-row" data-attribute="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>">
                     <div class="flex items-center justify-between mb-2">
-                        <label for="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>" class="text-sm font-mono font-bold tracking-widest uppercase text-black">
+                        <label for="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>" class="text-base font-bebas font-normal tracking-wider uppercase text-black">
                             <?php echo wc_attribute_label( $attribute_name ); // WPCS: XSS ok. ?>
-                            <span class="selected-variation-value text-black font-bold ml-2">
+                            <span class="selected-variation-value text-black font-bold font-outfit text-sm ml-2">
                                 <?php if ( ! empty( $selected_attr ) ) echo '// ' . esc_html( strtoupper( $selected_attr ) ); ?>
                             </span>
                         </label>
@@ -75,8 +75,8 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                                         $is_active = ( $selected_attr === $term->slug );
                                         ?>
                                         <button type="button"
-                                                class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black transition-colors rounded-none cursor-pointer <?php echo $is_active ? 'is-active selected bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'; ?>"
-                                                style="<?php echo $is_active ? 'background-color:#000000 !important; color:#ffffff !important;' : 'background-color:#ffffff !important; color:#000000 !important;'; ?>"
+                                                class="maze-size-pill px-5 py-3 text-base sm:text-lg font-normal font-bebas uppercase border border-black transition-colors rounded-none cursor-pointer <?php echo $is_active ? 'is-active selected bg-black text-white' : 'bg-[#FEFEF3] text-black hover:bg-neutral-100'; ?>"
+                                                style="<?php echo $is_active ? 'background-color:#000000 !important; color:#ffffff !important;' : 'background-color:#FEFEF3 !important; color:#000000 !important;'; ?>"
                                                 data-value="<?php echo esc_attr( $term->slug ); ?>"
                                                 onclick="window.mazeSelectSize ? window.mazeSelectSize(this, event) : null">
                                             <?php echo esc_html( $term->name ); ?>
@@ -89,8 +89,8 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                                     $is_active = ( $selected_attr === $option );
                                     ?>
                                     <button type="button"
-                                            class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black transition-colors rounded-none cursor-pointer <?php echo $is_active ? 'is-active selected bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'; ?>"
-                                            style="<?php echo $is_active ? 'background-color:#000000 !important; color:#ffffff !important;' : 'background-color:#ffffff !important; color:#000000 !important;'; ?>"
+                                            class="maze-size-pill px-5 py-3 text-base sm:text-lg font-normal font-bebas uppercase border border-black transition-colors rounded-none cursor-pointer <?php echo $is_active ? 'is-active selected bg-black text-white' : 'bg-[#FEFEF3] text-black hover:bg-neutral-100'; ?>"
+                                            style="<?php echo $is_active ? 'background-color:#000000 !important; color:#ffffff !important;' : 'background-color:#FEFEF3 !important; color:#000000 !important;'; ?>"
                                             data-value="<?php echo esc_attr( $option ); ?>"
                                             onclick="window.mazeSelectSize ? window.mazeSelectSize(this, event) : null">
                                         <?php echo esc_html( $option ); ?>
@@ -115,7 +115,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                     </div>
 
                     <?php
-                    echo end( $attribute_keys ) === $attribute_name ? wp_kses_post( apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations text-xs font-mono font-bold tracking-wider uppercase text-neutral-800 hover:text-black mt-1 inline-block" href="#">' . esc_html__( 'CLEAR SELECTION', 'mazestreetwear' ) . '</a>' ) ) : '';
+                    echo end( $attribute_keys ) === $attribute_name ? wp_kses_post( apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations text-xs font-outfit font-semibold tracking-wider uppercase text-neutral-800 hover:text-black mt-1 inline-block" href="#">' . esc_html__( 'CLEAR SELECTION', 'mazestreetwear' ) . '</a>' ) ) : '';
                     ?>
                 </div>
             <?php endforeach; ?>
@@ -164,8 +164,8 @@ window.mazeSelectSize = window.mazeSelectSize || function (btn, event) {
     for (var i = 0; i < allPills.length; i++) {
         var p = allPills[i];
         p.classList.remove('is-active', 'selected', 'bg-black', 'text-white');
-        p.classList.add('bg-white', 'text-black');
-        p.style.setProperty('background-color', '#ffffff', 'important');
+        p.classList.add('bg-[#FEFEF3]', 'text-black');
+        p.style.setProperty('background-color', '#FEFEF3', 'important');
         p.style.setProperty('color', '#000000', 'important');
     }
 

@@ -74,9 +74,9 @@ if ( $product->is_in_stock() ) : ?>
         ?>
             <div class="size-selector-wrap">
                 <div class="flex items-center justify-between mb-2.5">
-                    <span class="text-sm font-mono uppercase tracking-wider text-black font-bold">
+                    <span class="text-base font-bebas uppercase tracking-wider text-black font-normal">
                         <?php esc_html_e( 'SIZE', 'mazestreetwear' ); ?>
-                        <span class="selected-size-label ml-2 text-black font-bold">// <?php echo esc_html( strtoupper( $first_size ) ); ?></span>
+                        <span class="selected-size-label ml-2 text-black font-bold font-outfit text-sm">// <?php echo esc_html( strtoupper( $first_size ) ); ?></span>
                     </span>
                 </div>
                 <input type="hidden" name="selected_size" class="maze-selected-size-input" value="<?php echo esc_attr( $first_size ); ?>" />
@@ -85,8 +85,8 @@ if ( $product->is_in_stock() ) : ?>
                         $is_s_active = ( 0 === $idx );
                     ?>
                         <button type="button" 
-                                class="maze-size-pill px-5 py-3 text-sm sm:text-base font-bold font-mono uppercase border border-black cursor-pointer transition-colors rounded-none <?php echo $is_s_active ? 'is-active selected bg-black text-white' : 'bg-white text-black hover:bg-neutral-100'; ?>"
-                                style="<?php echo $is_s_active ? 'background-color:#000000 !important; color:#ffffff !important;' : 'background-color:#ffffff !important; color:#000000 !important;'; ?>"
+                                class="maze-size-pill px-5 py-3 text-base sm:text-lg font-normal font-bebas uppercase border border-black cursor-pointer transition-colors rounded-none <?php echo $is_s_active ? 'is-active selected bg-black text-white' : 'bg-[#FEFEF3] text-black hover:bg-neutral-100'; ?>"
+                                style="<?php echo $is_s_active ? 'background-color:#000000 !important; color:#ffffff !important;' : 'background-color:#FEFEF3 !important; color:#000000 !important;'; ?>"
                                 data-value="<?php echo esc_attr( $s_opt ); ?>"
                                 onclick="window.mazeSelectSize ? window.mazeSelectSize(this, event) : null">
                             <?php echo esc_html( $s_opt ); ?>
@@ -116,7 +116,7 @@ if ( $product->is_in_stock() ) : ?>
 
         <!-- Solid Black Full-Width "ADD TO BAG" Button -->
         <div class="pt-2">
-            <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt bg-black text-white hover:bg-neutral-800 text-sm sm:text-base font-bold uppercase tracking-wider py-4 w-full border border-black rounded-none font-mono transition-colors duration-150 cursor-pointer block text-center">
+            <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt bg-black text-white hover:bg-neutral-800 text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border border-black rounded-none font-bebas transition-colors duration-150 cursor-pointer block text-center">
                 <?php echo esc_html( $product->single_add_to_cart_text() ? $product->single_add_to_cart_text() : __( 'ADD TO BAG', 'mazestreetwear' ) ); ?>
             </button>
         </div>
@@ -142,8 +142,8 @@ if ( $product->is_in_stock() ) : ?>
         for (var i = 0; i < allPills.length; i++) {
             var p = allPills[i];
             p.classList.remove('is-active', 'selected', 'bg-black', 'text-white');
-            p.classList.add('bg-white', 'text-black');
-            p.style.setProperty('background-color', '#ffffff', 'important');
+            p.classList.add('bg-[#FEFEF3]', 'text-black');
+            p.style.setProperty('background-color', '#FEFEF3', 'important');
             p.style.setProperty('color', '#000000', 'important');
         }
 

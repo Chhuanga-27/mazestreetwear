@@ -75,14 +75,22 @@ function mazestreetwear_scripts()
 {
     $theme_version = wp_get_theme()->get('Version');
 
-    // Compiled Tailwind CSS Bundle (includes Didot typography and font-face definitions)
+    // Enqueue Google Fonts: Outfit (weights 300 to 900) & Bebas Neue (Display)
+    wp_enqueue_style(
+        'mazestreetwear-google-fonts',
+        'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap',
+        array(),
+        null
+    );
+
+    // Compiled Tailwind CSS Bundle (includes Outfit & Bebas Neue typography and utilities)
     $bundle_css_path = get_template_directory() . '/assets/css/bundle.css';
     $bundle_version  = file_exists($bundle_css_path) ? filemtime($bundle_css_path) : $theme_version;
 
     wp_enqueue_style(
         'mazestreetwear-tailwind',
         get_template_directory_uri() . '/assets/css/bundle.css',
-        array(),
+        array('mazestreetwear-google-fonts'),
         $bundle_version
     );
 
@@ -465,7 +473,7 @@ add_filter('woocommerce_product_single_add_to_cart_text', function () {
 // Custom wrapper start
 function mazestreetwear_wrapper_start()
 {
-    echo '<main id="primary" class="site-main min-h-screen bg-white text-black antialiased selection:bg-black selection:text-white">';
+    echo '<main id="primary" class="site-main min-h-screen bg-[#FEFEF3] text-black antialiased selection:bg-black selection:text-white">';
 }
 add_action('woocommerce_before_main_content', 'mazestreetwear_wrapper_start', 10);
 
