@@ -250,8 +250,9 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     <section class="maze-view-all-section w-full bg-white pt-4 sm:pt-6 pb-16 sm:pb-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-view-all-btn group inline-flex items-center justify-center border-0 bg-transparent text-black hover:opacity-60 transition-opacity text-xl sm:text-2xl md:text-3xl uppercase tracking-wider font-normal font-bebas text-center focus:outline-none" aria-label="<?php esc_attr_e( 'View All Products', 'mazestreetwear' ); ?>">
+                <span class="maze-view-all-line maze-view-all-line-left inline-block w-7 sm:w-10 h-[1.5px] sm:h-[2px] bg-black mr-2.5 sm:mr-3.5 transition-transform duration-300 ease-out group-hover:-translate-x-1.5" aria-hidden="true"></span>
                 <span><?php esc_html_e( 'VIEW ALL', 'mazestreetwear' ); ?></span>
-                <span class="maze-view-all-line inline-block w-7 sm:w-10 h-[1.5px] sm:h-[2px] bg-black ml-2.5 sm:ml-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5" aria-hidden="true"></span>
+                <span class="maze-view-all-line maze-view-all-line-right inline-block w-7 sm:w-10 h-[1.5px] sm:h-[2px] bg-black ml-2.5 sm:ml-3.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5" aria-hidden="true"></span>
             </a>
         </div>
     </section>

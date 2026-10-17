@@ -661,11 +661,22 @@
     width: 1.75rem;
     height: 1.5px;
     background-color: #000000;
-    margin-left: 0.65rem;
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .maze-view-all-btn:hover .maze-view-all-line {
+  .maze-view-all-btn .maze-view-all-line-left {
+    margin-right: 0.65rem;
+  }
+
+  .maze-view-all-btn .maze-view-all-line-right {
+    margin-left: 0.65rem;
+  }
+
+  .maze-view-all-btn:hover .maze-view-all-line-left {
+    transform: translateX(-6px);
+  }
+
+  .maze-view-all-btn:hover .maze-view-all-line-right {
     transform: translateX(6px);
   }
 
@@ -678,6 +689,13 @@
     .maze-view-all-btn .maze-view-all-line {
       width: 2.5rem;
       height: 2px;
+    }
+
+    .maze-view-all-btn .maze-view-all-line-left {
+      margin-right: 0.85rem;
+    }
+
+    .maze-view-all-btn .maze-view-all-line-right {
       margin-left: 0.85rem;
     }
   }
