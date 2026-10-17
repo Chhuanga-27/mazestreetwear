@@ -630,6 +630,65 @@
     }
   }
 
+  /* View All CTA Button */
+  .maze-view-all-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-family: var(--font-bebas) !important;
+    border-radius: 0.625rem !important;
+    padding: 0.65rem 1.75rem !important;
+    font-size: 1.0625rem !important;
+    letter-spacing: 0.08em !important;
+    line-height: 1.1 !important;
+    font-weight: 400 !important;
+    border: 1px solid #000000 !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    text-decoration: none !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  .maze-view-all-btn:hover {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+  }
+
+  .maze-view-all-btn .maze-view-all-line {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5px;
+    background-color: currentColor;
+    margin-left: 0.65rem;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .maze-view-all-btn:hover .maze-view-all-line {
+    transform: translateX(4px);
+  }
+
+  @media (min-width: 640px) {
+    .maze-view-all-btn {
+      border-radius: 1rem !important;
+      padding: 0.875rem 2.5rem !important;
+      font-size: 1.25rem !important;
+      line-height: inherit !important;
+    }
+
+    .maze-view-all-btn .maze-view-all-line {
+      width: 2rem;
+      height: 2px;
+      margin-left: 0.75rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .maze-view-all-btn {
+      padding: 0.875rem 2.75rem !important;
+      font-size: 1.35rem !important;
+    }
+  }
+
   /* Editorial Single Product Showcase (Alternating Split Sections) */
   .maze-showcase-card {
     text-decoration: none !important;

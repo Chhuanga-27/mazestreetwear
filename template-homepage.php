@@ -219,7 +219,7 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     </section>
 
     <!-- 4. Featured Editorial Showcase - Product 3 (Product Image on Left, Title & Price on Right) -->
-    <section class="maze-showcase-section w-full bg-white pb-10 sm:pb-16">
+    <section class="maze-showcase-section w-full bg-white pb-6 sm:pb-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <a href="<?php echo esc_url( $showcase_item_3['permalink'] ); ?>" class="maze-showcase-card group grid grid-cols-2 bg-white overflow-hidden focus:outline-none" aria-label="<?php echo esc_attr( $showcase_item_3['title'] ); ?>">
                 <!-- Left: Product Image -->
@@ -242,6 +242,16 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
                         <?php echo wp_kses_post( $showcase_item_3['price'] ); ?>
                     </div>
                 </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 5. View All Products CTA Button -->
+    <section class="maze-view-all-section w-full bg-white pt-2 sm:pt-4 pb-16 sm:pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-view-all-btn group inline-flex items-center justify-center border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-7 sm:px-11 py-2.5 sm:py-3.5 text-base sm:text-lg md:text-xl uppercase tracking-wider font-normal font-bebas text-center shadow-sm rounded-lg sm:rounded-2xl hover:shadow-md" aria-label="<?php esc_attr_e( 'View All Products', 'mazestreetwear' ); ?>">
+                <span><?php esc_html_e( 'VIEW ALL', 'mazestreetwear' ); ?></span>
+                <span class="maze-view-all-line inline-block w-5 sm:w-7 h-[1.5px] sm:h-[2px] bg-current ml-2.5 sm:ml-3 transition-transform duration-300 ease-out group-hover:translate-x-1.5" aria-hidden="true"></span>
             </a>
         </div>
     </section>
