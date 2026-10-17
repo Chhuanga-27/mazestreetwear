@@ -39,8 +39,8 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 
             <!-- Centered Hero CTA Button (Oval Hand-Drawn Ring with Transparent Background) -->
             <div class="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-8 md:bottom-12 z-10 flex items-center justify-center">
-                <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-hero-cta group relative inline-flex items-center justify-center text-black no-underline select-none transition-transform duration-300 ease-out hover:scale-[1.04] focus:outline-none" aria-label="<?php esc_attr_e( 'Shop All Products', 'mazestreetwear' ); ?>">
-                    <span class="maze-hero-cta-text relative z-10 font-bebas uppercase tracking-wider text-black select-none">
+                <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-hero-cta group relative inline-flex items-center justify-center text-white no-underline select-none transition-transform duration-300 ease-out hover:scale-[1.04] focus:outline-none" aria-label="<?php esc_attr_e( 'Shop All Products', 'mazestreetwear' ); ?>">
+                    <span class="maze-hero-cta-text relative z-10 font-bebas uppercase tracking-wider text-white select-none">
                         <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
                     </span>
                     <img 

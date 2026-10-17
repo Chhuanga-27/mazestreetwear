@@ -613,7 +613,7 @@
     box-shadow: none !important;
     outline: none !important;
     text-decoration: none !important;
-    color: #000 !important;
+    color: #fff !important;
     min-width: 140px !important;
     min-height: 48px !important;
     padding: 0.6rem 2.2rem !important;
@@ -624,7 +624,7 @@
   .maze-hero-cta:hover {
     background: transparent !important;
     background-color: transparent !important;
-    color: #000 !important;
+    color: #fff !important;
     box-shadow: none !important;
   }
 
@@ -635,7 +635,7 @@
     font-size: 1.125rem !important;
     letter-spacing: 0.12em !important;
     line-height: 1 !important;
-    color: #000 !important;
+    color: #fff !important;
     text-transform: uppercase !important;
     padding-top: 1px !important;
     transition: opacity 0.2s ease, letter-spacing 0.2s ease !important;
@@ -650,6 +650,8 @@
     pointer-events: none !important;
     user-select: none !important;
     -webkit-user-select: none !important;
+    filter: brightness(0) invert(1) !important;
+    -webkit-filter: brightness(0) invert(1) !important;
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
     display: block !important;
   }
