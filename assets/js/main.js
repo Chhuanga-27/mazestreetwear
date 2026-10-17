@@ -154,19 +154,90 @@
             });
         }
 
-        // --- 3. Single Product Gallery Thumbnail Switching ---
-        $(document).on('click', '.maze-gallery-thumb', function (e) {
-            e.preventDefault();
-            const $thumb = $(this);
-            const newSrc = $thumb.data('img-src');
-            const $mainImg = $('#maze-main-product-image');
+        // --- 3. Single Product Slidable Gallery & Tab Indicator Navigation ---
+        function initProductGallerySlider() {
+            const $slider = $('#maze-gallery-slider');
+            const $tabs = $('.maze-gallery-tab-item');
+            if (!$slider.length) return;
 
-            if (newSrc && $mainImg.length) {
-                $mainImg.attr('src', newSrc);
-                $('.maze-gallery-thumb').removeClass('border-black').addClass('border-neutral-300');
-                $thumb.removeClass('border-neutral-300').addClass('border-black');
+            const sliderEl = $slider[0];
+            const slides = sliderEl.querySelectorAll('.maze-gallery-slide');
+            const totalSlides = slides.length;
+            if (totalSlides <= 1) return;
+
+            function updateActiveTab(index) {
+                $tabs.each(function (i) {
+                    const $tab = $(this);
+                    if (i === index) {
+                        $tab.removeClass('w-6 bg-neutral-300 hover:bg-neutral-500')
+                            .addClass('w-10 bg-black')
+                            .attr('aria-selected', 'true');
+                    } else {
+                        $tab.removeClass('w-10 bg-black')
+                            .addClass('w-6 bg-neutral-300 hover:bg-neutral-500')
+                            .attr('aria-selected', 'false');
+                    }
+                });
             }
-        });
+
+            function getActiveIndex() {
+                const scrollLeft = sliderEl.scrollLeft;
+                const slideWidth = sliderEl.offsetWidth || 1;
+                const index = Math.round(scrollLeft / slideWidth);
+                return Math.max(0, Math.min(index, totalSlides - 1));
+            }
+
+            // Tab click to slide
+            $(document).on('click', '.maze-gallery-tab-item', function (e) {
+                e.preventDefault();
+                const targetIdx = parseInt($(this).data('slide-target'), 10);
+                if (!isNaN(targetIdx) && slides[targetIdx]) {
+                    const slideWidth = sliderEl.offsetWidth;
+                    sliderEl.scrollTo({
+                        left: targetIdx * slideWidth,
+                        behavior: 'smooth'
+                    });
+                    updateActiveTab(targetIdx);
+                }
+            });
+
+            // Arrow button navigation (Prev / Next)
+            $(document).on('click', '.maze-gallery-prev', function (e) {
+                e.preventDefault();
+                const currentIdx = getActiveIndex();
+                const prevIdx = Math.max(0, currentIdx - 1);
+                const slideWidth = sliderEl.offsetWidth;
+                sliderEl.scrollTo({
+                    left: prevIdx * slideWidth,
+                    behavior: 'smooth'
+                });
+                updateActiveTab(prevIdx);
+            });
+
+            $(document).on('click', '.maze-gallery-next', function (e) {
+                e.preventDefault();
+                const currentIdx = getActiveIndex();
+                const nextIdx = Math.min(totalSlides - 1, currentIdx + 1);
+                const slideWidth = sliderEl.offsetWidth;
+                sliderEl.scrollTo({
+                    left: nextIdx * slideWidth,
+                    behavior: 'smooth'
+                });
+                updateActiveTab(nextIdx);
+            });
+
+            // Scroll / Swipe listener
+            let scrollTimer = null;
+            sliderEl.addEventListener('scroll', function () {
+                if (scrollTimer) clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(function () {
+                    const activeIdx = getActiveIndex();
+                    updateActiveTab(activeIdx);
+                }, 50);
+            }, { passive: true });
+        }
+
+        initProductGallerySlider();
 
         // --- 4. Interactive Rectangular Size Boxes (Filled Black When Selected) ---
         window.mazeSelectSize = function (btn, event) {
@@ -288,6 +359,10 @@
                 const $mainImg = $('#maze-main-product-image');
                 if ($mainImg.length) {
                     $mainImg.attr('src', variation.image.full_src || variation.image.src);
+                    const sliderEl = document.getElementById('maze-gallery-slider');
+                    if (sliderEl) {
+                        sliderEl.scrollTo({ left: 0, behavior: 'smooth' });
+                    }
                 }
             }
         });

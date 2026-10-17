@@ -17,65 +17,115 @@ defined( 'ABSPATH' ) || exit;
 global $product;
 
 ?>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 pt-4">
-    <?php do_action( 'woocommerce_before_single_product' ); ?>
+<?php
+// Only output notice container if notices are present
+ob_start();
+do_action( 'woocommerce_before_single_product' );
+$before_sp_notices = trim( ob_get_clean() );
+if ( ! empty( $before_sp_notices ) ) :
+?>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-2">
+    <?php echo $before_sp_notices; // WPCS: XSS ok. ?>
 </div>
+<?php endif; ?>
 
 <?php
 if ( post_password_required() ) {
     echo get_the_password_form(); // WPCS: XSS ok.
     return;
 }
+
+// Collect all gallery images: featured image first, followed by gallery attachments
+$gallery_images = array();
+if ( has_post_thumbnail() ) {
+    $featured_id = get_post_thumbnail_id();
+    $gallery_images[] = array(
+        'id'  => $featured_id,
+        'url' => wp_get_attachment_image_url( $featured_id, 'full' ),
+        'alt' => get_post_meta( $featured_id, '_wp_attachment_image_alt', true ) ?: get_the_title(),
+    );
+}
+$attachment_ids = $product->get_gallery_image_ids();
+if ( ! empty( $attachment_ids ) ) {
+    foreach ( $attachment_ids as $attachment_id ) {
+        if ( has_post_thumbnail() && $attachment_id == get_post_thumbnail_id() ) {
+            continue;
+        }
+        $gallery_images[] = array(
+            'id'  => $attachment_id,
+            'url' => wp_get_attachment_image_url( $attachment_id, 'full' ),
+            'alt' => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) ?: ( get_the_title() . ' - Alternate View' ),
+        );
+    }
+}
+$image_count = count( $gallery_images );
 ?>
 
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class( 'maze-single-product-editorial bg-white text-black', $product ); ?>>
 
     <!-- 2-Column Garment Detail Frame with Thin Black Dividers -->
     <div class="w-full border-b border-black">
-        <div class="max-w-7xl mx-auto border-x border-black grid grid-cols-1 lg:grid-cols-12 min-h-[700px]">
+        <div class="max-w-7xl mx-auto border-x-0 lg:border-x border-black grid grid-cols-1 lg:grid-cols-12 min-h-[700px]">
 
-            <!-- Left Column: High-Resolution Clean Garment Image Against Pure White (Col Span 7) -->
-            <div class="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-black p-6 sm:p-10 lg:p-16 flex flex-col items-center justify-center bg-white relative">
-                <?php
-                if ( has_post_thumbnail() ) {
-                    $image_id = get_post_thumbnail_id();
-                    $full_image_url = wp_get_attachment_image_url( $image_id, 'full' );
-                    ?>
-                    <div class="w-full aspect-[3/4] max-w-lg mx-auto flex items-center justify-center overflow-hidden">
-                        <img 
-                            src="<?php echo esc_url( $full_image_url ); ?>" 
-                            alt="<?php echo esc_attr( get_the_title() ); ?>" 
-                            class="w-full h-full object-contain object-center"
-                            id="maze-main-product-image"
-                        />
+            <!-- Left Column: Edge-to-Edge Slidable / Swipeable Garment Images (Col Span 7) -->
+            <div class="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-black p-0 lg:p-10 xl:p-14 flex flex-col items-center justify-center bg-white relative overflow-hidden">
+                <?php if ( $image_count > 0 ) : ?>
+                    <div class="maze-gallery-wrapper relative w-full overflow-hidden group">
+                        <!-- Horizontal Swipeable Track (Edge-to-edge on mobile with snap scrolling) -->
+                        <div id="maze-gallery-slider" class="maze-gallery-track flex w-full overflow-x-auto snap-x snap-mandatory scrollbar-none select-none scroll-smooth">
+                            <?php foreach ( $gallery_images as $idx => $g_img ) : ?>
+                                <div class="maze-gallery-slide min-w-full w-full flex-shrink-0 snap-center snap-always flex items-center justify-center bg-white" data-slide-index="<?php echo esc_attr( $idx ); ?>">
+                                    <div class="w-full aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] max-w-full lg:max-w-xl mx-auto flex items-center justify-center overflow-hidden">
+                                        <img 
+                                            src="<?php echo esc_url( $g_img['url'] ); ?>" 
+                                            alt="<?php echo esc_attr( $g_img['alt'] ); ?>" 
+                                            class="w-full h-full object-cover lg:object-contain object-center block"
+                                            <?php if ( 0 === $idx ) : ?>id="maze-main-product-image"<?php endif; ?>
+                                            loading="<?php echo 0 === $idx ? 'eager' : 'lazy'; ?>"
+                                            draggable="false"
+                                        />
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <?php if ( $image_count > 1 ) : ?>
+                            <!-- Desktop Navigation Arrows (hidden on phone, visible on hover on desktop) -->
+                            <button type="button" class="maze-gallery-nav maze-gallery-prev hidden lg:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center bg-white/90 hover:bg-black hover:text-white border border-black transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-sm z-10" aria-label="<?php esc_attr_e( 'Previous image', 'mazestreetwear' ); ?>">
+                                <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                            </button>
+                            <button type="button" class="maze-gallery-nav maze-gallery-next hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center bg-white/90 hover:bg-black hover:text-white border border-black transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-sm z-10" aria-label="<?php esc_attr_e( 'Next image', 'mazestreetwear' ); ?>">
+                                <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                            </button>
+                        <?php endif; ?>
                     </div>
 
-                    <?php
-                    // Gallery thumbnails if multiple images exist
-                    $attachment_ids = $product->get_gallery_image_ids();
-                    if ( ! empty( $attachment_ids ) ) :
-                        ?>
-                        <div class="flex flex-wrap gap-2.5 mt-8 justify-center">
-                            <button type="button" class="maze-gallery-thumb border border-black p-1 w-14 h-18 sm:w-16 sm:h-20 bg-white cursor-pointer transition-all" data-img-src="<?php echo esc_url( $full_image_url ); ?>" aria-label="<?php esc_attr_e( 'Main image', 'mazestreetwear' ); ?>">
-                                <img src="<?php echo esc_url( $full_image_url ); ?>" class="w-full h-full object-contain" alt="" />
-                            </button>
-                            <?php foreach ( $attachment_ids as $attachment_id ) : 
-                                $thumb_url = wp_get_attachment_image_url( $attachment_id, 'woocommerce_thumbnail' );
-                                $large_url = wp_get_attachment_image_url( $attachment_id, 'full' );
-                            ?>
-                                <button type="button" class="maze-gallery-thumb border border-neutral-300 hover:border-black p-1 w-14 h-18 sm:w-16 sm:h-20 bg-white cursor-pointer transition-all" data-img-src="<?php echo esc_url( $large_url ); ?>" aria-label="<?php esc_attr_e( 'Gallery thumbnail', 'mazestreetwear' ); ?>">
-                                    <img src="<?php echo esc_url( $thumb_url ); ?>" class="w-full h-full object-contain" alt="" />
-                                </button>
-                            <?php endforeach; ?>
+                    <?php if ( $image_count > 1 ) : ?>
+                        <!-- TAB Under the Image to Navigate Slides -->
+                        <div class="maze-gallery-tabs-wrap w-full flex items-center justify-center py-3.5 sm:py-4 bg-white border-b lg:border-b-0 border-neutral-200">
+                            <div id="maze-gallery-tabs" class="maze-gallery-tabs inline-flex items-center gap-2 px-2 py-1" role="tablist" aria-label="<?php esc_attr_e( 'Product image slides', 'mazestreetwear' ); ?>">
+                                <?php for ( $i = 0; $i < $image_count; $i++ ) : ?>
+                                    <button 
+                                        type="button" 
+                                        role="tab"
+                                        class="maze-gallery-tab-item h-1 sm:h-1.5 transition-all duration-300 cursor-pointer p-0 border-none outline-none <?php echo 0 === $i ? 'w-10 bg-black' : 'w-6 bg-neutral-300 hover:bg-neutral-500'; ?>"
+                                        data-slide-target="<?php echo esc_attr( $i ); ?>"
+                                        aria-label="<?php echo esc_attr( sprintf( __( 'Image %d of %d', 'mazestreetwear' ), $i + 1, $image_count ) ); ?>"
+                                        aria-selected="<?php echo 0 === $i ? 'true' : 'false'; ?>"
+                                    >
+                                        <span class="sr-only"><?php echo esc_html( sprintf( __( 'Slide %d', 'mazestreetwear' ), $i + 1 ) ); ?></span>
+                                    </button>
+                                <?php endfor; ?>
+                            </div>
                         </div>
                     <?php endif; ?>
 
-                <?php } else { ?>
-                    <div class="w-full aspect-[3/4] max-w-lg mx-auto flex flex-col items-center justify-center text-neutral-300">
+                <?php else : ?>
+                    <div class="w-full aspect-[4/5] sm:aspect-[3/4] max-w-lg mx-auto flex flex-col items-center justify-center text-neutral-300 py-16">
                         <span class="text-4xl font-normal font-bebas tracking-widest text-neutral-400">MAZE</span>
                         <span class="text-xs font-outfit font-semibold uppercase tracking-widest text-neutral-600 mt-2">[ product cutout ]</span>
                     </div>
-                <?php } ?>
+                <?php endif; ?>
             </div>
 
             <!-- Right Column: Minimalist Details Column (Col Span 5) -->

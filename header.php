@@ -18,9 +18,12 @@ $cart_url      = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home
 $account_url   = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account/' );
 $cart_count    = function_exists( 'mazestreetwear_get_cart_count' ) ? mazestreetwear_get_cart_count() : ( ( function_exists( 'WC' ) && WC()->cart ) ? WC()->cart->get_cart_contents_count() : 0 );
 $is_cart_empty = ( $cart_count <= 0 );
+$is_single_product = function_exists( 'is_product' ) && is_product();
 $masthead_classes = $is_maze_home
     ? 'pointer-events-none py-3 sm:py-4 bg-transparent'
-    : 'bg-white/95 backdrop-blur-md border-b border-black py-2.5 sm:py-3.5 shadow-sm';
+    : ( $is_single_product
+        ? 'bg-white/95 backdrop-blur-md py-2.5 sm:py-3.5 border-b-0 shadow-none'
+        : 'bg-white/95 backdrop-blur-md border-b border-black py-2.5 sm:py-3.5 shadow-sm' );
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?> class="scroll-smooth bg-white text-black">
 <head>

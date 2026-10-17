@@ -558,9 +558,11 @@ body.page-template-template-homepage .maze-pill-navbar,
 
 body.home #masthead,
 body.front-page #masthead,
-body.page-template-template-homepage #masthead {
+body.page-template-template-homepage #masthead,
+body.single-product #masthead {
   border: none !important;
   border-bottom: none !important;
+  box-shadow: none !important;
 }
 
 body.home .site-header .maze-search-pill,
@@ -741,6 +743,58 @@ body.page-template-template-homepage #colophon > div {
   }
   .maze-product-grid .maze-product-card:nth-child(4n) {
     border-right: none !important;
+  }
+}
+
+/* 6. Single Product Editorial Layout: No Top Line & Mobile Edge-to-Edge Gallery */
+body.single-product #content,
+body.single-product .site-content,
+body.single-product #primary,
+body.single-product .maze-single-product-editorial {
+  border-top: none !important;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.maze-gallery-track {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.maze-gallery-slide {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.maze-gallery-tab-item {
+  border-radius: 9999px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative;
+}
+
+.maze-gallery-tab-item::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  left: -4px;
+  right: -4px;
+}
+
+@media (max-width: 1023px) {
+  body.single-product .maze-single-product-editorial {
+    overflow-x: hidden;
+  }
+  .single-product .maze-gallery-slide img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
   }
 }
 
