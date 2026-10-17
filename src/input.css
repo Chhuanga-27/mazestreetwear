@@ -600,33 +600,85 @@
     }
   }
 
-  /* Hero CTA Button: Responsive Bebas Neue with Smooth Radius */
+  /* Hero CTA Button: Minimalist Hand-Drawn Oval Style (No Background, No Border) */
   .maze-hero-cta {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    text-decoration: none !important;
+    color: #000 !important;
+    min-width: 140px !important;
+    min-height: 48px !important;
+    padding: 0.6rem 2.2rem !important;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
+    cursor: pointer;
+  }
+
+  .maze-hero-cta:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+  }
+
+  .maze-hero-cta-text {
+    position: relative !important;
+    z-index: 2 !important;
     font-family: var(--font-bebas) !important;
-    border-radius: 0.625rem !important;
-    padding: 0.65rem 1.5rem !important;
-    font-size: 1.0625rem !important;
-    /* 17px mobile - perfectly readable */
-    letter-spacing: 0.08em !important;
-    line-height: 1.1 !important;
-    font-weight: 400 !important;
+    font-size: 1.125rem !important;
+    letter-spacing: 0.12em !important;
+    line-height: 1 !important;
+    color: #000 !important;
+    text-transform: uppercase !important;
+    padding-top: 1px !important;
+    transition: opacity 0.2s ease, letter-spacing 0.2s ease !important;
+  }
+
+  .maze-hero-oval {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: fill !important;
+    pointer-events: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    display: block !important;
+  }
+
+  .maze-hero-cta:hover .maze-hero-oval {
+    transform: scale(1.05) !important;
   }
 
   @media (min-width: 640px) {
     .maze-hero-cta {
-      border-radius: 1rem !important;
-      padding: 0.875rem 2.5rem !important;
-      font-size: 1.25rem !important;
-      /* 20px desktop */
-      letter-spacing: 0.08em !important;
-      line-height: inherit !important;
+      min-width: 180px !important;
+      min-height: 60px !important;
+      padding: 0.8rem 2.8rem !important;
+    }
+    .maze-hero-cta-text {
+      font-size: 1.35rem !important;
+      letter-spacing: 0.14em !important;
     }
   }
 
   @media (min-width: 768px) {
     .maze-hero-cta {
-      padding: 0.875rem 2.5rem !important;
-      font-size: 1.35rem !important;
+      min-width: 210px !important;
+      min-height: 68px !important;
+      padding: 0.95rem 3.4rem !important;
+    }
+    .maze-hero-cta-text {
+      font-size: 1.55rem !important;
+      letter-spacing: 0.15em !important;
     }
   }
 

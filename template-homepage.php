@@ -37,10 +37,18 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
                 class="w-full h-full object-cover object-[48%_center] sm:object-center select-none transition-transform duration-700 ease-out group-hover:scale-[1.01]"
             />
 
-            <!-- Centered CTA Button with Radius on Each Corner -->
-            <div class="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-8 md:bottom-12 z-10">
-                <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-hero-cta inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-6 sm:px-10 py-2.5 sm:py-3.5 text-base sm:text-lg md:text-xl uppercase tracking-wider font-normal font-bebas text-center shadow-sm rounded-lg sm:rounded-2xl hover:shadow-md">
-                    <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
+            <!-- Centered Hero CTA Button (Oval Hand-Drawn Ring with Transparent Background) -->
+            <div class="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-8 md:bottom-12 z-10 flex items-center justify-center">
+                <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-hero-cta group relative inline-flex items-center justify-center text-black no-underline select-none transition-transform duration-300 ease-out hover:scale-[1.04] focus:outline-none" aria-label="<?php esc_attr_e( 'Shop All Products', 'mazestreetwear' ); ?>">
+                    <span class="maze-hero-cta-text relative z-10 font-bebas uppercase tracking-wider text-black select-none">
+                        <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
+                    </span>
+                    <img 
+                        src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/oval-circle.svg' ); ?>" 
+                        alt="" 
+                        aria-hidden="true" 
+                        class="maze-hero-oval absolute inset-0 w-full h-full pointer-events-none select-none transition-transform duration-300 ease-out group-hover:scale-105"
+                    />
                 </a>
             </div>
         </div>

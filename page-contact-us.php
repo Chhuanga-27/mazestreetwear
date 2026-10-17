@@ -32,7 +32,7 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
       "@id": "<?php echo esc_url( $contact_url ); ?>#webpage",
       "url": "<?php echo esc_url( $contact_url ); ?>",
       "name": "Contact Us - Maze Streetwear",
-      "description": "Official contact directory for Maze Streetwear. Studio headquarters in Aizawl, Mizoram, direct email at enquiries@mazestw.in, and official Instagram @maze.stw.",
+      "description": "Official contact directory for Maze Streetwear. Direct email at enquiries@mazestw.in and official Instagram @maze.stw.",
       "publisher": {
         "@id": "https://mazestw.in/#organization"
       }
@@ -76,54 +76,15 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
             </p>
         </header>
 
-        <!-- 3-Pillar Minimal Contact Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
+        <!-- 2-Pillar Minimal Contact Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-16 sm:mb-20">
 
-            <!-- 1. Store & Studio Address -->
+            <!-- 1. Email Desk -->
             <div class="flex flex-col justify-between p-6 sm:p-8 bg-white border border-black/15 rounded-2xl hover:border-black/40 transition-colors">
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="text-xs font-mono font-bold tracking-widest text-neutral-500 uppercase">
-                            01 // <?php esc_html_e( 'Location', 'mazestreetwear' ); ?>
-                        </span>
-                        <span class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-black">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                            </svg>
-                        </span>
-                    </div>
-
-                    <h2 class="text-2xl sm:text-3xl font-bebas uppercase tracking-wide text-black mb-3">
-                        <?php esc_html_e( 'Store & Studio', 'mazestreetwear' ); ?>
-                    </h2>
-
-                    <address class="not-italic text-sm sm:text-base font-outfit text-neutral-800 leading-relaxed mb-4">
-                        <strong class="font-bold text-black block">Maze Streetwear</strong>
-                        <span>Bungkawn Vengthar, A-25</span><br>
-                        <span>Aizawl, Mizoram — 796005</span><br>
-                        <span>India</span>
-                    </address>
-
-                    <p class="text-xs font-outfit text-neutral-600 mb-6">
-                        <?php esc_html_e( 'Hours: Mon–Sat, 10:00 AM – 6:00 PM IST', 'mazestreetwear' ); ?>
-                    </p>
-                </div>
-
-                <div class="pt-4 border-t border-neutral-200">
-                    <a href="https://maps.google.com/?q=Bungkawn+Vengthar+Aizawl+Mizoram+796005" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-1.5 text-xs sm:text-sm font-outfit font-semibold uppercase tracking-wider text-black hover:underline underline-offset-4">
-                        <span><?php esc_html_e( 'View on Google Maps', 'mazestreetwear' ); ?></span>
-                        <span aria-hidden="true">&nearr;</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- 2. Email Desk -->
-            <div class="flex flex-col justify-between p-6 sm:p-8 bg-white border border-black/15 rounded-2xl hover:border-black/40 transition-colors">
-                <div>
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-xs font-mono font-bold tracking-widest text-neutral-500 uppercase">
-                            02 // <?php esc_html_e( 'Email Desk', 'mazestreetwear' ); ?>
+                            01 // <?php esc_html_e( 'Email Desk', 'mazestreetwear' ); ?>
                         </span>
                         <span class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-black">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
@@ -161,12 +122,12 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
                 </div>
             </div>
 
-            <!-- 3. Instagram -->
+            <!-- 2. Instagram -->
             <div class="flex flex-col justify-between p-6 sm:p-8 bg-white border border-black/15 rounded-2xl hover:border-black/40 transition-colors">
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="text-xs font-mono font-bold tracking-widest text-neutral-500 uppercase">
-                            03 // <?php esc_html_e( 'Instagram', 'mazestreetwear' ); ?>
+                            02 // <?php esc_html_e( 'Instagram', 'mazestreetwear' ); ?>
                         </span>
                         <span class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-black">
                             <svg class="w-4 h-4 text-[#E4405F]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
