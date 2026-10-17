@@ -246,23 +246,6 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
         </div>
     </section>
 
-    <!-- 5. Minimalist Architectural Statement -->
-    <section class="w-full bg-white py-16 sm:py-24">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-            <span class="inline-block text-xs sm:text-sm font-outfit uppercase tracking-wider font-semibold text-neutral-800">
-                <?php esc_html_e( 'MAZE ARCHIVE SPECIFICATION // 2026', 'mazestreetwear' ); ?>
-            </span>
-            <p class="text-xl sm:text-2xl lg:text-3xl font-outfit font-normal tracking-tight text-black leading-relaxed max-w-3xl mx-auto">
-                <?php esc_html_e( 'Architectural garments engineered with uncompromising precision. Pure pitch black on optic white canvas, stripped of all transient distraction.', 'mazestreetwear' ); ?>
-            </p>
-            <div class="pt-4">
-                <a href="<?php echo esc_url( $shop_url ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-all px-9 py-3.5 text-base sm:text-lg font-normal uppercase tracking-wider font-bebas shadow-sm">
-                    <?php esc_html_e( 'EXPLORE CATALOG', 'mazestreetwear' ); ?>
-                </a>
-            </div>
-        </div>
-    </section>
-
 </main>
 
 <?php

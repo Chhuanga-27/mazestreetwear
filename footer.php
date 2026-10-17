@@ -21,72 +21,60 @@ $footer_card_border = $is_maze_home ? 'border-0' : 'border border-black/15 shado
 <footer id="colophon" class="site-footer bg-white text-black font-sans px-3 sm:px-6 lg:px-8 py-5 sm:py-8 lg:py-10 mt-auto">
     <div class="max-w-[1400px] mx-auto bg-white rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-10 lg:p-14 <?php echo esc_attr( $footer_card_border ); ?> flex flex-col justify-between overflow-hidden">
 
-        <!-- Top Section: 4-Column Editorial Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12 pb-8 sm:pb-12">
+        <!-- Top Section: Realigned Explore & Connect -->
+        <div class="flex flex-col sm:flex-row justify-between items-start gap-8 sm:gap-12 lg:gap-16 pb-8 sm:pb-12">
 
-            <!-- Col 1: Brand Statement / Bio -->
-            <div class="lg:col-span-4 space-y-3">
-                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="inline-block group mb-1">
-                    <span class="text-2xl sm:text-3xl font-normal tracking-wide uppercase font-bebas text-black">
-                        MAZE<span class="text-neutral-400">.</span>
-                    </span>
-                </a>
-                <p class="text-sm sm:text-base font-normal font-outfit tracking-normal leading-relaxed text-neutral-800 max-w-sm">
-                    <?php esc_html_e( 'MAZE is an independent contemporary streetwear brand and design archive.', 'mazestreetwear' ); ?>
-                </p>
-                <div class="pt-2 flex items-center space-x-2 text-xs sm:text-sm font-outfit text-neutral-800 font-semibold uppercase tracking-wider">
-                    <span class="inline-block w-2 h-2 rounded-full bg-black"></span>
-                    <span><?php esc_html_e( 'ARCHIVAL PRECISION // MAZESTW.IN', 'mazestreetwear' ); ?></span>
-                </div>
-            </div>
-
-            <!-- Col 2: Explore Navigation Links -->
-            <div class="lg:col-span-2 space-y-3">
+            <!-- Left: Explore Navigation Links -->
+            <div class="space-y-3">
                 <span class="block text-sm sm:text-base font-normal uppercase tracking-wider font-bebas text-black">
                     <?php esc_html_e( 'Explore', 'mazestreetwear' ); ?>
                 </span>
                 <?php $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ); ?>
-                <ul class="space-y-2.5 text-sm sm:text-[15px] font-outfit font-medium text-black">
-                    <li>
-                        <a href="<?php echo esc_url( $shop_url ); ?>" class="hover:underline underline-offset-4 transition-colors block">
-                            <?php esc_html_e( 'Shop All', 'mazestreetwear' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'tops' ) : home_url( '/product-category/tops/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
-                            <?php esc_html_e( 'Tops', 'mazestreetwear' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'bottoms' ) : home_url( '/product-category/bottoms/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
-                            <?php esc_html_e( 'Bottoms', 'mazestreetwear' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'accessories' ) : home_url( '/product-category/accessories/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
-                            <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo esc_url( home_url( '/archive/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
-                            <?php esc_html_e( 'Lookbook & Archive', 'mazestreetwear' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_get_about_url() : home_url( '/about-us/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
-                            <?php esc_html_e( 'About Us', 'mazestreetwear' ); ?>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
-                            <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
-                        </a>
-                    </li>
-                </ul>
+                <div class="flex flex-row gap-8 sm:gap-12 lg:gap-16">
+                    <ul class="space-y-2.5 text-sm sm:text-[15px] font-outfit font-medium text-black">
+                        <li>
+                            <a href="<?php echo esc_url( $shop_url ); ?>" class="hover:underline underline-offset-4 transition-colors block">
+                                <?php esc_html_e( 'Shop All', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'tops' ) : home_url( '/product-category/tops/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
+                                <?php esc_html_e( 'Tops', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'bottoms' ) : home_url( '/product-category/bottoms/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
+                                <?php esc_html_e( 'Bottoms', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'accessories' ) : home_url( '/product-category/accessories/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
+                                <?php esc_html_e( 'Accessories', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="space-y-2.5 text-sm sm:text-[15px] font-outfit font-medium text-black">
+                        <li>
+                            <a href="<?php echo esc_url( home_url( '/archive/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
+                                <?php esc_html_e( 'Lookbook & Archive', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_get_about_url() : home_url( '/about-us/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
+                                <?php esc_html_e( 'About Us', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
+                                <?php esc_html_e( 'Contact', 'mazestreetwear' ); ?>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
-            <!-- Col 3: Connect (Instagram & Email) -->
-            <div class="lg:col-span-3 space-y-3">
+            <!-- Right: Connect (Instagram & Email) -->
+            <div class="space-y-3">
                 <span class="block text-sm sm:text-base font-normal uppercase tracking-wider font-bebas text-black">
                     <?php esc_html_e( 'Connect', 'mazestreetwear' ); ?>
                 </span>
@@ -107,45 +95,6 @@ $footer_card_border = $is_maze_home ? 'border-0' : 'border border-black/15 shado
                         <span class="truncate">enquiries@mazestw.in</span>
                     </a>
                 </div>
-            </div>
-
-            <!-- Col 4: Action CTAs with Circle Arrows -->
-            <div class="lg:col-span-3 space-y-6 flex flex-col justify-start">
-
-                <!-- Action 1: Call MAZE / Direct Concierge (Coral-Orange circle arrow accent) -->
-                <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' ) ); ?>" class="maze-action-cta group block">
-                    <div class="flex items-center space-x-2.5">
-                        <span class="text-xl sm:text-2xl font-normal font-bebas tracking-wide text-[#ff3e18] group-hover:underline">
-                            <?php esc_html_e( 'Call MAZE', 'mazestreetwear' ); ?>
-                        </span>
-                        <span class="maze-action-arrow w-6 h-6 rounded-full bg-[#ff3e18] text-white flex items-center justify-center transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shadow-sm">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path>
-                            </svg>
-                        </span>
-                    </div>
-                    <span class="block text-sm font-outfit font-normal text-neutral-800 mt-0.5">
-                        <?php esc_html_e( "Let's work together", 'mazestreetwear' ); ?>
-                    </span>
-                </a>
-
-                <!-- Action 2: Archive & Drops (Black circle arrow) -->
-                <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-action-cta group block">
-                    <div class="flex items-center space-x-2.5">
-                        <span class="text-xl sm:text-2xl font-normal font-bebas tracking-wide text-black group-hover:underline">
-                            <?php esc_html_e( 'Archive & Drops', 'mazestreetwear' ); ?>
-                        </span>
-                        <span class="maze-action-arrow w-6 h-6 rounded-full bg-black text-white flex items-center justify-center transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shadow-sm">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path>
-                            </svg>
-                        </span>
-                    </div>
-                    <span class="block text-sm font-outfit font-normal text-neutral-800 mt-0.5">
-                        <?php esc_html_e( 'Ready-to-wear catalog', 'mazestreetwear' ); ?>
-                    </span>
-                </a>
-
             </div>
 
         </div>
