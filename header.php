@@ -149,7 +149,7 @@ $masthead_classes = $is_maze_home
     <div class="max-w-7xl mx-auto <?php echo $is_maze_home ? 'pointer-events-auto' : ''; ?>">
 
         <!-- Pill Navigation Bar Container -->
-        <div class="maze-pill-navbar w-full min-w-0 bg-[#FEFEF3]/95 backdrop-blur-md border border-black rounded-full px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between shadow-sm transition-all duration-200">
+        <div class="maze-pill-navbar w-full min-w-0 bg-[#FEFEF3]/95 backdrop-blur-md <?php echo $is_maze_home ? 'border-0' : 'border border-black'; ?> rounded-full px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between shadow-sm transition-all duration-200">
 
             <!-- Left: Brand Logo -->
             <div class="flex-shrink-0 flex items-center mr-2 sm:mr-4">
@@ -227,7 +227,7 @@ $masthead_classes = $is_maze_home
                 <!-- Embedded Search Pill (Desktop/Tablet) -->
                 <form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="hidden sm:flex items-center relative">
                     <input type="hidden" name="post_type" value="product">
-                    <div class="maze-search-pill relative flex items-center bg-neutral-100 hover:bg-neutral-200/80 focus-within:bg-white focus-within:ring-1 focus-within:ring-black rounded-full px-3.5 py-1.5 transition-all w-32 md:w-36 lg:w-44 border border-black/10 focus-within:border-black">
+                    <div class="maze-search-pill relative flex items-center bg-neutral-100 hover:bg-neutral-200/80 focus-within:bg-white focus-within:ring-1 focus-within:ring-black rounded-full px-3.5 py-1.5 transition-all w-32 md:w-36 lg:w-44 <?php echo $is_maze_home ? 'border-0' : 'border border-black/10 focus-within:border-black'; ?>">
                         <svg class="w-4 h-4 text-black mr-2 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
                         </svg>
@@ -270,7 +270,7 @@ $masthead_classes = $is_maze_home
         </div>
 
         <!-- Discrete Mobile Search Bar Dropdown (Toggled by mobile search button in header pill) -->
-        <div id="maze-mobile-search-bar" class="hidden sm:hidden mt-2 bg-[#FEFEF3] border border-black rounded-2xl p-3 shadow-xl transition-all duration-200">
+        <div id="maze-mobile-search-bar" class="hidden sm:hidden mt-2 bg-[#FEFEF3] <?php echo $is_maze_home ? 'border-0' : 'border border-black'; ?> rounded-2xl p-3 shadow-xl transition-all duration-200">
             <form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="relative flex items-center">
                 <input type="hidden" name="post_type" value="product">
                 <div class="relative flex items-center w-full bg-neutral-100 rounded-full px-4 py-2.5 border border-black/15 focus-within:border-black focus-within:bg-[#FEFEF3] transition-all">
@@ -283,7 +283,7 @@ $masthead_classes = $is_maze_home
         </div>
 
         <!-- Mobile Mega Menu Drawer (Solid Ivory White Background & Black Text) -->
-        <div id="maze-mobile-menu" class="maze-mobile-dropdown hidden md:hidden mt-2 bg-[#FEFEF3] border border-black rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl transition-all duration-200 max-h-[82vh] overflow-y-auto">
+        <div id="maze-mobile-menu" class="maze-mobile-dropdown hidden md:hidden mt-2 bg-[#FEFEF3] <?php echo $is_maze_home ? 'border-0' : 'border border-black'; ?> rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl transition-all duration-200 max-h-[82vh] overflow-y-auto">
             
             <?php
             // Prepare Mega Menu Category and Policy URLs

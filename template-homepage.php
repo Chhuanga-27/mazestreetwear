@@ -24,27 +24,25 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 
 <main id="primary" class="site-main bg-[#FEFEF3] text-black min-h-screen">
 
-    <!-- 1. Editorial Bento Box Hero Banner (Contained, Rounded Corners, HD) -->
-    <section class="w-full bg-[#FEFEF3] pt-2 sm:pt-2.5 md:pt-3 pb-8 sm:pb-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="maze-hero-bento relative w-full aspect-[4/3] sm:aspect-[16/10] rounded-2xl sm:rounded-3xl lg:rounded-[32px] border border-black overflow-hidden bg-[#e8e8e8] shadow-sm group">
-                <img 
-                    src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero.jpg' ); ?>" 
-                    alt="<?php esc_attr_e( 'MAZE Editorial SS26', 'mazestreetwear' ); ?>" 
-                    width="5765"
-                    height="3614"
-                    loading="eager"
-                    fetchpriority="high"
-                    decoding="async"
-                    class="w-full h-full object-cover object-[48%_center] sm:object-center select-none transition-transform duration-700 ease-out group-hover:scale-[1.01]"
-                />
+    <!-- 1. Editorial Hero Banner (Full-Width, No Border, No Radius, HD) -->
+    <section class="w-full bg-[#FEFEF3] pt-0 pb-10 sm:pb-16">
+        <div class="maze-hero-bento relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/9] rounded-none border-0 overflow-hidden bg-[#e8e8e8] group">
+            <img 
+                src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero.jpg' ); ?>" 
+                alt="<?php esc_attr_e( 'MAZE Editorial SS26', 'mazestreetwear' ); ?>" 
+                width="5765"
+                height="3614"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                class="w-full h-full object-cover object-[48%_center] sm:object-center select-none transition-transform duration-700 ease-out group-hover:scale-[1.01]"
+            />
 
-                <!-- Centered CTA Button with Radius on Each Corner -->
-                <div class="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-8 md:bottom-12 z-10">
-                    <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-hero-cta inline-block border border-black bg-[#FEFEF3] text-black hover:bg-black hover:text-white transition-all px-6 sm:px-10 py-2.5 sm:py-3.5 text-base sm:text-lg md:text-xl uppercase tracking-wider font-normal font-bebas text-center shadow-sm rounded-lg sm:rounded-2xl hover:shadow-md">
-                        <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
-                    </a>
-                </div>
+            <!-- Centered CTA Button with Radius on Each Corner -->
+            <div class="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-8 md:bottom-12 z-10">
+                <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-hero-cta inline-block border border-black bg-[#FEFEF3] text-black hover:bg-black hover:text-white transition-all px-6 sm:px-10 py-2.5 sm:py-3.5 text-base sm:text-lg md:text-xl uppercase tracking-wider font-normal font-bebas text-center shadow-sm rounded-lg sm:rounded-2xl hover:shadow-md">
+                    <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
+                </a>
             </div>
         </div>
     </section>
@@ -138,8 +136,8 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     ?>
 
     <!-- 2. Featured Editorial Showcase - Product 1 (Product Image on Left, Title & Price on Right) -->
-    <section class="maze-showcase-section w-full bg-[#FEFEF3] border-b border-black">
-        <div class="max-w-7xl mx-auto border-x border-t border-black">
+    <section class="maze-showcase-section w-full bg-[#FEFEF3] pb-6 sm:pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <a href="<?php echo esc_url( $showcase_item_1['permalink'] ); ?>" class="maze-showcase-card group grid grid-cols-2 bg-[#FEFEF3] overflow-hidden focus:outline-none" aria-label="<?php echo esc_attr( $showcase_item_1['title'] ); ?>">
                 <!-- Left: Product Image -->
                 <div class="maze-showcase-media relative w-full aspect-[4/5] bg-[#eae7e1] overflow-hidden">
@@ -166,8 +164,8 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     </section>
 
     <!-- 3. Featured Editorial Showcase - Product 2 (Title & Price on Left, Product Image on Right) -->
-    <section class="maze-showcase-section w-full bg-[#FEFEF3] border-b border-black">
-        <div class="max-w-7xl mx-auto border-x border-black">
+    <section class="maze-showcase-section w-full bg-[#FEFEF3] pb-10 sm:pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <a href="<?php echo esc_url( $showcase_item_2['permalink'] ); ?>" class="maze-showcase-card group grid grid-cols-2 bg-[#FEFEF3] overflow-hidden focus:outline-none" aria-label="<?php echo esc_attr( $showcase_item_2['title'] ); ?>">
                 <!-- Left: Product Information -->
                 <div class="maze-showcase-info flex flex-col justify-center px-4 sm:px-8 md:px-12 lg:px-20 py-6 sm:py-10 bg-[#FEFEF3] select-none">
@@ -197,7 +195,7 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     <section class="w-full bg-[#FEFEF3] border-b border-black">
         
         <!-- Section Header -->
-        <div class="max-w-7xl mx-auto border-x border-black">
+        <div class="max-w-7xl mx-auto border-x border-t border-black">
             <div class="px-4 sm:px-6 lg:px-8 py-5 sm:py-6 border-b border-black flex items-center justify-between bg-[#FEFEF3]">
                 <h2 class="text-xl sm:text-2xl lg:text-3xl font-normal font-bebas uppercase tracking-wider text-black">
                     <?php esc_html_e( 'READY-TO-WEAR', 'mazestreetwear' ); ?>

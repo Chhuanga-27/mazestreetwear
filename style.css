@@ -406,3 +406,68 @@ body.woocommerce .site-header img {
 [aria-label="breadcrumbs"] {
   display: none !important;
 }
+
+/* ==========================================================================
+   HOMEPAGE SPECIFIC REFINEMENTS (BORDERLESS HEADER, HERO & PRODUCT SECTIONS)
+   ========================================================================== */
+
+/* 1. Header Outline: Remove all header outlines/borders on homepage */
+body.home .maze-pill-navbar,
+body.front-page .maze-pill-navbar,
+body.page-template-template-homepage .maze-pill-navbar {
+  border: none !important;
+  border-width: 0 !important;
+}
+
+body.home #masthead,
+body.front-page #masthead,
+body.page-template-template-homepage #masthead {
+  border: none !important;
+  border-bottom: none !important;
+}
+
+body.home .site-header .maze-search-pill,
+body.front-page .site-header .maze-search-pill,
+body.page-template-template-homepage .site-header .maze-search-pill {
+  border: none !important;
+  border-width: 0 !important;
+}
+
+body.home #maze-mobile-search-bar,
+body.front-page #maze-mobile-search-bar,
+body.page-template-template-homepage #maze-mobile-search-bar,
+body.home #maze-mobile-menu,
+body.front-page #maze-mobile-menu,
+body.page-template-template-homepage #maze-mobile-menu {
+  border: none !important;
+  border-width: 0 !important;
+}
+
+/* 2. Hero Section: Full width, no black outline, no border radius */
+body.home .maze-hero-bento,
+body.front-page .maze-hero-bento,
+body.page-template-template-homepage .maze-hero-bento {
+  border: none !important;
+  border-width: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* 3. Product Showcase Sections: Remove all black outline borders */
+body.home .maze-showcase-section,
+body.front-page .maze-showcase-section,
+body.page-template-template-homepage .maze-showcase-section {
+  border: none !important;
+  border-width: 0 !important;
+}
+
+/* 4. Footer Outline: Remove outer border outline on homepage */
+body.home #colophon > div,
+body.front-page #colophon > div,
+body.page-template-template-homepage #colophon > div {
+  border: none !important;
+  border-width: 0 !important;
+  box-shadow: none !important;
+}

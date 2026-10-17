@@ -14,8 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 </div><!-- #content -->
 
+<?php
+$is_maze_home = is_front_page() || is_page_template( 'template-homepage.php' );
+$footer_card_border = $is_maze_home ? 'border-0' : 'border border-black/15 shadow-sm';
+?>
 <footer id="colophon" class="site-footer bg-[#FEFEF3] text-black font-sans px-3 sm:px-6 lg:px-8 py-5 sm:py-8 lg:py-10 mt-auto">
-    <div class="max-w-[1400px] mx-auto bg-[#FEFEF3] rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-10 lg:p-14 border border-black/15 shadow-sm flex flex-col justify-between overflow-hidden">
+    <div class="max-w-[1400px] mx-auto bg-[#FEFEF3] rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-10 lg:p-14 <?php echo esc_attr( $footer_card_border ); ?> flex flex-col justify-between overflow-hidden">
 
         <!-- Top Section: 4-Column Editorial Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12 pb-8 sm:pb-12">
