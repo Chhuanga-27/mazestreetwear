@@ -155,92 +155,145 @@
         }
 
         // --- 3. Single Product Slidable Gallery & Tab Indicator Navigation ---
-        function initProductGallerySlider() {
-            const $slider = $('#maze-gallery-slider');
-            if (!$slider.length) return;
+        let mazeGalleryAnimId = null;
 
-            const sliderEl = $slider[0];
-            let $slides = $slider.find('.maze-gallery-slide');
-            let totalSlides = $slides.length;
-            if (totalSlides <= 1) return;
-
-            let currentIndex = 0;
-            let isAnimating = false;
-            let snapTimeout = null;
-
-            function updateActiveTab(index) {
-                currentIndex = index;
-                const $tabBtns = $('.maze-gallery-tab-item');
-                $tabBtns.each(function (i) {
-                    const $tab = $(this);
-                    const $bar = $tab.find('.maze-tab-bar');
-                    const isActive = (i === index);
-                    $tab.attr('aria-selected', isActive ? 'true' : 'false');
+        function updateTabsUI(index) {
+            const tabs = document.querySelectorAll('.maze-gallery-tab-item');
+            tabs.forEach(function (tab, i) {
+                const bar = tab.querySelector('.maze-tab-bar');
+                const isActive = (i === index);
+                tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                if (bar) {
                     if (isActive) {
-                        $bar.removeClass('w-6 bg-neutral-300 hover:bg-neutral-500').addClass('w-10 bg-black');
+                        bar.classList.remove('w-6', 'bg-neutral-300', 'hover:bg-neutral-500');
+                        bar.classList.add('w-10', 'bg-black');
                     } else {
-                        $bar.removeClass('w-10 bg-black').addClass('w-6 bg-neutral-300 hover:bg-neutral-500');
+                        bar.classList.remove('w-10', 'bg-black');
+                        bar.classList.add('w-6', 'bg-neutral-300', 'hover:bg-neutral-500');
                     }
-                });
-            }
-
-            function scrollToSlide(targetIdx) {
-                if (targetIdx < 0) targetIdx = 0;
-                if (targetIdx >= totalSlides) targetIdx = totalSlides - 1;
-                currentIndex = targetIdx;
-
-                const slideNodes = sliderEl.querySelectorAll('.maze-gallery-slide');
-                const targetNode = slideNodes[targetIdx];
-                if (!targetNode) return;
-
-                const targetScrollLeft = targetNode.offsetLeft;
-
-                // Temporarily disable CSS scroll-snap so browser doesn't block programmatic animation
-                sliderEl.style.scrollSnapType = 'none';
-                isAnimating = true;
-
-                $slider.stop(true, false).animate({
-                    scrollLeft: targetScrollLeft
-                }, 300, 'swing', function () {
-                    sliderEl.style.scrollSnapType = 'x mandatory';
-                    setTimeout(function () {
-                        isAnimating = false;
-                    }, 50);
-                });
-
-                if (snapTimeout) clearTimeout(snapTimeout);
-                snapTimeout = setTimeout(function () {
-                    sliderEl.style.scrollSnapType = 'x mandatory';
-                    isAnimating = false;
-                }, 380);
-
-                updateActiveTab(targetIdx);
-            }
-
-            // Tab button click
-            $(document).off('click', '.maze-gallery-tab-item').on('click', '.maze-gallery-tab-item', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const target = $(this).attr('data-slide-target');
-                const targetIdx = parseInt(target, 10);
-                if (!isNaN(targetIdx)) {
-                    scrollToSlide(targetIdx);
                 }
             });
+        }
 
-            // Arrow button navigation (Prev / Next with wrap-around)
-            $(document).off('click', '.maze-gallery-prev').on('click', '.maze-gallery-prev', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const prevIdx = (currentIndex > 0) ? (currentIndex - 1) : (totalSlides - 1);
-                scrollToSlide(prevIdx);
+        window.mazeGalleryGoTo = function (targetIdx, event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            const sliderEl = document.getElementById('maze-gallery-slider');
+            if (!sliderEl) return;
+
+            const slides = sliderEl.querySelectorAll('.maze-gallery-slide');
+            const total = slides.length;
+            if (total <= 1) return;
+
+            if (targetIdx < 0) targetIdx = 0;
+            if (targetIdx >= total) targetIdx = total - 1;
+
+            const slideWidth = sliderEl.clientWidth;
+            const targetScroll = targetIdx * slideWidth;
+            const startScroll = sliderEl.scrollLeft;
+            const distance = targetScroll - startScroll;
+
+            if (Math.abs(distance) < 2) {
+                sliderEl.scrollLeft = targetScroll;
+                updateTabsUI(targetIdx);
+                return;
+            }
+
+            // Temporarily turn off CSS scroll snap so it doesn't fight rAF
+            sliderEl.style.scrollSnapType = 'none';
+
+            if (mazeGalleryAnimId) {
+                cancelAnimationFrame(mazeGalleryAnimId);
+            }
+
+            const duration = 260;
+            let startTime = null;
+
+            function animateStep(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                // easeOutQuad
+                const ease = 1 - (1 - progress) * (1 - progress);
+                sliderEl.scrollLeft = Math.round(startScroll + distance * ease);
+
+                if (progress < 1) {
+                    mazeGalleryAnimId = requestAnimationFrame(animateStep);
+                } else {
+                    sliderEl.scrollLeft = targetScroll;
+                    sliderEl.style.scrollSnapType = 'x mandatory';
+                    mazeGalleryAnimId = null;
+                    updateTabsUI(targetIdx);
+                }
+            }
+
+            mazeGalleryAnimId = requestAnimationFrame(animateStep);
+            updateTabsUI(targetIdx);
+        };
+
+        window.mazeGalleryPrev = function (event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            const sliderEl = document.getElementById('maze-gallery-slider');
+            if (!sliderEl) return;
+            const slides = sliderEl.querySelectorAll('.maze-gallery-slide');
+            const total = slides.length;
+            if (total <= 1) return;
+
+            const slideWidth = sliderEl.clientWidth || 1;
+            const currentIdx = Math.round(sliderEl.scrollLeft / slideWidth);
+            const prevIdx = currentIdx > 0 ? (currentIdx - 1) : (total - 1);
+            window.mazeGalleryGoTo(prevIdx);
+        };
+
+        window.mazeGalleryNext = function (event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            const sliderEl = document.getElementById('maze-gallery-slider');
+            if (!sliderEl) return;
+            const slides = sliderEl.querySelectorAll('.maze-gallery-slide');
+            const total = slides.length;
+            if (total <= 1) return;
+
+            const slideWidth = sliderEl.clientWidth || 1;
+            const currentIdx = Math.round(sliderEl.scrollLeft / slideWidth);
+            const nextIdx = (currentIdx < total - 1) ? (currentIdx + 1) : 0;
+            window.mazeGalleryGoTo(nextIdx);
+        };
+
+        function initProductGallerySlider() {
+            const sliderEl = document.getElementById('maze-gallery-slider');
+            if (!sliderEl) return;
+
+            const slides = sliderEl.querySelectorAll('.maze-gallery-slide');
+            const totalSlides = slides.length;
+            if (totalSlides <= 1) return;
+
+            // Direct event listeners on DOM elements
+            const prevBtns = document.querySelectorAll('.maze-gallery-prev');
+            prevBtns.forEach(function (btn) {
+                btn.onclick = function (e) { window.mazeGalleryPrev(e); };
             });
 
-            $(document).off('click', '.maze-gallery-next').on('click', '.maze-gallery-next', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const nextIdx = (currentIndex < totalSlides - 1) ? (currentIndex + 1) : 0;
-                scrollToSlide(nextIdx);
+            const nextBtns = document.querySelectorAll('.maze-gallery-next');
+            nextBtns.forEach(function (btn) {
+                btn.onclick = function (e) { window.mazeGalleryNext(e); };
+            });
+
+            const tabBtns = document.querySelectorAll('.maze-gallery-tab-item');
+            tabBtns.forEach(function (btn) {
+                btn.onclick = function (e) {
+                    const target = this.getAttribute('data-slide-target');
+                    const idx = parseInt(target, 10);
+                    if (!isNaN(idx)) {
+                        window.mazeGalleryGoTo(idx, e);
+                    }
+                };
             });
 
             // Desktop Mouse Drag Support
@@ -267,7 +320,7 @@
                 if (hasDragged) {
                     const slideWidth = sliderEl.clientWidth || 1;
                     const activeIdx = Math.max(0, Math.min(Math.round(sliderEl.scrollLeft / slideWidth), totalSlides - 1));
-                    scrollToSlide(activeIdx);
+                    window.mazeGalleryGoTo(activeIdx);
                 }
             });
 
@@ -285,13 +338,13 @@
             // Touch Swipe & Native Scroll listener on mobile
             let scrollTimer = null;
             sliderEl.addEventListener('scroll', function () {
-                if (isAnimating) return;
+                if (mazeGalleryAnimId) return;
                 if (scrollTimer) clearTimeout(scrollTimer);
                 scrollTimer = setTimeout(function () {
                     const slideWidth = sliderEl.clientWidth || 1;
                     const activeIdx = Math.max(0, Math.min(Math.round(sliderEl.scrollLeft / slideWidth), totalSlides - 1));
-                    updateActiveTab(activeIdx);
-                }, 50);
+                    updateTabsUI(activeIdx);
+                }, 40);
             }, { passive: true });
         }
 
