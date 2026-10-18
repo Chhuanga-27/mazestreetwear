@@ -8,9 +8,10 @@
  * - Clean category header with a 1px bottom border
  * - Minimalist 1px hairline sorting trigger & lowercase result count
  * - Connected 4-column hairline product grid
+ * - Product cards enforce strict 3:4 aspect ratio, neutral background, and object-top model framing via content-product.php
  *
  * @package MazeStreetwear
- * @version 1.1.0
+ * @version 1.2.0
  */
 
 defined( 'ABSPATH' ) || exit;

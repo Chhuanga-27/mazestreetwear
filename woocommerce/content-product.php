@@ -22,21 +22,21 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 ?>
 <article <?php wc_product_class( 'maze-product-card bg-white relative group flex flex-col justify-between rounded-none', $product ); ?>>
     <a href="<?php the_permalink(); ?>" class="flex flex-col h-full w-full group focus:outline-none" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
-        <!-- Image Area: Tall aspect ratio (aspect-[3/4]), product cutout with generous padding and object-contain -->
-        <div class="relative w-full aspect-[3/4] bg-white p-6 sm:p-8 flex items-center justify-center overflow-hidden">
+        <!-- Image Area: Strict 3:4 aspect ratio container with neutral background and object-cover object-top -->
+        <div class="relative w-full aspect-[3/4] overflow-hidden bg-neutral-100 flex items-center justify-center">
             <?php if ( has_post_thumbnail() ) : ?>
                 <?php
                 echo get_the_post_thumbnail(
                     $product->get_id(),
-                    'woocommerce_thumbnail',
+                    'full',
                     array(
-                        'class' => 'w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300',
+                        'class' => 'w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out block',
                         'alt'   => esc_attr( get_the_title() ),
                     )
                 );
                 ?>
             <?php else : ?>
-                <div class="w-full h-full flex flex-col items-center justify-center text-neutral-300 select-none">
+                <div class="w-full h-full flex flex-col items-center justify-center text-neutral-300 select-none p-6">
                     <span class="text-3xl font-normal font-bebas tracking-widest text-neutral-300 group-hover:text-black transition-colors">MAZE</span>
                     <span class="text-xs font-outfit font-semibold uppercase tracking-widest text-neutral-600 mt-2">[ archive ]</span>
                 </div>

@@ -1439,3 +1439,27 @@ function mazestreetwear_filter_site_icon_url($url, $size, $blog_id)
     }
 }
 add_filter('get_site_icon_url', 'mazestreetwear_filter_site_icon_url', 10, 3);
+
+/**
+ * Image Quality & Downscaling Optimization
+ * 1. Sets JPEG compression quality to 100 to prevent WordPress from compressing uploads.
+ * 2. Disables big_image_size_threshold (returns false) so original high-resolution uploads are not downscaled.
+ * 3. Enforces full-resolution images across WooCommerce loops and subcategories.
+ */
+add_filter('jpeg_quality', function () {
+    return 100;
+});
+
+add_filter('wp_editor_set_quality', function () {
+    return 100;
+});
+
+add_filter('big_image_size_threshold', '__return_false');
+
+add_filter('single_product_archive_thumbnail_size', function () {
+    return 'full';
+});
+
+add_filter('subcategory_archive_thumbnail_size', function () {
+    return 'full';
+});
