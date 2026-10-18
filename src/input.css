@@ -1337,16 +1337,9 @@ body.page-template-template-homepage #colophon > div {
   box-sizing: border-box;
 }
 
-/* Mobile (<640px): 1 column -> no vertical borders between cards; container provides left & right */
-@media (max-width: 639px) {
-  .maze-product-grid .maze-product-card {
-    border-right: none !important;
-    border-left: none !important;
-  }
-}
-
-/* Tablet (640px - 767px): 2 columns -> odd cards get 1px solid right border, even cards have no right border */
-@media (min-width: 640px) and (max-width: 767px) {
+/* Mobile & Small Screens (<768px): 2 columns (2 by 2) */
+/* Odd cards (column 1) get 1px solid right border; even cards (column 2) have no right border (outer container border provides it) */
+@media (max-width: 767px) {
   .maze-product-grid .maze-product-card {
     border-right: none !important;
     border-left: none !important;
@@ -1356,8 +1349,21 @@ body.page-template-template-homepage #colophon > div {
   }
 }
 
-/* Desktop (>=768px): 4 columns -> cards 1, 2, 3 in each 4-card row get 1px solid right border, card 4 has none */
-@media (min-width: 768px) {
+/* Tablet (768px - 1023px): 3 columns */
+/* Cards 1 & 2 in each 3-card row get 1px solid right border; card 3 (3n) has no right border */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .maze-product-grid .maze-product-card {
+    border-right: 1px solid #000000 !important;
+    border-left: none !important;
+  }
+  .maze-product-grid .maze-product-card:nth-child(3n) {
+    border-right: none !important;
+  }
+}
+
+/* Desktop (>=1024px): 4 columns */
+/* Cards 1, 2, 3 in each 4-card row get 1px solid right border; card 4 (4n) has no right border */
+@media (min-width: 1024px) {
   .maze-product-grid .maze-product-card {
     border-right: 1px solid #000000 !important;
     border-left: none !important;

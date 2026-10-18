@@ -220,7 +220,7 @@ $image_count = count( $gallery_images );
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 bg-white overflow-hidden">
+                <div class="maze-product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-white overflow-hidden">
                     <?php
                     foreach ( $related_ids as $rel_id ) :
                         $post_object = get_post( $rel_id );

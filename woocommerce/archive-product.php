@@ -63,10 +63,10 @@ do_action( 'woocommerce_before_main_content' );
             </div>
         </div>
 
-        <!-- Connected Hairline Border Grid: 4 Columns on Desktop -->
+        <!-- Connected Hairline Border Grid: 2 Columns on Mobile, 3 on Tablet, 4 on Desktop -->
         <div class="w-full bg-white border-b border-black overflow-hidden">
             <div class="max-w-7xl mx-auto border-x border-black">
-                <div class="maze-product-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 bg-white">
+                <div class="maze-product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-white">
                     <?php
                     if ( wc_get_loop_prop( 'total' ) ) {
                         while ( have_posts() ) {
