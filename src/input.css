@@ -773,8 +773,8 @@
   .maze-showcase-media img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important;
-    object-position: top !important;
+    object-fit: contain !important;
+    object-position: center !important;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: high-quality;
     transform: translateZ(0);
@@ -1403,6 +1403,15 @@ body.single-product .maze-single-product-editorial {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
+.single-product .maze-gallery-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+}
+
 @media (max-width: 1023px) {
   body.single-product .maze-single-product-editorial {
     overflow-x: hidden;
@@ -1410,6 +1419,9 @@ body.single-product .maze-single-product-editorial {
   .single-product .maze-gallery-slide img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: high-quality;
   }
 }

@@ -22,15 +22,15 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 ?>
 <article <?php wc_product_class( 'maze-product-card bg-white relative group flex flex-col justify-between rounded-none', $product ); ?>>
     <a href="<?php the_permalink(); ?>" class="flex flex-col h-full w-full group focus:outline-none" aria-label="<?php echo esc_attr( get_the_title() ); ?>">
-        <!-- Image Area: Strict 3:4 aspect ratio container with neutral background and object-cover object-top -->
-        <div class="relative w-full aspect-[3/4] overflow-hidden bg-neutral-100 flex items-center justify-center">
+        <!-- Image Area: Adaptive container with pure white background and uncropped object-contain -->
+        <div class="relative w-full aspect-square sm:aspect-[3/4] overflow-hidden bg-white p-2.5 sm:p-3.5 flex items-center justify-center">
             <?php if ( has_post_thumbnail() ) : ?>
                 <?php
                 echo get_the_post_thumbnail(
                     $product->get_id(),
                     'full',
                     array(
-                        'class' => 'w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out block',
+                        'class' => 'w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-500 ease-out block',
                         'alt'   => esc_attr( get_the_title() ),
                     )
                 );

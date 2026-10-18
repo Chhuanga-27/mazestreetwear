@@ -75,11 +75,11 @@ $image_count = count( $gallery_images );
                         <div id="maze-gallery-slider" class="maze-gallery-track flex w-full overflow-x-auto snap-x snap-mandatory scrollbar-none select-none">
                             <?php foreach ( $gallery_images as $idx => $g_img ) : ?>
                                 <div class="maze-gallery-slide min-w-full w-full flex-shrink-0 snap-center flex items-center justify-center bg-white" data-slide-index="<?php echo esc_attr( $idx ); ?>">
-                                    <div class="w-full aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] max-w-full lg:max-w-xl mx-auto flex items-center justify-center overflow-hidden">
+                                    <div class="w-full aspect-square sm:aspect-[4/5] lg:aspect-[4/5] max-w-full lg:max-w-xl mx-auto flex items-center justify-center overflow-hidden bg-white">
                                         <img 
                                             src="<?php echo esc_url( $g_img['url'] ); ?>" 
                                             alt="<?php echo esc_attr( $g_img['alt'] ); ?>" 
-                                            class="w-full h-full object-cover lg:object-contain object-center block"
+                                            class="w-full h-full object-contain object-center block"
                                             <?php if ( 0 === $idx ) : ?>id="maze-main-product-image"<?php endif; ?>
                                             loading="<?php echo 0 === $idx ? 'eager' : 'lazy'; ?>"
                                             draggable="false"

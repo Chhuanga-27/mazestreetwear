@@ -175,13 +175,13 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <a href="<?php echo esc_url( $showcase_item_1['permalink'] ); ?>" class="maze-showcase-card group grid grid-cols-2 bg-white overflow-hidden focus:outline-none" aria-label="<?php echo esc_attr( $showcase_item_1['title'] ); ?>">
                 <!-- Left: Product Image -->
-                <div class="maze-showcase-media relative w-full aspect-[3/4] bg-neutral-100 overflow-hidden">
+                <div class="maze-showcase-media relative w-full aspect-[3/4] bg-white p-3 sm:p-5 flex items-center justify-center overflow-hidden">
                     <img 
                         src="<?php echo esc_url( $showcase_item_1['image'] ); ?>" 
                         alt="<?php echo esc_attr( $showcase_item_1['title'] ); ?>" 
                         loading="lazy"
                         decoding="async"
-                        class="w-full h-full object-cover object-top select-none transition-transform duration-700 ease-out group-hover:scale-105"
+                        class="w-full h-full object-contain object-center select-none transition-transform duration-700 ease-out group-hover:scale-105"
                     />
                 </div>
 
@@ -213,13 +213,13 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
                 </div>
 
                 <!-- Right: Product Image -->
-                <div class="maze-showcase-media relative w-full aspect-[3/4] bg-neutral-100 overflow-hidden">
+                <div class="maze-showcase-media relative w-full aspect-[3/4] bg-white p-3 sm:p-5 flex items-center justify-center overflow-hidden">
                     <img 
                         src="<?php echo esc_url( $showcase_item_2['image'] ); ?>" 
                         alt="<?php echo esc_attr( $showcase_item_2['title'] ); ?>" 
                         loading="lazy"
                         decoding="async"
-                        class="w-full h-full object-cover object-top select-none transition-transform duration-700 ease-out group-hover:scale-105"
+                        class="w-full h-full object-contain object-center select-none transition-transform duration-700 ease-out group-hover:scale-105"
                     />
                 </div>
             </a>
@@ -231,13 +231,13 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <a href="<?php echo esc_url( $showcase_item_3['permalink'] ); ?>" class="maze-showcase-card group grid grid-cols-2 bg-white overflow-hidden focus:outline-none" aria-label="<?php echo esc_attr( $showcase_item_3['title'] ); ?>">
                 <!-- Left: Product Image -->
-                <div class="maze-showcase-media relative w-full aspect-[3/4] bg-neutral-100 overflow-hidden">
+                <div class="maze-showcase-media relative w-full aspect-[3/4] bg-white p-3 sm:p-5 flex items-center justify-center overflow-hidden">
                     <img 
                         src="<?php echo esc_url( $showcase_item_3['image'] ); ?>" 
                         alt="<?php echo esc_attr( $showcase_item_3['title'] ); ?>" 
                         loading="lazy"
                         decoding="async"
-                        class="w-full h-full object-cover object-top select-none transition-transform duration-700 ease-out group-hover:scale-105"
+                        class="w-full h-full object-contain object-center select-none transition-transform duration-700 ease-out group-hover:scale-105"
                     />
                 </div>
 
