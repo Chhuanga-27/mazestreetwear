@@ -941,7 +941,18 @@
     background-color: #f5f5f5;
   }
 
-  /* Editorial Modern Studio Footer Component Styles - Bebas Neue */
+  /* Editorial Modern Studio Footer Component Styles */
+  .maze-footer-brand-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+  }
+
   .maze-footer-brand-title {
     font-family: var(--font-bebas) !important;
     font-weight: 400;

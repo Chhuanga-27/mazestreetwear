@@ -101,11 +101,19 @@ $footer_card_border = $is_maze_home ? 'border-0' : 'border border-black/15 shado
             </div>
         </div>
 
-        <!-- Centerpiece: Giant Brand Typography -->
+        <!-- Centerpiece: Giant Brand Graphic -->
         <div class="w-full my-6 sm:my-10 lg:my-12 select-none overflow-hidden text-center flex items-center justify-center" aria-label="MAZE">
-            <span class="maze-footer-brand-title block text-center font-black uppercase text-black tracking-tighter select-none pointer-events-none w-full">
-                MAZE
-            </span>
+            <img 
+                src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze-footer-logo.png' ); ?>" 
+                srcset="<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze-footer-logo-662w.png' ); ?> 662w, <?php echo esc_url( get_template_directory_uri() . '/assets/images/maze-footer-logo.png' ); ?> 2648w"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1400px"
+                alt="<?php esc_attr_e( 'MAZE', 'mazestreetwear' ); ?>" 
+                width="2648" 
+                height="292" 
+                loading="lazy" 
+                decoding="async" 
+                class="maze-footer-brand-image w-full h-auto object-contain mx-auto block select-none pointer-events-none"
+            />
         </div>
 
         <!-- Bottom Meta & Legal Bar -->

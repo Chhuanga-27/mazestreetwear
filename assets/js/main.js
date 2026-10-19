@@ -597,11 +597,11 @@
                                     parsed['span.maze-cart-count'] = newHtml;
                                     sessionStorage.setItem(key, JSON.stringify(parsed));
                                 }
-                            } catch (e) {}
+                            } catch (e) { }
                         }
                     }
                 }
-            } catch (e) {}
+            } catch (e) { }
         }
 
         // Clear stale fragments cache when explicit desync is detected
@@ -614,7 +614,7 @@
                         sessionStorage.removeItem(key);
                     }
                 }
-            } catch (e) {}
+            } catch (e) { }
         }
 
         // Live visual update of the shopping bag counter badge in the header
@@ -760,9 +760,9 @@
                                     syncMazeCartBadge(count);
                                     pulseMazeCartBadge();
                                 }
-                            }).catch(function () {});
-                        } catch (e) {}
-                    }).catch(function () {});
+                            }).catch(function () { });
+                        } catch (e) { }
+                    }).catch(function () { });
                 }
 
                 return promise;
@@ -790,7 +790,7 @@
                                 pulseMazeCartBadge();
                             }
                         }
-                    } catch (e) {}
+                    } catch (e) { }
                 });
                 return originalSend.apply(this, arguments);
             };
@@ -807,11 +807,11 @@
                                 syncMazeCartBadge(count);
                                 pulseMazeCartBadge();
                             }
-                        } catch (e) {}
+                        } catch (e) { }
                         return response;
                     });
                 });
-            } catch (e) {}
+            } catch (e) { }
         }
 
         // Subscribe to WordPress Gutenberg Data Store (`wc/store/cart`)
@@ -841,7 +841,7 @@
                             lastSeenCount = count;
                             syncMazeCartBadge(count);
                         }
-                    } catch (err) {}
+                    } catch (err) { }
                 });
                 return true;
             } catch (e) {
@@ -985,7 +985,7 @@
         }).remove();
 
         // View Cart info toasts removed per user request: header cart icon handles cart access directly
-        function showMazeToast() {}
+        function showMazeToast() { }
 
         // AJAX Add to Bag on Single Product Pages (Simple & Variable)
         // Eliminates full-page form POST, preventing browser ERR_CACHE_MISS / Confirm Form Resubmission on back navigation
