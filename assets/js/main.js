@@ -1004,21 +1004,51 @@
             if ($varIdInput.length && (!parseInt($varIdInput.val(), 10) || parseInt($varIdInput.val(), 10) <= 0)) {
                 const variations = $form.data('product_variations');
                 if (Array.isArray(variations)) {
-                    const activePill = $form.find('.maze-size-pill.is-active').first();
-                    const activeVal = (activePill.data('value') || activePill.text().trim() || '').toLowerCase();
-                    if (activeVal) {
+                    // Collect all currently selected attribute values from selects/pills
+                    const selectedAttrs = {};
+                    $form.find('.variation-row').each(function () {
+                        const $row = $(this);
+                        const $select = $row.find('select');
+                        const $activePill = $row.find('.maze-size-pill.is-active');
+                        let attrName = '';
+                        if ($select.length) {
+                            attrName = $select.attr('data-attribute_name') || $select.attr('name') || '';
+                        }
+                        if (!attrName) {
+                            const rowAttr = $row.data('attribute') || '';
+                            if (rowAttr) attrName = 'attribute_' + rowAttr;
+                        }
+                        let attrVal = '';
+                        if ($select.length && $select.val()) {
+                            attrVal = String($select.val()).toLowerCase();
+                        } else if ($activePill.length) {
+                            attrVal = String($activePill.data('value') || $activePill.text().trim() || '').toLowerCase();
+                        }
+                        if (attrName && attrVal) {
+                            selectedAttrs[attrName] = attrVal;
+                        }
+                    });
+
+                    // Find variation where ALL attributes match
+                    const selectedKeys = Object.keys(selectedAttrs);
+                    if (selectedKeys.length > 0) {
                         for (let v = 0; v < variations.length; v++) {
                             const variation = variations[v];
-                            if (variation && variation.attributes) {
-                                for (const attrKey in variation.attributes) {
-                                    const attrVal = String(variation.attributes[attrKey] || '').toLowerCase();
-                                    if (attrVal === activeVal || attrVal === '') {
-                                        $varIdInput.val(variation.variation_id);
-                                        break;
-                                    }
+                            if (!variation || !variation.attributes) continue;
+                            let allMatch = true;
+                            for (let k = 0; k < selectedKeys.length; k++) {
+                                const key = selectedKeys[k];
+                                const varAttrVal = String(variation.attributes[key] || '').toLowerCase();
+                                // Empty string in variation attributes means "Any" — always matches
+                                if (varAttrVal !== '' && varAttrVal !== selectedAttrs[key]) {
+                                    allMatch = false;
+                                    break;
                                 }
                             }
-                            if (parseInt($varIdInput.val(), 10) > 0) break;
+                            if (allMatch) {
+                                $varIdInput.val(variation.variation_id);
+                                break;
+                            }
                         }
                     }
                 }
@@ -1127,6 +1157,11 @@
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.error('Add to bag error:', textStatus, errorThrown);
+                    var userMsg = 'Could not add garment to bag. Please check your connection and try again.';
+                    if (textStatus === 'timeout') {
+                        userMsg = 'Request timed out. Please try adding to bag again.';
+                    }
+                    alert(userMsg);
                     // Reset button immediately so it never hangs indefinitely
                     $submitBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalBtnHtml);
                     refreshMazeCartFragments();

@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 global $product;
 /** @var \WC_Product $product */
 ?>
-<div class="woocommerce-variation-add-to-cart variations_button pt-2 w-full">
+<div class="woocommerce-variation-add-to-cart variations_button woocommerce-variation-add-to-cart-disabled pt-2 w-full">
     <?php do_action( 'woocommerce_before_add_to_cart_button' ); ?>
 
     <?php
@@ -32,7 +32,7 @@ global $product;
     do_action( 'woocommerce_after_add_to_cart_quantity' );
     ?>
 
-    <button type="submit" class="single_add_to_cart_button button alt bg-black text-white hover:bg-neutral-800 text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border border-black rounded-none font-bebas transition-colors duration-150 cursor-pointer block text-center">
+    <button type="submit" class="single_add_to_cart_button button alt disabled bg-black text-white hover:bg-neutral-800 text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border border-black rounded-none font-bebas transition-colors duration-150 cursor-pointer block text-center" disabled>
         <?php echo esc_html( $product->single_add_to_cart_text() ? $product->single_add_to_cart_text() : __( 'ADD TO BAG', 'mazestreetwear' ) ); ?>
     </button>
 
