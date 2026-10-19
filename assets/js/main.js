@@ -464,7 +464,7 @@
             $form.find('.selected-variation-value').text('');
         });
 
-        // Sync variation image when a valid variation is matched
+        // Sync variation image and handle out-of-stock feedback when a variation is matched
         $(document).on('found_variation', 'form.variations_form', function (event, variation) {
             if (variation && variation.image && variation.image.src) {
                 const $mainImg = $('#maze-main-product-image');
@@ -476,6 +476,29 @@
                     }
                 }
             }
+
+            const $form = $(this);
+            const $btn = $form.find('.single_add_to_cart_button');
+            const defaultBtnText = $btn.data('default-text') || $btn.text().trim() || 'ADD TO BAG';
+            if (!$btn.data('default-text')) {
+                $btn.data('default-text', defaultBtnText);
+            }
+
+            if (variation && variation.is_in_stock === false) {
+                const $avail = $form.find('.woocommerce-variation-availability');
+                if ($avail.length && !$avail.find('.stock.out-of-stock').length) {
+                    $avail.html('<p class="stock out-of-stock">Out of stock</p>');
+                }
+                $btn.text('OUT OF STOCK').addClass('disabled opacity-60 cursor-not-allowed').prop('disabled', true);
+            } else if (variation && variation.is_purchasable && variation.is_in_stock) {
+                $btn.text(defaultBtnText).removeClass('disabled opacity-60 cursor-not-allowed').prop('disabled', false);
+            }
+        });
+
+        $(document).on('reset_data', 'form.variations_form', function () {
+            const $btn = $(this).find('.single_add_to_cart_button');
+            const defaultBtnText = $btn.data('default-text') || 'ADD TO BAG';
+            $btn.text(defaultBtnText).removeClass('opacity-60 cursor-not-allowed');
         });
 
         // Initialize variation pills on page ready

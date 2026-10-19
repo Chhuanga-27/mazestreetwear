@@ -812,18 +812,18 @@ body.single-product .maze-single-product-editorial {
 }
 
 /* ==========================================================================
-   Stock Availability Display: Hidden on Product Page
-   (To unhide: simply comment out or delete this block)
+   Stock Availability Display:
+   - Hide in-stock counters (e.g. "1 in stock", "In stock")
+   - Show "Out of stock" when an out-of-stock size is chosen
    ========================================================================== */
-.woocommerce-variation-availability,
-.single_variation .stock,
-.single_variation .woocommerce-variation-availability,
-.variations_form .woocommerce-variation-availability,
-.variations_form .stock,
+
+/* 1. Strictly hide in-stock quantity counters across product & variations */
 .single-product .stock.in-stock,
-.single-product .woocommerce-variation-availability,
-.single-product .single_variation_wrap .stock,
-.single-product .product-actions-area .stock {
+.single_variation .stock.in-stock,
+.woocommerce-variation-availability .stock.in-stock,
+.variations_form .stock.in-stock,
+.single-product .single_variation_wrap .stock.in-stock,
+.single-product .product-actions-area .stock.in-stock {
   display: none !important;
   visibility: hidden !important;
   height: 0 !important;
@@ -831,5 +831,28 @@ body.single-product .maze-single-product-editorial {
   padding: 0 !important;
   pointer-events: none !important;
 }
+
+/* 2. Explicitly show and highlight Out of Stock notices */
+.single-product .stock.out-of-stock,
+.single_variation .stock.out-of-stock,
+.woocommerce-variation-availability .stock.out-of-stock,
+.variations_form .stock.out-of-stock,
+.single-product .single_variation_wrap .stock.out-of-stock,
+.single-product .product-actions-area .stock.out-of-stock {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  pointer-events: auto !important;
+  font-family: var(--font-outfit) !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #dc2626 !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
 
 
