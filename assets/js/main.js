@@ -33,14 +33,21 @@
                     $mobileSearchBar.addClass('hidden');
                 }
                 $mobileMenu.removeClass('hidden');
-                $mobileMenuBtn.attr('aria-expanded', 'true');
-                $hamburgerIcon.addClass('hidden');
-                $closeIcon.removeClass('hidden');
+                $mobileMenuBtn.addClass('is-active').attr('aria-expanded', 'true');
+                $('body').addClass('mobile-menu-open');
+                $hamburgerIcon.hide().addClass('hidden');
+                $closeIcon.show().removeClass('hidden');
             } else {
                 $mobileMenu.addClass('hidden');
-                $mobileMenuBtn.attr('aria-expanded', 'false');
-                $hamburgerIcon.removeClass('hidden');
-                $closeIcon.addClass('hidden');
+                $mobileMenuBtn.removeClass('is-active').attr('aria-expanded', 'false');
+                $('body').removeClass('mobile-menu-open');
+                $hamburgerIcon.show().removeClass('hidden');
+                $closeIcon.hide().addClass('hidden');
+            }
+
+            // Immediately blur button to remove mobile touch sticky hover/focus
+            if ($mobileMenuBtn.length && $mobileMenuBtn[0].blur) {
+                $mobileMenuBtn[0].blur();
             }
         }
 
@@ -63,10 +70,16 @@
 
         if ($mobileMenuBtn.length) {
             $mobileMenuBtn.on('click', function (e) {
+                e.preventDefault();
                 e.stopPropagation();
                 toggleMobileMenu();
             });
         }
+
+        // Close menu when a link inside the mobile menu is tapped
+        $mobileMenu.on('click', 'a', function () {
+            toggleMobileMenu(false);
+        });
 
         if ($mobileSearchToggle.length) {
             $mobileSearchToggle.on('click', function (e) {

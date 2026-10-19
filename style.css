@@ -604,6 +604,57 @@ body.page-template-template-homepage #maze-mobile-menu {
   border-width: 0 !important;
 }
 
+/* Mobile Menu Toggle Button: Never go dim on mobile tap / close, seamless Close X switch */
+#maze-mobile-menu-btn {
+  color: #000000 !important;
+  opacity: 1 !important;
+  background-color: transparent !important;
+  -webkit-tap-highlight-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+#maze-mobile-menu-btn:hover,
+#maze-mobile-menu-btn:focus,
+#maze-mobile-menu-btn:active,
+#maze-mobile-menu-btn:focus-visible,
+#maze-mobile-menu-btn:visited {
+  color: #000000 !important;
+  opacity: 1 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+#maze-mobile-menu-btn svg,
+#maze-mobile-menu-btn svg line {
+  color: #000000 !important;
+  stroke: #000000 !important;
+  opacity: 1 !important;
+}
+
+#maze-mobile-menu-btn .maze-hamburger-icon,
+#maze-hamburger-icon {
+  display: block !important;
+}
+
+#maze-mobile-menu-btn .maze-close-icon,
+#maze-close-icon {
+  display: none !important;
+}
+
+#maze-mobile-menu-btn.is-active .maze-hamburger-icon,
+#maze-mobile-menu-btn[aria-expanded="true"] .maze-hamburger-icon,
+body.mobile-menu-open #maze-hamburger-icon {
+  display: none !important;
+}
+
+#maze-mobile-menu-btn.is-active .maze-close-icon,
+#maze-mobile-menu-btn[aria-expanded="true"] .maze-close-icon,
+body.mobile-menu-open #maze-close-icon {
+  display: block !important;
+}
+
 /* Header Navigation Links: Clean streetwear spacing, Outfit font, pitch black, uppercase */
 #site-navigation ul,
 #primary-menu {

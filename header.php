@@ -152,14 +152,14 @@ $masthead_classes = $is_maze_home
 <!-- Header / Navigation Bar -->
 <!-- On homepage: Transparent floating pill header over the hero banner -->
 <!-- On other pages: Full-width solid white backdrop with 1px border so content never bleeds through -->
-<header id="masthead" class="site-header fixed top-0 inset-x-0 z-50 px-3 sm:px-6 transition-all duration-200 <?php echo esc_attr( $masthead_classes ); ?>">
+<header id="masthead" class="site-header fixed top-0 inset-x-0 z-50 px-2 sm:px-6 transition-all duration-200 <?php echo esc_attr( $masthead_classes ); ?>">
     <div class="max-w-7xl mx-auto <?php echo $is_maze_home ? 'pointer-events-auto' : ''; ?>">
 
         <!-- Pill Navigation Bar Container -->
-        <div class="maze-pill-navbar w-full min-w-0 bg-white/95 backdrop-blur-md border-0 rounded-full px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between shadow-none transition-all duration-200">
+        <div class="maze-pill-navbar w-full min-w-0 bg-white/95 backdrop-blur-md border-0 rounded-full px-2.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between shadow-none transition-all duration-200">
 
             <!-- Left: Brand Logo -->
-            <div class="flex-shrink-0 flex items-center mr-2 sm:mr-4">
+            <div class="flex-shrink-0 flex items-center mr-1.5 sm:mr-4">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="maze-brand-logo group flex items-center select-none flex-shrink-0" rel="home" aria-label="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>">
                     <img 
                         id="masthead-logo"
@@ -215,7 +215,7 @@ $masthead_classes = $is_maze_home
             </nav>
 
             <!-- Right: Search Pill, Bag & Mobile Menu Toggle -->
-            <div class="flex-shrink-0 flex items-center space-x-1.5 sm:space-x-2.5 md:space-x-3.5 ml-2">
+            <div class="flex-shrink-0 flex items-center space-x-1 sm:space-x-2.5 md:space-x-3.5 ml-1 sm:ml-2">
 
                 <!-- Embedded Search Pill (Desktop/Tablet) -->
                 <form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="hidden sm:flex items-center relative">
@@ -255,14 +255,14 @@ $masthead_classes = $is_maze_home
                 </a>
 
                 <!-- Mobile Menu Button (md:hidden) -->
-                <button type="button" id="maze-mobile-menu-btn" class="md:hidden inline-flex items-center justify-center p-1.5 text-black hover:opacity-60 focus:outline-none ml-0.5" aria-controls="maze-mobile-menu" aria-expanded="false" aria-label="<?php esc_attr_e( 'Toggle navigation menu', 'mazestreetwear' ); ?>">
-                    <svg id="maze-hamburger-icon" class="w-6 h-6 block text-black" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.25" stroke-linecap="round" aria-hidden="true">
+                <button type="button" id="maze-mobile-menu-btn" class="md:hidden inline-flex items-center justify-center p-1 sm:p-1.5 text-black focus:outline-none select-none transition-transform" aria-controls="maze-mobile-menu" aria-expanded="false" aria-label="<?php esc_attr_e( 'Toggle navigation menu', 'mazestreetwear' ); ?>">
+                    <svg id="maze-hamburger-icon" class="maze-hamburger-icon w-6 h-6 text-black" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.25" stroke-linecap="round" aria-hidden="true">
                         <line x1="3.5" y1="8" x2="20.5" y2="8"></line>
                         <line x1="3.5" y1="16" x2="20.5" y2="16"></line>
                     </svg>
-                    <svg id="maze-close-icon" class="w-6 h-6 hidden text-black" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                        <line x1="6" y1="18" x2="18" y2="6"></line>
+                    <svg id="maze-close-icon" class="maze-close-icon w-6 h-6 text-black" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="5" y1="5" x2="19" y2="19"></line>
+                        <line x1="5" y1="19" x2="19" y2="5"></line>
                     </svg>
                 </button>
 
