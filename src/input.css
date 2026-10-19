@@ -951,6 +951,8 @@
     user-select: none;
     -webkit-user-select: none;
     pointer-events: none;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 
   .maze-footer-brand-title {
