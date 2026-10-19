@@ -134,9 +134,10 @@ function mazestreetwear_scripts()
     wp_localize_script('mazestreetwear-main', 'mazeData', array(
         'ajaxUrl'   => admin_url('admin-ajax.php'),
         'wcAjaxUrl' => class_exists('WC_AJAX') ? WC_AJAX::get_endpoint('%%endpoint%%') : home_url('/?wc-ajax=%%endpoint%%'),
-        'nonce'     => wp_create_nonce('maze_cart_nonce'),
-        'cartUrl'   => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
-        'shopUrl'   => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
+        'nonce'       => wp_create_nonce('maze_cart_nonce'),
+        'cartUrl'     => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
+        'checkoutUrl' => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/'),
+        'shopUrl'     => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
     ));
 }
 add_action('wp_enqueue_scripts', 'mazestreetwear_scripts');
@@ -422,6 +423,8 @@ function mazestreetwear_ajax_add_to_cart()
             'cart_hash'    => $cart_hash,
             'product_name' => $product_title,
             'cart_url'     => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
+            'checkout_url' => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/'),
+            'is_buy_now'   => ! empty($_POST['is_buy_now']),
         ));
     } else {
         $notices   = wc_get_notices('error');
@@ -438,6 +441,9 @@ add_action('wp_ajax_nopriv_maze_ajax_add_to_cart', 'mazestreetwear_ajax_add_to_c
  * Prevents browser "Confirm Form Resubmission" (ERR_CACHE_MISS) on back-button navigation
  */
 add_filter('woocommerce_add_to_cart_redirect', function ($url) {
+    if (! empty($_REQUEST['maze_buy_now']) || ! empty($_POST['maze_buy_now'])) {
+        return function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/');
+    }
     if (wp_doing_ajax() || (defined('DOING_AJAX') && DOING_AJAX) || (isset($_REQUEST['action']) && $_REQUEST['action'] === 'maze_ajax_add_to_cart')) {
         return false;
     }

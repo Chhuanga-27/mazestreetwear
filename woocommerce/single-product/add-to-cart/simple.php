@@ -128,11 +128,22 @@ if ( $product->is_in_stock() ) : ?>
         }
         ?>
 
-        <!-- Solid Black Full-Width "ADD TO BAG" Button -->
-        <div class="pt-2">
-            <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button button alt bg-black text-white hover:bg-neutral-800 text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border border-black rounded-none font-bebas transition-colors duration-150 cursor-pointer block text-center">
-                <?php echo esc_html( $product->single_add_to_cart_text() ? $product->single_add_to_cart_text() : __( 'ADD TO BAG', 'mazestreetwear' ) ); ?>
+        <!-- Action Buttons: ADD TO BAG & BUY NOW -->
+        <div class="product-actions-buttons flex flex-col gap-3 pt-2 w-full">
+            <button type="submit" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>" class="single_add_to_cart_button maze-btn-animated button alt bg-black text-white hover:bg-neutral-800 text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border border-black rounded-none font-bebas transition-all duration-200 cursor-pointer block text-center select-none active:scale-[0.98]" data-default-text="<?php echo esc_attr( $product->single_add_to_cart_text() ? $product->single_add_to_cart_text() : __( 'ADD TO BAG', 'mazestreetwear' ) ); ?>">
+                <span class="btn-text"><?php echo esc_html( $product->single_add_to_cart_text() ? $product->single_add_to_cart_text() : __( 'ADD TO BAG', 'mazestreetwear' ) ); ?></span>
             </button>
+
+            <button type="button" class="maze_buy_now_button maze-btn-animated button bg-white text-black hover:bg-black hover:text-white text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border-2 border-black rounded-none font-bebas transition-all duration-200 cursor-pointer block text-center select-none active:scale-[0.98]" data-default-text="<?php esc_attr_e( 'BUY NOW', 'mazestreetwear' ); ?>">
+                <span class="btn-text"><?php esc_html_e( 'BUY NOW', 'mazestreetwear' ); ?></span>
+            </button>
+        </div>
+
+        <!-- View Cart link under the buttons (revealed on Add to Bag) -->
+        <div class="maze-view-cart-wrap text-center mt-3 hidden">
+            <a href="<?php echo esc_url( function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' ) ); ?>" class="maze-view-cart-link added_to_cart wc-forward font-bebas text-xl sm:text-2xl uppercase tracking-wider text-black underline underline-offset-4 hover:opacity-75 transition-all">
+                <?php esc_html_e( 'VIEW CART →', 'mazestreetwear' ); ?>
+            </a>
         </div>
 
         <?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>

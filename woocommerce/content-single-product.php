@@ -157,18 +157,6 @@ $image_count = count( $gallery_images );
 
                 <!-- Minimalist Accordions with Thin Black Top/Bottom Borders -->
                 <div class="mt-10 border-t border-black">
-                    <!-- 1. Fabric & Fit -->
-                    <details class="group border-b border-black" open>
-                        <summary class="flex justify-between items-center py-4 sm:py-5 cursor-pointer list-none text-base sm:text-lg font-bebas font-normal uppercase tracking-wider text-black select-none">
-                            <span><?php esc_html_e( 'FABRIC & FIT', 'mazestreetwear' ); ?></span>
-                            <span class="text-base sm:text-lg font-outfit font-semibold group-open:hidden">+</span>
-                            <span class="text-base sm:text-lg font-outfit font-semibold hidden group-open:inline">&minus;</span>
-                        </summary>
-                        <div class="pb-5 text-sm sm:text-base font-outfit text-neutral-800 leading-relaxed space-y-2">
-                            <p><?php esc_html_e( '100% custom-milled 450GSM loopback French terry cotton. Engineered for substantial drape and enduring structural silhouette.', 'mazestreetwear' ); ?></p>
-                            <p><?php esc_html_e( 'Boxy archival proportions with dropped shoulder seams and relaxed body cut. Pre-shrunk fabric to prevent deformation.', 'mazestreetwear' ); ?></p>
-                        </div>
-                    </details>
 
                     <!-- 2. Shipping & Delivery -->
                     <details class="group border-b border-black">

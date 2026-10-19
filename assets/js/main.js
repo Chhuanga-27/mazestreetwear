@@ -492,9 +492,14 @@
 
             const $form = $(this);
             const $btn = $form.find('.single_add_to_cart_button');
+            const $buyNowBtn = $form.find('.maze_buy_now_button');
             const defaultBtnText = $btn.data('default-text') || $btn.text().trim() || 'ADD TO BAG';
             if (!$btn.data('default-text')) {
                 $btn.data('default-text', defaultBtnText);
+            }
+            const defaultBuyNowText = $buyNowBtn.data('default-text') || $buyNowBtn.text().trim() || 'BUY NOW';
+            if (!$buyNowBtn.data('default-text')) {
+                $buyNowBtn.data('default-text', defaultBuyNowText);
             }
 
             if (variation && variation.is_in_stock === false) {
@@ -503,15 +508,21 @@
                     $avail.html('<p class="stock out-of-stock">Out of stock</p>');
                 }
                 $btn.text('OUT OF STOCK').addClass('disabled opacity-60 cursor-not-allowed').prop('disabled', true);
+                $buyNowBtn.addClass('disabled opacity-60 cursor-not-allowed').prop('disabled', true);
             } else if (variation && variation.is_purchasable && variation.is_in_stock) {
                 $btn.text(defaultBtnText).removeClass('disabled opacity-60 cursor-not-allowed').prop('disabled', false);
+                $buyNowBtn.text(defaultBuyNowText).removeClass('disabled opacity-60 cursor-not-allowed').prop('disabled', false);
             }
         });
 
         $(document).on('reset_data', 'form.variations_form', function () {
-            const $btn = $(this).find('.single_add_to_cart_button');
+            const $form = $(this);
+            const $btn = $form.find('.single_add_to_cart_button');
+            const $buyNowBtn = $form.find('.maze_buy_now_button');
             const defaultBtnText = $btn.data('default-text') || 'ADD TO BAG';
+            const defaultBuyNowText = $buyNowBtn.data('default-text') || 'BUY NOW';
             $btn.text(defaultBtnText).removeClass('opacity-60 cursor-not-allowed');
+            $buyNowBtn.text(defaultBuyNowText).removeClass('opacity-60 cursor-not-allowed');
         });
 
         // Initialize variation pills on page ready
@@ -1011,9 +1022,19 @@
             }
         });
 
-        // Bag Counter Pulse on Add To Cart
-        $(document.body).on('added_to_cart wc-blocks_added_to_cart', function () {
+        // Bag Counter Pulse & View Cart display on Add To Cart
+        $(document.body).on('added_to_cart wc-blocks_added_to_cart', function (event, fragments, cart_hash, $button) {
             pulseMazeCartBadge();
+            if ($button && $button.length) {
+                const $form = $button.closest('form.cart');
+                if ($form.length) {
+                    const $wrap = $form.find('.maze-view-cart-wrap');
+                    if ($wrap.length) {
+                        $wrap.removeClass('hidden').slideDown(200);
+                        $button.next('a.added_to_cart').remove();
+                    }
+                }
+            }
         });
 
         // Initial sync on DOM ready (if on Cart page with items already rendered, sync with actual items)
@@ -1029,15 +1050,70 @@
             return $(this).find('.wc-forward, a[href*="cart"]').length > 0 || $(this).text().toLowerCase().indexOf('added to your cart') !== -1;
         }).remove();
 
-        // View Cart info toasts removed per user request: header cart icon handles cart access directly
-        function showMazeToast() { }
+        // Dynamic ripple effect & click pop micro-animation on streetwear action buttons
+        $(document).on('click', '.maze-btn-animated', function (e) {
+            const $btn = $(this);
+            if ($btn.prop('disabled') || $btn.hasClass('disabled')) return;
 
-        // AJAX Add to Bag on Single Product Pages (Simple & Variable)
+            $btn.removeClass('maze-btn-pop');
+            void $btn[0].offsetWidth; // trigger reflow
+            $btn.addClass('maze-btn-pop');
+
+            // Dynamic micro-ripple wave
+            const rect = this.getBoundingClientRect();
+            const x = (e.clientX !== undefined && e.clientX > 0) ? (e.clientX - rect.left) : (rect.width / 2);
+            const y = (e.clientY !== undefined && e.clientY > 0) ? (e.clientY - rect.top) : (rect.height / 2);
+            const size = Math.max(rect.width, rect.height) * 1.5;
+            const isDark = $btn.hasClass('bg-black') || $btn.css('background-color') === 'rgb(0, 0, 0)';
+
+            const $ripple = $('<span class="maze-ripple-effect"></span>');
+            $ripple.css({
+                width: size + 'px',
+                height: size + 'px',
+                left: (x - size / 2) + 'px',
+                top: (y - size / 2) + 'px',
+                backgroundColor: isDark ? 'rgba(255, 255, 255, 0.35)' : 'rgba(0, 0, 0, 0.2)'
+            });
+
+            $btn.append($ripple);
+            setTimeout(function () {
+                $ripple.remove();
+            }, 600);
+        });
+
+        // Click handler for Buy Now button
+        $(document).on('click', '.maze_buy_now_button', function (e) {
+            e.preventDefault();
+            const $buyBtn = $(this);
+            if ($buyBtn.prop('disabled') || $buyBtn.hasClass('disabled')) return;
+
+            const $form = $buyBtn.closest('form.cart');
+            if (!$form.length) return;
+
+            // Check size pills validation
+            const $pills = $form.find('.maze-size-pills');
+            if ($pills.length && !$pills.find('.maze-size-pill.is-active').length) {
+                $pills.addClass('ring-2 ring-black');
+                setTimeout(function () {
+                    $pills.removeClass('ring-2 ring-black');
+                }, 1000);
+                return false;
+            }
+
+            // Flag form submission as Buy Now
+            $form.data('maze-buy-now', true);
+            $form.trigger('submit');
+        });
+
+        // AJAX Add to Bag & Buy Now on Single Product Pages (Simple & Variable)
         // Eliminates full-page form POST, preventing browser ERR_CACHE_MISS / Confirm Form Resubmission on back navigation
         $(document).on('submit', 'form.cart', function (e) {
             const $form = $(this);
             const $submitBtn = $form.find('.single_add_to_cart_button');
+            const $buyBtn = $form.find('.maze_buy_now_button');
             const $pills = $form.find('.maze-size-pills');
+            const isBuyNow = !!$form.data('maze-buy-now');
+            $form.removeData('maze-buy-now');
 
             // 1. Check if size selection is required and made
             if ($pills.length && !$pills.find('.maze-size-pill.is-active').length) {
@@ -1125,13 +1201,23 @@
             // 4. Intercept submission for AJAX processing
             e.preventDefault();
 
-            if ($submitBtn.hasClass('is-loading') || $submitBtn.prop('disabled')) {
+            const $activeBtn = isBuyNow ? ($buyBtn.length ? $buyBtn : $submitBtn) : $submitBtn;
+            if ($activeBtn.hasClass('is-loading') || $activeBtn.prop('disabled')) {
                 return false;
             }
 
-            const originalBtnHtml = $submitBtn.html();
-            $submitBtn.addClass('is-loading opacity-80').prop('disabled', true);
-            $submitBtn.html('<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> ADDING TO BAG...</span>');
+            const originalSubmitBtnHtml = $submitBtn.html();
+            const originalBuyBtnHtml = $buyBtn.length ? $buyBtn.html() : '';
+
+            if (isBuyNow && $buyBtn.length) {
+                $buyBtn.addClass('is-loading opacity-80').prop('disabled', true);
+                $submitBtn.prop('disabled', true);
+                $buyBtn.html('<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4 text-black" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> CHECKING OUT...</span>');
+            } else {
+                $submitBtn.addClass('is-loading opacity-80').prop('disabled', true);
+                if ($buyBtn.length) $buyBtn.prop('disabled', true);
+                $submitBtn.html('<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> ADDING TO BAG...</span>');
+            }
 
             const serialized = $form.serializeArray();
             const formData = [];
@@ -1151,14 +1237,13 @@
             }
 
             // Process serialized fields: NEVER pass 'add-to-cart' in AJAX POST
-            // WooCommerce's WC_Form_Handler intercepts 'add-to-cart' and issues an HTTP 302 redirect
             for (let i = 0; i < serialized.length; i++) {
                 const item = serialized[i];
                 if (item.name === 'add-to-cart') {
                     if (!resolvedProductId) resolvedProductId = item.value;
                 } else if (item.name === 'product_id') {
                     if (!resolvedProductId) resolvedProductId = item.value;
-                } else if (item.name !== 'action') {
+                } else if (item.name !== 'action' && item.name !== 'maze_buy_now') {
                     formData.push(item);
                 }
             }
@@ -1168,6 +1253,9 @@
             }
 
             formData.push({ name: 'action', value: 'maze_ajax_add_to_cart' });
+            if (isBuyNow) {
+                formData.push({ name: 'is_buy_now', value: '1' });
+            }
 
             // Ensure custom selected_size from simple product pills is included
             const $sizeInput = $form.find('input[name="selected_size"]');
@@ -1196,8 +1284,15 @@
                 timeout: 10000,
                 success: function (res) {
                     if (res && res.success) {
+                        if (isBuyNow) {
+                            const checkoutUrl = (res.data && res.data.checkout_url) ? res.data.checkout_url : ((typeof mazeData !== 'undefined' && mazeData.checkoutUrl) ? mazeData.checkoutUrl : '/checkout/');
+                            window.location.href = checkoutUrl;
+                            return;
+                        }
+
                         $submitBtn.removeClass('is-loading opacity-80');
                         $submitBtn.html('<span class="inline-flex items-center justify-center gap-1.5 font-mono tracking-widest uppercase">ADDED TO BAG ✓</span>');
+                        if ($buyBtn.length) $buyBtn.prop('disabled', false);
 
                         const count = (res.data && res.data.cart_count !== undefined) ? res.data.cart_count : null;
                         if (count !== null) {
@@ -1212,26 +1307,46 @@
                             if (count !== null) syncMazeCartBadge(count);
                         }
 
+                        // Display prominent View Cart link under the button stack
+                        const cartUrl = (res.data && res.data.cart_url) ? res.data.cart_url : ((typeof mazeData !== 'undefined' && mazeData.cartUrl) ? mazeData.cartUrl : '/cart/');
+                        const $viewCartWrap = $form.find('.maze-view-cart-wrap');
+                        if ($viewCartWrap.length) {
+                            $viewCartWrap.removeClass('hidden').slideDown(200);
+                        } else {
+                            const $btnStack = $form.find('.product-actions-buttons').length ? $form.find('.product-actions-buttons') : $submitBtn.parent();
+                            let $cartLink = $form.find('.added_to_cart, .maze-view-cart-link');
+                            if (!$cartLink.length) {
+                                $cartLink = $('<a href="' + cartUrl + '" class="maze-view-cart-link added_to_cart wc-forward font-bebas text-xl sm:text-2xl uppercase tracking-wider text-black underline underline-offset-4 hover:opacity-75 transition-all block text-center mt-3">VIEW CART &rarr;</a>');
+                                $btnStack.after($cartLink);
+                            }
+                        }
+
                         $(document.body).trigger('added_to_cart', [res.data.fragments, res.data.cart_hash, $submitBtn]);
 
                         setTimeout(function () {
-                            $submitBtn.prop('disabled', false).html(originalBtnHtml);
+                            $submitBtn.prop('disabled', false).html(originalSubmitBtnHtml);
                         }, 1800);
                     } else {
                         const errorMsg = (res && res.data && res.data.message) ? res.data.message : 'Could not add garment to bag. Please try again.';
                         alert(errorMsg);
-                        $submitBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalBtnHtml);
+                        $submitBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalSubmitBtnHtml);
+                        if ($buyBtn.length) {
+                            $buyBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalBuyBtnHtml);
+                        }
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    console.error('Add to bag error:', textStatus, errorThrown);
+                    console.error('Submission error:', textStatus, errorThrown);
                     var userMsg = 'Could not add garment to bag. Please check your connection and try again.';
                     if (textStatus === 'timeout') {
                         userMsg = 'Request timed out. Please try adding to bag again.';
                     }
                     alert(userMsg);
                     // Reset button immediately so it never hangs indefinitely
-                    $submitBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalBtnHtml);
+                    $submitBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalSubmitBtnHtml);
+                    if ($buyBtn.length) {
+                        $buyBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalBuyBtnHtml);
+                    }
                     refreshMazeCartFragments();
                 }
             });

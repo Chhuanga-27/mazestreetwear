@@ -548,6 +548,158 @@ body.woocommerce .site-header img {
   display: none !important;
 }
 
+/* ==========================================================================
+   SINGLE PRODUCT: BUY NOW BUTTON, ANIMATIONS & PROMINENT VIEW CART
+   ========================================================================== */
+
+/* Buy Now Button - Stark Luxury Minimalist */
+.button.maze_buy_now_button,
+.maze_buy_now_button {
+  border-radius: 0 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  font-family: var(--font-bebas) !important;
+  font-size: 1.125rem !important;
+  font-weight: 400 !important;
+  line-height: 1.1 !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+  padding: 0.95rem 1.75rem !important;
+  min-height: 48px !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  display: block !important;
+  text-align: center !important;
+  width: 100% !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+@media (min-width: 640px) {
+  .button.maze_buy_now_button,
+  .maze_buy_now_button {
+    font-size: 1.25rem !important;
+  }
+}
+
+.button.maze_buy_now_button:hover:not(:disabled):not(.disabled),
+.maze_buy_now_button:hover:not(:disabled):not(.disabled) {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+.button.maze_buy_now_button:disabled,
+.button.maze_buy_now_button.disabled,
+.maze_buy_now_button:disabled,
+.maze_buy_now_button.disabled {
+  opacity: 0.35 !important;
+  cursor: not-allowed !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  pointer-events: none !important;
+}
+
+/* Streetwear Button Click Animations (Press, Pop & Ripple) */
+.maze-btn-animated {
+  position: relative !important;
+  overflow: hidden !important;
+  transform: translateZ(0);
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease !important;
+}
+
+.maze-btn-animated:active:not(:disabled):not(.disabled) {
+  transform: scale(0.97) !important;
+}
+
+.maze-btn-pop {
+  animation: mazeButtonPop 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+@keyframes mazeButtonPop {
+  0% { transform: scale(1); }
+  35% { transform: scale(0.96); }
+  70% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* Dynamic micro-ripple expanding wave on button click */
+.maze-ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: mazeRippleAnim 0.55s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes mazeRippleAnim {
+  0% {
+    transform: scale(0);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(3.5);
+    opacity: 0;
+  }
+}
+
+/* View Cart Link Under Button - Prominent, Bigger, Minimalist */
+.maze-view-cart-link,
+.added_to_cart,
+a.added_to_cart,
+.woocommerce a.added_to_cart {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin: 0.875rem auto 0.25rem auto !important;
+  text-align: center !important;
+  font-family: var(--font-bebas) !important;
+  font-size: 1.35rem !important; /* Prominent size: 21.6px mobile */
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #000000 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 5px !important;
+  text-decoration-thickness: 1.5px !important;
+  transition: color 0.15s ease, opacity 0.15s ease, transform 0.15s ease !important;
+  animation: mazeFadeSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  cursor: pointer !important;
+}
+
+@media (min-width: 640px) {
+  .maze-view-cart-link,
+  .added_to_cart,
+  a.added_to_cart,
+  .woocommerce a.added_to_cart {
+    font-size: 1.55rem !important; /* Prominent size: 24.8px desktop */
+  }
+}
+
+.maze-view-cart-link:hover,
+.added_to_cart:hover,
+a.added_to_cart:hover,
+.woocommerce a.added_to_cart:hover {
+  color: #000000 !important;
+  opacity: 0.65 !important;
+  transform: translateY(-1px) !important;
+}
+
+@keyframes mazeFadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 /* Suppress all breadcrumbs across the website */
 .woocommerce-breadcrumb,
 .breadcrumb,
