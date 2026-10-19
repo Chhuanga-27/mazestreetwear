@@ -26,8 +26,8 @@ do_action( 'woocommerce_before_main_content' );
 
 <div class="maze-archive-page bg-white text-black min-h-screen">
 
-    <!-- Clean Category Header with a 1px Bottom Border -->
-    <header class="woocommerce-products-header border-b border-black py-8 sm:py-12 bg-white">
+    <!-- Clean Category Header -->
+    <header class="woocommerce-products-header py-8 sm:py-12 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-4">
                 <div>
@@ -51,8 +51,8 @@ do_action( 'woocommerce_before_main_content' );
     <?php if ( woocommerce_product_loop() ) : ?>
 
         <!-- Minimalist Controls Bar: Lowercase Result Count & Minimalist Sorting Trigger -->
-        <div class="border-b border-black bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm sm:text-base font-outfit">
+        <div class="bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-sm sm:text-base font-outfit">
                 <div class="text-black font-medium lowercase tracking-normal text-sm sm:text-base">
                     <?php woocommerce_result_count(); ?>
                 </div>
@@ -63,10 +63,10 @@ do_action( 'woocommerce_before_main_content' );
             </div>
         </div>
 
-        <!-- Connected Hairline Border Grid: 2 Columns on Mobile, 3 on Tablet, 4 on Desktop -->
-        <div class="w-full bg-white border-b border-black overflow-hidden">
-            <div class="max-w-7xl mx-auto border-x border-black">
-                <div class="maze-product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-white">
+        <!-- Borderless Product Grid: 2 Columns on Mobile, 3 on Tablet, 4 on Desktop -->
+        <div class="w-full bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16">
+                <div class="maze-product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 bg-white">
                     <?php
                     if ( wc_get_loop_prop( 'total' ) ) {
                         while ( have_posts() ) {
@@ -97,14 +97,14 @@ do_action( 'woocommerce_before_main_content' );
 
     <?php else : ?>
 
-        <div class="max-w-xl mx-auto my-20 p-8 text-center border border-black bg-white">
+        <div class="max-w-xl mx-auto my-20 p-8 text-center bg-white">
             <h2 class="text-xl sm:text-2xl font-normal font-bebas uppercase tracking-wider text-black mb-2">
                 <?php esc_html_e( 'NO PRODUCTS FOUND', 'mazestreetwear' ); ?>
             </h2>
             <p class="text-sm sm:text-base font-outfit text-neutral-800 font-normal mb-6">
                 <?php esc_html_e( 'The requested garment drop or category is currently empty.', 'mazestreetwear' ); ?>
             </p>
-            <a href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) ); ?>" class="inline-block border border-black bg-white text-black hover:bg-black hover:text-white transition-colors px-8 py-3.5 text-base sm:text-lg uppercase tracking-wider font-bebas font-normal">
+            <a href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' ) ); ?>" class="inline-block bg-black text-white hover:bg-neutral-800 transition-colors px-8 py-3.5 text-base sm:text-lg uppercase tracking-wider font-bebas font-normal">
                 <?php esc_html_e( 'VIEW ALL GARMENTS', 'mazestreetwear' ); ?>
             </a>
             <?php do_action( 'woocommerce_no_products_found' ); ?>

@@ -202,16 +202,16 @@ $image_count = count( $gallery_images );
         </div><!-- .grid -->
     </div><!-- .border-b -->
 
-    <!-- Related Products in Connected Hairline Grid -->
+    <!-- Related Products: Minimalist Borderless Grid -->
     <?php
     $related_limit = 4;
     $related_ids = wc_get_related_products( $product->get_id(), $related_limit );
 
     if ( ! empty( $related_ids ) ) :
         ?>
-        <div class="w-full bg-white border-b border-black">
-            <div class="max-w-7xl mx-auto border-x border-black">
-                <div class="px-4 sm:px-6 lg:px-8 py-5 border-b border-black flex justify-between items-center">
+        <div class="w-full bg-white pt-10 sm:pt-14 pb-12 sm:pb-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="pb-6 sm:pb-8 flex justify-between items-center">
                     <h2 class="text-xl sm:text-2xl font-normal font-bebas uppercase tracking-wider text-black">
                         <?php esc_html_e( 'YOU MAY ALSO LIKE', 'mazestreetwear' ); ?>
                     </h2>
@@ -220,7 +220,7 @@ $image_count = count( $gallery_images );
                     </a>
                 </div>
 
-                <div class="maze-product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 bg-white overflow-hidden">
+                <div class="maze-product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 bg-white">
                     <?php
                     foreach ( $related_ids as $rel_id ) :
                         $post_object = get_post( $rel_id );
