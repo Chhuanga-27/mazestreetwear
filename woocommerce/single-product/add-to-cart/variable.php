@@ -115,21 +115,21 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                     </div>
 
                     <?php if ( end( $attribute_keys ) === $attribute_name ) : ?>
-                        <div class="maze-variation-actions mt-2 flex flex-col items-start gap-1">
-                            <?php
-                            echo wp_kses_post( apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations text-xs font-outfit font-semibold tracking-wider uppercase text-neutral-800 hover:text-black inline-block" href="#">' . esc_html__( 'CLEAR SELECTION', 'mazestreetwear' ) . '</a>' ) );
-                            ?>
+                        <div class="maze-variation-actions mt-3 flex flex-wrap items-center gap-3">
                             <button type="button" 
-                                    class="maze-size-chart-trigger inline-flex items-center gap-1.5 text-xs font-outfit font-semibold tracking-wider uppercase text-neutral-800 hover:text-black transition-colors cursor-pointer group mt-0.5"
+                                    class="maze-size-chart-trigger inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-black text-white hover:bg-neutral-800 border border-black text-xs font-outfit font-semibold tracking-wider uppercase transition-colors cursor-pointer select-none"
                                     data-active-chart="<?php echo esc_attr( function_exists( 'mazestreetwear_get_current_product_size_chart_key' ) ? mazestreetwear_get_current_product_size_chart_key( $product ) : 't-shirt' ); ?>"
                                     onclick="window.mazeOpenSizeChart && window.mazeOpenSizeChart(event, this)"
                                     aria-haspopup="dialog"
                                     aria-controls="maze-size-chart-modal">
-                                <svg class="w-3.5 h-3.5 text-neutral-700 group-hover:text-black transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 17h18M7 7v4M12 7v3M17 7v4M7 17v-4M12 17v-3M17 17v-4" />
                                 </svg>
-                                <span class="underline underline-offset-4 decoration-neutral-300 group-hover:decoration-black"><?php esc_html_e( 'SIZE CHART', 'mazestreetwear' ); ?></span>
+                                <span><?php esc_html_e( 'SIZE CHART', 'mazestreetwear' ); ?></span>
                             </button>
+                            <?php
+                            echo wp_kses_post( apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations text-xs font-outfit font-semibold tracking-wider uppercase text-neutral-600 hover:text-black inline-block ml-1" href="#">' . esc_html__( 'CLEAR SELECTION', 'mazestreetwear' ) . '</a>' ) );
+                            ?>
                         </div>
                     <?php endif; ?>
                 </div>

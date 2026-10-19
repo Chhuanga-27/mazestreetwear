@@ -41,10 +41,7 @@ $default_chart_key = function_exists( 'mazestreetwear_get_current_product_size_c
         <!-- Modal Top Header Bar -->
         <div class="flex items-center justify-between px-5 sm:px-6 py-4 border-b-2 border-black bg-white select-none">
             <div>
-                <span class="text-[10px] sm:text-xs font-outfit font-bold uppercase tracking-widest text-neutral-500 block">
-                    <?php esc_html_e( 'MAZE SPECIFICATION // DROP SIZING', 'mazestreetwear' ); ?>
-                </span>
-                <h3 id="maze-size-chart-title" class="text-2xl sm:text-3xl font-normal font-bebas uppercase tracking-wider text-black leading-none mt-0.5">
+                <h3 id="maze-size-chart-title" class="text-2xl sm:text-3xl font-normal font-bebas uppercase tracking-wider text-black leading-none">
                     <?php esc_html_e( 'SIZE GUIDE // CHART', 'mazestreetwear' ); ?>
                 </h3>
             </div>
