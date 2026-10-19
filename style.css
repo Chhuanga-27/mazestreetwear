@@ -811,3 +811,25 @@ body.single-product .maze-single-product-editorial {
   }
 }
 
+/* ==========================================================================
+   Stock Availability Display: Hidden on Product Page
+   (To unhide: simply comment out or delete this block)
+   ========================================================================== */
+.woocommerce-variation-availability,
+.single_variation .stock,
+.single_variation .woocommerce-variation-availability,
+.variations_form .woocommerce-variation-availability,
+.variations_form .stock,
+.single-product .stock.in-stock,
+.single-product .woocommerce-variation-availability,
+.single-product .single_variation_wrap .stock,
+.single-product .product-actions-area .stock {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+}
+
+
