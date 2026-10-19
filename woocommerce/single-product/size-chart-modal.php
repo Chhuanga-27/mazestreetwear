@@ -137,32 +137,6 @@ $default_chart_key = function_exists( 'mazestreetwear_get_current_product_size_c
                 </div>
             <?php endforeach; ?>
 
-            <!-- How to Measure Instructions Box -->
-            <div class="p-3.5 sm:p-4 bg-neutral-50 border border-neutral-300">
-                <div class="flex items-center gap-2 mb-2">
-                    <svg class="w-4 h-4 text-black flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span class="font-bebas text-base uppercase tracking-wider text-black font-normal">
-                        <?php esc_html_e( 'HOW TO MEASURE YOUR FIT', 'mazestreetwear' ); ?>
-                    </span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-outfit text-neutral-700">
-                    <div class="space-y-0.5">
-                        <strong class="text-black uppercase font-bold tracking-wide block"><?php esc_html_e( 'LENGTH:', 'mazestreetwear' ); ?></strong>
-                        <p><?php esc_html_e( 'Measured from the highest point of the shoulder collar seam straight down to the bottom hem.', 'mazestreetwear' ); ?></p>
-                    </div>
-                    <div class="space-y-0.5">
-                        <strong class="text-black uppercase font-bold tracking-wide block"><?php esc_html_e( 'CHEST:', 'mazestreetwear' ); ?></strong>
-                        <p><?php esc_html_e( 'Measured flat across the chest from armpit to armpit, doubled for total circumference.', 'mazestreetwear' ); ?></p>
-                    </div>
-                </div>
-                <div class="mt-2.5 pt-2 border-t border-neutral-200 flex flex-col sm:flex-row sm:items-center justify-between text-[11px] font-outfit text-neutral-500 gap-1">
-                    <span><?php esc_html_e( '* Sizing tolerance +/- 0.5 in / 1.2 cm due to manual streetwear tailoring.', 'mazestreetwear' ); ?></span>
-                    <span class="font-semibold text-neutral-700 uppercase"><?php esc_html_e( 'Signature Relaxed Fit', 'mazestreetwear' ); ?></span>
-                </div>
-            </div>
-
         </div><!-- .maze-size-chart-body -->
 
         <!-- Modal Bottom Actions Bar -->
