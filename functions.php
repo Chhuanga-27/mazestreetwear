@@ -1469,6 +1469,10 @@ add_filter('subcategory_archive_thumbnail_size', function () {
 
 /**
  * Enforce full uppercase letter on all product titles and names across the website
+ *
+ * @param string   $title Product or post title.
+ * @param int|null $id    Post ID.
+ * @return string
  */
 function mazestreetwear_uppercase_product_name_filter($title, $id = null)
 {
@@ -1479,6 +1483,14 @@ function mazestreetwear_uppercase_product_name_filter($title, $id = null)
 }
 add_filter('the_title', 'mazestreetwear_uppercase_product_name_filter', 10, 2);
 
+/**
+ * Enforce full uppercase letter on cart and order item titles
+ *
+ * @param string      $name          Item title or HTML link.
+ * @param array|null  $cart_item     Cart item data.
+ * @param string|null $cart_item_key Cart item key.
+ * @return string
+ */
 function mazestreetwear_uppercase_cart_item_name($name, $cart_item = null, $cart_item_key = null)
 {
     if (false !== strpos($name, '<a')) {
@@ -1490,4 +1502,146 @@ function mazestreetwear_uppercase_cart_item_name($name, $cart_item = null, $cart
 }
 add_filter('woocommerce_cart_item_name', 'mazestreetwear_uppercase_cart_item_name', 10, 3);
 add_filter('woocommerce_order_item_name', 'mazestreetwear_uppercase_cart_item_name', 10, 3);
+
+/**
+ * Returns curated garment size charts for Maze Streetwear
+ *
+ * @return array
+ */
+function mazestreetwear_get_size_charts()
+{
+    return array(
+        'utility-gilet' => array(
+            'id'       => 'utility-gilet',
+            'title'    => 'UTILITY GILET',
+            'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
+            'rows'     => array(
+                array('size' => 'Medium (M)',  'length' => '22 in / 55.8 cm',  'chest' => '44 in / 111.7 cm'),
+                array('size' => 'Large (L)',   'length' => '23 in / 58.42 cm', 'chest' => '46 in / 116.84 cm'),
+                array('size' => 'X-Large (XL)', 'length' => '24 in / 60.96 cm', 'chest' => '48 in / 121.92 cm'),
+            ),
+        ),
+        't-shirt' => array(
+            'id'       => 't-shirt',
+            'title'    => 'T-SHIRT',
+            'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
+            'rows'     => array(
+                array('size' => 'SMALL',    'length' => '24 inch / 60.96 cm', 'chest' => '42 inch / 106.86 cm'),
+                array('size' => 'MEDIUM',   'length' => '25 inch / 63.5 cm',  'chest' => '44 inch / 111.76 cm'),
+                array('size' => 'LARGE',    'length' => '26 inch / 66.04 cm', 'chest' => '46 inch / 116.84 cm'),
+                array('size' => 'X-LARGE',  'length' => '27 inch / 68.58 cm', 'chest' => '48 inch / 121.92 cm'),
+                array('size' => 'XX-LARGE', 'length' => '28 inch / 71.12 cm', 'chest' => '50 inch / 127 cm'),
+            ),
+        ),
+        'puffer-jacket' => array(
+            'id'       => 'puffer-jacket',
+            'title'    => 'PUFFER JACKET',
+            'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
+            'rows'     => array(
+                array('size' => 'MEDIUM',  'length' => '24 inch / 60.96 cm', 'chest' => '48 inch / 121.92 cm'),
+                array('size' => 'LARGE',   'length' => '25 inch / 63.5 cm',  'chest' => '50 inch / 127 cm'),
+                array('size' => 'X-LARGE', 'length' => '26 inch / 66.04 cm', 'chest' => '52 inch / 132.08 cm'),
+            ),
+        ),
+        'jacket' => array(
+            'id'       => 'jacket',
+            'title'    => 'JACKET',
+            'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
+            'rows'     => array(
+                array('size' => 'MEDIUM',  'length' => '24 inch / 60.96 cm', 'chest' => '46 inch / 116.84 cm'),
+                array('size' => 'LARGE',   'length' => '25 inch / 63.5 cm',  'chest' => '48 inch / 121.92 cm'),
+                array('size' => 'X-LARGE', 'length' => '26 inch / 66.04 cm', 'chest' => '50 inch / 127 cm'),
+            ),
+        ),
+        'double-layer-hoodie' => array(
+            'id'       => 'double-layer-hoodie',
+            'title'    => 'DOUBLE LAYER HOODIE',
+            'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
+            'rows'     => array(
+                array('size' => 'MEDIUM',  'length' => '24 inch / 60.96 cm', 'chest' => '46 inch / 116.84 cm'),
+                array('size' => 'LARGE',   'length' => '25 inch / 63.5 cm',  'chest' => '48 inch / 121.92 cm'),
+                array('size' => 'X-LARGE', 'length' => '26 inch / 66.04 cm', 'chest' => '50 inch / 127 cm'),
+            ),
+        ),
+    );
+}
+
+/**
+ * Detect the appropriate size chart key based on product name, slug, or categories
+ *
+ * @param WC_Product|null $product
+ * @return string
+ */
+function mazestreetwear_get_current_product_size_chart_key($product = null)
+{
+    if (! $product && function_exists('wc_get_product')) {
+        global $post;
+        if ($post && 'product' === get_post_type($post)) {
+            $product = wc_get_product($post->ID);
+        }
+    }
+
+    if (! $product || ! is_a($product, 'WC_Product')) {
+        return 't-shirt';
+    }
+
+    $name = strtolower($product->get_name());
+    $slug = strtolower($product->get_slug());
+
+    $cat_names = array();
+    $terms = get_the_terms($product->get_id(), 'product_cat');
+    if (! empty($terms) && ! is_wp_error($terms)) {
+        foreach ($terms as $term) {
+            $cat_names[] = strtolower($term->name);
+            $cat_names[] = strtolower($term->slug);
+        }
+    }
+    $search_pool = $name . ' ' . $slug . ' ' . implode(' ', $cat_names);
+
+    // 1. Utility Gilet / Gilet
+    if (false !== strpos($search_pool, 'utility gilet') || false !== strpos($search_pool, 'utitlity gilet') || false !== strpos($search_pool, 'gilet')) {
+        return 'utility-gilet';
+    }
+
+    // 2. Puffer Jacket / Puffer
+    if (false !== strpos($search_pool, 'puffer')) {
+        return 'puffer-jacket';
+    }
+
+    // 3. Double Layer Hoodie / Hoodie
+    if (false !== strpos($search_pool, 'double layer') || false !== strpos($search_pool, 'hoodie')) {
+        return 'double-layer-hoodie';
+    }
+
+    // 4. Jacket (non-puffer)
+    if (false !== strpos($search_pool, 'jacket')) {
+        return 'jacket';
+    }
+
+    // 5. T-Shirt / Tee
+    if (false !== strpos($search_pool, 't-shirt') || false !== strpos($search_pool, 'tshirt') || false !== strpos($search_pool, 'tee')) {
+        return 't-shirt';
+    }
+
+    return 't-shirt';
+}
+
+/**
+ * Hook Size Chart Modal into wp_footer for product pages
+ */
+function mazestreetwear_render_size_chart_modal()
+{
+    if (is_admin()) {
+        return;
+    }
+
+    if ((function_exists('is_product') && is_product()) || is_singular('product')) {
+        $template = locate_template('woocommerce/single-product/size-chart-modal.php');
+        if ($template) {
+            include $template;
+        }
+    }
+}
+add_action('wp_footer', 'mazestreetwear_render_size_chart_modal', 25);
+
 

@@ -546,6 +546,38 @@
         initVariationPills();
         setTimeout(initVariationPills, 120);
 
+        // --- Size Guide / Sizing Chart Modal Handlers ---
+        $(document).on('click', '.maze-size-chart-trigger', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (window.mazeOpenSizeChart) {
+                window.mazeOpenSizeChart(e, this);
+            }
+        });
+
+        $(document).on('click', '.maze-size-chart-close', function (e) {
+            e.preventDefault();
+            if (window.mazeCloseSizeChart) {
+                window.mazeCloseSizeChart(e);
+            }
+        });
+
+        $(document).on('click', '.maze-size-chart-tab', function (e) {
+            e.preventDefault();
+            const target = $(this).data('chart-target') || $(this).attr('data-chart-target');
+            if (window.mazeSwitchSizeChartTab) {
+                window.mazeSwitchSizeChartTab(target, e);
+            }
+        });
+
+        $(document).on('click', '#maze-size-chart-modal', function (e) {
+            if ($(e.target).is('#maze-size-chart-modal')) {
+                if (window.mazeCloseSizeChart) {
+                    window.mazeCloseSizeChart(e);
+                }
+            }
+        });
+
         // --- 5. Comprehensive Cart Synchronization (Store API + Cart Blocks + Classic Cart) ---
 
         // Extract total items count from Store API response, Cart data, or WooCommerce fragments

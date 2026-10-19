@@ -1506,3 +1506,121 @@ body.single-product .maze-single-product-editorial {
   margin-top: 0.5rem !important;
   margin-bottom: 0.5rem !important;
 }
+
+/* ==========================================================================
+   Maze Sizing Chart Trigger & Brutalist Modal
+   ========================================================================== */
+
+.maze-variation-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.maze-variation-actions .reset_variations {
+  display: inline-block;
+}
+
+.maze-variation-actions .reset_variations[style*="visibility: hidden"],
+.maze-variation-actions .reset_variations.hidden {
+  display: none !important;
+}
+
+.maze-size-chart-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-outfit);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #111111;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.maze-size-chart-trigger:hover {
+  color: #000000;
+  opacity: 0.75;
+}
+
+.maze-size-chart-trigger span {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: #a3a3a3;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.maze-size-chart-trigger:hover span {
+  text-decoration-color: #000000;
+}
+
+/* Size Chart Modal Overlay */
+.maze-size-chart-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background-color: rgba(0, 0, 0, 0.68);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.maze-size-chart-modal.is-active,
+.maze-size-chart-modal.opacity-100 {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Dialog Box */
+.maze-size-chart-dialog {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35) !important;
+  max-width: 44rem;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Tab buttons inside modal */
+.maze-size-chart-tab {
+  font-family: var(--font-bebas) !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.05em !important;
+  border: 1px solid #000000 !important;
+  border-radius: 0 !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+
+.maze-size-chart-tab.is-active {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Sizing table styles */
+.maze-size-chart-panel table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.maze-size-chart-panel th {
+  font-family: var(--font-bebas) !important;
+  letter-spacing: 0.05em !important;
+}
+
+.maze-size-chart-panel td {
+  font-family: var(--font-outfit) !important;
+}

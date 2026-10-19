@@ -93,6 +93,20 @@ if ( $product->is_in_stock() ) : ?>
                         </button>
                     <?php endforeach; ?>
                 </div>
+
+                <div class="maze-size-chart-trigger-wrap mt-2.5">
+                    <button type="button" 
+                            class="maze-size-chart-trigger inline-flex items-center gap-1.5 text-xs font-outfit font-semibold tracking-wider uppercase text-neutral-800 hover:text-black transition-colors cursor-pointer group"
+                            data-active-chart="<?php echo esc_attr( function_exists( 'mazestreetwear_get_current_product_size_chart_key' ) ? mazestreetwear_get_current_product_size_chart_key( $product ) : 't-shirt' ); ?>"
+                            onclick="window.mazeOpenSizeChart && window.mazeOpenSizeChart(event, this)"
+                            aria-haspopup="dialog"
+                            aria-controls="maze-size-chart-modal">
+                        <svg class="w-3.5 h-3.5 text-neutral-700 group-hover:text-black transition-colors" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 17h18M7 7v4M12 7v3M17 7v4M7 17v-4M12 17v-3M17 17v-4" />
+                        </svg>
+                        <span class="underline underline-offset-4 decoration-neutral-300 group-hover:decoration-black"><?php esc_html_e( 'SIZE CHART', 'mazestreetwear' ); ?></span>
+                    </button>
+                </div>
             </div>
         <?php endif; ?>
 
