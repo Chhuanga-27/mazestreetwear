@@ -1302,30 +1302,33 @@ function mazestreetwear_ensure_default_categories()
 add_action('init', 'mazestreetwear_ensure_default_categories', 10);
 
 /**
- * Automatically append Contact link to the primary menu if not already present.
+ * Remove About and Contact from the primary header navigation menu items.
+ * They are displayed exclusively in the mobile view menu drawer.
  *
- * @param string $items Menu items HTML.
- * @param object $args  Menu arguments.
- * @return string
+ * @param array $items Array of menu item objects.
+ * @param object $args Arguments for wp_nav_menu.
+ * @return array
  */
-function mazestreetwear_add_contact_to_primary_menu($items, $args)
+function mazestreetwear_filter_header_primary_menu_items($items, $args)
 {
-    if (isset($args->theme_location) && 'primary' === $args->theme_location) {
-        if (false === stripos($items, 'contact-us') && false === stripos($items, 'contact')) {
-            $contact_url  = mazestreetwear_get_contact_url();
-            $is_active    = (is_page('contact-us') || is_page('contact') || (isset($_SERVER['REQUEST_URI']) && false !== strpos($_SERVER['REQUEST_URI'], 'contact')));
-            $active_class = $is_active ? 'current-menu-item ' : '';
+    if (isset($args->theme_location) && 'primary' === $args->theme_location && is_array($items)) {
+        $filtered = array();
+        foreach ($items as $item) {
+            $title = strtolower(trim($item->title ?? ''));
+            $url   = strtolower(trim($item->url ?? ''));
 
-            if (false !== strpos($items, '<li')) {
-                $items .= '<li class="menu-item ' . esc_attr($active_class) . '"><a href="' . esc_url($contact_url) . '" class="hover:text-black transition-colors duration-150 py-1' . ($is_active ? ' font-black text-black' : '') . '">' . esc_html__('Contact', 'mazestreetwear') . '</a></li>';
-            } else {
-                $items .= '<a href="' . esc_url($contact_url) . '" class="text-black hover:opacity-60 py-1.5 transition-opacity' . ($is_active ? ' font-black' : '') . '">' . esc_html__('Contact', 'mazestreetwear') . '</a>';
+            $is_about   = (false !== strpos($title, 'about') || false !== strpos($url, '/about'));
+            $is_contact = (false !== strpos($title, 'contact') || false !== strpos($url, '/contact'));
+
+            if (! $is_about && ! $is_contact) {
+                $filtered[] = $item;
             }
         }
+        return $filtered;
     }
     return $items;
 }
-add_filter('wp_nav_menu_items', 'mazestreetwear_add_contact_to_primary_menu', 10, 2);
+add_filter('wp_nav_menu_objects', 'mazestreetwear_filter_header_primary_menu_items', 10, 2);
 
 /**
  * Handle Contact Form Submissions (AJAX & Standard POST)
@@ -1463,3 +1466,28 @@ add_filter('single_product_archive_thumbnail_size', function () {
 add_filter('subcategory_archive_thumbnail_size', function () {
     return 'full';
 });
+
+/**
+ * Enforce full uppercase letter on all product titles and names across the website
+ */
+function mazestreetwear_uppercase_product_name_filter($title, $id = null)
+{
+    if (! is_admin() && $id && 'product' === get_post_type($id)) {
+        return mb_strtoupper($title, 'UTF-8');
+    }
+    return $title;
+}
+add_filter('the_title', 'mazestreetwear_uppercase_product_name_filter', 10, 2);
+
+function mazestreetwear_uppercase_cart_item_name($name, $cart_item = null, $cart_item_key = null)
+{
+    if (false !== strpos($name, '<a')) {
+        return preg_replace_callback('/>([^<]+)</', function ($matches) {
+            return '>' . mb_strtoupper($matches[1], 'UTF-8') . '<';
+        }, $name);
+    }
+    return mb_strtoupper($name, 'UTF-8');
+}
+add_filter('woocommerce_cart_item_name', 'mazestreetwear_uppercase_cart_item_name', 10, 3);
+add_filter('woocommerce_order_item_name', 'mazestreetwear_uppercase_cart_item_name', 10, 3);
+

@@ -188,10 +188,6 @@ $masthead_classes = $is_maze_home
                     $tops_url        = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'tops' ) : home_url( '/product-category/tops/' );
                     $bottoms_url     = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'bottoms' ) : home_url( '/product-category/bottoms/' );
                     $accessories_url = function_exists( 'mazestreetwear_get_product_cat_url' ) ? mazestreetwear_get_product_cat_url( 'accessories' ) : home_url( '/product-category/accessories/' );
-                    $about_url       = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_get_about_url() : home_url( '/about-us/' );
-                    $contact_url     = function_exists( 'mazestreetwear_get_contact_url' ) ? mazestreetwear_get_contact_url() : home_url( '/contact-us/' );
-                    $is_about        = is_page( 'about-us' ) || is_page( 'about' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'about' ) );
-                    $is_contact      = is_page( 'contact-us' ) || is_page( 'contact' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'contact' ) );
                 ?>
                     <ul class="flex items-center justify-center gap-3.5 lg:gap-6 xl:gap-8 text-xs lg:text-[13px] xl:text-sm font-bold font-outfit uppercase tracking-wider text-black whitespace-nowrap">
                         <li>
@@ -212,16 +208,6 @@ $masthead_classes = $is_maze_home
                         <li>
                             <a href="<?php echo esc_url( $accessories_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1">
                                 <?php esc_html_e( 'ACCESSORIES', 'mazestreetwear' ); ?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo esc_url( $about_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1 <?php echo $is_about ? 'font-bold underline underline-offset-4' : 'hover:underline underline-offset-4'; ?>">
-                                <?php esc_html_e( 'ABOUT', 'mazestreetwear' ); ?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo esc_url( $contact_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1 <?php echo $is_contact ? 'font-bold underline underline-offset-4' : 'hover:underline underline-offset-4'; ?>">
-                                <?php esc_html_e( 'CONTACT', 'mazestreetwear' ); ?>
                             </a>
                         </li>
                     </ul>
@@ -313,6 +299,8 @@ $masthead_classes = $is_maze_home
             $account_url     = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account/' );
             $instagram_url   = 'https://www.instagram.com/maze.stw?utm_source=ig_web_button_share_sheet&exln=ZDNlZDc0MzIxNw==';
             $contact_email   = 'enquiries@mazestw.in';
+            $is_about        = is_page( 'about-us' ) || is_page( 'about' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'about' ) );
+            $is_contact      = is_page( 'contact-us' ) || is_page( 'contact' ) || ( isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], 'contact' ) );
             ?>
 
             <!-- Primary Navigation Categories -->
@@ -331,13 +319,13 @@ $masthead_classes = $is_maze_home
                 </a>
             </div>
 
-            <!-- Secondary Brand Pages -->
+            <!-- Secondary Brand Pages: About & Contact -->
             <div class="flex flex-col space-y-2 pt-6 text-xl sm:text-2xl font-semibold font-outfit uppercase tracking-tight text-black">
-                <a href="<?php echo esc_url( $about_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1">
-                    <?php esc_html_e( 'ABOUT US', 'mazestreetwear' ); ?>
+                <a href="<?php echo esc_url( $about_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1 <?php echo $is_about ? 'font-bold underline underline-offset-4' : ''; ?>">
+                    <?php esc_html_e( 'ABOUT', 'mazestreetwear' ); ?>
                 </a>
-                <a href="<?php echo esc_url( $contact_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1">
-                    <?php esc_html_e( 'CONTACT US', 'mazestreetwear' ); ?>
+                <a href="<?php echo esc_url( $contact_url ); ?>" class="maze-nav-link inline-block text-black hover:opacity-60 transition-opacity py-1 <?php echo $is_contact ? 'font-bold underline underline-offset-4' : ''; ?>">
+                    <?php esc_html_e( 'CONTACT', 'mazestreetwear' ); ?>
                 </a>
             </div>
 

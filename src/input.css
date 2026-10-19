@@ -883,6 +883,17 @@
     opacity: 1 !important;
   }
 
+  /* Exclude About and Contact from header navigation bar only (visible in mobile drawer menu) */
+  #site-navigation ul li a[href*="about"],
+  #site-navigation ul li a[href*="contact"],
+  #site-navigation a[href*="about"],
+  #site-navigation a[href*="contact"],
+  #site-navigation ul li:has(a[href*="about"]),
+  #site-navigation ul li:has(a[href*="contact"]) {
+    display: none !important;
+  }
+
+
   #primary-menu .sub-menu {
     display: none;
     position: absolute;
@@ -1121,11 +1132,32 @@
   font-family: var(--font-outfit) !important;
 }
 
+.woocommerce table.shop_table td.product-name,
+.woocommerce table.shop_table td.product-name a,
+.woocommerce-table__line-item-order td.product-name,
+.woocommerce-table__line-item-order td.product-name a,
+.woocommerce-checkout-review-order-table .product-name,
+.woocommerce-checkout-review-order-table td.product-name a,
+.wc-block-components-product-name,
+.woocommerce-mini-cart-item,
+.woocommerce-mini-cart-item a,
+.cart_item .product-name,
+.cart_item .product-name a,
+.maze-product-card a > div:last-child > span:first-child,
+.maze-product-card .line-clamp-1,
+.woocommerce-loop-product__title,
+.product_title,
+.single-product h1.product_title,
+.maze-showcase-title {
+  text-transform: uppercase !important;
+}
+
 .woocommerce table.shop_table td.product-name a {
   font-family: var(--font-outfit) !important;
   font-weight: 600 !important;
   color: #000000 !important;
   text-decoration: none !important;
+  text-transform: uppercase !important;
 }
 
 .woocommerce table.shop_table td.product-name a:hover {

@@ -4,7 +4,7 @@
  *
  * Minimalist luxury editorial product card for mazestw.in.
  * Pure white background, zero radius, hairline black border.
- * Tall aspect ratio with generous padding, clean lowercase title, right-aligned price.
+ * Tall aspect ratio with generous padding, clean uppercase title, right-aligned price.
  * Zero ratings, zero sale badges, zero bulky buttons.
  *
  * @package MazeStreetwear
@@ -43,9 +43,9 @@ if ( empty( $product ) || ! $product->is_visible() ) {
             <?php endif; ?>
         </div>
 
-        <!-- Bottom Metadata Bar: clean borderless metadata, title lowercase on left, price on right -->
+        <!-- Bottom Metadata Bar: clean borderless metadata, title uppercase on left, price on right -->
         <div class="pt-3 px-1 sm:px-1.5 pb-1 flex justify-between items-baseline text-xs sm:text-sm md:text-base font-outfit bg-white mt-auto">
-            <span class="text-black font-medium font-outfit lowercase tracking-tight line-clamp-1 mr-1.5 sm:mr-2 group-hover:opacity-60 transition-opacity">
+            <span class="text-black font-medium font-outfit uppercase tracking-tight line-clamp-1 mr-1.5 sm:mr-2 group-hover:opacity-60 transition-opacity">
                 <?php the_title(); ?>
             </span>
             <span class="text-black font-bold whitespace-nowrap font-outfit text-right text-xs sm:text-sm md:text-base">
