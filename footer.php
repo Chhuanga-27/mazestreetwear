@@ -56,11 +56,6 @@ $footer_card_border = $is_maze_home ? 'border-0' : 'border border-black/15 shado
                         </ul>
                         <ul class="space-y-2.5 text-sm sm:text-[15px] font-outfit font-medium text-black">
                             <li>
-                                <a href="<?php echo esc_url( home_url( '/archive/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
-                                    <?php esc_html_e( 'Lookbook & Archive', 'mazestreetwear' ); ?>
-                                </a>
-                            </li>
-                            <li>
                                 <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_get_about_url() : home_url( '/about-us/' ) ); ?>" class="hover:text-black hover:underline underline-offset-4 transition-colors block">
                                     <?php esc_html_e( 'About Us', 'mazestreetwear' ); ?>
                                 </a>

@@ -1029,14 +1029,24 @@
         // Bag Counter Pulse & View Cart display on Add To Cart
         $(document.body).on('added_to_cart wc-blocks_added_to_cart', function (event, fragments, cart_hash, $button) {
             pulseMazeCartBadge();
+            // Strictly remove any View Cart link under the Buy Now button or outside the buttons container
+            $('.maze-view-cart-wrap').remove();
+            $('.maze_buy_now_button').next('.added_to_cart, .maze-view-cart-link').remove();
+            $('.product-actions-buttons').next('.added_to_cart, .maze-view-cart-link').remove();
+
+            // Style and dedup any link placed right after Add To Bag button
             if ($button && $button.length) {
                 const $form = $button.closest('form.cart');
                 if ($form.length) {
-                    const $wrap = $form.find('.maze-view-cart-wrap');
-                    if ($wrap.length) {
-                        $wrap.removeClass('hidden').slideDown(200);
-                        $button.next('a.added_to_cart').remove();
-                    }
+                    setTimeout(function () {
+                        $('.maze-view-cart-wrap').remove();
+                        $('.maze_buy_now_button').next('.added_to_cart, .maze-view-cart-link').remove();
+                        $('.product-actions-buttons').next('.added_to_cart, .maze-view-cart-link').remove();
+                        const $allCartLinks = $form.find('.added_to_cart, .maze-view-cart-link');
+                        if ($allCartLinks.length > 1) {
+                            $allCartLinks.slice(1).remove();
+                        }
+                    }, 40);
                 }
             }
         });
@@ -1311,21 +1321,33 @@
                             if (count !== null) syncMazeCartBadge(count);
                         }
 
-                        // Display prominent View Cart link under the button stack
+                        // Strictly clean up any stray View Cart links under the Buy Now button
+                        $form.find('.maze-view-cart-wrap').remove();
+                        $form.find('.maze_buy_now_button').next('.added_to_cart, .maze-view-cart-link').remove();
+                        $form.find('.product-actions-buttons').next('.added_to_cart, .maze-view-cart-link').remove();
+
+                        // Display clean View Cart link directly under ADD TO BAG button (above BUY NOW)
                         const cartUrl = (res.data && res.data.cart_url) ? res.data.cart_url : ((typeof mazeData !== 'undefined' && mazeData.cartUrl) ? mazeData.cartUrl : '/cart/');
-                        const $viewCartWrap = $form.find('.maze-view-cart-wrap');
-                        if ($viewCartWrap.length) {
-                            $viewCartWrap.removeClass('hidden').slideDown(200);
+                        let $cartLink = $submitBtn.next('.added_to_cart, .maze-view-cart-link');
+                        if (!$cartLink.length) {
+                            $cartLink = $('<a href="' + cartUrl + '" class="maze-view-cart-link added_to_cart wc-forward font-bebas text-xl sm:text-2xl uppercase tracking-wider text-black underline underline-offset-4 hover:opacity-75 transition-all block text-center my-2">VIEW CART</a>');
+                            $submitBtn.after($cartLink);
                         } else {
-                            const $btnStack = $form.find('.product-actions-buttons').length ? $form.find('.product-actions-buttons') : $submitBtn.parent();
-                            let $cartLink = $form.find('.added_to_cart, .maze-view-cart-link');
-                            if (!$cartLink.length) {
-                                $cartLink = $('<a href="' + cartUrl + '" class="maze-view-cart-link added_to_cart wc-forward font-bebas text-xl sm:text-2xl uppercase tracking-wider text-black underline underline-offset-4 hover:opacity-75 transition-all block text-center mt-3">VIEW CART &rarr;</a>');
-                                $btnStack.after($cartLink);
-                            }
+                            $cartLink.show();
                         }
 
                         $(document.body).trigger('added_to_cart', [res.data.fragments, res.data.cart_hash, $submitBtn]);
+
+                        setTimeout(function () {
+                            // Ensure only one View Cart link exists right under ADD TO BAG, none under BUY NOW
+                            $form.find('.maze-view-cart-wrap').remove();
+                            $form.find('.maze_buy_now_button').next('.added_to_cart, .maze-view-cart-link').remove();
+                            $form.find('.product-actions-buttons').next('.added_to_cart, .maze-view-cart-link').remove();
+                            const $allCartLinks = $form.find('.added_to_cart, .maze-view-cart-link');
+                            if ($allCartLinks.length > 1) {
+                                $allCartLinks.slice(1).remove();
+                            }
+                        }, 50);
 
                         setTimeout(function () {
                             $submitBtn.prop('disabled', false).html(originalSubmitBtnHtml);

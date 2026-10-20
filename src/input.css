@@ -473,6 +473,24 @@
     cursor: pointer !important;
   }
 
+  /* Strictly suppress any View Cart link under Buy Now button or outside actions container */
+  .maze-view-cart-wrap,
+  .product-actions-buttons + .added_to_cart,
+  .product-actions-buttons + .maze-view-cart-link,
+  .product-actions-buttons ~ .added_to_cart,
+  .product-actions-buttons ~ .maze-view-cart-link,
+  .maze_buy_now_button + .added_to_cart,
+  .maze_buy_now_button + .maze-view-cart-link,
+  .maze_buy_now_button ~ .added_to_cart,
+  .maze_buy_now_button ~ .maze-view-cart-link {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+  }
+
   @media (min-width: 640px) {
     .maze-view-cart-link,
     .added_to_cart,

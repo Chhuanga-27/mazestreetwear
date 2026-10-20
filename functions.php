@@ -1743,4 +1743,24 @@ function mazestreetwear_size_chart_inline_guard_css()
 }
 add_action('wp_head', 'mazestreetwear_size_chart_inline_guard_css', 999);
 
+/**
+ * Permanently redirect deprecated Lookbook & Archive page URLs to Shop catalog
+ */
+function mazestreetwear_redirect_deprecated_archive_lookbook()
+{
+    if (is_admin()) {
+        return;
+    }
+
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/') : '';
+    $deprecated_slugs = array('archive', 'lookbook', 'lookbook-archive', 'archive-lookbook');
+
+    if (in_array(strtolower($request_uri), $deprecated_slugs, true) || (function_exists('is_page') && is_page($deprecated_slugs))) {
+        $target_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/');
+        wp_safe_redirect($target_url ? $target_url : home_url('/'), 301);
+        exit;
+    }
+}
+add_action('template_redirect', 'mazestreetwear_redirect_deprecated_archive_lookbook');
+
 

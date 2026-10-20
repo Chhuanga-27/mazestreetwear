@@ -42,13 +42,6 @@ global $product;
         </button>
     </div>
 
-    <!-- View Cart link under the buttons (revealed on Add to Bag) -->
-    <div class="maze-view-cart-wrap text-center mt-3 hidden">
-        <a href="<?php echo esc_url( function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' ) ); ?>" class="maze-view-cart-link added_to_cart wc-forward font-bebas text-xl sm:text-2xl uppercase tracking-wider text-black underline underline-offset-4 hover:opacity-75 transition-all">
-            <?php esc_html_e( 'VIEW CART →', 'mazestreetwear' ); ?>
-        </a>
-    </div>
-
     <?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
 
     <input type="hidden" name="add-to-cart" value="<?php echo absint( $product->get_id() ); ?>" />
