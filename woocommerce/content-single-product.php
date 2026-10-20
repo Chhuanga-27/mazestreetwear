@@ -6,10 +6,10 @@
  * 2-column layout framed by thin black dividers:
  * - Left: High-res clean garment image against pure white.
  * - Right: Details column with clean sans-serif title, bold minimal price, rectangular size boxes,
- *   solid black "ADD TO BAG" button, and accordions for Fabric & Fit, Shipping & Delivery, and Care.
+ *   solid black "ADD TO BAG" button, and accordions for Description and Shipping & Delivery.
  *
  * @package MazeStreetwear
- * @version 1.1.0
+ * @version 1.1.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -143,13 +143,6 @@ $image_count = count( $gallery_images );
                     <?php echo $product->get_price_html(); ?>
                 </div>
 
-                <!-- Product Short Description in readable Outfit -->
-                <?php if ( $product->get_short_description() ) : ?>
-                    <div class="text-sm sm:text-base font-outfit text-neutral-800 leading-relaxed font-normal mb-6">
-                        <?php echo apply_filters( 'woocommerce_short_description', $product->get_short_description() ); ?>
-                    </div>
-                <?php endif; ?>
-
                 <!-- Add to Bag / Sizing Form -->
                 <div class="product-actions-area">
                     <?php woocommerce_template_single_add_to_cart(); ?>
@@ -157,6 +150,40 @@ $image_count = count( $gallery_images );
 
                 <!-- Minimalist Accordions with Thin Black Top/Bottom Borders -->
                 <div class="mt-10 border-t border-black">
+
+                    <!-- 1. Description -->
+                    <?php
+                    $maze_short_desc = $product->get_short_description();
+                    $maze_full_desc  = get_the_content();
+                    $has_short_desc  = ! empty( trim( (string) $maze_short_desc ) );
+                    $has_full_desc   = ! empty( trim( (string) $maze_full_desc ) );
+
+                    if ( $has_short_desc || $has_full_desc ) :
+                    ?>
+                        <details class="group border-b border-black">
+                            <summary class="flex justify-between items-center py-4 sm:py-5 cursor-pointer list-none text-base sm:text-lg font-bebas font-normal uppercase tracking-wider text-black select-none">
+                                <span><?php esc_html_e( 'DESCRIPTION', 'mazestreetwear' ); ?></span>
+                                <span class="text-base sm:text-lg font-outfit font-semibold group-open:hidden">+</span>
+                                <span class="text-base sm:text-lg font-outfit font-semibold hidden group-open:inline">&minus;</span>
+                            </summary>
+                            <div class="pb-5 text-sm sm:text-base font-outfit text-neutral-800 leading-relaxed space-y-2">
+                                <?php
+                                if ( $has_short_desc && $has_full_desc ) {
+                                    if ( trim( wp_strip_all_tags( $maze_short_desc ) ) === trim( wp_strip_all_tags( $maze_full_desc ) ) ) {
+                                        echo apply_filters( 'the_content', $maze_full_desc );
+                                    } else {
+                                        echo '<div class="maze-short-desc mb-2">' . apply_filters( 'woocommerce_short_description', $maze_short_desc ) . '</div>';
+                                        echo '<div class="maze-full-desc">' . apply_filters( 'the_content', $maze_full_desc ) . '</div>';
+                                    }
+                                } elseif ( $has_full_desc ) {
+                                    echo apply_filters( 'the_content', $maze_full_desc );
+                                } else {
+                                    echo apply_filters( 'woocommerce_short_description', $maze_short_desc );
+                                }
+                                ?>
+                            </div>
+                        </details>
+                    <?php endif; ?>
 
                     <!-- 2. Shipping & Delivery -->
                     <details class="group border-b border-black">
@@ -168,19 +195,6 @@ $image_count = count( $gallery_images );
                         <div class="pb-5 text-sm sm:text-base font-outfit text-neutral-800 leading-relaxed space-y-2">
                             <p><?php esc_html_e( 'Dispatched within 24 to 48 hours worldwide. Tracked express shipping provided with delivery confirmation.', 'mazestreetwear' ); ?></p>
                             <p><?php esc_html_e( 'Complimentary shipping on orders exceeding specified minimum threshold. Customs and duties handled seamlessly.', 'mazestreetwear' ); ?></p>
-                        </div>
-                    </details>
-
-                    <!-- 3. Care -->
-                    <details class="group border-b border-black">
-                        <summary class="flex justify-between items-center py-4 sm:py-5 cursor-pointer list-none text-base sm:text-lg font-bebas font-normal uppercase tracking-wider text-black select-none">
-                            <span><?php esc_html_e( 'CARE', 'mazestreetwear' ); ?></span>
-                            <span class="text-base sm:text-lg font-outfit font-semibold group-open:hidden">+</span>
-                            <span class="text-base sm:text-lg font-outfit font-semibold hidden group-open:inline">&minus;</span>
-                        </summary>
-                        <div class="pb-5 text-sm sm:text-base font-outfit text-neutral-800 leading-relaxed space-y-2">
-                            <p><?php esc_html_e( 'Cold machine wash (30°C / 86°F) inside out with mild detergent.', 'mazestreetwear' ); ?></p>
-                            <p><?php esc_html_e( 'Hang dry in shade. Do not tumble dry. Cool iron on reverse side avoiding prints or rubberized branding.', 'mazestreetwear' ); ?></p>
                         </div>
                     </details>
                 </div>
