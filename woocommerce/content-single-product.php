@@ -108,8 +108,6 @@ $image_count = count( $gallery_images );
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                             </svg>
                         </button>
-
-                    <?php if ( $image_count > 1 ) : ?>
                         <!-- TAB Under the Image to Navigate Slides -->
                         <div class="maze-gallery-tabs-wrap w-full flex items-center justify-center py-2 sm:py-3 bg-white border-b lg:border-b-0 border-neutral-200">
                             <div id="maze-gallery-tabs" class="maze-gallery-tabs inline-flex items-center gap-1.5 sm:gap-2 px-2 py-1" role="tablist" aria-label="<?php esc_attr_e( 'Product image slides', 'mazestreetwear' ); ?>">
