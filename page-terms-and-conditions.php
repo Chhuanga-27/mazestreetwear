@@ -31,6 +31,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
   "publisher": {
     "@type": "Organization",
     "name": "Maze Streetwear",
+    "legalName": "LALHRUAIZELA SAILO",
     "url": "https://mazestw.in",
     "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
     "address": {
@@ -100,10 +101,11 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                     <strong class="font-black text-black text-sm sm:text-base"><?php esc_html_e( 'October 15, 2026', 'mazestreetwear' ); ?></strong>
                 </div>
                 <div>
-                    <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Entity / Platform', 'mazestreetwear' ); ?></span>
-                    <a href="https://mazestw.in" target="_blank" rel="noopener noreferrer" class="font-black text-black hover:underline text-sm sm:text-base">
-                        mazestw.in (Maze)
-                    </a>
+                    <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Legal Business Name', 'mazestreetwear' ); ?></span>
+                    <strong class="font-black text-black text-sm sm:text-base">
+                        LALHRUAIZELA SAILO
+                    </strong>
+                    <span class="block text-[11px] font-mono text-neutral-600 font-bold">Trade Name: Maze Streetwear</span>
                 </div>
                 <div>
                     <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Exclusive Jurisdiction', 'mazestreetwear' ); ?></span>
@@ -257,7 +259,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                 <!-- Preamble / Introduction Card -->
                 <section class="border-l-4 border-black pl-5 sm:pl-7 py-2 bg-white">
                     <p class="text-base sm:text-lg font-sans text-neutral-900 leading-relaxed font-normal">
-                        Welcome to <a href="https://mazestw.in" class="underline hover:text-neutral-600 transition-colors font-medium">mazestw.in</a>. This Website is owned and operated by <strong>Maze Streetwear</strong>. By browsing our catalog, creating an account, or completing a transaction on this Website, you agree to be bound by the following Terms and Conditions (&ldquo;Terms of Service&rdquo;). If you do not agree with any part of these terms, please discontinue using this Website immediately.
+                        Welcome to <a href="https://mazestw.in" class="underline hover:text-neutral-600 transition-colors font-medium">mazestw.in</a>. This Website is owned and operated by <strong>LALHRUAIZELA SAILO</strong> (trading as <strong>Maze Streetwear</strong>). By browsing our catalog, creating an account, or completing a transaction on this Website, you agree to be bound by the following Terms and Conditions (&ldquo;Terms of Service&rdquo;). If you do not agree with any part of these terms, please discontinue using this Website immediately.
                     </p>
                 </section>
 
@@ -272,6 +274,21 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
 
                     <div class="space-y-4">
                         
+                        <div class="p-5 border-2 border-black bg-neutral-50">
+                            <div class="flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-wider text-black mb-3">
+                                <span class="w-2 h-2 bg-black"></span>
+                                <h3><?php esc_html_e( 'Merchant Identification & Legal Business Entity', 'mazestreetwear' ); ?></h3>
+                            </div>
+                            <div class="text-sm text-neutral-800 font-sans leading-relaxed space-y-1.5">
+                                <p><strong><?php esc_html_e( 'Legal Business Name:', 'mazestreetwear' ); ?></strong> <span class="font-bold text-black uppercase">LALHRUAIZELA SAILO</span></p>
+                                <p><strong><?php esc_html_e( 'Brand / Trade Name:', 'mazestreetwear' ); ?></strong> Maze Streetwear</p>
+                                <p><strong><?php esc_html_e( 'Platform / Domain:', 'mazestreetwear' ); ?></strong> <a href="https://mazestw.in" class="underline hover:text-black font-medium">https://mazestw.in</a></p>
+                                <p><strong><?php esc_html_e( 'Registered Office & Operating Address:', 'mazestreetwear' ); ?></strong> Bungkawn Vengthar, A-25, Aizawl, Mizoram - 796005, India</p>
+                                <p><strong><?php esc_html_e( 'Official Email:', 'mazestreetwear' ); ?></strong> <a href="mailto:enquiries@mazestw.in" class="underline hover:text-black font-medium">enquiries@mazestw.in</a></p>
+                                <p><strong><?php esc_html_e( 'Phone / WhatsApp Helpline:', 'mazestreetwear' ); ?></strong> +91 8787324795</p>
+                            </div>
+                        </div>
+
                         <div class="p-5 border border-neutral-300 hover:border-black transition-colors bg-white">
                             <div class="flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-wider text-black mb-2">
                                 <span class="w-1.5 h-1.5 bg-black"></span>
@@ -361,7 +378,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                             <span class="font-mono text-xs font-bold text-black mt-0.5 flex-shrink-0">[02]</span>
                             <div class="text-sm text-neutral-800 font-sans leading-relaxed space-y-2">
                                 <div>
-                                    <strong>Payment Settlement:</strong> <?php esc_html_e( 'We accept payments via authorized digital methods through PayU India, including Unified Payments Interface (UPI - GPay, PhonePe, Paytm, BHIM), major Credit and Debit Cards (Visa, MasterCard, RuPay), and Net Banking.', 'mazestreetwear' ); ?>
+                                    <strong>Payment Settlement:</strong> <?php esc_html_e( 'We accept payments via authorized digital payment gateways through PayU India, including Unified Payments Interface (UPI - GPay, PhonePe, Paytm, BHIM), major Credit and Debit Cards (Visa, MasterCard, RuPay), and Net Banking. All online payment settlements are processed under the registered legal business name LALHRUAIZELA SAILO (trading as Maze Streetwear).', 'mazestreetwear' ); ?>
                                 </div>
                                 <div class="flex flex-wrap gap-2 pt-1 font-mono text-[10px] uppercase text-neutral-600">
                                     <span class="px-2 py-0.5 bg-white border border-neutral-300">UPI / QR</span>
@@ -393,7 +410,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
 
                     <div class="p-6 border border-black bg-white space-y-4">
                         <p class="text-sm sm:text-base text-neutral-800 font-sans leading-relaxed">
-                            <?php esc_html_e( 'All content on this Website—including the brand name "Maze Streetwear," custom logos, apparel graphic prints, lookbook imagery, product descriptions, website code, and user interface styling—is the exclusive intellectual property of Maze Streetwear. You may not copy, reproduce, modify, publish, distribute, or exploit any content without express written authorization.', 'mazestreetwear' ); ?>
+                            <?php esc_html_e( 'All content on this Website—including the brand name "Maze Streetwear," custom logos, apparel graphic prints, lookbook imagery, product descriptions, website code, and user interface styling—is the exclusive intellectual property of LALHRUAIZELA SAILO (trading as Maze Streetwear). You may not copy, reproduce, modify, publish, distribute, or exploit any content without express written authorization.', 'mazestreetwear' ); ?>
                         </p>
 
                         <div class="p-3 bg-neutral-100 border-l-2 border-black font-mono text-xs text-neutral-700">
@@ -413,7 +430,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
 
                     <div class="p-6 border border-neutral-300 bg-white space-y-4">
                         <p class="text-sm sm:text-base text-neutral-800 font-sans leading-relaxed">
-                            <?php esc_html_e( 'Maze Streetwear and its founders, affiliates, employees, and logistics partners shall not be liable for any indirect, incidental, punitive, or consequential damages resulting from the use of, or inability to use, this Website, garment defects beyond the replacement value of the purchased item, or shipment delays caused by third-party courier handling or force majeure circumstances.', 'mazestreetwear' ); ?>
+                            <?php esc_html_e( 'LALHRUAIZELA SAILO (trading as Maze Streetwear) and its affiliates, employees, and logistics partners shall not be liable for any indirect, incidental, punitive, or consequential damages resulting from the use of, or inability to use, this Website, garment defects beyond the replacement value of the purchased item, or shipment delays caused by third-party courier handling or force majeure circumstances.', 'mazestreetwear' ); ?>
                         </p>
                     </div>
                 </section>
@@ -452,13 +469,13 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                         <div class="flex flex-wrap items-center justify-between gap-3 pb-6 mb-6 border-b border-neutral-200">
                             <div>
                                 <span class="text-[10px] font-mono font-bold tracking-widest text-neutral-400 uppercase block mb-1">
-                                    <?php esc_html_e( 'OFFICIAL STORE INQUIRIES', 'mazestreetwear' ); ?>
+                                    <?php esc_html_e( 'LEGAL ENTITY & STORE INQUIRIES', 'mazestreetwear' ); ?>
                                 </span>
                                 <h3 class="text-2xl font-black font-sans uppercase tracking-tight text-black">
-                                    <?php esc_html_e( 'Maze Support Desk', 'mazestreetwear' ); ?>
+                                    LALHRUAIZELA SAILO
                                 </h3>
                                 <p class="text-xs font-mono text-neutral-600 mt-0.5">
-                                    <?php esc_html_e( 'Brand: Maze Streetwear', 'mazestreetwear' ); ?>
+                                    <?php esc_html_e( 'Trade Name / Brand: Maze Streetwear (mazestw.in)', 'mazestreetwear' ); ?>
                                 </p>
                             </div>
                             <span class="inline-flex items-center space-x-1.5 text-xs font-mono bg-neutral-100 border border-neutral-300 px-3 py-1 font-bold text-neutral-800">

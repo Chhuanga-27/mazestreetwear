@@ -32,6 +32,7 @@ $account_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
   "publisher": {
     "@type": "Organization",
     "name": "Maze Streetwear",
+    "legalName": "LALHRUAIZELA SAILO",
     "url": "https://mazestw.in",
     "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
     "address": {
@@ -308,7 +309,7 @@ $account_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
                 <!-- Preamble / Introduction Card -->
                 <section class="border-l-4 border-black pl-5 sm:pl-7 py-2 bg-white">
                     <p class="text-base sm:text-lg font-sans text-neutral-900 leading-relaxed font-normal">
-                        At <strong>Maze Streetwear</strong> (<a href="https://mazestw.in" target="_blank" rel="noopener noreferrer" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a>), we ensure every garment is handled, inspected, and dispatched with precision. This Shipping & Delivery Policy outlines the terms, timelines, transit fees, and procedures governing all orders placed on our website.
+                        At <strong>Maze Streetwear</strong> (<a href="https://mazestw.in" target="_blank" rel="noopener noreferrer" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a>), operated by registered legal entity <strong>LALHRUAIZELA SAILO</strong>, we ensure every garment is handled, inspected, and dispatched with precision. This Shipping & Delivery Policy outlines the terms, timelines, transit fees, and procedures governing all orders placed on our website.
                     </p>
                 </section>
 
@@ -893,6 +894,7 @@ Thank you!</pre>
                 <div class="pt-8 border-t border-neutral-200 flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono text-neutral-500 gap-4">
                     <div>
                         <span><?php esc_html_e( 'DOCUMENT REF: MAZE-LOGISTICS-POLICY-2026', 'mazestreetwear' ); ?></span>
+                        <span class="block text-[11px] text-neutral-600 mt-1"><?php esc_html_e( 'Legal Entity: ', 'mazestreetwear' ); ?><strong class="text-black uppercase">LALHRUAIZELA SAILO</strong> (Maze Streetwear)</span>
                     </div>
                     <div class="flex items-center space-x-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-500"></span>

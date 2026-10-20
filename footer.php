@@ -156,6 +156,18 @@ $footer_card_border = $is_maze_home ? 'border-0' : 'border border-black/15 shado
             </div>
         </div>
 
+        <!-- Registered Legal Business Name Disclaimer for Payment Gateway Compliance -->
+        <div class="pt-3 mt-3 border-t border-neutral-200 text-center sm:text-left text-[11px] sm:text-xs font-mono text-neutral-600 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span>
+                <?php esc_html_e( 'Legal Business Name: ', 'mazestreetwear' ); ?>
+                <strong class="text-black font-bold uppercase tracking-wider">LALHRUAIZELA SAILO</strong>
+                <span class="text-neutral-400 ml-1 font-sans">(Brand / Trade Name: Maze Streetwear)</span>
+            </span>
+            <span class="text-neutral-500 text-[10px] sm:text-[11px]">
+                <?php esc_html_e( 'All online orders and transactions are securely processed via PayU.', 'mazestreetwear' ); ?>
+            </span>
+        </div>
+
     </div>
 </footer>
 

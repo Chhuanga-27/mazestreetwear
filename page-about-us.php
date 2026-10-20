@@ -28,7 +28,7 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
       "@id": "<?php echo esc_url( $about_url ); ?>#webpage",
       "url": "<?php echo esc_url( $about_url ); ?>",
       "name": "About Us - Maze Streetwear",
-      "description": "Started running since 2019, MAZE is a High-End streetwear brand founded by Zela Sailo. The term \"MAZE\" refers to the world we live in. MAZE is you and me redefining streetwear, inspired to create.",
+      "description": "Started running since 2019, MAZE is a High-End streetwear brand founded by LALHRUAIZELA SAILO (Zela Sailo). The term \"MAZE\" refers to the world we live in. MAZE is you and me redefining streetwear, inspired to create.",
       "publisher": {
         "@id": "https://mazestw.in/#organization"
       }
@@ -37,11 +37,12 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
       "@type": "ClothingStore",
       "@id": "https://mazestw.in/#organization",
       "name": "Maze Streetwear",
+      "legalName": "LALHRUAIZELA SAILO",
       "alternateName": ["MAZE", "mazestw.in"],
       "url": "https://mazestw.in",
       "founder": {
         "@type": "Person",
-        "name": "Zela Sailo"
+        "name": "LALHRUAIZELA SAILO (Zela Sailo)"
       },
       "foundingDate": "2019"
     }
@@ -56,7 +57,7 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
 
             <div class="font-outfit text-lg sm:text-xl md:text-2xl lg:text-[1.85rem] leading-[1.65] sm:leading-[1.7] md:leading-[1.75] text-black font-normal tracking-tight">
                 <p class="mb-6 sm:mb-8 md:mb-10">
-                    <?php esc_html_e( 'Started running since 2019, MAZE is a High-End streetwear brand founded by Zela Sailo,', 'mazestreetwear' ); ?><br class="hidden sm:inline" />
+                    <?php esc_html_e( 'Started running since 2019, MAZE is a High-End streetwear brand founded by LALHRUAIZELA SAILO (Zela Sailo),', 'mazestreetwear' ); ?><br class="hidden sm:inline" />
                     <?php esc_html_e( 'The term "MAZE" refers to the world we live in.', 'mazestreetwear' ); ?><br class="hidden sm:inline" />
                     <?php esc_html_e( 'MAZE is you and me redefining streetwear,', 'mazestreetwear' ); ?><br class="hidden sm:inline" />
                     <?php esc_html_e( 'inspired to create.', 'mazestreetwear' ); ?>
@@ -65,6 +66,16 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
                 <p>
                     <?php esc_html_e( 'At MAZE we are changing the way streetwear is perceived, and we aim to evolve and move the Indian fashion culture by bringing to you revolutionizing designs.', 'mazestreetwear' ); ?>
                 </p>
+
+                <div class="mt-12 pt-6 border-t border-neutral-300 text-xs sm:text-sm font-mono text-neutral-600">
+                    <span><?php esc_html_e( 'Legal Entity: ', 'mazestreetwear' ); ?></span>
+                    <strong class="text-black font-bold uppercase">LALHRUAIZELA SAILO</strong>
+                    <span class="text-neutral-400"> &middot; </span>
+                    <span><?php esc_html_e( 'Brand: ', 'mazestreetwear' ); ?></span>
+                    <strong class="text-black">Maze Streetwear</strong>
+                    <span class="text-neutral-400"> &middot; </span>
+                    <span><?php esc_html_e( 'Aizawl, Mizoram, India', 'mazestreetwear' ); ?></span>
+                </div>
             </div>
         </article>
     </div>

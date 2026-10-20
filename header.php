@@ -125,6 +125,7 @@ $masthead_classes = $is_maze_home
                     "@type": "ClothingStore",
                     "@id": "<?php echo esc_url(home_url('/#organization')); ?>",
                     "name": "Maze Streetwear",
+                    "legalName": "LALHRUAIZELA SAILO",
                     "alternateName": ["MAZE", "mazestw.in"],
                     "url": "<?php echo esc_url(home_url('/')); ?>",
                     "logo": {
