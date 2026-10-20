@@ -1843,3 +1843,82 @@ body.single-product .maze-single-product-editorial {
 .maze-size-chart-panel td {
   font-family: var(--font-outfit) !important;
 }
+
+/* Modern Editorial Gallery Floating Navigation Arrows */
+.maze-gallery-nav {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  z-index: 30 !important;
+  user-select: none !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.maze-gallery-nav:hover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22) !important;
+  transform: translateY(-50%) scale(1.06) !important;
+}
+
+.maze-gallery-nav:active {
+  transform: translateY(-50%) scale(0.95) !important;
+}
+
+.maze-gallery-prev {
+  left: 12px;
+}
+
+.maze-gallery-next {
+  right: 12px;
+}
+
+@media (min-width: 768px) {
+  .maze-gallery-nav {
+    display: flex;
+    width: 46px;
+    height: 46px;
+  }
+  .maze-gallery-prev {
+    left: 16px;
+  }
+  .maze-gallery-next {
+    right: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .maze-gallery-nav {
+    width: 48px;
+    height: 48px;
+  }
+  .maze-gallery-prev {
+    left: 28px;
+  }
+  .maze-gallery-next {
+    right: 28px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .maze-gallery-prev {
+    left: 36px;
+  }
+  .maze-gallery-next {
+    right: 36px;
+  }
+}

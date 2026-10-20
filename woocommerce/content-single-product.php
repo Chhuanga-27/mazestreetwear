@@ -70,7 +70,7 @@ $image_count = count( $gallery_images );
             <!-- Left Column: Edge-to-Edge Slidable / Swipeable Garment Images (Col Span 7) -->
             <div class="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-black p-0 lg:p-10 xl:p-14 flex flex-col items-center justify-center bg-white relative overflow-hidden">
                 <?php if ( $image_count > 0 ) : ?>
-                    <div class="maze-gallery-wrapper relative w-full overflow-hidden group">
+                    <div class="maze-gallery-wrapper relative w-full overflow-hidden">
                         <!-- Horizontal Swipeable Track (Edge-to-edge on mobile with snap scrolling) -->
                         <div id="maze-gallery-slider" class="maze-gallery-track flex w-full overflow-x-auto snap-x snap-mandatory scrollbar-none select-none">
                             <?php foreach ( $gallery_images as $idx => $g_img ) : ?>
@@ -88,17 +88,26 @@ $image_count = count( $gallery_images );
                                 </div>
                             <?php endforeach; ?>
                         </div>
-
-                        <?php if ( $image_count > 1 ) : ?>
-                            <!-- Desktop Navigation Arrows (hidden on phone, visible on hover on desktop) -->
-                            <button type="button" onclick="window.mazeGalleryPrev && window.mazeGalleryPrev(event)" class="maze-gallery-nav maze-gallery-prev hidden lg:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center bg-white/95 hover:bg-black hover:text-white text-black border border-black transition-all opacity-80 group-hover:opacity-100 cursor-pointer shadow-md z-20 select-none" aria-label="<?php esc_attr_e( 'Previous image', 'mazestreetwear' ); ?>">
-                                <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
-                            </button>
-                            <button type="button" onclick="window.mazeGalleryNext && window.mazeGalleryNext(event)" class="maze-gallery-nav maze-gallery-next hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 items-center justify-center bg-white/95 hover:bg-black hover:text-white text-black border border-black transition-all opacity-80 group-hover:opacity-100 cursor-pointer shadow-md z-20 select-none" aria-label="<?php esc_attr_e( 'Next image', 'mazestreetwear' ); ?>">
-                                <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
-                            </button>
-                        <?php endif; ?>
                     </div>
+
+                    <?php if ( $image_count > 1 ) : ?>
+                        <!-- Modern Sleek Floating Navigation Arrows (moved far from the product image) -->
+                        <button type="button" 
+                                onclick="window.mazeGalleryPrev && window.mazeGalleryPrev(event)" 
+                                class="maze-gallery-nav maze-gallery-prev group/arrow hidden md:flex absolute left-3 sm:left-5 lg:left-8 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full items-center justify-center bg-white/95 hover:bg-black text-black hover:text-white border border-black/15 hover:border-black transition-all duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:scale-105 active:scale-95 cursor-pointer z-30 select-none backdrop-blur-sm" 
+                                aria-label="<?php esc_attr_e( 'Previous image', 'mazestreetwear' ); ?>">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 pointer-events-none transition-transform duration-200 group-hover/arrow:-translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                        </button>
+                        <button type="button" 
+                                onclick="window.mazeGalleryNext && window.mazeGalleryNext(event)" 
+                                class="maze-gallery-nav maze-gallery-next group/arrow hidden md:flex absolute right-3 sm:right-5 lg:right-8 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full items-center justify-center bg-white/95 hover:bg-black text-black hover:text-white border border-black/15 hover:border-black transition-all duration-300 shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:scale-105 active:scale-95 cursor-pointer z-30 select-none backdrop-blur-sm" 
+                                aria-label="<?php esc_attr_e( 'Next image', 'mazestreetwear' ); ?>">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 pointer-events-none transition-transform duration-200 group-hover/arrow:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </button>
 
                     <?php if ( $image_count > 1 ) : ?>
                         <!-- TAB Under the Image to Navigate Slides -->
