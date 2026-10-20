@@ -55,10 +55,11 @@ function mazestreetwear_setup()
         ),
     ));
 
-    // Register full WooCommerce product gallery features
-    add_theme_support('wc-product-gallery-zoom');
-    add_theme_support('wc-product-gallery-lightbox');
-    add_theme_support('wc-product-gallery-slider');
+    // Disable WooCommerce built-in product gallery slider, zoom, and lightbox features on the single product page
+    // so WooCommerce does not lock images into a fixed-height container box.
+    remove_theme_support('wc-product-gallery-zoom');
+    remove_theme_support('wc-product-gallery-lightbox');
+    remove_theme_support('wc-product-gallery-slider');
 
     // Register Navigation Menus
     register_nav_menus(array(
@@ -67,6 +68,34 @@ function mazestreetwear_setup()
     ));
 }
 add_action('after_setup_theme', 'mazestreetwear_setup');
+
+/**
+ * Explicitly disable WooCommerce built-in product gallery slider, zoom, and lightbox features
+ * on the single product page so WooCommerce does not lock images into a fixed-height container box.
+ */
+function mazestreetwear_disable_wc_gallery_features()
+{
+    remove_theme_support('wc-product-gallery-zoom');
+    remove_theme_support('wc-product-gallery-lightbox');
+    remove_theme_support('wc-product-gallery-slider');
+}
+add_action('after_setup_theme', 'mazestreetwear_disable_wc_gallery_features', 100);
+
+/**
+ * Dequeue WooCommerce gallery scripts and styles on single product page
+ * to prevent any fixed-height or box-sizing constraints.
+ */
+function mazestreetwear_dequeue_wc_gallery_scripts()
+{
+    if (function_exists('is_product') && is_product()) {
+        wp_dequeue_script('zoom');
+        wp_dequeue_script('flexslider');
+        wp_dequeue_script('photoswipe-ui-default');
+        wp_dequeue_style('photoswipe');
+        wp_dequeue_style('photoswipe-default-skin');
+    }
+}
+add_action('wp_enqueue_scripts', 'mazestreetwear_dequeue_wc_gallery_scripts', 100);
 
 /**
  * Enqueue scripts and styles.
@@ -1451,9 +1480,9 @@ add_filter('get_site_icon_url', 'mazestreetwear_filter_site_icon_url', 10, 3);
 
 /**
  * Image Quality & Downscaling Optimization
- * 1. Sets JPEG compression quality to 100 to prevent WordPress from compressing uploads.
- * 2. Disables big_image_size_threshold (returns false) so original high-resolution uploads are not downscaled.
- * 3. Enforces full-resolution images across WooCommerce loops and subcategories.
+ * 1. Sets JPEG and WebP compression quality to 100% to prevent WordPress from compressing uploads.
+ * 2. Disables big_image_size_threshold (returns false) so original high-resolution uploads are not auto-downscaled.
+ * 3. Enforces full-resolution uncompressed images across single product pages, gallery, loops, and variations.
  */
 add_filter('jpeg_quality', function () {
     return 100;
@@ -1463,7 +1492,52 @@ add_filter('wp_editor_set_quality', function () {
     return 100;
 });
 
+// Disable auto-downscaling threshold on large image uploads (preserve 100% original full dimensions)
 add_filter('big_image_size_threshold', '__return_false');
+
+// Single product image size: always fetch 'full' uncompressed size
+add_filter('woocommerce_single_product_image_size', function () {
+    return 'full';
+});
+
+// Single product gallery image size: always fetch 'full' uncompressed size
+add_filter('woocommerce_gallery_image_size', function () {
+    return 'full';
+});
+
+// Single product gallery thumbnail size: always fetch 'full' uncompressed size
+add_filter('woocommerce_gallery_thumbnail_size', function () {
+    return 'full';
+});
+
+// Ensure WooCommerce single product image dimensions don't crop or downscale
+add_filter('woocommerce_get_image_size_single', function ($size) {
+    return array(
+        'width'  => 0,
+        'height' => 0,
+        'crop'   => 0,
+    );
+});
+
+add_filter('woocommerce_get_image_size_gallery_thumbnail', function ($size) {
+    return array(
+        'width'  => 0,
+        'height' => 0,
+        'crop'   => 0,
+    );
+});
+
+// Ensure variation images return full uncompressed size URL
+add_filter('woocommerce_available_variation', function ($data, $product, $variation) {
+    if (! empty($data['image_id'])) {
+        $full_src = wp_get_attachment_image_url($data['image_id'], 'full');
+        if ($full_src) {
+            $data['image']['src'] = $full_src;
+            $data['image']['full_src'] = $full_src;
+        }
+    }
+    return $data;
+}, 10, 3);
 
 add_filter('single_product_archive_thumbnail_size', function () {
     return 'full';

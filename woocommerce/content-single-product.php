@@ -35,14 +35,17 @@ if ( post_password_required() ) {
     return;
 }
 
-// Collect all gallery images: featured image first, followed by gallery attachments
+// Collect all gallery images: featured image first, followed by gallery attachments in native 'full' resolution
 $gallery_images = array();
 if ( has_post_thumbnail() ) {
     $featured_id = get_post_thumbnail_id();
+    $feat_img    = wp_get_attachment_image_src( $featured_id, 'full' );
     $gallery_images[] = array(
-        'id'  => $featured_id,
-        'url' => wp_get_attachment_image_url( $featured_id, 'full' ),
-        'alt' => get_post_meta( $featured_id, '_wp_attachment_image_alt', true ) ?: get_the_title(),
+        'id'     => $featured_id,
+        'url'    => $feat_img ? $feat_img[0] : wp_get_attachment_image_url( $featured_id, 'full' ),
+        'width'  => $feat_img ? $feat_img[1] : '',
+        'height' => $feat_img ? $feat_img[2] : '',
+        'alt'    => get_post_meta( $featured_id, '_wp_attachment_image_alt', true ) ?: get_the_title(),
     );
 }
 $attachment_ids = $product->get_gallery_image_ids();
@@ -51,10 +54,13 @@ if ( ! empty( $attachment_ids ) ) {
         if ( has_post_thumbnail() && $attachment_id == get_post_thumbnail_id() ) {
             continue;
         }
+        $att_img = wp_get_attachment_image_src( $attachment_id, 'full' );
         $gallery_images[] = array(
-            'id'  => $attachment_id,
-            'url' => wp_get_attachment_image_url( $attachment_id, 'full' ),
-            'alt' => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) ?: ( get_the_title() . ' - Alternate View' ),
+            'id'     => $attachment_id,
+            'url'    => $att_img ? $att_img[0] : wp_get_attachment_image_url( $attachment_id, 'full' ),
+            'width'  => $att_img ? $att_img[1] : '',
+            'height' => $att_img ? $att_img[2] : '',
+            'alt'    => get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) ?: ( get_the_title() . ' - Alternate View' ),
         );
     }
 }
@@ -75,11 +81,13 @@ $image_count = count( $gallery_images );
                         <div id="maze-gallery-slider" class="maze-gallery-track flex w-full overflow-x-auto snap-x snap-mandatory scrollbar-none select-none">
                             <?php foreach ( $gallery_images as $idx => $g_img ) : ?>
                                 <div class="maze-gallery-slide min-w-full w-full flex-shrink-0 snap-center flex items-center justify-center bg-white" data-slide-index="<?php echo esc_attr( $idx ); ?>">
-                                    <div class="w-full aspect-square sm:aspect-[4/5] lg:aspect-[4/5] max-w-full lg:max-w-xl mx-auto flex items-center justify-center overflow-hidden bg-white">
+                                    <div class="w-full max-w-full lg:max-w-xl mx-auto flex items-center justify-center bg-white">
                                         <img 
                                             src="<?php echo esc_url( $g_img['url'] ); ?>" 
                                             alt="<?php echo esc_attr( $g_img['alt'] ); ?>" 
-                                            class="w-full h-full object-contain object-center block"
+                                            class="w-full h-auto block"
+                                            <?php if ( ! empty( $g_img['width'] ) ) : ?>width="<?php echo esc_attr( $g_img['width'] ); ?>"<?php endif; ?>
+                                            <?php if ( ! empty( $g_img['height'] ) ) : ?>height="<?php echo esc_attr( $g_img['height'] ); ?>"<?php endif; ?>
                                             <?php if ( 0 === $idx ) : ?>id="maze-main-product-image"<?php endif; ?>
                                             loading="<?php echo 0 === $idx ? 'eager' : 'lazy'; ?>"
                                             draggable="false"
@@ -130,7 +138,7 @@ $image_count = count( $gallery_images );
                     <?php endif; ?>
 
                 <?php else : ?>
-                    <div class="w-full aspect-[4/5] sm:aspect-[3/4] max-w-lg mx-auto flex flex-col items-center justify-center text-neutral-300 py-16">
+                    <div class="w-full max-w-lg mx-auto flex flex-col items-center justify-center text-neutral-300 py-16">
                         <span class="text-4xl font-normal font-bebas tracking-widest text-neutral-400">MAZE</span>
                         <span class="text-xs font-outfit font-semibold uppercase tracking-widest text-neutral-600 mt-2">[ product cutout ]</span>
                     </div>
