@@ -1732,4 +1732,15 @@ function mazestreetwear_render_size_chart_modal()
 }
 add_action('wp_footer', 'mazestreetwear_render_size_chart_modal', 25);
 
+/**
+ * Hard-enforce suppression of legacy size chart switcher tabs in wp_head
+ */
+function mazestreetwear_size_chart_inline_guard_css()
+{
+    if ((function_exists('is_product') && is_product()) || is_singular('product')) {
+        echo '<style id="maze-size-chart-guard">.maze-size-chart-tabs,.maze-size-chart-tab{display:none!important;visibility:hidden!important;height:0!important;max-height:0!important;padding:0!important;margin:0!important;border:0!important;opacity:0!important;pointer-events:none!important;}</style>' . "\n";
+    }
+}
+add_action('wp_head', 'mazestreetwear_size_chart_inline_guard_css', 999);
+
 

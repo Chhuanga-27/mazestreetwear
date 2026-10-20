@@ -46,6 +46,23 @@ $rows         = isset( $chart_data['rows'] ) ? $chart_data['rows'] : array();
 $product_name = $current_product ? $current_product->get_name() : '';
 ?>
 
+<style>
+/* Absolute suppression of other product tabs under all circumstances */
+#maze-size-chart-modal .maze-size-chart-tabs,
+.maze-size-chart-tabs,
+.maze-size-chart-tab {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+</style>
+
 <!-- Maze Streetwear Sizing Chart Modal -->
 <div id="maze-size-chart-modal"
      class="maze-size-chart-modal fixed inset-0 z-[99999] bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-3 sm:p-6"
@@ -179,12 +196,42 @@ $product_name = $current_product ? $current_product->get_name() : '';
  * Immediate Size Chart Modal Logic (self-contained guarantee)
  */
 (function () {
+    function purgeOtherProductTabs() {
+        var modal = document.getElementById('maze-size-chart-modal');
+        if (!modal) return;
+        var tabs = modal.querySelectorAll('.maze-size-chart-tabs, .maze-size-chart-tab');
+        for (var i = 0; i < tabs.length; i++) {
+            if (tabs[i] && tabs[i].parentNode) {
+                tabs[i].parentNode.removeChild(tabs[i]);
+            }
+        }
+        var activeChart = modal.getAttribute('data-active-chart') || 't-shirt';
+        var panels = modal.querySelectorAll('.maze-size-chart-panel');
+        for (var j = 0; j < panels.length; j++) {
+            var pTarget = panels[j].getAttribute('data-chart-panel') || panels[j].id.replace('maze-chart-panel-', '');
+            if (pTarget && pTarget !== activeChart) {
+                panels[j].remove();
+            } else {
+                panels[j].classList.remove('hidden');
+                panels[j].classList.add('block');
+            }
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', purgeOtherProductTabs);
+    } else {
+        purgeOtherProductTabs();
+    }
+
     window.mazeOpenSizeChart = function (event, btn) {
         if (event && event.preventDefault) {
             event.preventDefault();
         }
         var modal = document.getElementById('maze-size-chart-modal');
         if (!modal) return;
+
+        purgeOtherProductTabs();
 
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';

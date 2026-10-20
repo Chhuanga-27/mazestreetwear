@@ -571,9 +571,13 @@
         setTimeout(initVariationPills, 120);
 
         // --- Size Guide / Sizing Chart Modal Handlers ---
+        // Ensure legacy tabs from cached HTML are purged immediately
+        $('.maze-size-chart-tabs, .maze-size-chart-tab').remove();
+
         $(document).on('click', '.maze-size-chart-trigger', function (e) {
             e.preventDefault();
             e.stopPropagation();
+            $('.maze-size-chart-tabs, .maze-size-chart-tab').remove();
             if (window.mazeOpenSizeChart) {
                 window.mazeOpenSizeChart(e, this);
             }

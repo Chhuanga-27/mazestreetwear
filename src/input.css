@@ -1797,20 +1797,18 @@ body.single-product .maze-single-product-editorial {
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Tab buttons inside modal */
+/* Tab buttons inside modal - strictly suppressed so only designated product size chart is shown */
+.maze-size-chart-tabs,
 .maze-size-chart-tab {
-  font-family: var(--font-bebas) !important;
-  font-size: 0.875rem !important;
-  letter-spacing: 0.05em !important;
-  border: 1px solid #000000 !important;
-  border-radius: 0 !important;
-  cursor: pointer !important;
-  transition: background-color 0.15s ease, color 0.15s ease !important;
-}
-
-.maze-size-chart-tab.is-active {
-  background-color: #000000 !important;
-  color: #ffffff !important;
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 /* Sizing table styles */
