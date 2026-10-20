@@ -1516,7 +1516,7 @@ add_filter('woocommerce_order_item_name', 'mazestreetwear_uppercase_cart_item_na
  */
 function mazestreetwear_get_size_charts()
 {
-    return array(
+    $charts = array(
         'utility-gilet' => array(
             'id'       => 'utility-gilet',
             'title'    => 'UTILITY GILET',
@@ -1570,25 +1570,62 @@ function mazestreetwear_get_size_charts()
             ),
         ),
     );
+
+    return apply_filters('mazestreetwear_size_charts', $charts);
 }
 
 /**
- * Detect the appropriate size chart key based on product name, slug, or categories
+ * Detect the appropriate size chart key based on product name, slug, attributes, or categories
  *
- * @param WC_Product|null $product
+ * @param WC_Product|int|null $product
  * @return string
  */
 function mazestreetwear_get_current_product_size_chart_key($product = null)
 {
     if (! $product && function_exists('wc_get_product')) {
-        global $post;
-        if ($post && 'product' === get_post_type($post)) {
-            $product = wc_get_product($post->ID);
+        if (function_exists('is_product') && is_product()) {
+            $queried_id = get_queried_object_id();
+            if ($queried_id) {
+                $product = wc_get_product($queried_id);
+            }
         }
+        if (! $product) {
+            global $post;
+            if ($post && 'product' === get_post_type($post)) {
+                $product = wc_get_product($post->ID);
+            }
+        }
+    } elseif (is_numeric($product) && function_exists('wc_get_product')) {
+        $product = wc_get_product($product);
     }
 
     if (! $product || ! is_a($product, 'WC_Product')) {
         return 't-shirt';
+    }
+
+    $charts = mazestreetwear_get_size_charts();
+
+    // 0a. Explicit custom size chart attribute or meta
+    $meta_chart = get_post_meta($product->get_id(), '_size_chart', true);
+    if (! $meta_chart) {
+        $meta_chart = get_post_meta($product->get_id(), 'size_chart', true);
+    }
+    if ($meta_chart && isset($charts[$meta_chart])) {
+        return $meta_chart;
+    }
+
+    // 0b. Explicit product attribute (e.g. pa_size_chart or pa_garment_type)
+    if (method_exists($product, 'get_attribute')) {
+        $attr_chart = $product->get_attribute('size_chart') ?: $product->get_attribute('pa_size_chart');
+        if (! $attr_chart) {
+            $attr_chart = $product->get_attribute('garment_type') ?: $product->get_attribute('pa_garment_type');
+        }
+        if ($attr_chart) {
+            $attr_key = sanitize_title($attr_chart);
+            if (isset($charts[$attr_key])) {
+                return $attr_key;
+            }
+        }
     }
 
     $name = strtolower($product->get_name());
@@ -1602,34 +1639,77 @@ function mazestreetwear_get_current_product_size_chart_key($product = null)
             $cat_names[] = strtolower($term->slug);
         }
     }
-    $search_pool = $name . ' ' . $slug . ' ' . implode(' ', $cat_names);
 
-    // 1. Utility Gilet / Gilet
-    if (false !== strpos($search_pool, 'utility gilet') || false !== strpos($search_pool, 'utitlity gilet') || false !== strpos($search_pool, 'gilet')) {
+    $tag_names = array();
+    $tags = get_the_terms($product->get_id(), 'product_tag');
+    if (! empty($tags) && ! is_wp_error($tags)) {
+        foreach ($tags as $tag) {
+            $tag_names[] = strtolower($tag->name);
+            $tag_names[] = strtolower($tag->slug);
+        }
+    }
+
+    $search_pool = $name . ' ' . $slug . ' ' . implode(' ', $cat_names) . ' ' . implode(' ', $tag_names);
+
+    // 1. Utility Gilet / Gilet / Vest
+    if (false !== strpos($search_pool, 'utility gilet') || false !== strpos($search_pool, 'utitlity gilet') || false !== strpos($search_pool, 'gilet') || false !== strpos($search_pool, 'vest')) {
         return 'utility-gilet';
     }
 
-    // 2. Puffer Jacket / Puffer
-    if (false !== strpos($search_pool, 'puffer')) {
+    // 2. Puffer Jacket / Puffer / Down
+    if (false !== strpos($search_pool, 'puffer') || false !== strpos($search_pool, 'down jacket')) {
         return 'puffer-jacket';
     }
 
-    // 3. Double Layer Hoodie / Hoodie
-    if (false !== strpos($search_pool, 'double layer') || false !== strpos($search_pool, 'hoodie')) {
+    // 3. Double Layer Hoodie / Hoodie / Hooded / Sweatshirt
+    if (false !== strpos($search_pool, 'double layer') || false !== strpos($search_pool, 'hoodie') || false !== strpos($search_pool, 'hooded') || false !== strpos($search_pool, 'sweatshirt')) {
         return 'double-layer-hoodie';
     }
 
     // 4. Jacket (non-puffer)
-    if (false !== strpos($search_pool, 'jacket')) {
+    if (false !== strpos($search_pool, 'jacket') || false !== strpos($search_pool, 'bomber') || false !== strpos($search_pool, 'windbreaker') || false !== strpos($search_pool, 'coat')) {
         return 'jacket';
     }
 
-    // 5. T-Shirt / Tee
-    if (false !== strpos($search_pool, 't-shirt') || false !== strpos($search_pool, 'tshirt') || false !== strpos($search_pool, 'tee')) {
+    // 5. T-Shirt / Tee / Top / Shirt
+    if (false !== strpos($search_pool, 't-shirt') || false !== strpos($search_pool, 'tshirt') || false !== strpos($search_pool, 'tee') || false !== strpos($search_pool, 'top') || false !== strpos($search_pool, 'shirt')) {
         return 't-shirt';
     }
 
-    return 't-shirt';
+    return apply_filters('mazestreetwear_product_size_chart_key', 't-shirt', $product);
+}
+
+/**
+ * Returns the single matching size chart for a given product or currently viewed product.
+ *
+ * @param WC_Product|int|null $product
+ * @return array|null
+ */
+function mazestreetwear_get_product_size_chart($product = null)
+{
+    if (! $product && function_exists('wc_get_product')) {
+        if (function_exists('is_product') && is_product()) {
+            $queried_id = get_queried_object_id();
+            if ($queried_id) {
+                $product = wc_get_product($queried_id);
+            }
+        }
+        if (! $product) {
+            global $post;
+            if ($post && 'product' === get_post_type($post)) {
+                $product = wc_get_product($post->ID);
+            }
+        }
+    } elseif (is_numeric($product) && function_exists('wc_get_product')) {
+        $product = wc_get_product($product);
+    }
+
+    $charts = mazestreetwear_get_size_charts();
+    $key    = mazestreetwear_get_current_product_size_chart_key($product);
+
+    $chart = isset($charts[$key]) ? $charts[$key] : (isset($charts['t-shirt']) ? $charts['t-shirt'] : null);
+
+    return apply_filters('mazestreetwear_current_product_size_chart', $chart, $product, $key);
 }
 
 /**
@@ -1642,7 +1722,9 @@ function mazestreetwear_render_size_chart_modal()
     }
 
     if ((function_exists('is_product') && is_product()) || is_singular('product')) {
-        $template = locate_template('woocommerce/single-product/size-chart-modal.php');
+        $product_id = get_queried_object_id();
+        $product    = function_exists('wc_get_product') ? wc_get_product($product_id) : null;
+        $template   = locate_template('woocommerce/single-product/size-chart-modal.php');
         if ($template) {
             include $template;
         }

@@ -3,24 +3,47 @@
  * Single Product Size Chart Modal Template
  *
  * Brutalist monochrome pop-up size chart modal for Maze Streetwear.
- * Features tabs for Utility Gilet, T-Shirt, Puffer Jacket, Jacket, and Double Layer Hoodie.
+ * Displays ONLY the size chart corresponding to the currently viewed product.
  *
  * @package MazeStreetwear
- * @version 1.0.0
+ * @version 1.2.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
-global $product;
-$size_charts = function_exists( 'mazestreetwear_get_size_charts' ) ? mazestreetwear_get_size_charts() : array();
+// Strictly resolve the single product being viewed to avoid loop bleeding from related products
+$current_product = null;
+if ( function_exists( 'is_product' ) && is_product() ) {
+    $queried_id = get_queried_object_id();
+    if ( $queried_id && function_exists( 'wc_get_product' ) ) {
+        $current_product = wc_get_product( $queried_id );
+    }
+}
+if ( ! $current_product ) {
+    if ( isset( $product ) && is_a( $product, 'WC_Product' ) ) {
+        $current_product = $product;
+    } else {
+        global $product;
+        if ( $product && is_a( $product, 'WC_Product' ) ) {
+            $current_product = $product;
+        }
+    }
+}
 
-if ( empty( $size_charts ) ) {
+// Retrieve the single matching size chart for this viewed product
+$chart_data = function_exists( 'mazestreetwear_get_product_size_chart' ) 
+    ? mazestreetwear_get_product_size_chart( $current_product )
+    : ( function_exists( 'mazestreetwear_get_size_charts' ) ? ( mazestreetwear_get_size_charts()['t-shirt'] ?? null ) : null );
+
+if ( empty( $chart_data ) || ! is_array( $chart_data ) ) {
     return;
 }
 
-$default_chart_key = function_exists( 'mazestreetwear_get_current_product_size_chart_key' ) 
-    ? mazestreetwear_get_current_product_size_chart_key( $product ) 
-    : 't-shirt';
+$chart_id     = isset( $chart_data['id'] ) ? $chart_data['id'] : 't-shirt';
+$chart_title  = isset( $chart_data['title'] ) ? $chart_data['title'] : __( 'SIZE GUIDE', 'mazestreetwear' );
+$columns      = isset( $chart_data['columns'] ) ? $chart_data['columns'] : array( 'SIZE', 'LENGTH', 'CHEST' );
+$rows         = isset( $chart_data['rows'] ) ? $chart_data['rows'] : array();
+$product_name = $current_product ? $current_product->get_name() : '';
 ?>
 
 <!-- Maze Streetwear Sizing Chart Modal -->
@@ -29,7 +52,7 @@ $default_chart_key = function_exists( 'mazestreetwear_get_current_product_size_c
      role="dialog"
      aria-modal="true"
      aria-labelledby="maze-size-chart-title"
-     data-default-chart="<?php echo esc_attr( $default_chart_key ); ?>"
+     data-active-chart="<?php echo esc_attr( $chart_id ); ?>"
      style="display:none;"
      onclick="if (event.target === this) { window.mazeCloseSizeChart && window.mazeCloseSizeChart(event); }">
 
@@ -40,15 +63,20 @@ $default_chart_key = function_exists( 'mazestreetwear_get_current_product_size_c
 
         <!-- Modal Top Header Bar -->
         <div class="flex items-center justify-between px-5 sm:px-6 py-4 border-b-2 border-black bg-white select-none">
-            <div>
+            <div class="pr-4">
+                <?php if ( ! empty( $product_name ) ) : ?>
+                    <span class="text-[10px] sm:text-[11px] font-outfit uppercase tracking-[0.2em] text-neutral-500 font-semibold block mb-0.5 truncate max-w-xs sm:max-w-md">
+                        <?php echo esc_html( $product_name ); ?>
+                    </span>
+                <?php endif; ?>
                 <h3 id="maze-size-chart-title" class="text-2xl sm:text-3xl font-normal font-bebas uppercase tracking-wider text-black leading-none">
-                    <?php esc_html_e( 'SIZE GUIDE // CHART', 'mazestreetwear' ); ?>
+                    <?php echo esc_html( $chart_title ); ?> <?php esc_html_e( 'SIZE CHART', 'mazestreetwear' ); ?>
                 </h3>
             </div>
 
             <!-- Top Close 'X' Button -->
             <button type="button"
-                    class="maze-size-chart-close w-9 h-9 border border-black bg-white hover:bg-black hover:text-white text-black flex items-center justify-center transition-colors cursor-pointer select-none"
+                    class="maze-size-chart-close w-9 h-9 border border-black bg-white hover:bg-black hover:text-white text-black flex items-center justify-center transition-colors cursor-pointer select-none flex-shrink-0"
                     onclick="window.mazeCloseSizeChart && window.mazeCloseSizeChart(event)"
                     aria-label="<?php esc_attr_e( 'Close Size Chart', 'mazestreetwear' ); ?>">
                 <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -57,90 +85,82 @@ $default_chart_key = function_exists( 'mazestreetwear_get_current_product_size_c
             </button>
         </div>
 
-        <!-- Garment Category Switcher Tabs -->
-        <div class="maze-size-chart-tabs flex items-center gap-1.5 sm:gap-2 overflow-x-auto py-2.5 px-4 sm:px-6 bg-neutral-100 border-b border-black select-none scrollbar-none"
-             role="tablist"
-             aria-label="<?php esc_attr_e( 'Garment size categories', 'mazestreetwear' ); ?>">
-            <?php foreach ( $size_charts as $chart_id => $chart_data ) : 
-                $is_active_tab = ( $chart_id === $default_chart_key );
-            ?>
-                <button type="button"
-                        role="tab"
-                        id="maze-tab-<?php echo esc_attr( $chart_id ); ?>"
-                        class="maze-size-chart-tab px-3.5 py-1.5 text-xs sm:text-sm font-bebas uppercase tracking-wider border border-black cursor-pointer transition-colors whitespace-nowrap rounded-none <?php echo $is_active_tab ? 'is-active bg-black text-white' : 'bg-white text-black hover:bg-neutral-200'; ?>"
-                        data-chart-target="<?php echo esc_attr( $chart_id ); ?>"
-                        aria-selected="<?php echo $is_active_tab ? 'true' : 'false'; ?>"
-                        aria-controls="maze-chart-panel-<?php echo esc_attr( $chart_id ); ?>"
-                        onclick="window.mazeSwitchSizeChartTab && window.mazeSwitchSizeChartTab('<?php echo esc_attr( $chart_id ); ?>', event)">
-                    <?php echo esc_html( $chart_data['title'] ); ?>
-                </button>
-            <?php endforeach; ?>
-        </div>
-
-        <!-- Modal Body Content: Size Tables & Instructions -->
+        <!-- Modal Body Content: Size Table & Measurements for Viewed Product Only -->
         <div class="maze-size-chart-body p-5 sm:p-6 overflow-y-auto space-y-5 bg-white">
 
-            <?php foreach ( $size_charts as $chart_id => $chart_data ) : 
-                $is_active_panel = ( $chart_id === $default_chart_key );
-            ?>
-                <!-- Size Chart Panel: <?php echo esc_html( $chart_data['title'] ); ?> -->
-                <div id="maze-chart-panel-<?php echo esc_attr( $chart_id ); ?>"
-                     class="maze-size-chart-panel <?php echo $is_active_panel ? 'block' : 'hidden'; ?>"
-                     role="tabpanel"
-                     aria-labelledby="maze-tab-<?php echo esc_attr( $chart_id ); ?>"
-                     data-chart-panel="<?php echo esc_attr( $chart_id ); ?>">
+            <!-- Size Chart Panel -->
+            <div id="maze-chart-panel-<?php echo esc_attr( $chart_id ); ?>"
+                 class="maze-size-chart-panel block"
+                 role="region"
+                 aria-labelledby="maze-size-chart-title">
 
-                    <div class="flex items-center justify-between mb-2.5">
-                        <h4 class="text-lg sm:text-xl font-normal font-bebas uppercase tracking-wider text-black">
-                            <?php echo esc_html( $chart_data['title'] ); ?> <?php esc_html_e( 'MEASUREMENTS', 'mazestreetwear' ); ?>
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="inline-block w-2 h-2 bg-black"></span>
+                        <h4 class="text-base sm:text-lg font-normal font-bebas uppercase tracking-wider text-black">
+                            <?php echo esc_html( $chart_title ); ?> <?php esc_html_e( 'MEASUREMENTS', 'mazestreetwear' ); ?>
                         </h4>
-                        <span class="text-[11px] sm:text-xs font-outfit text-neutral-500 font-medium uppercase tracking-wide">
-                            <?php esc_html_e( 'Length & Chest Flat', 'mazestreetwear' ); ?>
-                        </span>
                     </div>
+                    <span class="text-[11px] sm:text-xs font-outfit text-neutral-500 font-medium uppercase tracking-wide">
+                        <?php esc_html_e( 'Length & Chest Flat', 'mazestreetwear' ); ?>
+                    </span>
+                </div>
 
-                    <!-- Clean Brutalist Sizing Table -->
-                    <div class="overflow-x-auto border-2 border-black">
-                        <table class="w-full text-left border-collapse bg-white">
-                            <thead>
-                                <tr class="bg-black text-white select-none">
-                                    <th scope="col" class="py-3 px-3.5 sm:px-4 font-bebas font-normal text-base sm:text-lg uppercase tracking-wider border-r border-neutral-800">
-                                        <?php esc_html_e( 'SIZE', 'mazestreetwear' ); ?>
-                                    </th>
-                                    <th scope="col" class="py-3 px-3.5 sm:px-4 font-bebas font-normal text-base sm:text-lg uppercase tracking-wider border-r border-neutral-800">
-                                        <?php esc_html_e( 'LENGTH', 'mazestreetwear' ); ?>
-                                    </th>
-                                    <th scope="col" class="py-3 px-3.5 sm:px-4 font-bebas font-normal text-base sm:text-lg uppercase tracking-wider">
-                                        <?php esc_html_e( 'CHEST', 'mazestreetwear' ); ?>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-neutral-200 font-outfit text-xs sm:text-sm">
-                                <?php foreach ( $chart_data['rows'] as $r_idx => $row ) : 
-                                    $row_bg = ( $r_idx % 2 === 1 ) ? 'bg-neutral-50/60' : 'bg-white';
+                <!-- Clean Brutalist Sizing Table -->
+                <div class="overflow-x-auto border-2 border-black">
+                    <table class="w-full text-left border-collapse bg-white">
+                        <thead>
+                            <tr class="bg-black text-white select-none">
+                                <?php 
+                                $col_count = count( $columns );
+                                foreach ( $columns as $c_idx => $col_name ) : 
+                                    $is_last = ( $c_idx === $col_count - 1 );
                                 ?>
-                                    <tr class="<?php echo esc_attr( $row_bg ); ?> hover:bg-neutral-100/80 transition-colors">
-                                        <td class="py-3 px-3.5 sm:px-4 font-bold font-bebas text-base sm:text-lg text-black border-r border-neutral-200 tracking-wide">
-                                            <?php echo esc_html( $row['size'] ); ?>
-                                        </td>
-                                        <td class="py-3 px-3.5 sm:px-4 text-neutral-800 border-r border-neutral-200 whitespace-nowrap font-medium">
-                                            <?php echo esc_html( $row['length'] ); ?>
-                                        </td>
-                                        <td class="py-3 px-3.5 sm:px-4 text-neutral-800 whitespace-nowrap font-medium">
-                                            <?php echo esc_html( $row['chest'] ); ?>
-                                        </td>
-                                    </tr>
+                                    <th scope="col" class="py-3 px-3.5 sm:px-4 font-bebas font-normal text-base sm:text-lg uppercase tracking-wider <?php echo ! $is_last ? 'border-r border-neutral-800' : ''; ?>">
+                                        <?php echo esc_html( $col_name ); ?>
+                                    </th>
                                 <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-neutral-200 font-outfit text-xs sm:text-sm">
+                            <?php foreach ( $rows as $r_idx => $row ) : 
+                                $row_bg = ( $r_idx % 2 === 1 ) ? 'bg-neutral-50/60' : 'bg-white';
+                            ?>
+                                <tr class="<?php echo esc_attr( $row_bg ); ?> hover:bg-neutral-100/80 transition-colors">
+                                    <td class="py-3 px-3.5 sm:px-4 font-bold font-bebas text-base sm:text-lg text-black border-r border-neutral-200 tracking-wide">
+                                        <?php echo esc_html( isset( $row['size'] ) ? $row['size'] : '' ); ?>
+                                    </td>
+                                    <td class="py-3 px-3.5 sm:px-4 text-neutral-800 border-r border-neutral-200 whitespace-nowrap font-medium">
+                                        <?php echo esc_html( isset( $row['length'] ) ? $row['length'] : '' ); ?>
+                                    </td>
+                                    <td class="py-3 px-3.5 sm:px-4 text-neutral-800 whitespace-nowrap font-medium">
+                                        <?php echo esc_html( isset( $row['chest'] ) ? $row['chest'] : '' ); ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Fit Advice Note -->
+                <div class="mt-4 p-3.5 bg-neutral-100 border border-neutral-300 flex items-start gap-3">
+                    <svg class="w-4 h-4 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
+                        <line x1="12" y1="16" x2="12" y2="12" stroke="currentColor" stroke-width="2" />
+                        <line x1="12" y1="8" x2="12.01" y2="8" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <div class="text-xs font-outfit text-neutral-700 leading-relaxed">
+                        <span class="font-bold text-black uppercase tracking-wide mr-1"><?php esc_html_e( 'FIT NOTE:', 'mazestreetwear' ); ?></span>
+                        <?php esc_html_e( 'Measurements are garment dimensions laid flat in inches and centimeters. For an oversized streetwear silhouette, choose your normal size. For a standard fit, size down.', 'mazestreetwear' ); ?>
                     </div>
                 </div>
-            <?php endforeach; ?>
+
+            </div><!-- .maze-size-chart-panel -->
 
         </div><!-- .maze-size-chart-body -->
 
         <!-- Modal Bottom Actions Bar -->
-        <div class="flex items-center justify-between px-5 sm:px-6 py-3.5 border-t border-black bg-neutral-50">
+        <div class="flex items-center justify-between px-5 sm:px-6 py-3.5 border-t border-black bg-neutral-50 select-none">
             <span class="text-xs font-outfit font-semibold uppercase tracking-wider text-neutral-600">
                 <?php esc_html_e( 'Questions? DM @MAZE.STW', 'mazestreetwear' ); ?>
             </span>
@@ -165,11 +185,6 @@ $default_chart_key = function_exists( 'mazestreetwear_get_current_product_size_c
         }
         var modal = document.getElementById('maze-size-chart-modal');
         if (!modal) return;
-
-        var chartKey = (btn && btn.getAttribute('data-active-chart')) || modal.getAttribute('data-default-chart') || 't-shirt';
-        if (window.mazeSwitchSizeChartTab) {
-            window.mazeSwitchSizeChartTab(chartKey);
-        }
 
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -207,41 +222,7 @@ $default_chart_key = function_exists( 'mazestreetwear_get_current_product_size_c
     };
 
     window.mazeSwitchSizeChartTab = function (chartKey, event) {
-        if (event && event.preventDefault) {
-            event.preventDefault();
-        }
-        if (!chartKey) return;
-        var modal = document.getElementById('maze-size-chart-modal');
-        if (!modal) return;
-
-        var tabs = modal.querySelectorAll('.maze-size-chart-tab');
-        var panels = modal.querySelectorAll('.maze-size-chart-panel');
-
-        for (var i = 0; i < tabs.length; i++) {
-            var tab = tabs[i];
-            var target = tab.getAttribute('data-chart-target');
-            if (target === chartKey) {
-                tab.classList.add('is-active', 'bg-black', 'text-white');
-                tab.classList.remove('bg-white', 'text-black', 'hover:bg-neutral-200');
-                tab.setAttribute('aria-selected', 'true');
-            } else {
-                tab.classList.remove('is-active', 'bg-black', 'text-white');
-                tab.classList.add('bg-white', 'text-black', 'hover:bg-neutral-200');
-                tab.setAttribute('aria-selected', 'false');
-            }
-        }
-
-        for (var j = 0; j < panels.length; j++) {
-            var panel = panels[j];
-            var panelTarget = panel.getAttribute('data-chart-panel');
-            if (panelTarget === chartKey) {
-                panel.classList.remove('hidden');
-                panel.classList.add('block');
-            } else {
-                panel.classList.add('hidden');
-                panel.classList.remove('block');
-            }
-        }
+        // Maintained for backward-compatibility with any existing event listeners
     };
 
     // Close on Escape key
