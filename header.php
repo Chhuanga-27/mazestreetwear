@@ -38,8 +38,9 @@ $masthead_classes = $is_maze_home
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
 
     <?php if ($is_maze_home) : ?>
-        <!-- Preload High-Definition Hero Bento Banner -->
-        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero.jpg'); ?>" fetchpriority="high">
+        <!-- Preload High-Definition Hero Bento Banner (Responsive: Mobile & Desktop) -->
+        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-mobile.jpg'); ?>" media="(max-width: 639px)" fetchpriority="high">
+        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-desktop.jpg'); ?>" media="(min-width: 640px)" fetchpriority="high">
     <?php endif; ?>
 
     <!-- Favicon & Site Icons (Multi-size ICO, High-res PNG, Apple Touch & Manifest) -->

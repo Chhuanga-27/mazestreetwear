@@ -199,11 +199,17 @@ body.woocommerce .site-header img {
   }
 }
 
+.maze-hero-bento picture {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .maze-hero-bento img {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  object-position: 48% center !important;
+  object-position: center center !important;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: high-quality;
   transform: translateZ(0);

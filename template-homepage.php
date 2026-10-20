@@ -26,16 +26,20 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     <!-- 1. Editorial Hero Banner (Full-Width, No Border, No Radius, HD) -->
     <section class="w-full bg-white pt-0 pb-10 sm:pb-16">
         <div class="maze-hero-bento relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/9] rounded-none border-0 overflow-hidden bg-[#e8e8e8] group">
-            <img 
-                src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero.jpg' ); ?>" 
-                alt="<?php esc_attr_e( 'MAZE Editorial SS26', 'mazestreetwear' ); ?>" 
-                width="5765"
-                height="3614"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
-                class="w-full h-full object-cover object-[48%_center] sm:object-center select-none transition-transform duration-700 ease-out group-hover:scale-[1.01]"
-            />
+            <picture class="w-full h-full block">
+                <source media="(max-width: 639px)" srcset="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-mobile.jpg' ); ?>">
+                <source media="(min-width: 640px)" srcset="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-desktop.jpg' ); ?>">
+                <img 
+                    src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-desktop.jpg' ); ?>" 
+                    alt="<?php esc_attr_e( 'MAZE Editorial SS26', 'mazestreetwear' ); ?>" 
+                    width="2880"
+                    height="1924"
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                    class="w-full h-full object-cover object-center select-none transition-transform duration-700 ease-out group-hover:scale-[1.01]"
+                />
+            </picture>
 
             <!-- Centered Hero CTA Button (Perspective Oval Style with Transparent Background) -->
             <div class="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-8 md:bottom-12 z-10 flex items-center justify-center">
