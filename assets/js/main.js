@@ -1036,6 +1036,7 @@
 
             // Style and dedup any link placed right after Add To Bag button
             if ($button && $button.length) {
+                $button.removeClass('added');
                 const $form = $button.closest('form.cart');
                 if ($form.length) {
                     setTimeout(function () {
@@ -1304,7 +1305,7 @@
                             return;
                         }
 
-                        $submitBtn.removeClass('is-loading opacity-80');
+                        $submitBtn.removeClass('is-loading opacity-80 added');
                         $submitBtn.html('<span class="inline-flex items-center justify-center gap-1.5 font-mono tracking-widest uppercase">ADDED TO BAG ✓</span>');
                         if ($buyBtn.length) $buyBtn.prop('disabled', false);
 
@@ -1337,8 +1338,10 @@
                         }
 
                         $(document.body).trigger('added_to_cart', [res.data.fragments, res.data.cart_hash, $submitBtn]);
+                        $submitBtn.removeClass('added');
 
                         setTimeout(function () {
+                            $submitBtn.removeClass('added');
                             // Ensure only one View Cart link exists right under ADD TO BAG, none under BUY NOW
                             $form.find('.maze-view-cart-wrap').remove();
                             $form.find('.maze_buy_now_button').next('.added_to_cart, .maze-view-cart-link').remove();
@@ -1350,7 +1353,7 @@
                         }, 50);
 
                         setTimeout(function () {
-                            $submitBtn.prop('disabled', false).html(originalSubmitBtnHtml);
+                            $submitBtn.removeClass('added').prop('disabled', false).html(originalSubmitBtnHtml);
                         }, 1800);
                     } else {
                         const errorMsg = (res && res.data && res.data.message) ? res.data.message : 'Could not add garment to bag. Please try again.';

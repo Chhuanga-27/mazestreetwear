@@ -355,6 +355,21 @@
     color: #ffffff !important;
   }
 
+  /* Suppress duplicate WooCommerce default added checkmark pseudo-element on single product add-to-cart button */
+  .woocommerce button.button.single_add_to_cart_button.added::after,
+  .woocommerce button.button.single_add_to_cart_button.added:after,
+  .woocommerce a.button.single_add_to_cart_button.added::after,
+  .woocommerce a.button.single_add_to_cart_button.added:after,
+  .woocommerce button.single_add_to_cart_button.added::after,
+  .woocommerce button.single_add_to_cart_button.added:after,
+  .single_add_to_cart_button.added::after,
+  .single_add_to_cart_button.added:after,
+  .single_add_to_cart_button::after,
+  .single_add_to_cart_button:after {
+    display: none !important;
+    content: none !important;
+  }
+
   /* Buy Now Button - Stark Luxury Minimalist */
   .button.maze_buy_now_button,
   .maze_buy_now_button {

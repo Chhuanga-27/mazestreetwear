@@ -6,7 +6,7 @@
  * Displays ONLY the size chart corresponding to the currently viewed product.
  *
  * @package MazeStreetwear
- * @version 1.2.1
+ * @version 1.2.2
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -81,11 +81,6 @@ $product_name = $current_product ? $current_product->get_name() : '';
         <!-- Modal Top Header Bar -->
         <div class="flex items-center justify-between px-5 sm:px-6 py-4 border-b-2 border-black bg-white select-none">
             <div class="pr-4">
-                <?php if ( ! empty( $product_name ) ) : ?>
-                    <span class="text-[10px] sm:text-[11px] font-outfit uppercase tracking-[0.2em] text-neutral-500 font-semibold block mb-0.5 truncate max-w-xs sm:max-w-md">
-                        <?php echo esc_html( $product_name ); ?>
-                    </span>
-                <?php endif; ?>
                 <h3 id="maze-size-chart-title" class="text-2xl sm:text-3xl font-normal font-bebas uppercase tracking-wider text-black leading-none">
                     <?php echo esc_html( $chart_title ); ?> <?php esc_html_e( 'SIZE CHART', 'mazestreetwear' ); ?>
                 </h3>
@@ -119,7 +114,7 @@ $product_name = $current_product ? $current_product->get_name() : '';
                         </h4>
                     </div>
                     <span class="text-[11px] sm:text-xs font-outfit text-neutral-500 font-medium uppercase tracking-wide">
-                        <?php esc_html_e( 'Length & Chest Flat', 'mazestreetwear' ); ?>
+                        <?php esc_html_e( 'Length & Chest', 'mazestreetwear' ); ?>
                     </span>
                 </div>
 
