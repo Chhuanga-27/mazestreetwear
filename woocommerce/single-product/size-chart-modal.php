@@ -6,7 +6,7 @@
  * Displays ONLY the size chart corresponding to the currently viewed product.
  *
  * @package MazeStreetwear
- * @version 1.2.0
+ * @version 1.2.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -157,19 +157,6 @@ $product_name = $current_product ? $current_product->get_name() : '';
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-                </div>
-
-                <!-- Fit Advice Note -->
-                <div class="mt-4 p-3.5 bg-neutral-100 border border-neutral-300 flex items-start gap-3">
-                    <svg class="w-4 h-4 text-black flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
-                        <line x1="12" y1="16" x2="12" y2="12" stroke="currentColor" stroke-width="2" />
-                        <line x1="12" y1="8" x2="12.01" y2="8" stroke="currentColor" stroke-width="2" />
-                    </svg>
-                    <div class="text-xs font-outfit text-neutral-700 leading-relaxed">
-                        <span class="font-bold text-black uppercase tracking-wide mr-1"><?php esc_html_e( 'FIT NOTE:', 'mazestreetwear' ); ?></span>
-                        <?php esc_html_e( 'Measurements are garment dimensions laid flat in inches and centimeters. For an oversized streetwear silhouette, choose your normal size. For a standard fit, size down.', 'mazestreetwear' ); ?>
-                    </div>
                 </div>
 
             </div><!-- .maze-size-chart-panel -->
