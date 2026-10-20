@@ -165,56 +165,6 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
 
         </div>
 
-        <!-- Legal Business Entity & Registered Office Info Card -->
-        <div class="border-2 border-black p-6 sm:p-8 bg-white mb-12 sm:mb-16">
-            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b border-neutral-200">
-                <div>
-                    <span class="text-xs font-mono font-bold tracking-widest text-neutral-500 uppercase block mb-1">
-                        <?php esc_html_e( 'MERCHANT & LEGAL ENTITY IDENTIFICATION', 'mazestreetwear' ); ?>
-                    </span>
-                    <h2 class="text-2xl sm:text-3xl font-bebas uppercase tracking-wide text-black">
-                        LALHRUAIZELA SAILO
-                    </h2>
-                </div>
-                <span class="inline-flex items-center space-x-1.5 text-xs font-mono bg-neutral-100 border border-neutral-300 px-3 py-1 font-bold text-neutral-800">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    <span><?php esc_html_e( 'REGISTERED PAYU MERCHANT', 'mazestreetwear' ); ?></span>
-                </span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-sans text-xs sm:text-sm">
-                <div>
-                    <span class="block text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1">
-                        <?php esc_html_e( 'Legal Business Name', 'mazestreetwear' ); ?>
-                    </span>
-                    <strong class="text-black font-bold uppercase text-sm sm:text-base">LALHRUAIZELA SAILO</strong>
-                </div>
-                <div>
-                    <span class="block text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1">
-                        <?php esc_html_e( 'Trade / Brand Name', 'mazestreetwear' ); ?>
-                    </span>
-                    <span class="text-black font-semibold text-sm sm:text-base">Maze Streetwear</span>
-                </div>
-                <div>
-                    <span class="block text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1">
-                        <?php esc_html_e( 'Registered Address', 'mazestreetwear' ); ?>
-                    </span>
-                    <address class="not-italic text-neutral-800 leading-snug">
-                        Bungkawn Vengthar, A-25<br>
-                        Aizawl, Mizoram - 796005, India
-                    </address>
-                </div>
-                <div>
-                    <span class="block text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1">
-                        <?php esc_html_e( 'Support & Helpline', 'mazestreetwear' ); ?>
-                    </span>
-                    <div class="space-y-1">
-                        <a href="tel:+918787324795" class="text-black font-bold font-mono hover:underline block">+91 8787324795</a>
-                        <a href="mailto:enquiries@mazestw.in" class="text-black font-medium hover:underline block">enquiries@mazestw.in</a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- MAZE Storefront Policies Section -->
         <section class="border border-black p-6 sm:p-8 bg-neutral-50 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-xs sm:text-sm no-print" aria-label="<?php esc_attr_e( 'Storefront Policies', 'mazestreetwear' ); ?>">

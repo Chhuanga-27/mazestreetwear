@@ -193,10 +193,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                             <span>06. Governing Law & Dispute</span>
                             <span class="text-neutral-500 font-bold">&rarr;</span>
                         </a>
-                        <a href="#section-7" class="maze-terms-toc-link flex items-center justify-between py-2.5 px-3 hover:bg-neutral-100 transition-colors text-black font-bold border-l-2 border-transparent hover:border-black">
-                            <span>07. Customer Support</span>
-                            <span class="text-neutral-500 font-bold">&rarr;</span>
-                        </a>
+
                     </nav>
                 </div>
 
@@ -277,10 +274,9 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                         <div class="p-5 border-2 border-black bg-neutral-50">
                             <div class="flex items-center space-x-2 text-xs font-mono font-bold uppercase tracking-wider text-black mb-3">
                                 <span class="w-2 h-2 bg-black"></span>
-                                <h3><?php esc_html_e( 'Merchant Identification & Legal Business Entity', 'mazestreetwear' ); ?></h3>
+                                <h3><?php esc_html_e( 'Merchant Identification & Operating Details', 'mazestreetwear' ); ?></h3>
                             </div>
                             <div class="text-sm text-neutral-800 font-sans leading-relaxed space-y-1.5">
-                                <p><strong><?php esc_html_e( 'Legal Business Name:', 'mazestreetwear' ); ?></strong> <span class="font-bold text-black uppercase">LALHRUAIZELA SAILO</span></p>
                                 <p><strong><?php esc_html_e( 'Brand / Trade Name:', 'mazestreetwear' ); ?></strong> Maze Streetwear</p>
                                 <p><strong><?php esc_html_e( 'Platform / Domain:', 'mazestreetwear' ); ?></strong> <a href="https://mazestw.in" class="underline hover:text-black font-medium">https://mazestw.in</a></p>
                                 <p><strong><?php esc_html_e( 'Registered Office & Operating Address:', 'mazestreetwear' ); ?></strong> Bungkawn Vengthar, A-25, Aizawl, Mizoram - 796005, India</p>
@@ -378,7 +374,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                             <span class="font-mono text-xs font-bold text-black mt-0.5 flex-shrink-0">[02]</span>
                             <div class="text-sm text-neutral-800 font-sans leading-relaxed space-y-2">
                                 <div>
-                                    <strong>Payment Settlement:</strong> <?php esc_html_e( 'We accept payments via authorized digital payment gateways through PayU India, including Unified Payments Interface (UPI - GPay, PhonePe, Paytm, BHIM), major Credit and Debit Cards (Visa, MasterCard, RuPay), and Net Banking. All online payment settlements are processed under the registered legal business name LALHRUAIZELA SAILO (trading as Maze Streetwear).', 'mazestreetwear' ); ?>
+                                    <strong>Payment Settlement:</strong> <?php esc_html_e( 'We accept payments via authorized digital payment gateways through PayU India, including Unified Payments Interface (UPI - GPay, PhonePe, Paytm, BHIM), major Credit and Debit Cards (Visa, MasterCard, RuPay), and Net Banking. All online payment settlements are processed securely for Maze Streetwear.', 'mazestreetwear' ); ?>
                                 </div>
                                 <div class="flex flex-wrap gap-2 pt-1 font-mono text-[10px] uppercase text-neutral-600">
                                     <span class="px-2 py-0.5 bg-white border border-neutral-300">UPI / QR</span>
@@ -410,7 +406,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
 
                     <div class="p-6 border border-black bg-white space-y-4">
                         <p class="text-sm sm:text-base text-neutral-800 font-sans leading-relaxed">
-                            <?php esc_html_e( 'All content on this Website—including the brand name "Maze Streetwear," custom logos, apparel graphic prints, lookbook imagery, product descriptions, website code, and user interface styling—is the exclusive intellectual property of LALHRUAIZELA SAILO (trading as Maze Streetwear). You may not copy, reproduce, modify, publish, distribute, or exploit any content without express written authorization.', 'mazestreetwear' ); ?>
+                            <?php esc_html_e( 'All content on this Website—including the brand name "Maze Streetwear," custom logos, apparel graphic prints, lookbook imagery, product descriptions, website code, and user interface styling—is the exclusive intellectual property of Maze Streetwear. You may not copy, reproduce, modify, publish, distribute, or exploit any content without express written authorization.', 'mazestreetwear' ); ?>
                         </p>
 
                         <div class="p-3 bg-neutral-100 border-l-2 border-black font-mono text-xs text-neutral-700">
@@ -430,7 +426,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
 
                     <div class="p-6 border border-neutral-300 bg-white space-y-4">
                         <p class="text-sm sm:text-base text-neutral-800 font-sans leading-relaxed">
-                            <?php esc_html_e( 'LALHRUAIZELA SAILO (trading as Maze Streetwear) and its affiliates, employees, and logistics partners shall not be liable for any indirect, incidental, punitive, or consequential damages resulting from the use of, or inability to use, this Website, garment defects beyond the replacement value of the purchased item, or shipment delays caused by third-party courier handling or force majeure circumstances.', 'mazestreetwear' ); ?>
+                            <?php esc_html_e( 'Maze Streetwear and its affiliates, employees, and logistics partners shall not be liable for any indirect, incidental, punitive, or consequential damages resulting from the use of, or inability to use, this Website, garment defects beyond the replacement value of the purchased item, or shipment delays caused by third-party courier handling or force majeure circumstances.', 'mazestreetwear' ); ?>
                         </p>
                     </div>
                 </section>
@@ -451,110 +447,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                     </div>
                 </section>
 
-                <!-- SECTION 7 -->
-                <section id="section-7" class="scroll-mt-32 pt-4">
-                    <div class="flex items-center space-x-3 mb-4 pb-2 border-b border-black">
-                        <span class="text-xs font-mono font-bold bg-black text-white px-2 py-0.5">07</span>
-                        <h2 class="text-xl sm:text-2xl font-black font-sans uppercase tracking-tight text-black">
-                            <?php esc_html_e( '7. Customer Support & Inquiries', 'mazestreetwear' ); ?>
-                        </h2>
-                    </div>
 
-                    <p class="text-sm sm:text-base text-neutral-700 font-sans leading-relaxed mb-6">
-                        <?php esc_html_e( 'For questions regarding these Terms & Conditions, please contact us at:', 'mazestreetwear' ); ?>
-                    </p>
-
-                    <!-- Official Contact Card -->
-                    <div class="border-2 border-black bg-white shadow-brutal p-6 sm:p-8">
-                        <div class="flex flex-wrap items-center justify-between gap-3 pb-6 mb-6 border-b border-neutral-200">
-                            <div>
-                                <span class="text-[10px] font-mono font-bold tracking-widest text-neutral-400 uppercase block mb-1">
-                                    <?php esc_html_e( 'LEGAL ENTITY & STORE INQUIRIES', 'mazestreetwear' ); ?>
-                                </span>
-                                <h3 class="text-2xl font-black font-sans uppercase tracking-tight text-black">
-                                    LALHRUAIZELA SAILO
-                                </h3>
-                                <p class="text-xs font-mono text-neutral-600 mt-0.5">
-                                    <?php esc_html_e( 'Trade Name / Brand: Maze Streetwear (mazestw.in)', 'mazestreetwear' ); ?>
-                                </p>
-                            </div>
-                            <span class="inline-flex items-center space-x-1.5 text-xs font-mono bg-neutral-100 border border-neutral-300 px-3 py-1 font-bold text-neutral-800">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                <span><?php esc_html_e( 'AIZAWL, MIZORAM', 'mazestreetwear' ); ?></span>
-                            </span>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm font-sans mb-8">
-                            
-                            <!-- Address -->
-                            <div>
-                                <span class="block text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1">
-                                    <?php esc_html_e( 'Operating Address', 'mazestreetwear' ); ?>
-                                </span>
-                                <address class="not-italic text-neutral-900 leading-relaxed font-medium">
-                                    Maze Streetwear<br>
-                                    Bungkawn Vengthar, A-25<br>
-                                    Aizawl, Mizoram, 796005<br>
-                                    India
-                                </address>
-                            </div>
-
-                            <!-- Communication Details -->
-                            <div class="space-y-4">
-                                <div>
-                                    <span class="block text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1">
-                                        <?php esc_html_e( 'Official Email Desk', 'mazestreetwear' ); ?>
-                                    </span>
-                                    <div class="flex items-center space-x-2">
-                                        <a href="mailto:enquiries@mazestw.in" class="text-black font-bold hover:underline font-mono text-sm">
-                                            enquiries@mazestw.in
-                                        </a>
-                                        <button type="button" id="maze-copy-terms-email-btn" title="<?php esc_attr_e( 'Copy Email', 'mazestreetwear' ); ?>" class="px-2 py-0.5 border border-neutral-300 hover:border-black text-[10px] font-mono uppercase bg-neutral-50 hover:bg-black hover:text-white transition-colors">
-                                            <span id="maze-copy-terms-email-text"><?php esc_html_e( 'COPY', 'mazestreetwear' ); ?></span>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <span class="block text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1">
-                                        <?php esc_html_e( 'Phone / WhatsApp Support', 'mazestreetwear' ); ?>
-                                    </span>
-                                    <div class="flex flex-wrap items-center gap-2">
-                                        <a href="tel:+918787324795" class="text-black font-bold font-mono text-sm hover:underline">
-                                            +91 8787324795
-                                        </a>
-                                        <span class="text-neutral-300">&middot;</span>
-                                        <a href="https://wa.me/918787324795" target="_blank" rel="noopener noreferrer" class="text-emerald-700 hover:text-emerald-800 text-xs font-mono font-bold hover:underline inline-flex items-center space-x-1">
-                                            <span>WhatsApp Direct</span>
-                                            <span>&nearr;</span>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <span class="block text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1">
-                                        <?php esc_html_e( 'Operating Hours', 'mazestreetwear' ); ?>
-                                    </span>
-                                    <span class="text-neutral-900 font-mono text-xs">
-                                        Monday to Saturday, 10:00 AM &ndash; 6:00 PM IST
-                                    </span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="pt-6 border-t border-neutral-200 flex flex-wrap gap-3">
-                            <a href="mailto:enquiries@mazestw.in" class="flex-1 sm:flex-none text-center px-6 py-3 bg-black text-white hover:bg-neutral-800 transition-colors font-mono text-xs font-bold uppercase tracking-widest border border-black">
-                                <?php esc_html_e( 'EMAIL SUPPORT', 'mazestreetwear' ); ?>
-                            </a>
-                            <a href="https://wa.me/918787324795" target="_blank" rel="noopener noreferrer" class="flex-1 sm:flex-none text-center px-6 py-3 bg-white text-black hover:bg-neutral-100 transition-colors font-mono text-xs font-bold uppercase tracking-widest border border-black">
-                                <?php esc_html_e( 'CHAT ON WHATSAPP', 'mazestreetwear' ); ?>
-                            </a>
-                        </div>
-
-                    </div>
-                </section>
 
                 <?php
                 // Display any additional dynamic post content if added via the WordPress Editor
@@ -604,22 +497,6 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
         });
     }
 
-    // 2. Copy Email
-    var copyEmailBtn = document.getElementById('maze-copy-terms-email-btn');
-    var copyEmailText = document.getElementById('maze-copy-terms-email-text');
-    if (copyEmailBtn && copyEmailText) {
-        copyEmailBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText('enquiries@mazestw.in').then(function () {
-                    copyEmailText.textContent = 'COPIED!';
-                    setTimeout(function () {
-                        copyEmailText.textContent = 'COPY';
-                    }, 2000);
-                });
-            }
-        });
-    }
 
     // 3. Smooth active state for TOC
     var tocLinks = document.querySelectorAll('.maze-terms-toc-link');
