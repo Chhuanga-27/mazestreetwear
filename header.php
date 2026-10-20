@@ -38,9 +38,25 @@ $masthead_classes = $is_maze_home
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
 
     <?php if ($is_maze_home) : ?>
+        <!-- Preload Splash Screen Artwork (Mobile & Desktop) -->
+        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/splash-mobile.jpg'); ?>" media="(max-width: 767px)" fetchpriority="high">
+        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/splash-desktop.jpg'); ?>" media="(min-width: 768px)" fetchpriority="high">
         <!-- Preload High-Definition Hero Bento Banner (Responsive: Mobile & Desktop) -->
-        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-mobile.jpg'); ?>" media="(max-width: 639px)" fetchpriority="high">
-        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-desktop.jpg'); ?>" media="(min-width: 640px)" fetchpriority="high">
+        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-mobile.jpg'); ?>" media="(max-width: 639px)">
+        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-desktop.jpg'); ?>" media="(min-width: 640px)">
+        <!-- Instant Zero-FOUC Guard for Splash Screen -->
+        <script>
+            (function() {
+                try {
+                    if (sessionStorage.getItem('maze_splash_seen') === '1') {
+                        document.documentElement.classList.add('maze-splash-dismissed');
+                    }
+                } catch(e) {}
+            })();
+        </script>
+        <style>
+            html.maze-splash-dismissed #maze-splash-screen { display: none !important; }
+        </style>
     <?php endif; ?>
 
     <!-- Favicon & Site Icons (Multi-size ICO, High-res PNG, Apple Touch & Manifest) -->
@@ -147,6 +163,78 @@ $masthead_classes = $is_maze_home
 
 <body <?php body_class('bg-white text-black font-sans antialiased selection:bg-black selection:text-white min-h-screen flex flex-col'); ?>>
     <?php wp_body_open(); ?>
+
+    <?php if ($is_maze_home) : ?>
+        <!-- MAZE Exclusive Splash Screen Overlay -->
+        <div id="maze-splash-screen" class="maze-splash-screen fixed inset-0 z-[999999] bg-white flex items-center justify-center cursor-pointer select-none" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('Enter MAZE Store', 'mazestreetwear'); ?>" tabindex="0">
+            <div class="relative w-full h-full flex items-center justify-center overflow-hidden">
+                <picture class="w-full h-full flex items-center justify-center pointer-events-none select-none">
+                    <source media="(max-width: 767px)" srcset="<?php echo esc_url(get_template_directory_uri() . '/assets/images/splash-mobile.jpg'); ?>">
+                    <source media="(min-width: 768px)" srcset="<?php echo esc_url(get_template_directory_uri() . '/assets/images/splash-desktop.jpg'); ?>">
+                    <img 
+                        src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/splash-desktop.jpg'); ?>" 
+                        alt="<?php esc_attr_e('MAZE Streetwear - Enter Shop', 'mazestreetwear'); ?>"
+                        fetchpriority="high"
+                        loading="eager"
+                        decoding="sync"
+                        class="w-full h-full object-contain select-none"
+                    />
+                </picture>
+            </div>
+        </div>
+        <script>
+            (function() {
+                var splash = document.getElementById('maze-splash-screen');
+                if (!splash) return;
+
+                // Check if visitor has already passed splash in this browsing session
+                try {
+                    if (sessionStorage.getItem('maze_splash_seen') === '1') {
+                        splash.style.display = 'none';
+                        return;
+                    }
+                } catch(e) {}
+
+                // Lock background scrolling while splash is active
+                document.documentElement.classList.add('maze-splash-active');
+                document.body.classList.add('overflow-hidden');
+
+                function dismissSplash() {
+                    if (splash.classList.contains('is-dismissing')) return;
+                    splash.classList.add('is-dismissing');
+
+                    try {
+                        sessionStorage.setItem('maze_splash_seen', '1');
+                    } catch(e) {}
+
+                    document.documentElement.classList.remove('maze-splash-active');
+                    document.documentElement.classList.add('maze-splash-dismissed');
+                    document.body.classList.remove('overflow-hidden');
+
+                    setTimeout(function() {
+                        if (splash && splash.parentNode) {
+                            splash.parentNode.removeChild(splash);
+                        }
+                    }, 750);
+                }
+
+                splash.addEventListener('click', dismissSplash);
+                splash.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        dismissSplash();
+                    }
+                });
+                window.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+                        if (document.getElementById('maze-splash-screen')) {
+                            dismissSplash();
+                        }
+                    }
+                });
+            })();
+        </script>
+    <?php endif; ?>
 
     <a class="skip-link screen-reader-text sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-black focus:text-white focus:font-mono focus:text-xs" href="#primary">
         <?php esc_html_e('Skip to content', 'mazestreetwear'); ?>
