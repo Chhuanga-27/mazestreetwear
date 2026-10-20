@@ -9,7 +9,7 @@
  *   solid black "ADD TO BAG" button, and accordions for Description and Shipping & Delivery.
  *
  * @package MazeStreetwear
- * @version 1.1.1
+ * @version 1.1.2
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -160,7 +160,7 @@ $image_count = count( $gallery_images );
 
                     if ( $has_short_desc || $has_full_desc ) :
                     ?>
-                        <details class="group border-b border-black">
+                        <details class="group border-b border-black" open>
                             <summary class="flex justify-between items-center py-4 sm:py-5 cursor-pointer list-none text-base sm:text-lg font-bebas font-normal uppercase tracking-wider text-black select-none">
                                 <span><?php esc_html_e( 'DESCRIPTION', 'mazestreetwear' ); ?></span>
                                 <span class="text-base sm:text-lg font-outfit font-semibold group-open:hidden">+</span>
