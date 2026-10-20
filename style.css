@@ -237,9 +237,9 @@ body.woocommerce .site-header img {
   outline: none !important;
   text-decoration: none !important;
   color: #fff !important;
-  min-width: 140px !important;
-  min-height: 52px !important;
-  padding: 0.65rem 2.2rem !important;
+  min-width: 96px !important;
+  min-height: 36px !important;
+  padding: 0.35rem 1.25rem !important;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease !important;
   cursor: pointer;
 }
@@ -255,7 +255,7 @@ body.woocommerce .site-header img {
   position: relative !important;
   z-index: 2 !important;
   font-family: var(--font-bebas) !important;
-  font-size: 1.125rem !important;
+  font-size: 0.85rem !important;
   letter-spacing: 0.12em !important;
   line-height: 1 !important;
   color: #fff !important;
@@ -278,6 +278,10 @@ body.woocommerce .site-header img {
   display: block !important;
 }
 
+.maze-hero-oval ellipse {
+  stroke-width: 2px !important;
+}
+
 .maze-hero-cta:hover .maze-hero-oval {
   transform: scale(1.04) !important;
 }
@@ -291,6 +295,9 @@ body.woocommerce .site-header img {
   .maze-hero-cta-text {
     font-size: 1.35rem !important;
     letter-spacing: 0.14em !important;
+  }
+  .maze-hero-oval ellipse {
+    stroke-width: 3px !important;
   }
 }
 

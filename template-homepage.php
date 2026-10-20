@@ -42,7 +42,7 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
             </picture>
 
             <!-- Centered Hero CTA Button (Perspective Oval Style with Transparent Background) -->
-            <div class="absolute left-1/2 -translate-x-1/2 bottom-4 sm:bottom-8 md:bottom-12 z-10 flex items-center justify-center">
+            <div class="absolute left-1/2 -translate-x-1/2 bottom-3 sm:bottom-8 md:bottom-12 z-10 flex items-center justify-center">
                 <a href="<?php echo esc_url( $shop_url ); ?>" class="maze-hero-cta group relative inline-flex items-center justify-center text-white no-underline select-none transition-transform duration-300 ease-out hover:scale-[1.04] focus:outline-none" aria-label="<?php esc_attr_e( 'Shop All Products', 'mazestreetwear' ); ?>">
                     <span class="maze-hero-cta-text relative z-10 font-bebas uppercase tracking-wider text-white select-none">
                         <?php esc_html_e( 'SHOP ALL', 'mazestreetwear' ); ?>
@@ -50,12 +50,12 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
                     <svg 
                         viewBox="0 0 270 104" 
                         fill="none" 
-                        preserveAspectRatio="none"
+                        preserveAspectRatio="none" 
                         xmlns="http://www.w3.org/2000/svg" 
                         aria-hidden="true" 
                         class="maze-hero-oval absolute inset-0 w-full h-full pointer-events-none select-none transition-transform duration-300 ease-out group-hover:scale-105"
                     >
-                        <ellipse cx="135" cy="52" rx="133" ry="50" stroke="#ffffff" stroke-width="3" vector-effect="non-scaling-stroke" />
+                        <ellipse cx="135" cy="52" rx="133" ry="50" stroke="#ffffff" stroke-width="2" vector-effect="non-scaling-stroke" />
                     </svg>
                 </a>
             </div>
