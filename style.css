@@ -210,11 +210,7 @@ body.woocommerce .site-header img {
   height: 100% !important;
   object-fit: cover !important;
   object-position: center center !important;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: high-quality;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  image-rendering: auto !important;
 }
 
 @media (min-width: 640px) {
@@ -404,11 +400,7 @@ body.woocommerce .site-header img {
   height: 100% !important;
   object-fit: contain !important;
   object-position: center !important;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: high-quality;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  image-rendering: auto !important;
 }
 
 .maze-showcase-title {
@@ -1058,8 +1050,7 @@ body.single-product .maze-single-product-editorial {
 .single-product .maze-gallery-slide img {
   width: 100%;
   height: auto;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: high-quality;
+  image-rendering: auto !important;
 }
 
 @media (max-width: 1023px) {
@@ -1069,8 +1060,7 @@ body.single-product .maze-single-product-editorial {
   .single-product .maze-gallery-slide img {
     width: 100% !important;
     height: auto !important;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: high-quality;
+    image-rendering: auto !important;
   }
 }
 
