@@ -244,12 +244,15 @@ $image_count = count( $gallery_images );
 
                 <div class="maze-product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-8 sm:gap-y-12 bg-white">
                     <?php
+                    $original_product = isset( $GLOBALS['product'] ) ? $GLOBALS['product'] : null;
                     foreach ( $related_ids as $rel_id ) :
                         $post_object = get_post( $rel_id );
                         setup_postdata( $GLOBALS['post'] =& $post_object );
+                        $GLOBALS['product'] = wc_get_product( $rel_id );
                         wc_get_template_part( 'content', 'product' );
                     endforeach;
                     wp_reset_postdata();
+                    $GLOBALS['product'] = $original_product;
                     ?>
                 </div>
             </div>
