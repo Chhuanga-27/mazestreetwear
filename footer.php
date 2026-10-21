@@ -15,7 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 </div><!-- #content -->
 
 <?php
-$is_maze_home = is_front_page() || is_page_template( 'template-homepage.php' );
+$is_front_page     = is_front_page() && ! is_paged();
+$is_inner_page     = is_page() && ! $is_front_page;
+$is_maze_home      = $is_front_page && ! $is_inner_page;
 $footer_card_border = $is_maze_home ? 'border-0' : 'border border-black/15 shadow-sm';
 ?>
 <footer id="colophon" class="site-footer bg-white text-black font-sans px-3 sm:px-6 lg:px-8 py-5 sm:py-8 lg:py-10 mt-auto">
@@ -154,18 +156,6 @@ $footer_card_border = $is_maze_home ? 'border-0' : 'border border-black/15 shado
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
                 </svg>
             </div>
-        </div>
-
-        <!-- Registered Legal Business Name Disclaimer for Payment Gateway Compliance -->
-        <div class="pt-3 mt-3 border-t border-neutral-200 text-center sm:text-left text-[11px] sm:text-xs font-mono text-neutral-600 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <span>
-                <?php esc_html_e( 'Legal Business Name: ', 'mazestreetwear' ); ?>
-                <strong class="text-black font-bold uppercase tracking-wider">LALHRUAIZELA SAILO</strong>
-                <span class="text-neutral-400 ml-1 font-sans">(Brand / Trade Name: Maze Streetwear)</span>
-            </span>
-            <span class="text-neutral-500 text-[10px] sm:text-[11px]">
-                <?php esc_html_e( 'All online orders and transactions are securely processed via PayU.', 'mazestreetwear' ); ?>
-            </span>
         </div>
 
     </div>

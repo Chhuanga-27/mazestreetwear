@@ -13,18 +13,31 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-$is_maze_home  = is_front_page() || is_page_template('template-homepage.php');
+$is_front_page     = is_front_page() && ! is_paged();
+$is_inner_page     = is_page() && ! $is_front_page;
+$is_single_product = function_exists('is_product') && is_product();
+
+// On inner pages (policies, terms, about, contact, shop, single product, cart, checkout),
+// $is_maze_home MUST be false so header has solid background/border and proper top padding.
+$is_maze_home = $is_front_page && ! $is_inner_page && ! $is_single_product;
+
 $shop_page_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/');
 $cart_url      = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/');
 $account_url   = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/');
 $cart_count    = function_exists('mazestreetwear_get_cart_count') ? mazestreetwear_get_cart_count() : ((function_exists('WC') && WC()->cart) ? WC()->cart->get_cart_contents_count() : 0);
 $is_cart_empty = ($cart_count <= 0);
-$is_single_product = function_exists('is_product') && is_product();
+
 $masthead_classes = $is_maze_home
     ? 'pointer-events-none py-3 sm:py-4 bg-transparent'
     : ($is_single_product
         ? 'bg-white/95 backdrop-blur-md py-2.5 sm:py-3.5 border-b-0 shadow-none'
         : 'bg-white/95 backdrop-blur-md border-b border-black py-2.5 sm:py-3.5 shadow-sm');
+
+// Splash screen display condition:
+// Only show on the homepage during the user's 1st browsing session.
+// NEVER show when opening subpages (policies, terms, about, contact, shop, product, etc.).
+$maze_splash_seen_session = ! empty($_COOKIE['maze_splash_seen']);
+$show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_product && ! $maze_splash_seen_session;
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> class="scroll-smooth bg-white text-black">
@@ -37,18 +50,15 @@ $masthead_classes = $is_maze_home
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
 
-    <?php if ($is_maze_home) : ?>
+    <?php if ($show_maze_splash) : ?>
         <!-- Preload Splash Screen Artwork (Mobile & Desktop) -->
         <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/splash-mobile.jpg'); ?>" media="(max-width: 767px)" fetchpriority="high">
         <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/splash-desktop.jpg'); ?>" media="(min-width: 768px)" fetchpriority="high">
-        <!-- Preload High-Definition Hero Bento Banner (Responsive: Mobile & Desktop) -->
-        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-mobile.jpg'); ?>" media="(max-width: 639px)">
-        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-desktop.jpg'); ?>" media="(min-width: 640px)">
         <!-- Instant Zero-FOUC Guard for Splash Screen -->
         <script>
             (function() {
                 try {
-                    if (sessionStorage.getItem('maze_splash_seen') === '1') {
+                    if (sessionStorage.getItem('maze_splash_seen') === '1' || document.cookie.indexOf('maze_splash_seen=1') !== -1) {
                         document.documentElement.classList.add('maze-splash-dismissed');
                     }
                 } catch(e) {}
@@ -57,6 +67,22 @@ $masthead_classes = $is_maze_home
         <style>
             html.maze-splash-dismissed #maze-splash-screen { display: none !important; }
         </style>
+    <?php else : ?>
+        <!-- Mark session as active so browsing inner pages or subsequent visits will never trigger the splash screen -->
+        <script>
+            (function() {
+                try {
+                    sessionStorage.setItem('maze_splash_seen', '1');
+                    document.cookie = 'maze_splash_seen=1; path=/; SameSite=Lax';
+                } catch(e) {}
+            })();
+        </script>
+    <?php endif; ?>
+
+    <?php if ($is_maze_home) : ?>
+        <!-- Preload High-Definition Hero Bento Banner (Responsive: Mobile & Desktop) -->
+        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-mobile.jpg'); ?>" media="(max-width: 639px)">
+        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-desktop.jpg'); ?>" media="(min-width: 640px)">
     <?php endif; ?>
 
     <!-- Favicon & Site Icons (Multi-size ICO, High-res PNG, Apple Touch & Manifest) -->
@@ -165,7 +191,7 @@ $masthead_classes = $is_maze_home
 <body <?php body_class('bg-white text-black font-sans antialiased selection:bg-black selection:text-white min-h-screen flex flex-col'); ?>>
     <?php wp_body_open(); ?>
 
-    <?php if ($is_maze_home) : ?>
+    <?php if ($show_maze_splash) : ?>
         <!-- MAZE Exclusive Splash Screen Overlay -->
         <div id="maze-splash-screen" class="maze-splash-screen fixed inset-0 z-[999999] bg-white flex items-center justify-center cursor-pointer select-none" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e('Enter MAZE Store', 'mazestreetwear'); ?>" tabindex="0">
             <div class="relative w-full h-full flex items-center justify-center overflow-hidden">
@@ -190,7 +216,7 @@ $masthead_classes = $is_maze_home
 
                 // Check if visitor has already passed splash in this browsing session
                 try {
-                    if (sessionStorage.getItem('maze_splash_seen') === '1') {
+                    if (sessionStorage.getItem('maze_splash_seen') === '1' || document.cookie.indexOf('maze_splash_seen=1') !== -1) {
                         splash.style.display = 'none';
                         return;
                     }
@@ -206,6 +232,7 @@ $masthead_classes = $is_maze_home
 
                     try {
                         sessionStorage.setItem('maze_splash_seen', '1');
+                        document.cookie = 'maze_splash_seen=1; path=/; SameSite=Lax';
                     } catch(e) {}
 
                     document.documentElement.classList.remove('maze-splash-active');
@@ -232,6 +259,12 @@ $masthead_classes = $is_maze_home
                             dismissSplash();
                         }
                     }
+                });
+                window.addEventListener('beforeunload', function() {
+                    try {
+                        sessionStorage.setItem('maze_splash_seen', '1');
+                        document.cookie = 'maze_splash_seen=1; path=/; SameSite=Lax';
+                    } catch(e) {}
                 });
             })();
         </script>
