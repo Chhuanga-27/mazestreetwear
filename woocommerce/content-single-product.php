@@ -153,9 +153,14 @@ $image_count = count( $gallery_images );
                     <?php the_title(); ?>
                 </h1>
 
-                <!-- Price in clean bold Outfit -->
-                <div class="text-2xl sm:text-3xl font-bold font-outfit text-black tracking-tight mt-3 mb-6">
-                    <?php echo $product->get_price_html(); ?>
+                <!-- Price in clean bold Outfit with Tax Notice -->
+                <div class="product-price-wrap mt-3 mb-6">
+                    <div class="text-2xl sm:text-3xl font-bold font-outfit text-black tracking-tight">
+                        <?php echo $product->get_price_html(); ?>
+                    </div>
+                    <p class="product-tax-notice text-xs sm:text-sm font-outfit text-neutral-500 font-normal mt-1 tracking-normal">
+                        <?php esc_html_e( 'Tax Included', 'mazestreetwear' ); ?>
+                    </p>
                 </div>
 
                 <!-- Add to Bag / Sizing Form -->

@@ -320,6 +320,15 @@
     font-weight: 800 !important;
   }
 
+  .product-tax-notice {
+    font-family: var(--font-outfit) !important;
+    color: #737373 !important;
+    font-size: 0.8125rem !important;
+    font-weight: 400 !important;
+    line-height: 1.3 !important;
+    letter-spacing: 0.01em !important;
+  }
+
   /* Solid Black Full-Width Button Reset (Bebas Neue Display) */
   .button.single_add_to_cart_button,
   .button.alt {
