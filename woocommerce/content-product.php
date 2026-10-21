@@ -43,7 +43,7 @@ $is_out_of_stock = ! $product->is_in_stock();
                     $product->get_id(),
                     'full',
                     array(
-                        'class' => 'w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-500 ease-out block' . ( $is_out_of_stock ? ' opacity-75' : '' ),
+                        'class' => 'w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-500 ease-out block',
                         'alt'   => esc_attr( get_the_title() ),
                     )
                 );
