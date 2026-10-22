@@ -154,6 +154,8 @@ if ($product->is_in_stock()) : ?>
             </button>
         </div>
 
+        <input type="hidden" name="maze_buy_now" class="maze-buy-now-input" value="0" />
+
         <?php do_action('woocommerce_after_add_to_cart_button'); ?>
     </form>
 
