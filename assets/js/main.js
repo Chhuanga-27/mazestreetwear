@@ -1541,26 +1541,26 @@
                     optionsHtml += '<li class="maze-custom-orderby-item' + (isSelected ? ' is-active' : '') + '" data-value="' + val + '" role="option" aria-selected="' + (isSelected ? 'true' : 'false') + '">' +
                         '<span class="maze-orderby-item-text">' + text + '</span>' +
                         '<span class="maze-orderby-indicator">' +
-                            (isSelected ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : '') +
+                        (isSelected ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : '') +
                         '</span>' +
-                    '</li>';
+                        '</li>';
                 });
 
                 var customDropdownHtml =
                     '<div class="maze-custom-orderby-wrap">' +
-                        '<button type="button" class="maze-custom-orderby-trigger" aria-haspopup="listbox" aria-expanded="false">' +
-                            '<span class="maze-custom-orderby-current">' + currentText + '</span>' +
-                            '<span class="maze-custom-orderby-arrow">' +
-                                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-                                    '<path d="M6 9l6 6 6-6"/>' +
-                                '</svg>' +
-                            '</span>' +
-                        '</button>' +
-                        '<div class="maze-custom-orderby-menu" role="listbox">' +
-                            '<ul class="maze-custom-orderby-list">' +
-                                optionsHtml +
-                            '</ul>' +
-                        '</div>' +
+                    '<button type="button" class="maze-custom-orderby-trigger" aria-haspopup="listbox" aria-expanded="false">' +
+                    '<span class="maze-custom-orderby-current">' + currentText + '</span>' +
+                    '<span class="maze-custom-orderby-arrow">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                    '<path d="M6 9l6 6 6-6"/>' +
+                    '</svg>' +
+                    '</span>' +
+                    '</button>' +
+                    '<div class="maze-custom-orderby-menu" role="listbox">' +
+                    '<ul class="maze-custom-orderby-list">' +
+                    optionsHtml +
+                    '</ul>' +
+                    '</div>' +
                     '</div>';
 
                 $form.append(customDropdownHtml);
