@@ -473,7 +473,8 @@ function mazestreetwear_ajax_add_to_cart()
         // 6. CRITICAL: Guarantee all attributes required by WooCommerce are populated in $variations
         if ($variation_id) {
             $child = wc_get_product($variation_id);
-            if ($child && $child->is_type('variation')) {
+            if ($child instanceof \WC_Product_Variation || (is_object($child) && method_exists($child, 'get_variation_attributes'))) {
+                /** @var \WC_Product_Variation $child */
                 $child_attrs = $child->get_variation_attributes();
                 if (is_array($child_attrs)) {
                     foreach ($child_attrs as $attr_k => $attr_v) {
@@ -486,12 +487,15 @@ function mazestreetwear_ajax_add_to_cart()
         }
 
         // 7. Ensure any missing parent attributes receive default or first available option
-        $parent_attrs = $product->get_variation_attributes();
-        if (is_array($parent_attrs)) {
-            foreach ($parent_attrs as $p_attr_name => $p_options) {
-                $p_key = 'attribute_' . sanitize_title($p_attr_name);
-                if ((! isset($variations[$p_key]) || '' === $variations[$p_key]) && ! empty($p_options)) {
-                    $variations[$p_key] = reset($p_options);
+        if ($product instanceof \WC_Product_Variable || (is_object($product) && method_exists($product, 'get_variation_attributes'))) {
+            /** @var \WC_Product_Variable $product */
+            $parent_attrs = $product->get_variation_attributes();
+            if (is_array($parent_attrs)) {
+                foreach ($parent_attrs as $p_attr_name => $p_options) {
+                    $p_key = 'attribute_' . sanitize_title($p_attr_name);
+                    if ((! isset($variations[$p_key]) || '' === $variations[$p_key]) && ! empty($p_options)) {
+                        $variations[$p_key] = reset($p_options);
+                    }
                 }
             }
         }
