@@ -1184,7 +1184,7 @@
                 formData.push(item);
             }
 
-            if (productId && !formData.some(function(d){ return d.name === 'product_id'; })) {
+            if (productId && !formData.some(function (d) { return d.name === 'product_id'; })) {
                 formData.push({ name: 'product_id', value: productId });
             }
 
@@ -1218,7 +1218,7 @@
             formData.push({ name: 'is_buy_now', value: '1' });
             formData.push({ name: 'maze_buy_now', value: '1' });
 
-            if (!formData.some(function(d){ return d.name === 'quantity'; })) {
+            if (!formData.some(function (d) { return d.name === 'quantity'; })) {
                 formData.push({ name: 'quantity', value: $form.find('input[name="quantity"]').val() || '1' });
             }
             if (typeof mazeData !== 'undefined' && mazeData.nonce) {
