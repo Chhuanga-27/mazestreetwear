@@ -364,7 +364,7 @@ add_action('woocommerce_before_single_product', function () {
 }, 5);
 
 /**
- * AJAX Add to Bag handler for Single Product pages (Simple & Variable)
+ * AJAX Add to Bag & Buy Now handler for Single Product pages (Simple & Variable)
  * Eliminates full-page form POST, preventing browser ERR_CACHE_MISS / Confirm Form Resubmission on back navigation
  */
 function mazestreetwear_ajax_add_to_cart()
@@ -373,15 +373,35 @@ function mazestreetwear_ajax_add_to_cart()
         wp_send_json_error(array('message' => __('WooCommerce cart is not available.', 'mazestreetwear')));
     }
 
-    $product_id   = isset($_POST['product_id']) ? absint($_POST['product_id']) : (isset($_POST['add-to-cart']) ? absint($_POST['add-to-cart']) : 0);
-    $quantity     = isset($_POST['quantity']) ? wc_stock_amount(wp_unslash($_POST['quantity'])) : 1;
-    $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
+    $raw_product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : (isset($_POST['add-to-cart']) ? absint($_POST['add-to-cart']) : 0);
+    $quantity       = isset($_POST['quantity']) ? wc_stock_amount(wp_unslash($_POST['quantity'])) : 1;
+    $variation_id   = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
+    $is_buy_now     = ! empty($_POST['is_buy_now']) || ! empty($_POST['maze_buy_now']);
 
-    if (! $product_id) {
+    if ($quantity <= 0) {
+        $quantity = 1;
+    }
+
+    if (! $raw_product_id && ! $variation_id) {
         wp_send_json_error(array('message' => __('No product specified.', 'mazestreetwear')));
     }
 
-    $product = wc_get_product($product_id);
+    $product_id = $raw_product_id;
+    $product    = $product_id ? wc_get_product($product_id) : null;
+
+    // If passed product_id was actually a variation, resolve the parent variable product
+    if ($product && $product->is_type('variation')) {
+        $variation_id = $product->get_id();
+        $product_id   = $product->get_parent_id();
+        $product      = wc_get_product($product_id);
+    } elseif (! $product && $variation_id) {
+        $var_product = wc_get_product($variation_id);
+        if ($var_product && $var_product->is_type('variation')) {
+            $product_id = $var_product->get_parent_id();
+            $product    = wc_get_product($product_id);
+        }
+    }
+
     if (! $product) {
         wp_send_json_error(array('message' => __('Product not found.', 'mazestreetwear')));
     }
@@ -389,19 +409,30 @@ function mazestreetwear_ajax_add_to_cart()
     $variations     = array();
     $cart_item_data = array();
 
-    // Collect variation attributes (attribute_pa_size, attribute_size, etc.)
+    // Collect variation attributes (attribute_pa_size, attribute_size, attribute_color, etc.)
     foreach ($_POST as $key => $value) {
-        if (strpos($key, 'attribute_') === 0) {
+        if (strpos($key, 'attribute_') === 0 && '' !== $value) {
             $variations[$key] = sanitize_text_field(wp_unslash($value));
         }
     }
 
-    // If product is variable and variation_id is missing, automatically find matching variation
-    if ($product->is_type('variable') && empty($variation_id)) {
-        if (! empty($variations)) {
+    // Handle variable products
+    if ($product->is_type('variable')) {
+        // 1. If variation_id is already set, ensure it is valid
+        if ($variation_id) {
+            $child = wc_get_product($variation_id);
+            if (! $child || ! $child->is_type('variation')) {
+                $variation_id = 0;
+            }
+        }
+
+        // 2. If variation_id is missing, try finding matching variation using submitted attributes
+        if (empty($variation_id) && ! empty($variations)) {
             $data_store   = WC_Data_Store::load('product');
             $variation_id = $data_store->find_matching_product_variation($product, $variations);
         }
+
+        // 3. If still missing, try matching by selected_size
         if (empty($variation_id) && ! empty($_POST['selected_size'])) {
             $selected_size = sanitize_text_field(wp_unslash($_POST['selected_size']));
             $children      = $product->get_children();
@@ -418,6 +449,8 @@ function mazestreetwear_ajax_add_to_cart()
                 }
             }
         }
+
+        // 4. If still missing, find the first in-stock purchasable variation
         if (empty($variation_id)) {
             $children = $product->get_children();
             foreach ($children as $child_id) {
@@ -428,20 +461,97 @@ function mazestreetwear_ajax_add_to_cart()
                 }
             }
         }
+
+        // 5. If still missing, fall back to the first child
         if (empty($variation_id)) {
-            wp_send_json_error(array('message' => __('Please select an available size before adding to bag.', 'mazestreetwear')));
+            $children = $product->get_children();
+            if (! empty($children)) {
+                $variation_id = reset($children);
+            }
+        }
+
+        // 6. CRITICAL: Guarantee all attributes required by WooCommerce are populated in $variations
+        if ($variation_id) {
+            $child = wc_get_product($variation_id);
+            if ($child && $child->is_type('variation')) {
+                $child_attrs = $child->get_variation_attributes();
+                if (is_array($child_attrs)) {
+                    foreach ($child_attrs as $attr_k => $attr_v) {
+                        if (! isset($variations[$attr_k]) || '' === $variations[$attr_k]) {
+                            $variations[$attr_k] = $attr_v;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 7. Ensure any missing parent attributes receive default or first available option
+        $parent_attrs = $product->get_variation_attributes();
+        if (is_array($parent_attrs)) {
+            foreach ($parent_attrs as $p_attr_name => $p_options) {
+                $p_key = 'attribute_' . sanitize_title($p_attr_name);
+                if ((! isset($variations[$p_key]) || '' === $variations[$p_key]) && ! empty($p_options)) {
+                    $variations[$p_key] = reset($p_options);
+                }
+            }
+        }
+
+        if (empty($variation_id)) {
+            wp_send_json_error(array('message' => __('Please select an available size before proceeding.', 'mazestreetwear')));
         }
     }
 
-    // Preserve custom selected_size for simple products
+    // Preserve custom selected_size in cart item data
     if (! empty($_POST['selected_size'])) {
         $cart_item_data['selected_size'] = sanitize_text_field(wp_unslash($_POST['selected_size']));
         $cart_item_data['unique_key']    = md5(microtime() . wp_rand());
     }
 
+    $checkout_url = function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/');
+    $cart_url     = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/');
+
+    // If Buy Now was requested, check if this item or variation is ALREADY in the cart
+    if ($is_buy_now && function_exists('WC') && WC()->cart) {
+        $found_in_cart = false;
+        foreach (WC()->cart->get_cart() as $c_item) {
+            if ($variation_id && ! empty($c_item['variation_id']) && $c_item['variation_id'] == $variation_id) {
+                $found_in_cart = true;
+                break;
+            } elseif (! $variation_id && $c_item['product_id'] == $product_id) {
+                $found_in_cart = true;
+                break;
+            }
+        }
+        if ($found_in_cart) {
+            while (ob_get_level() > 0) {
+                ob_end_clean();
+            }
+            wp_send_json_success(array(
+                'cart_count'   => mazestreetwear_get_cart_count(),
+                'checkout_url' => $checkout_url,
+                'cart_url'     => $cart_url,
+                'is_buy_now'   => true,
+            ));
+        }
+    }
+
+    // Validate add to cart
     $passed_validation = apply_filters('woocommerce_add_to_cart_validation', true, $product_id, $quantity, $variation_id, $variations);
 
     if (! $passed_validation) {
+        // If Buy Now was requested and validation failed (e.g. sold individually already in cart), proceed directly to checkout
+        if ($is_buy_now && function_exists('WC') && WC()->cart && ! WC()->cart->is_empty()) {
+            while (ob_get_level() > 0) {
+                ob_end_clean();
+            }
+            wp_send_json_success(array(
+                'cart_count'   => mazestreetwear_get_cart_count(),
+                'checkout_url' => $checkout_url,
+                'cart_url'     => $cart_url,
+                'is_buy_now'   => true,
+            ));
+        }
+
         $notices   = wc_get_notices('error');
         $error_msg = ! empty($notices) ? wp_strip_all_tags($notices[0]['notice']) : __('Validation failed. Please select options.', 'mazestreetwear');
         wc_clear_notices();
@@ -451,7 +561,6 @@ function mazestreetwear_ajax_add_to_cart()
     $cart_item_key = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $variations, $cart_item_data);
 
     if ($cart_item_key) {
-        // Clear any notices queued so nothing shows up on page reload or notices output
         if (function_exists('wc_clear_notices')) {
             wc_clear_notices();
         }
@@ -466,7 +575,6 @@ function mazestreetwear_ajax_add_to_cart()
         $item_product  = wc_get_product($variation_id ? $variation_id : $product_id);
         $product_title = $item_product ? $item_product->get_name() : $product->get_name();
 
-        // Ensure output buffer has no stray characters or warnings before sending JSON
         while (ob_get_level() > 0) {
             ob_end_clean();
         }
@@ -477,25 +585,22 @@ function mazestreetwear_ajax_add_to_cart()
             'fragments'    => $fragments,
             'cart_hash'    => $cart_hash,
             'product_name' => $product_title,
-            'cart_url'     => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
-            'checkout_url' => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/'),
-            'is_buy_now'   => ! empty($_POST['is_buy_now']),
+            'cart_url'     => $cart_url,
+            'checkout_url' => $checkout_url,
+            'is_buy_now'   => $is_buy_now,
         ));
     } else {
-        // If Buy Now was requested and the item is already in the cart (e.g. sold individually), proceed directly to checkout
-        if (! empty($_POST['is_buy_now']) && function_exists('WC') && WC()->cart) {
-            foreach (WC()->cart->get_cart() as $cart_item) {
-                if ($cart_item['product_id'] == $product_id) {
-                    while (ob_get_level() > 0) {
-                        ob_end_clean();
-                    }
-                    wp_send_json_success(array(
-                        'cart_count'   => mazestreetwear_get_cart_count(),
-                        'checkout_url' => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/'),
-                        'is_buy_now'   => true,
-                    ));
-                }
+        // If Buy Now was requested and item is in cart, proceed to checkout
+        if ($is_buy_now && function_exists('WC') && WC()->cart && ! WC()->cart->is_empty()) {
+            while (ob_get_level() > 0) {
+                ob_end_clean();
             }
+            wp_send_json_success(array(
+                'cart_count'   => mazestreetwear_get_cart_count(),
+                'checkout_url' => $checkout_url,
+                'cart_url'     => $cart_url,
+                'is_buy_now'   => true,
+            ));
         }
 
         $notices   = wc_get_notices('error');
@@ -529,6 +634,18 @@ add_filter('woocommerce_add_to_cart_redirect', function ($url) {
     }
     return $url;
 }, 99);
+
+/**
+ * Direct Checkout redirect for any product page request carrying Buy Now parameters
+ */
+add_action('template_redirect', function () {
+    if ((isset($_REQUEST['maze_buy_now']) || isset($_GET['buy_now'])) && function_exists('is_product') && is_product()) {
+        if (! empty($_REQUEST['add-to-cart']) && function_exists('wc_get_checkout_url')) {
+            wp_safe_redirect(wc_get_checkout_url());
+            exit;
+        }
+    }
+}, 20);
 
 
 

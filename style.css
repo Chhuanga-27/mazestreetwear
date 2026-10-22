@@ -618,7 +618,6 @@ body.woocommerce .site-header img {
   cursor: not-allowed !important;
   background-color: #ffffff !important;
   color: #000000 !important;
-  pointer-events: none !important;
 }
 
 /* Streetwear Button Click Animations (Press, Pop & Ripple) */

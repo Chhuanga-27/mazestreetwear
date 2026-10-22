@@ -40,6 +40,15 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 
             <?php foreach ( $attributes as $attribute_name => $options ) : 
                 $selected_attr = isset( $_REQUEST[ 'attribute_' . sanitize_title( $attribute_name ) ] ) ? wc_clean( wp_unslash( $_REQUEST[ 'attribute_' . sanitize_title( $attribute_name ) ] ) ) : $product->get_variation_default_attribute( $attribute_name );
+                if ( empty( $selected_attr ) && ! empty( $available_variations ) ) {
+                    $attr_field_key = 'attribute_' . sanitize_title( $attribute_name );
+                    foreach ( $available_variations as $var_item ) {
+                        if ( ! empty( $var_item['is_in_stock'] ) && ! empty( $var_item['is_purchasable'] ) && isset( $var_item['attributes'][$attr_field_key] ) && '' !== $var_item['attributes'][$attr_field_key] ) {
+                            $selected_attr = $var_item['attributes'][$attr_field_key];
+                            break;
+                        }
+                    }
+                }
                 if ( empty( $selected_attr ) && ! empty( $options ) ) {
                     if ( taxonomy_is_product_attribute( $attribute_name ) ) {
                         $terms = wc_get_product_terms( $product->get_id(), $attribute_name, array( 'fields' => 'all' ) );
@@ -256,6 +265,10 @@ window.mazeSelectSize = window.mazeSelectSize || function (btn, event) {
         if (buyBtn) {
             buyBtn.removeAttribute('disabled');
             buyBtn.classList.remove('disabled', 'opacity-60', 'cursor-not-allowed');
+        }
+        var varWrap = form.querySelector('.woocommerce-variation-add-to-cart');
+        if (varWrap) {
+            varWrap.classList.remove('woocommerce-variation-add-to-cart-disabled');
         }
     }
 };
