@@ -118,7 +118,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
                         <div class="maze-variation-actions mt-3 flex flex-wrap items-center gap-3">
                             <button type="button" 
                                     class="maze-size-chart-trigger inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-black text-white hover:bg-neutral-800 border border-black text-xs font-outfit font-semibold tracking-wider uppercase transition-colors cursor-pointer select-none"
-                                    data-active-chart="<?php echo esc_attr( function_exists( 'mazestreetwear_get_current_product_size_chart_key' ) ? mazestreetwear_get_current_product_size_chart_key( $product ) : 't-shirt' ); ?>"
+                                    data-active-chart="<?php echo esc_attr( function_exists( 'mazestreetwear_get_current_product_size_chart_key' ) ? mazestreetwear_get_current_product_size_chart_key( $product ) : 'lightning-t-shirt' ); ?>"
                                     onclick="window.mazeOpenSizeChart && window.mazeOpenSizeChart(event, this)"
                                     aria-haspopup="dialog"
                                     aria-controls="maze-size-chart-modal">

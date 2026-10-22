@@ -1633,59 +1633,104 @@ add_filter('woocommerce_order_item_name', 'mazestreetwear_uppercase_cart_item_na
 function mazestreetwear_get_size_charts()
 {
     $charts = array(
+        'wave-pant' => array(
+            'id'       => 'wave-pant',
+            'title'    => 'WAVE PANT',
+            'columns'  => array('SIZE', 'WAIST', 'LENGTH'),
+            'rows'     => array(
+                array('size' => 'S',   'waist' => '28 in (71.12 cm)', 'length' => '38.5 in (97.79 cm)'),
+                array('size' => 'M',   'waist' => '30 in (76.20 cm)', 'length' => '39.5 in (100.30 cm)'),
+                array('size' => 'L',   'waist' => '32 in (81.28 cm)', 'length' => '40.5 in (102.87 cm)'),
+                array('size' => 'XL',  'waist' => '34 in (86.36 cm)', 'length' => '41.5 in (105.41 cm)'),
+                array('size' => 'XXL', 'waist' => '36 in (91.44 cm)', 'length' => '42.5 in (107.95 cm)'),
+            ),
+        ),
         'utility-gilet' => array(
             'id'       => 'utility-gilet',
             'title'    => 'UTILITY GILET',
             'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
             'rows'     => array(
-                array('size' => 'Medium (M)',  'length' => '22 in / 55.8 cm',  'chest' => '44 in / 111.7 cm'),
-                array('size' => 'Large (L)',   'length' => '23 in / 58.42 cm', 'chest' => '46 in / 116.84 cm'),
-                array('size' => 'X-Large (XL)', 'length' => '24 in / 60.96 cm', 'chest' => '48 in / 121.92 cm'),
+                array('size' => 'M',  'length' => '22 in (55.80 cm)', 'chest' => '44 in (111.70 cm)'),
+                array('size' => 'L',  'length' => '23 in (58.42 cm)', 'chest' => '46 in (116.84 cm)'),
+                array('size' => 'XL', 'length' => '24 in (60.96 cm)', 'chest' => '48 in (121.92 cm)'),
             ),
         ),
-        't-shirt' => array(
-            'id'       => 't-shirt',
-            'title'    => 'T-SHIRT',
+        'lightning-t-shirt' => array(
+            'id'       => 'lightning-t-shirt',
+            'title'    => 'LIGHTNING T-SHIRT',
             'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
             'rows'     => array(
-                array('size' => 'SMALL',    'length' => '24 inch / 60.96 cm', 'chest' => '42 inch / 106.86 cm'),
-                array('size' => 'MEDIUM',   'length' => '25 inch / 63.5 cm',  'chest' => '44 inch / 111.76 cm'),
-                array('size' => 'LARGE',    'length' => '26 inch / 66.04 cm', 'chest' => '46 inch / 116.84 cm'),
-                array('size' => 'X-LARGE',  'length' => '27 inch / 68.58 cm', 'chest' => '48 inch / 121.92 cm'),
-                array('size' => 'XX-LARGE', 'length' => '28 inch / 71.12 cm', 'chest' => '50 inch / 127 cm'),
+                array('size' => 'S',   'length' => '24 in (60.96 cm)', 'chest' => '42 in (106.86 cm)'),
+                array('size' => 'M',   'length' => '25 in (63.50 cm)', 'chest' => '44 in (111.76 cm)'),
+                array('size' => 'L',   'length' => '26 in (66.04 cm)', 'chest' => '46 in (116.84 cm)'),
+                array('size' => 'XL',  'length' => '27 in (68.58 cm)', 'chest' => '48 in (121.92 cm)'),
+                array('size' => 'XXL', 'length' => '28 in (71.12 cm)', 'chest' => '50 in (127.00 cm)'),
             ),
         ),
-        'puffer-jacket' => array(
-            'id'       => 'puffer-jacket',
-            'title'    => 'PUFFER JACKET',
+        'puffy-puffer' => array(
+            'id'       => 'puffy-puffer',
+            'title'    => 'PUFFY PUFFER',
             'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
             'rows'     => array(
-                array('size' => 'MEDIUM',  'length' => '24 inch / 60.96 cm', 'chest' => '48 inch / 121.92 cm'),
-                array('size' => 'LARGE',   'length' => '25 inch / 63.5 cm',  'chest' => '50 inch / 127 cm'),
-                array('size' => 'X-LARGE', 'length' => '26 inch / 66.04 cm', 'chest' => '52 inch / 132.08 cm'),
+                array('size' => 'M',  'length' => '24 in (60.96 cm)', 'chest' => '48 in (121.92 cm)'),
+                array('size' => 'L',  'length' => '25 in (63.50 cm)', 'chest' => '50 in (127.00 cm)'),
+                array('size' => 'XL', 'length' => '26 in (66.04 cm)', 'chest' => '52 in (132.08 cm)'),
             ),
         ),
-        'jacket' => array(
-            'id'       => 'jacket',
-            'title'    => 'JACKET',
+        'puffer-gilet' => array(
+            'id'       => 'puffer-gilet',
+            'title'    => 'PUFFER GILET',
             'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
             'rows'     => array(
-                array('size' => 'MEDIUM',  'length' => '24 inch / 60.96 cm', 'chest' => '46 inch / 116.84 cm'),
-                array('size' => 'LARGE',   'length' => '25 inch / 63.5 cm',  'chest' => '48 inch / 121.92 cm'),
-                array('size' => 'X-LARGE', 'length' => '26 inch / 66.04 cm', 'chest' => '50 inch / 127 cm'),
+                array('size' => 'M', 'length' => '23.5 in (59.69 cm)', 'chest' => '44 in (111.76 cm)'),
+                array('size' => 'L', 'length' => '24.5 in (62.23 cm)', 'chest' => '46 in (116.84 cm)'),
             ),
         ),
-        'double-layer-hoodie' => array(
-            'id'       => 'double-layer-hoodie',
-            'title'    => 'DOUBLE LAYER HOODIE',
+        'utility-jacket' => array(
+            'id'       => 'utility-jacket',
+            'title'    => 'UTILITY / WAVE JACKET',
             'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
             'rows'     => array(
-                array('size' => 'MEDIUM',  'length' => '24 inch / 60.96 cm', 'chest' => '46 inch / 116.84 cm'),
-                array('size' => 'LARGE',   'length' => '25 inch / 63.5 cm',  'chest' => '48 inch / 121.92 cm'),
-                array('size' => 'X-LARGE', 'length' => '26 inch / 66.04 cm', 'chest' => '50 inch / 127 cm'),
+                array('size' => 'M',  'length' => '24 in (60.96 cm)', 'chest' => '46 in (116.84 cm)'),
+                array('size' => 'L',  'length' => '25 in (63.50 cm)', 'chest' => '48 in (121.92 cm)'),
+                array('size' => 'XL', 'length' => '26 in (66.04 cm)', 'chest' => '50 in (127.00 cm)'),
+            ),
+        ),
+        'double-layered-hoodie' => array(
+            'id'       => 'double-layered-hoodie',
+            'title'    => 'DOUBLE LAYERED HOODIE',
+            'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
+            'rows'     => array(
+                array('size' => 'M',  'length' => '24 in (60.96 cm)', 'chest' => '46 in (116.84 cm)'),
+                array('size' => 'L',  'length' => '25 in (63.50 cm)', 'chest' => '48 in (121.92 cm)'),
+                array('size' => 'XL', 'length' => '26 in (66.04 cm)', 'chest' => '50 in (127.00 cm)'),
+            ),
+        ),
+        'camp-shirt' => array(
+            'id'       => 'camp-shirt',
+            'title'    => 'CAMP SHIRT 0.2',
+            'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
+            'rows'     => array(
+                array('size' => 'S',  'length' => '23.5 in (59.69 cm)', 'chest' => '43 in (109.22 cm)'),
+                array('size' => 'M',  'length' => '25 in (63.50 cm)',   'chest' => '46 in (116.84 cm)'),
+                array('size' => 'L',  'length' => '26 in (66.04 cm)',   'chest' => '48 in (121.92 cm)'),
+                array('size' => 'XL', 'length' => '27.5 in (69.85 cm)', 'chest' => '50 in (127.00 cm)'),
             ),
         ),
     );
+
+    // Aliases for alternate slugs, attributes, and backwards compatibility
+    $charts['t-shirt']                   = &$charts['lightning-t-shirt'];
+    $charts['puffy-puffer-0-2']          = &$charts['puffy-puffer'];
+    $charts['puffer-jacket']             = &$charts['puffy-puffer'];
+    $charts['wave-jacket']               = &$charts['utility-jacket'];
+    $charts['utility-jacket-design-0-2'] = &$charts['utility-jacket'];
+    $charts['jacket']                    = &$charts['utility-jacket'];
+    $charts['double-layer-hoodie']       = &$charts['double-layered-hoodie'];
+    $charts['camp-shirt-0-2']            = &$charts['camp-shirt'];
+    $charts['wave-pants']                = &$charts['wave-pant'];
+    $charts['pant']                      = &$charts['wave-pant'];
+    $charts['pants']                     = &$charts['wave-pant'];
 
     return apply_filters('mazestreetwear_size_charts', $charts);
 }
@@ -1716,7 +1761,7 @@ function mazestreetwear_get_current_product_size_chart_key($product = null)
     }
 
     if (! $product || ! is_a($product, 'WC_Product')) {
-        return 't-shirt';
+        return 'lightning-t-shirt';
     }
 
     $charts = mazestreetwear_get_size_charts();
@@ -1727,7 +1772,7 @@ function mazestreetwear_get_current_product_size_chart_key($product = null)
         $meta_chart = get_post_meta($product->get_id(), 'size_chart', true);
     }
     if ($meta_chart && isset($charts[$meta_chart])) {
-        return $meta_chart;
+        return $charts[$meta_chart]['id'];
     }
 
     // 0b. Explicit product attribute (e.g. pa_size_chart or pa_garment_type)
@@ -1739,7 +1784,7 @@ function mazestreetwear_get_current_product_size_chart_key($product = null)
         if ($attr_chart) {
             $attr_key = sanitize_title($attr_chart);
             if (isset($charts[$attr_key])) {
-                return $attr_key;
+                return $charts[$attr_key]['id'];
             }
         }
     }
@@ -1767,32 +1812,47 @@ function mazestreetwear_get_current_product_size_chart_key($product = null)
 
     $search_pool = $name . ' ' . $slug . ' ' . implode(' ', $cat_names) . ' ' . implode(' ', $tag_names);
 
-    // 1. Utility Gilet / Gilet / Vest
+    // 1. WAVE PANT (Pant / Pants / Trouser)
+    if (false !== strpos($search_pool, 'pant') || false !== strpos($search_pool, 'trouser')) {
+        return 'wave-pant';
+    }
+
+    // 2. PUFFER GILET (Gilet / Vest with Puffer)
+    if (false !== strpos($search_pool, 'puffer gilet') || (false !== strpos($search_pool, 'puffer') && (false !== strpos($search_pool, 'gilet') || false !== strpos($search_pool, 'vest')))) {
+        return 'puffer-gilet';
+    }
+
+    // 3. UTILITY GILET (Standard Gilet / Vest)
     if (false !== strpos($search_pool, 'utility gilet') || false !== strpos($search_pool, 'utitlity gilet') || false !== strpos($search_pool, 'gilet') || false !== strpos($search_pool, 'vest')) {
         return 'utility-gilet';
     }
 
-    // 2. Puffer Jacket / Puffer / Down
-    if (false !== strpos($search_pool, 'puffer') || false !== strpos($search_pool, 'down jacket')) {
-        return 'puffer-jacket';
+    // 4. PUFFY PUFFER / PUFFY PUFFER 0.2
+    if (false !== strpos($search_pool, 'puffy puffer') || false !== strpos($search_pool, 'puffy') || false !== strpos($search_pool, 'puffer') || false !== strpos($search_pool, 'down jacket')) {
+        return 'puffy-puffer';
     }
 
-    // 3. Double Layer Hoodie / Hoodie / Hooded / Sweatshirt
-    if (false !== strpos($search_pool, 'double layer') || false !== strpos($search_pool, 'hoodie') || false !== strpos($search_pool, 'hooded') || false !== strpos($search_pool, 'sweatshirt')) {
-        return 'double-layer-hoodie';
+    // 5. CAMP SHIRT 0.2 (Matched before generic shirt/tee)
+    if (false !== strpos($search_pool, 'camp shirt') || false !== strpos($search_pool, 'campshirt') || false !== strpos($search_pool, 'camp')) {
+        return 'camp-shirt';
     }
 
-    // 4. Jacket (non-puffer)
-    if (false !== strpos($search_pool, 'jacket') || false !== strpos($search_pool, 'bomber') || false !== strpos($search_pool, 'windbreaker') || false !== strpos($search_pool, 'coat')) {
-        return 'jacket';
+    // 6. DOUBLE LAYERED HOODIE
+    if (false !== strpos($search_pool, 'double layer') || false !== strpos($search_pool, 'double-layer') || false !== strpos($search_pool, 'hoodie') || false !== strpos($search_pool, 'hooded') || false !== strpos($search_pool, 'sweatshirt')) {
+        return 'double-layered-hoodie';
     }
 
-    // 5. T-Shirt / Tee / Top / Shirt
-    if (false !== strpos($search_pool, 't-shirt') || false !== strpos($search_pool, 'tshirt') || false !== strpos($search_pool, 'tee') || false !== strpos($search_pool, 'top') || false !== strpos($search_pool, 'shirt')) {
-        return 't-shirt';
+    // 7. UTILITY JACKET DESIGN 0.2 / WAVE JACKET
+    if (false !== strpos($search_pool, 'wave jacket') || false !== strpos($search_pool, 'utility jacket') || false !== strpos($search_pool, 'jacket') || false !== strpos($search_pool, 'bomber') || false !== strpos($search_pool, 'windbreaker') || false !== strpos($search_pool, 'coat')) {
+        return 'utility-jacket';
     }
 
-    return apply_filters('mazestreetwear_product_size_chart_key', 't-shirt', $product);
+    // 8. LIGHTNING T-SHIRT / T-SHIRT
+    if (false !== strpos($search_pool, 'lightning') || false !== strpos($search_pool, 't-shirt') || false !== strpos($search_pool, 'tshirt') || false !== strpos($search_pool, 'tee') || false !== strpos($search_pool, 'top') || false !== strpos($search_pool, 'shirt')) {
+        return 'lightning-t-shirt';
+    }
+
+    return apply_filters('mazestreetwear_product_size_chart_key', 'lightning-t-shirt', $product);
 }
 
 /**
@@ -1823,7 +1883,32 @@ function mazestreetwear_get_product_size_chart($product = null)
     $charts = mazestreetwear_get_size_charts();
     $key    = mazestreetwear_get_current_product_size_chart_key($product);
 
-    $chart = isset($charts[$key]) ? $charts[$key] : (isset($charts['t-shirt']) ? $charts['t-shirt'] : null);
+    $chart = isset($charts[$key]) ? $charts[$key] : (isset($charts['lightning-t-shirt']) ? $charts['lightning-t-shirt'] : reset($charts));
+
+    if ($chart && $product && is_a($product, 'WC_Product')) {
+        $prod_name = strtoupper(trim($product->get_name()));
+        if ($key === 'utility-jacket') {
+            if (false !== strpos($prod_name, 'WAVE JACKET')) {
+                $chart['title'] = 'WAVE JACKET';
+            } elseif (false !== strpos($prod_name, 'UTILITY JACKET DESIGN 0.2')) {
+                $chart['title'] = 'UTILITY JACKET DESIGN 0.2';
+            } elseif (false !== strpos($prod_name, 'UTILITY JACKET')) {
+                $chart['title'] = 'UTILITY JACKET';
+            }
+        } elseif ($key === 'puffy-puffer') {
+            if (false !== strpos($prod_name, 'PUFFY PUFFER 0.2')) {
+                $chart['title'] = 'PUFFY PUFFER 0.2';
+            } elseif (false !== strpos($prod_name, 'PUFFY PUFFER')) {
+                $chart['title'] = 'PUFFY PUFFER';
+            }
+        } elseif ($key === 'lightning-t-shirt') {
+            if (false !== strpos($prod_name, 'LIGHTNING')) {
+                $chart['title'] = 'LIGHTNING T-SHIRT';
+            } else {
+                $chart['title'] = 'T-SHIRT';
+            }
+        }
+    }
 
     return apply_filters('mazestreetwear_current_product_size_chart', $chart, $product, $key);
 }

@@ -33,13 +33,13 @@ if ( ! $current_product ) {
 // Retrieve the single matching size chart for this viewed product
 $chart_data = function_exists( 'mazestreetwear_get_product_size_chart' ) 
     ? mazestreetwear_get_product_size_chart( $current_product )
-    : ( function_exists( 'mazestreetwear_get_size_charts' ) ? ( mazestreetwear_get_size_charts()['t-shirt'] ?? null ) : null );
+    : ( function_exists( 'mazestreetwear_get_size_charts' ) ? ( mazestreetwear_get_size_charts()['lightning-t-shirt'] ?? null ) : null );
 
 if ( empty( $chart_data ) || ! is_array( $chart_data ) ) {
     return;
 }
 
-$chart_id     = isset( $chart_data['id'] ) ? $chart_data['id'] : 't-shirt';
+$chart_id     = isset( $chart_data['id'] ) ? $chart_data['id'] : 'lightning-t-shirt';
 $chart_title  = isset( $chart_data['title'] ) ? $chart_data['title'] : __( 'SIZE GUIDE', 'mazestreetwear' );
 $columns      = isset( $chart_data['columns'] ) ? $chart_data['columns'] : array( 'SIZE', 'LENGTH', 'CHEST' );
 $rows         = isset( $chart_data['rows'] ) ? $chart_data['rows'] : array();
@@ -113,8 +113,19 @@ $product_name = $current_product ? $current_product->get_name() : '';
                             <?php echo esc_html( $chart_title ); ?> <?php esc_html_e( 'MEASUREMENTS', 'mazestreetwear' ); ?>
                         </h4>
                     </div>
+                    <?php
+                    $meas_cols = array();
+                    if ( ! empty( $columns ) && is_array( $columns ) ) {
+                        foreach ( $columns as $c_idx => $c_name ) {
+                            if ( 0 !== $c_idx ) {
+                                $meas_cols[] = ucwords( strtolower( $c_name ) );
+                            }
+                        }
+                    }
+                    $meas_subtitle = ! empty( $meas_cols ) ? implode( ' & ', $meas_cols ) : __( 'Measurements', 'mazestreetwear' );
+                    ?>
                     <span class="text-[11px] sm:text-xs font-outfit text-neutral-500 font-medium uppercase tracking-wide">
-                        <?php esc_html_e( 'Length & Chest', 'mazestreetwear' ); ?>
+                        <?php echo esc_html( $meas_subtitle ); ?>
                     </span>
                 </div>
 
@@ -139,15 +150,23 @@ $product_name = $current_product ? $current_product->get_name() : '';
                                 $row_bg = ( $r_idx % 2 === 1 ) ? 'bg-neutral-50/60' : 'bg-white';
                             ?>
                                 <tr class="<?php echo esc_attr( $row_bg ); ?> hover:bg-neutral-100/80 transition-colors">
-                                    <td class="py-3 px-3.5 sm:px-4 font-bold font-bebas text-base sm:text-lg text-black border-r border-neutral-200 tracking-wide">
-                                        <?php echo esc_html( isset( $row['size'] ) ? $row['size'] : '' ); ?>
-                                    </td>
-                                    <td class="py-3 px-3.5 sm:px-4 text-neutral-800 border-r border-neutral-200 whitespace-nowrap font-medium">
-                                        <?php echo esc_html( isset( $row['length'] ) ? $row['length'] : '' ); ?>
-                                    </td>
-                                    <td class="py-3 px-3.5 sm:px-4 text-neutral-800 whitespace-nowrap font-medium">
-                                        <?php echo esc_html( isset( $row['chest'] ) ? $row['chest'] : '' ); ?>
-                                    </td>
+                                    <?php 
+                                    $total_cols = count( $columns );
+                                    foreach ( $columns as $c_idx => $col_name ) :
+                                        $col_key = strtolower( trim( $col_name ) );
+                                        $is_last = ( $c_idx === $total_cols - 1 );
+                                        $val     = isset( $row[ $col_key ] ) ? $row[ $col_key ] : '';
+                                        
+                                        if ( 0 === $c_idx ) : ?>
+                                            <td class="py-3 px-3.5 sm:px-4 font-bold font-bebas text-base sm:text-lg text-black <?php echo ! $is_last ? 'border-r border-neutral-200' : ''; ?> tracking-wide">
+                                                <?php echo esc_html( $val ); ?>
+                                            </td>
+                                        <?php else : ?>
+                                            <td class="py-3 px-3.5 sm:px-4 text-neutral-800 <?php echo ! $is_last ? 'border-r border-neutral-200' : ''; ?> whitespace-nowrap font-medium">
+                                                <?php echo esc_html( $val ); ?>
+                                            </td>
+                                        <?php endif;
+                                    endforeach; ?>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -187,7 +206,7 @@ $product_name = $current_product ? $current_product->get_name() : '';
                 tabs[i].parentNode.removeChild(tabs[i]);
             }
         }
-        var activeChart = modal.getAttribute('data-active-chart') || 't-shirt';
+        var activeChart = modal.getAttribute('data-active-chart') || 'lightning-t-shirt';
         var panels = modal.querySelectorAll('.maze-size-chart-panel');
         for (var j = 0; j < panels.length; j++) {
             var pTarget = panels[j].getAttribute('data-chart-panel') || panels[j].id.replace('maze-chart-panel-', '');
