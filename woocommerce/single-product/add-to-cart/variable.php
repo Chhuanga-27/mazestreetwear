@@ -246,6 +246,17 @@ window.mazeSelectSize = window.mazeSelectSize || function (btn, event) {
                 window.jQuery(select).trigger('change');
             }
         }
+
+        var addBtn = form.querySelector('.single_add_to_cart_button');
+        var buyBtn = form.querySelector('.maze_buy_now_button');
+        if (addBtn) {
+            addBtn.removeAttribute('disabled');
+            addBtn.classList.remove('disabled', 'opacity-60', 'cursor-not-allowed');
+        }
+        if (buyBtn) {
+            buyBtn.removeAttribute('disabled');
+            buyBtn.classList.remove('disabled', 'opacity-60', 'cursor-not-allowed');
+        }
     }
 };
 </script>

@@ -23,7 +23,9 @@ if ($product->is_in_stock()) : ?>
 
     <?php do_action('woocommerce_before_add_to_cart_form'); ?>
 
-    <form class="cart space-y-6 my-6" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
+    <form class="cart space-y-6 my-6" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>">
+        <input type="hidden" name="add-to-cart" value="<?php echo absint($product->get_id()); ?>" />
+        <input type="hidden" name="product_id" value="<?php echo absint($product->get_id()); ?>" />
         <?php do_action('woocommerce_before_add_to_cart_button'); ?>
 
         <!-- Sizing Selector: Clean rectangular size boxes with 1px black borders -->
@@ -186,6 +188,16 @@ if ($product->is_in_stock()) : ?>
                 var hiddenInput = form.querySelector('.maze-selected-size-input, input[name="selected_size"]');
                 if (hiddenInput) {
                     hiddenInput.value = selectedVal;
+                }
+                var addBtn = form.querySelector('.single_add_to_cart_button');
+                var buyBtn = form.querySelector('.maze_buy_now_button');
+                if (addBtn) {
+                    addBtn.removeAttribute('disabled');
+                    addBtn.classList.remove('disabled', 'opacity-60', 'cursor-not-allowed');
+                }
+                if (buyBtn) {
+                    buyBtn.removeAttribute('disabled');
+                    buyBtn.classList.remove('disabled', 'opacity-60', 'cursor-not-allowed');
                 }
             }
         };

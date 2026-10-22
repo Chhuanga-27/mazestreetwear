@@ -426,6 +426,14 @@
                 });
                 $select.val(matchedVal).trigger('change');
             }
+
+            // Immediately enable add to cart and buy now buttons
+            const $form = $container.closest('form');
+            if ($form.length) {
+                $form.find('.single_add_to_cart_button, .maze_buy_now_button')
+                    .removeClass('disabled opacity-60 cursor-not-allowed')
+                    .prop('disabled', false);
+            }
         };
 
         // Delegate click on size pills
@@ -1096,28 +1104,208 @@
             }, 600);
         });
 
+        // Direct Checkout handler for Buy Now button
+        function executeMazeBuyNow($form, $buyBtn) {
+            const $submitBtn = $form.find('.single_add_to_cart_button');
+            const defaultCheckoutUrl = (typeof mazeData !== 'undefined' && mazeData.checkoutUrl) ? mazeData.checkoutUrl : '/checkout/';
+
+            // Loading indicator on BUY NOW button
+            $buyBtn.addClass('is-loading opacity-80').prop('disabled', true);
+            $buyBtn.html('<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4 text-black" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> DIRECT TO CHECKOUT...</span>');
+            if ($submitBtn.length) {
+                $submitBtn.prop('disabled', true);
+            }
+
+            // Sync native selects from active size pills
+            $form.find('.variation-row').each(function () {
+                const $row = $(this);
+                const $activePill = $row.find('.maze-size-pill.is-active');
+                const $select = $row.find('select');
+                if ($activePill.length && $select.length) {
+                    const val = String($activePill.data('value') || $activePill.text().trim());
+                    $select.find('option').each(function () {
+                        const optVal = String($(this).val() || '').trim();
+                        const optText = String($(this).text() || '').trim();
+                        if (optVal && (optVal.toLowerCase() === val.toLowerCase() || optText.toLowerCase() === val.toLowerCase())) {
+                            $select.val(optVal).trigger('change');
+                            return false;
+                        }
+                    });
+                }
+            });
+
+            // Resolve product ID
+            let resolvedProductId = '';
+            const $pIdInput = $form.find('input[name="product_id"]');
+            if ($pIdInput.length && $pIdInput.val()) {
+                resolvedProductId = $pIdInput.val();
+            } else if ($form.data('product_id')) {
+                resolvedProductId = $form.data('product_id');
+            } else if ($submitBtn.length && $submitBtn.val()) {
+                resolvedProductId = $submitBtn.val();
+            } else {
+                const btnVal = $form.find('button[name="add-to-cart"]').val();
+                if (btnVal) resolvedProductId = btnVal;
+            }
+
+            // Resolve variation ID
+            let resolvedVarId = 0;
+            const $varIdInput = $form.find('input[name="variation_id"]');
+            if ($varIdInput.length && parseInt($varIdInput.val(), 10) > 0) {
+                resolvedVarId = parseInt($varIdInput.val(), 10);
+            } else {
+                const variations = $form.data('product_variations');
+                if (Array.isArray(variations) && variations.length > 0) {
+                    const selectedAttrs = {};
+                    $form.find('.variation-row').each(function () {
+                        const $row = $(this);
+                        const $select = $row.find('select');
+                        const $activePill = $row.find('.maze-size-pill.is-active');
+                        let attrName = $select.length ? ($select.attr('data-attribute_name') || $select.attr('name') || '') : '';
+                        if (!attrName) {
+                            const rowAttr = $row.data('attribute') || '';
+                            if (rowAttr) attrName = 'attribute_' + rowAttr;
+                        }
+                        let attrVal = '';
+                        if ($select.length && $select.val()) {
+                            attrVal = String($select.val()).toLowerCase();
+                        } else if ($activePill.length) {
+                            attrVal = String($activePill.data('value') || $activePill.text().trim() || '').toLowerCase();
+                        }
+                        if (attrName && attrVal) {
+                            selectedAttrs[attrName] = attrVal;
+                        }
+                    });
+
+                    const selectedKeys = Object.keys(selectedAttrs);
+                    for (let v = 0; v < variations.length; v++) {
+                        const variation = variations[v];
+                        if (!variation || !variation.attributes) continue;
+                        let allMatch = true;
+                        for (let k = 0; k < selectedKeys.length; k++) {
+                            const key = selectedKeys[k];
+                            const varAttrVal = String(variation.attributes[key] || '').toLowerCase();
+                            if (varAttrVal !== '' && varAttrVal !== selectedAttrs[key]) {
+                                allMatch = false;
+                                break;
+                            }
+                        }
+                        if (allMatch && variation.variation_id) {
+                            resolvedVarId = variation.variation_id;
+                            $varIdInput.val(resolvedVarId);
+                            break;
+                        }
+                    }
+
+                    if (!resolvedVarId && variations[0] && variations[0].variation_id) {
+                        resolvedVarId = variations[0].variation_id;
+                        $varIdInput.val(resolvedVarId);
+                    }
+                }
+            }
+
+            // Build payload
+            const serialized = $form.serializeArray();
+            const formData = [];
+            for (let i = 0; i < serialized.length; i++) {
+                const item = serialized[i];
+                if (item.name !== 'action' && item.name !== 'maze_buy_now') {
+                    formData.push(item);
+                }
+            }
+
+            if (resolvedProductId && !formData.some(item => item.name === 'product_id')) {
+                formData.push({ name: 'product_id', value: resolvedProductId });
+            }
+            if (resolvedProductId && !formData.some(item => item.name === 'add-to-cart')) {
+                formData.push({ name: 'add-to-cart', value: resolvedProductId });
+            }
+            if (resolvedVarId > 0 && !formData.some(item => item.name === 'variation_id')) {
+                formData.push({ name: 'variation_id', value: resolvedVarId });
+            }
+
+            formData.push({ name: 'action', value: 'maze_ajax_add_to_cart' });
+            formData.push({ name: 'is_buy_now', value: '1' });
+            formData.push({ name: 'maze_buy_now', value: '1' });
+
+            const $sizeInput = $form.find('input[name="selected_size"]');
+            if ($sizeInput.length && !formData.some(item => item.name === 'selected_size')) {
+                formData.push({ name: 'selected_size', value: $sizeInput.val() });
+            }
+            if (!formData.some(item => item.name === 'quantity')) {
+                const qVal = $form.find('input[name="quantity"]').val() || '1';
+                formData.push({ name: 'quantity', value: qVal });
+            }
+            if (typeof mazeData !== 'undefined' && mazeData.nonce) {
+                formData.push({ name: 'maze_nonce', value: mazeData.nonce });
+            }
+
+            const ajaxEndpoint = (typeof mazeData !== 'undefined' && mazeData.ajaxUrl) ? mazeData.ajaxUrl : '/wp-admin/admin-ajax.php';
+
+            function fallbackSubmit() {
+                if (!$form.find('input[name="maze_buy_now"]').length) {
+                    $form.append('<input type="hidden" name="maze_buy_now" value="1">');
+                }
+                if (resolvedProductId && !$form.find('input[name="add-to-cart"]').length) {
+                    $form.append('<input type="hidden" name="add-to-cart" value="' + resolvedProductId + '">');
+                }
+                try {
+                    $form.off('submit');
+                    $form.get(0).submit();
+                } catch (err) {
+                    window.location.href = defaultCheckoutUrl;
+                }
+            }
+
+            $.ajax({
+                url: ajaxEndpoint,
+                type: 'POST',
+                data: $.param(formData),
+                dataType: 'json',
+                timeout: 8000,
+                success: function (res) {
+                    if (res && res.success) {
+                        const checkoutUrl = (res.data && res.data.checkout_url) ? res.data.checkout_url : defaultCheckoutUrl;
+                        window.location.href = checkoutUrl;
+                    } else {
+                        fallbackSubmit();
+                    }
+                },
+                error: function () {
+                    fallbackSubmit();
+                }
+            });
+        }
+
         // Click handler for Buy Now button
         $(document).on('click', '.maze_buy_now_button', function (e) {
             e.preventDefault();
+            e.stopPropagation();
             const $buyBtn = $(this);
-            if ($buyBtn.prop('disabled') || $buyBtn.hasClass('disabled')) return;
-
             const $form = $buyBtn.closest('form.cart');
             if (!$form.length) return;
 
-            // Check size pills validation
+            if ($buyBtn.hasClass('is-loading')) return;
+
+            // Check size pills validation / auto-select first available size
             const $pills = $form.find('.maze-size-pills');
-            if ($pills.length && !$pills.find('.maze-size-pill.is-active').length) {
-                $pills.addClass('ring-2 ring-black');
-                setTimeout(function () {
-                    $pills.removeClass('ring-2 ring-black');
-                }, 1000);
-                return false;
+            if ($pills.length) {
+                let $activePill = $pills.find('.maze-size-pill.is-active');
+                if (!$activePill.length) {
+                    const $first = $pills.find('.maze-size-pill:not(.is-disabled, .disabled, [disabled], .opacity-30)').first();
+                    if ($first.length) {
+                        $first.trigger('click');
+                    } else {
+                        $pills.addClass('ring-2 ring-black');
+                        setTimeout(function () {
+                            $pills.removeClass('ring-2 ring-black');
+                        }, 1000);
+                        return false;
+                    }
+                }
             }
 
-            // Flag form submission as Buy Now
-            $form.data('maze-buy-now', true);
-            $form.trigger('submit');
+            executeMazeBuyNow($form, $buyBtn);
         });
 
         // AJAX Add to Bag & Buy Now on Single Product Pages (Simple & Variable)
@@ -1217,7 +1405,7 @@
             e.preventDefault();
 
             const $activeBtn = isBuyNow ? ($buyBtn.length ? $buyBtn : $submitBtn) : $submitBtn;
-            if ($activeBtn.hasClass('is-loading') || $activeBtn.prop('disabled')) {
+            if ($activeBtn.hasClass('is-loading') || (!isBuyNow && $activeBtn.prop('disabled'))) {
                 return false;
             }
 

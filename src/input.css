@@ -1186,6 +1186,27 @@
   }
 
   /* Editorial Modern Studio Footer Component Styles */
+  .maze-footer-brand-picture {
+    display: block;
+    width: 82%;
+    max-width: 1020px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (min-width: 640px) {
+    .maze-footer-brand-picture {
+      width: 84%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .maze-footer-brand-picture {
+      width: 80%;
+      max-width: 1020px;
+    }
+  }
+
   .maze-footer-brand-image {
     width: 100%;
     max-width: 100%;

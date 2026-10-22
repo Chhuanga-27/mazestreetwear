@@ -37,7 +37,7 @@ global $product;
             <span class="btn-text"><?php echo esc_html( $product->single_add_to_cart_text() ? $product->single_add_to_cart_text() : __( 'ADD TO BAG', 'mazestreetwear' ) ); ?></span>
         </button>
 
-        <button type="button" class="maze_buy_now_button maze-btn-animated button disabled bg-white text-black hover:bg-black hover:text-white text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border-2 border-black rounded-none font-bebas transition-all duration-200 cursor-pointer block text-center select-none active:scale-[0.98]" disabled data-default-text="<?php esc_attr_e( 'BUY NOW', 'mazestreetwear' ); ?>">
+        <button type="button" class="maze_buy_now_button maze-btn-animated button bg-white text-black hover:bg-black hover:text-white text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border-2 border-black rounded-none font-bebas transition-all duration-200 cursor-pointer block text-center select-none active:scale-[0.98]" data-default-text="<?php esc_attr_e( 'BUY NOW', 'mazestreetwear' ); ?>">
             <span class="btn-text"><?php esc_html_e( 'BUY NOW', 'mazestreetwear' ); ?></span>
         </button>
     </div>

@@ -1371,8 +1371,35 @@ html.maze-splash-dismissed #maze-splash-screen {
   }
 }
 
+/* Footer Centerpiece Brand Logo */
+.maze-footer-brand-picture {
+  display: block;
+  width: 82% !important;
+  max-width: 1020px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
 
+@media (min-width: 640px) {
+  .maze-footer-brand-picture {
+    width: 84% !important;
+  }
+}
 
+@media (min-width: 1024px) {
+  .maze-footer-brand-picture {
+    width: 80% !important;
+    max-width: 1020px !important;
+  }
+}
 
-
-
+.maze-footer-brand-image {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  object-fit: contain !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  pointer-events: none !important;
+}

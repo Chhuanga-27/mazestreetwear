@@ -402,6 +402,32 @@ function mazestreetwear_ajax_add_to_cart()
             $data_store   = WC_Data_Store::load('product');
             $variation_id = $data_store->find_matching_product_variation($product, $variations);
         }
+        if (empty($variation_id) && ! empty($_POST['selected_size'])) {
+            $selected_size = sanitize_text_field(wp_unslash($_POST['selected_size']));
+            $children      = $product->get_children();
+            foreach ($children as $child_id) {
+                $child = wc_get_product($child_id);
+                if ($child && $child->is_purchasable() && $child->is_in_stock()) {
+                    $child_attrs = $child->get_attributes();
+                    foreach ($child_attrs as $c_val) {
+                        if (strcasecmp($c_val, $selected_size) === 0) {
+                            $variation_id = $child_id;
+                            break 2;
+                        }
+                    }
+                }
+            }
+        }
+        if (empty($variation_id)) {
+            $children = $product->get_children();
+            foreach ($children as $child_id) {
+                $child = wc_get_product($child_id);
+                if ($child && $child->is_purchasable() && $child->is_in_stock()) {
+                    $variation_id = $child_id;
+                    break;
+                }
+            }
+        }
         if (empty($variation_id)) {
             wp_send_json_error(array('message' => __('Please select an available size before adding to bag.', 'mazestreetwear')));
         }
@@ -456,6 +482,22 @@ function mazestreetwear_ajax_add_to_cart()
             'is_buy_now'   => ! empty($_POST['is_buy_now']),
         ));
     } else {
+        // If Buy Now was requested and the item is already in the cart (e.g. sold individually), proceed directly to checkout
+        if (! empty($_POST['is_buy_now']) && function_exists('WC') && WC()->cart) {
+            foreach (WC()->cart->get_cart() as $cart_item) {
+                if ($cart_item['product_id'] == $product_id) {
+                    while (ob_get_level() > 0) {
+                        ob_end_clean();
+                    }
+                    wp_send_json_success(array(
+                        'cart_count'   => mazestreetwear_get_cart_count(),
+                        'checkout_url' => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/'),
+                        'is_buy_now'   => true,
+                    ));
+                }
+            }
+        }
+
         $notices   = wc_get_notices('error');
         $error_msg = ! empty($notices) ? wp_strip_all_tags($notices[0]['notice']) : __('Could not add item to bag. Please try again.', 'mazestreetwear');
         wc_clear_notices();

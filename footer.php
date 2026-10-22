@@ -98,9 +98,9 @@ $footer_card_border = $is_maze_home ? 'border-0' : 'border border-black/15 shado
             </div>
         </div>
 
-        <!-- Centerpiece: Giant Brand Graphic -->
+        <!-- Centerpiece: Brand Graphic -->
         <div class="w-full my-6 sm:my-10 lg:my-12 select-none overflow-hidden text-center flex items-center justify-center" aria-label="MAZE">
-            <picture class="block w-full">
+            <picture class="maze-footer-brand-picture block w-[82%] sm:w-[84%] lg:w-[80%] max-w-[1020px] mx-auto">
                 <source type="image/svg+xml" srcset="<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze-footer-logo.svg' ); ?>">
                 <img 
                     src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze-footer-logo.png' ); ?>" 
