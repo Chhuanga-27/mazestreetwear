@@ -55,14 +55,18 @@ if ($product->is_in_stock()) : ?>
         }
 
         if (! $has_size_options) {
-            $cat_ids = $product->get_category_ids();
             $is_sized_cat = true;
-            if (! empty($cat_ids)) {
-                foreach ($cat_ids as $cid) {
-                    $term = get_term($cid, 'product_cat');
-                    if ($term && ('accessories' === $term->slug || 'accessory' === $term->slug || false !== stripos($term->name, 'accessory') || false !== stripos($term->name, 'bag') || false !== stripos($term->name, 'cap') || false !== stripos($term->name, 'hat'))) {
-                        $is_sized_cat = false;
-                        break;
+            if (function_exists('mazestreetwear_is_accessory_product') && mazestreetwear_is_accessory_product($product)) {
+                $is_sized_cat = false;
+            } else {
+                $cat_ids = $product->get_category_ids();
+                if (! empty($cat_ids)) {
+                    foreach ($cat_ids as $cid) {
+                        $term = get_term($cid, 'product_cat');
+                        if ($term && ('accessories' === $term->slug || 'accessory' === $term->slug || false !== stripos($term->name, 'accessory') || false !== stripos($term->name, 'bag') || false !== stripos($term->name, 'cap') || false !== stripos($term->name, 'hat'))) {
+                            $is_sized_cat = false;
+                            break;
+                        }
                     }
                 }
             }
@@ -74,6 +78,12 @@ if ($product->is_in_stock()) : ?>
 
         if ($has_size_options && ! empty($size_options)) :
             $first_size = $size_options[0];
+            $show_size_chart = true;
+            if (function_exists('mazestreetwear_is_accessory_product') && mazestreetwear_is_accessory_product($product)) {
+                $show_size_chart = false;
+            } elseif (function_exists('mazestreetwear_product_has_size_chart') && ! mazestreetwear_product_has_size_chart($product)) {
+                $show_size_chart = false;
+            }
         ?>
             <div class="size-selector-wrap">
                 <div class="flex items-center justify-between mb-2.5">
@@ -97,19 +107,21 @@ if ($product->is_in_stock()) : ?>
                     <?php endforeach; ?>
                 </div>
 
-                <div class="maze-size-chart-trigger-wrap mt-3">
-                    <button type="button"
-                        class="maze-size-chart-trigger inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-black text-white hover:bg-neutral-800 border border-black text-xs font-outfit font-semibold tracking-wider uppercase transition-colors cursor-pointer select-none"
-                        data-active-chart="<?php echo esc_attr(function_exists('mazestreetwear_get_current_product_size_chart_key') ? mazestreetwear_get_current_product_size_chart_key($product) : 'lightning-t-shirt'); ?>"
-                        onclick="window.mazeOpenSizeChart && window.mazeOpenSizeChart(event, this)"
-                        aria-haspopup="dialog"
-                        aria-controls="maze-size-chart-modal">
-                        <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 17h18M7 7v4M12 7v3M17 7v4M7 17v-4M12 17v-3M17 17v-4" />
-                        </svg>
-                        <span><?php esc_html_e('SIZE CHART', 'mazestreetwear'); ?></span>
-                    </button>
-                </div>
+                <?php if ($show_size_chart) : ?>
+                    <div class="maze-size-chart-trigger-wrap mt-3">
+                        <button type="button"
+                            class="maze-size-chart-trigger inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-black text-white hover:bg-neutral-800 border border-black text-xs font-outfit font-semibold tracking-wider uppercase transition-colors cursor-pointer select-none"
+                            data-active-chart="<?php echo esc_attr(function_exists('mazestreetwear_get_current_product_size_chart_key') ? mazestreetwear_get_current_product_size_chart_key($product) : 'lightning-t-shirt'); ?>"
+                            onclick="window.mazeOpenSizeChart && window.mazeOpenSizeChart(event, this)"
+                            aria-haspopup="dialog"
+                            aria-controls="maze-size-chart-modal">
+                            <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 17h18M7 7v4M12 7v3M17 7v4M7 17v-4M12 17v-3M17 17v-4" />
+                            </svg>
+                            <span><?php esc_html_e('SIZE CHART', 'mazestreetwear'); ?></span>
+                        </button>
+                    </div>
+                <?php endif; ?>
             </div>
         <?php endif; ?>
 

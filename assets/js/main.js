@@ -593,6 +593,11 @@
         // Ensure legacy tabs from cached HTML are purged immediately
         $('.maze-size-chart-tabs, .maze-size-chart-tab').remove();
 
+        // If currently viewing an accessory product, purge any size chart triggers and modal
+        if ($('body').hasClass('is-accessory-product') || $('body').hasClass('product_cat-accessories') || $('body').hasClass('term-accessories')) {
+            $('.maze-size-chart-trigger, .maze-size-chart-trigger-wrap, #maze-size-chart-modal').remove();
+        }
+
         $(document).on('click', '.maze-size-chart-trigger', function (e) {
             e.preventDefault();
             e.stopPropagation();

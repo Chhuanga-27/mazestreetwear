@@ -1857,6 +1857,140 @@ function mazestreetwear_get_size_charts()
 }
 
 /**
+ * Determine whether a product is classified as an accessory.
+ *
+ * Checks product category (and taxonomy ancestors), tags, attributes, and title/slug keywords.
+ *
+ * @param WC_Product|int|null $product
+ * @return bool
+ */
+function mazestreetwear_is_accessory_product($product = null)
+{
+    if (! $product && function_exists('wc_get_product')) {
+        if (function_exists('is_product') && is_product()) {
+            $queried_id = get_queried_object_id();
+            if ($queried_id) {
+                $product = wc_get_product($queried_id);
+            }
+        }
+        if (! $product) {
+            global $post;
+            if ($post && 'product' === get_post_type($post)) {
+                $product = wc_get_product($post->ID);
+            }
+        }
+    } elseif (is_numeric($product) && function_exists('wc_get_product')) {
+        $product = wc_get_product($product);
+    }
+
+    if (! $product || ! is_a($product, 'WC_Product')) {
+        return false;
+    }
+
+    $product_id = $product->get_id();
+
+    // 1. Direct WooCommerce category check for 'accessories' / 'accessory'
+    if (has_term(array('accessories', 'accessory'), 'product_cat', $product_id)) {
+        return true;
+    }
+
+    // 2. Check all assigned product categories and ancestors
+    $cat_ids = $product->get_category_ids();
+    if (! empty($cat_ids)) {
+        $accessory_cat_slugs = array(
+            'accessories', 'accessory', 'bags', 'bag', 'caps', 'cap',
+            'hats', 'hat', 'beanies', 'beanie', 'belts', 'belt',
+            'socks', 'sock', 'wallets', 'wallet', 'jewellery', 'jewelry',
+            'eyewear', 'sunglasses', 'sunglass', 'keychains', 'keychain'
+        );
+        foreach ($cat_ids as $cid) {
+            $term = get_term($cid, 'product_cat');
+            if ($term && ! is_wp_error($term)) {
+                $term_slug = strtolower($term->slug);
+                $term_name = strtolower($term->name);
+
+                if (in_array($term_slug, $accessory_cat_slugs, true) ||
+                    false !== strpos($term_slug, 'accessori') ||
+                    false !== strpos($term_name, 'accessori')) {
+                    return true;
+                }
+
+                // Check whole-word category names
+                if (preg_match('/\b(accessories|accessory|bags?|caps?|hats?|beanies?|belts?|socks?|wallets?|jewell?ery|eyewear|sunglasses?|keychains?)\b/i', $term_name)) {
+                    return true;
+                }
+
+                // Check ancestors of this category
+                $ancestors = get_ancestors($cid, 'product_cat');
+                if (! empty($ancestors)) {
+                    foreach ($ancestors as $ancestor_id) {
+                        $ancestor = get_term($ancestor_id, 'product_cat');
+                        if ($ancestor && ! is_wp_error($ancestor)) {
+                            $anc_slug = strtolower($ancestor->slug);
+                            $anc_name = strtolower($ancestor->name);
+                            if (in_array($anc_slug, $accessory_cat_slugs, true) ||
+                                false !== strpos($anc_slug, 'accessori') ||
+                                false !== strpos($anc_name, 'accessori')) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // 3. Product tags check
+    $tags = get_the_terms($product_id, 'product_tag');
+    if (! empty($tags) && ! is_wp_error($tags)) {
+        foreach ($tags as $tag) {
+            $tag_slug = strtolower($tag->slug);
+            $tag_name = strtolower($tag->name);
+            if (false !== strpos($tag_slug, 'accessori') || false !== strpos($tag_name, 'accessori') ||
+                in_array($tag_slug, array('accessories', 'accessory', 'bag', 'bags', 'cap', 'caps', 'hat', 'hats', 'beanie', 'beanies', 'belt', 'socks'), true)) {
+                return true;
+            }
+        }
+    }
+
+    // 4. Product title & slug check (using whole-word boundaries to avoid false positives like 'baggy')
+    $name = strtolower($product->get_name());
+    $slug = strtolower($product->get_slug());
+    $text = ' ' . $name . ' ' . str_replace(array('-', '_'), ' ', $slug) . ' ';
+
+    $accessory_words = array(
+        'accessory', 'accessories', 'cap', 'caps', 'hat', 'hats', 'beanie', 'beanies',
+        'bucket hat', 'tote', 'tote bag', 'backpack', 'backpacks', 'duffle', 'wallet', 'wallets',
+        'belt', 'belts', 'socks', 'sock', 'keychain', 'keychains', 'sunglasses',
+        'glasses', 'goggles', 'necklace', 'bracelet', 'ring', 'jewellery', 'jewelry', 'pouch'
+    );
+
+    foreach ($accessory_words as $aw) {
+        if (preg_match('/\b' . preg_quote($aw, '/') . '\b/i', $text)) {
+            return true;
+        }
+    }
+
+    return (bool) apply_filters('mazestreetwear_is_accessory_product', false, $product);
+}
+
+/**
+ * Determine whether a product has an active size chart available.
+ *
+ * @param WC_Product|int|null $product
+ * @return bool
+ */
+function mazestreetwear_product_has_size_chart($product = null)
+{
+    if (mazestreetwear_is_accessory_product($product)) {
+        return false;
+    }
+
+    $chart = mazestreetwear_get_product_size_chart($product);
+    return ! empty($chart) && is_array($chart);
+}
+
+/**
  * Detect the appropriate size chart key based on product name, slug, attributes, or categories
  *
  * @param WC_Product|int|null $product
@@ -1882,7 +2016,12 @@ function mazestreetwear_get_current_product_size_chart_key($product = null)
     }
 
     if (! $product || ! is_a($product, 'WC_Product')) {
-        return 'lightning-t-shirt';
+        return '';
+    }
+
+    // Accessories strictly have no size chart
+    if (mazestreetwear_is_accessory_product($product)) {
+        return '';
     }
 
     $charts = mazestreetwear_get_size_charts();
@@ -1978,6 +2117,7 @@ function mazestreetwear_get_current_product_size_chart_key($product = null)
 
 /**
  * Returns the single matching size chart for a given product or currently viewed product.
+ * Returns null if the product is an accessory or has no size chart.
  *
  * @param WC_Product|int|null $product
  * @return array|null
@@ -2001,12 +2141,25 @@ function mazestreetwear_get_product_size_chart($product = null)
         $product = wc_get_product($product);
     }
 
+    if (! $product || ! is_a($product, 'WC_Product')) {
+        return null;
+    }
+
+    // Strict early exit for accessories
+    if (mazestreetwear_is_accessory_product($product)) {
+        return null;
+    }
+
     $charts = mazestreetwear_get_size_charts();
     $key    = mazestreetwear_get_current_product_size_chart_key($product);
 
-    $chart = isset($charts[$key]) ? $charts[$key] : (isset($charts['lightning-t-shirt']) ? $charts['lightning-t-shirt'] : reset($charts));
+    if (empty($key) || ! isset($charts[$key])) {
+        return null;
+    }
 
-    if ($chart && $product && is_a($product, 'WC_Product')) {
+    $chart = $charts[$key];
+
+    if ($chart && is_a($product, 'WC_Product')) {
         $prod_name = strtoupper(trim($product->get_name()));
         if ($key === 'utility-jacket') {
             if (false !== strpos($prod_name, 'WAVE JACKET')) {
@@ -2046,6 +2199,9 @@ function mazestreetwear_render_size_chart_modal()
     if ((function_exists('is_product') && is_product()) || is_singular('product')) {
         $product_id = get_queried_object_id();
         $product    = function_exists('wc_get_product') ? wc_get_product($product_id) : null;
+        if ($product && function_exists('mazestreetwear_is_accessory_product') && mazestreetwear_is_accessory_product($product)) {
+            return;
+        }
         $template   = locate_template('woocommerce/single-product/size-chart-modal.php');
         if ($template) {
             include $template;
@@ -2055,12 +2211,41 @@ function mazestreetwear_render_size_chart_modal()
 add_action('wp_footer', 'mazestreetwear_render_size_chart_modal', 25);
 
 /**
+ * Add body class for accessory products to facilitate style and script targeting.
+ *
+ * @param array $classes
+ * @return array
+ */
+function mazestreetwear_accessory_product_body_class($classes)
+{
+    if ((function_exists('is_product') && is_product()) || is_singular('product')) {
+        $product_id = get_queried_object_id();
+        $product    = function_exists('wc_get_product') ? wc_get_product($product_id) : null;
+        if ($product && function_exists('mazestreetwear_is_accessory_product') && mazestreetwear_is_accessory_product($product)) {
+            $classes[] = 'is-accessory-product';
+        }
+    }
+    return $classes;
+}
+add_filter('body_class', 'mazestreetwear_accessory_product_body_class');
+
+/**
  * Hard-enforce suppression of legacy size chart switcher tabs in wp_head
+ * and suppress size chart triggers if an accessory product is active.
  */
 function mazestreetwear_size_chart_inline_guard_css()
 {
     if ((function_exists('is_product') && is_product()) || is_singular('product')) {
-        echo '<style id="maze-size-chart-guard">.maze-size-chart-tabs,.maze-size-chart-tab{display:none!important;visibility:hidden!important;height:0!important;max-height:0!important;padding:0!important;margin:0!important;border:0!important;opacity:0!important;pointer-events:none!important;}</style>' . "\n";
+        $product_id = get_queried_object_id();
+        $product    = function_exists('wc_get_product') ? wc_get_product($product_id) : null;
+        $is_acc     = ($product && function_exists('mazestreetwear_is_accessory_product') && mazestreetwear_is_accessory_product($product));
+
+        echo '<style id="maze-size-chart-guard">' . "\n";
+        echo '.maze-size-chart-tabs,.maze-size-chart-tab{display:none!important;visibility:hidden!important;height:0!important;max-height:0!important;padding:0!important;margin:0!important;border:0!important;opacity:0!important;pointer-events:none!important;}' . "\n";
+        if ($is_acc) {
+            echo '.maze-size-chart-trigger,.maze-size-chart-trigger-wrap,#maze-size-chart-modal{display:none!important;visibility:hidden!important;height:0!important;max-height:0!important;padding:0!important;margin:0!important;border:0!important;opacity:0!important;pointer-events:none!important;}' . "\n";
+        }
+        echo '</style>' . "\n";
     }
 }
 add_action('wp_head', 'mazestreetwear_size_chart_inline_guard_css', 999);

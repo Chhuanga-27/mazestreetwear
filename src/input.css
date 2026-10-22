@@ -1712,6 +1712,27 @@ body.single-product .maze-single-product-editorial {
   display: none !important;
 }
 
+/* Strict suppression of size chart for Accessories products */
+body.is-accessory-product .maze-size-chart-trigger,
+body.is-accessory-product .maze-size-chart-trigger-wrap,
+body.is-accessory-product #maze-size-chart-modal,
+.product_cat-accessories .maze-size-chart-trigger,
+.product_cat-accessories .maze-size-chart-trigger-wrap,
+.product_cat-accessories #maze-size-chart-modal,
+.term-accessories .maze-size-chart-trigger,
+.term-accessories .maze-size-chart-trigger-wrap,
+.term-accessories #maze-size-chart-modal {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 .maze-size-chart-trigger {
   display: inline-flex;
   align-items: center;

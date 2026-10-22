@@ -30,10 +30,15 @@ if ( ! $current_product ) {
     }
 }
 
+// Strictly abort if this product is classified as an accessory
+if ( function_exists( 'mazestreetwear_is_accessory_product' ) && mazestreetwear_is_accessory_product( $current_product ) ) {
+    return;
+}
+
 // Retrieve the single matching size chart for this viewed product
 $chart_data = function_exists( 'mazestreetwear_get_product_size_chart' ) 
     ? mazestreetwear_get_product_size_chart( $current_product )
-    : ( function_exists( 'mazestreetwear_get_size_charts' ) ? ( mazestreetwear_get_size_charts()['lightning-t-shirt'] ?? null ) : null );
+    : null;
 
 if ( empty( $chart_data ) || ! is_array( $chart_data ) ) {
     return;
