@@ -1115,192 +1115,80 @@
             }, 600);
         });
 
-        // Direct Checkout handler for Buy Now button
-        function executeMazeBuyNow($form, $buyBtn) {
+        // =====================================================================
+        // BUY NOW — Add product to cart via AJAX, then redirect to checkout
+        // Keeps all existing cart items intact, just adds this product & goes
+        // =====================================================================
+        $(document).on('click', '.maze_buy_now_button', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const $buyBtn = $(this);
+            const $form = $buyBtn.closest('form');
+            if (!$form.length || $buyBtn.hasClass('is-loading')) return;
+
             const $submitBtn = $form.find('.single_add_to_cart_button');
-            const defaultCheckoutUrl = (typeof mazeData !== 'undefined' && mazeData.checkoutUrl) ? mazeData.checkoutUrl : '/checkout/';
+            const checkoutUrl = (typeof mazeData !== 'undefined' && mazeData.checkoutUrl) ? mazeData.checkoutUrl : '/checkout/';
             const defaultBtnText = $buyBtn.data('default-text') || 'BUY NOW';
 
-            // Loading indicator on BUY NOW button
-            $buyBtn.addClass('is-loading opacity-80').prop('disabled', true);
-            $buyBtn.html('<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4 text-black" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> DIRECT TO CHECKOUT...</span>');
-            if ($submitBtn.length) {
-                $submitBtn.prop('disabled', true);
+            // --- Validate: ensure a size/variation is selected ---
+            const $pills = $form.find('.maze-size-pills');
+            if ($pills.length && !$pills.find('.maze-size-pill.is-active').length) {
+                // Auto-select first available pill
+                const $firstPill = $pills.find('.maze-size-pill:not(.is-disabled, .disabled, [disabled], .opacity-30)').first();
+                if ($firstPill.length) {
+                    window.mazeSelectSize ? window.mazeSelectSize($firstPill[0]) : $firstPill.trigger('click');
+                } else {
+                    $pills.addClass('ring-2 ring-black');
+                    setTimeout(function () { $pills.removeClass('ring-2 ring-black'); }, 1000);
+                    return;
+                }
             }
+
+            // --- Show loading state ---
+            $buyBtn.addClass('is-loading opacity-80').prop('disabled', true);
+            $buyBtn.html('<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> CHECKING OUT...</span>');
+            if ($submitBtn.length) $submitBtn.prop('disabled', true);
 
             function resetBuyBtn() {
                 $buyBtn.removeClass('is-loading opacity-80').prop('disabled', false);
                 $buyBtn.html('<span class="btn-text">' + defaultBtnText + '</span>');
-                if ($submitBtn.length) {
-                    $submitBtn.prop('disabled', false);
-                }
+                if ($submitBtn.length) $submitBtn.prop('disabled', false);
             }
 
-            // Safety timeout: if network hangs, unfreeze button so user is never bricked
-            const safetyTimer = setTimeout(function () {
-                resetBuyBtn();
-            }, 7000);
+            // Safety: unfreeze after 8s if network hangs
+            const safetyTimer = setTimeout(resetBuyBtn, 8000);
 
-            // 1. Sync native selects from active size pills
-            $form.find('.variation-row').each(function () {
-                const $row = $(this);
-                const $activePill = $row.find('.maze-size-pill.is-active');
-                const $select = $row.find('select');
-                if ($activePill.length && $select.length) {
-                    const val = String($activePill.data('value') || $activePill.text().trim());
-                    $select.find('option').each(function () {
-                        const optVal = String($(this).val() || '').trim();
-                        const optText = String($(this).text() || '').trim();
-                        if (optVal && (optVal.toLowerCase() === val.toLowerCase() || optText.toLowerCase() === val.toLowerCase())) {
-                            $select.val(optVal).trigger('change');
-                            return false;
-                        }
-                    });
-                }
-            });
-
-            // 2. Resolve product ID
-            let resolvedProductId = '';
-            const $pIdInput = $form.find('input[name="product_id"]');
-            if ($pIdInput.length && $pIdInput.val()) {
-                resolvedProductId = $pIdInput.val();
-            } else if ($form.data('product_id')) {
-                resolvedProductId = $form.data('product_id');
-            } else if ($submitBtn.length && $submitBtn.val()) {
-                resolvedProductId = $submitBtn.val();
-            } else {
-                const btnVal = $form.find('button[name="add-to-cart"]').val();
-                if (btnVal) resolvedProductId = btnVal;
-            }
-
-            // 3. Resolve variation ID
-            let resolvedVarId = 0;
-            const $varIdInput = $form.find('input[name="variation_id"]');
-            if ($varIdInput.length && parseInt($varIdInput.val(), 10) > 0) {
-                resolvedVarId = parseInt($varIdInput.val(), 10);
-            } else {
-                let variations = $form.data('product_variations');
-                if (typeof variations === 'string') {
-                    try {
-                        variations = JSON.parse(variations);
-                    } catch (e) {
-                        variations = [];
-                    }
-                }
-                if (Array.isArray(variations) && variations.length > 0) {
-                    const selectedAttrs = {};
-                    $form.find('.variation-row').each(function () {
-                        const $row = $(this);
-                        const $select = $row.find('select');
-                        const $activePill = $row.find('.maze-size-pill.is-active');
-                        let attrName = $select.length ? ($select.attr('data-attribute_name') || $select.attr('name') || '') : '';
-                        if (!attrName) {
-                            const rowAttr = $row.data('attribute') || '';
-                            if (rowAttr) attrName = 'attribute_' + rowAttr;
-                        }
-                        let attrVal = '';
-                        if ($select.length && $select.val()) {
-                            attrVal = String($select.val()).toLowerCase();
-                        } else if ($activePill.length) {
-                            attrVal = String($activePill.data('value') || $activePill.text().trim() || '').toLowerCase();
-                        }
-                        if (attrName && attrVal) {
-                            selectedAttrs[attrName] = attrVal;
-                        }
-                    });
-
-                    const selectedKeys = Object.keys(selectedAttrs);
-                    for (let v = 0; v < variations.length; v++) {
-                        const variation = variations[v];
-                        if (!variation || !variation.attributes) continue;
-                        let allMatch = true;
-                        for (let k = 0; k < selectedKeys.length; k++) {
-                            const key = selectedKeys[k];
-                            const cleanKey = key.replace(/^attribute_/, '');
-                            const varAttrVal = String(variation.attributes[key] !== undefined ? variation.attributes[key] : (variation.attributes['attribute_' + cleanKey] !== undefined ? variation.attributes['attribute_' + cleanKey] : (variation.attributes[cleanKey] || ''))).toLowerCase();
-                            if (varAttrVal !== '' && varAttrVal !== selectedAttrs[key]) {
-                                allMatch = false;
-                                break;
-                            }
-                        }
-                        if (allMatch && variation.variation_id && variation.is_in_stock !== false) {
-                            resolvedVarId = variation.variation_id;
-                            if ($varIdInput.length) {
-                                $varIdInput.val(resolvedVarId);
-                            }
-                            break;
-                        }
-                    }
-
-                    // Fallback to first in-stock variation
-                    if (!resolvedVarId) {
-                        for (let v = 0; v < variations.length; v++) {
-                            if (variations[v] && variations[v].variation_id && variations[v].is_in_stock !== false) {
-                                resolvedVarId = variations[v].variation_id;
-                                if ($varIdInput.length) {
-                                    $varIdInput.val(resolvedVarId);
-                                }
-                                break;
-                            }
-                        }
-                    }
-
-                    if (!resolvedVarId && variations[0] && variations[0].variation_id) {
-                        resolvedVarId = variations[0].variation_id;
-                        if ($varIdInput.length) {
-                            $varIdInput.val(resolvedVarId);
-                        }
-                    }
-                }
-            }
-
-            // 4. Build payload
+            // --- Collect form data ---
             const serialized = $form.serializeArray();
             const formData = [];
+
+            // Grab product_id from hidden input, data attribute, or submit button
+            let productId = '';
+            const $pId = $form.find('input[name="product_id"]');
+            if ($pId.length && $pId.val()) {
+                productId = $pId.val();
+            } else if ($form.data('product_id')) {
+                productId = $form.data('product_id');
+            } else if ($submitBtn.length && $submitBtn.val()) {
+                productId = $submitBtn.val();
+            }
+
             for (let i = 0; i < serialized.length; i++) {
                 const item = serialized[i];
-                if (item.name !== 'action' && item.name !== 'maze_buy_now') {
-                    formData.push(item);
+                if (item.name === 'add-to-cart') {
+                    if (!productId) productId = item.value;
+                    continue; // skip — we'll add product_id instead
                 }
+                if (item.name === 'action' || item.name === 'maze_buy_now' || item.name === 'is_buy_now') continue;
+                formData.push(item);
             }
 
-            if (resolvedProductId && !formData.some(item => item.name === 'product_id')) {
-                formData.push({ name: 'product_id', value: resolvedProductId });
-            }
-            if (resolvedProductId && !formData.some(item => item.name === 'add-to-cart')) {
-                formData.push({ name: 'add-to-cart', value: resolvedProductId });
-            }
-            if (resolvedVarId > 0) {
-                let foundVar = false;
-                for (let i = 0; i < formData.length; i++) {
-                    if (formData[i].name === 'variation_id') {
-                        formData[i].value = resolvedVarId;
-                        foundVar = true;
-                        break;
-                    }
-                }
-                if (!foundVar) {
-                    formData.push({ name: 'variation_id', value: resolvedVarId });
-                }
+            if (productId && !formData.some(function(d){ return d.name === 'product_id'; })) {
+                formData.push({ name: 'product_id', value: productId });
             }
 
-            formData.push({ name: 'action', value: 'maze_ajax_add_to_cart' });
-            formData.push({ name: 'is_buy_now', value: '1' });
-            formData.push({ name: 'maze_buy_now', value: '1' });
-
-            const $sizeInput = $form.find('input[name="selected_size"]');
-            if ($sizeInput.length && !formData.some(item => item.name === 'selected_size')) {
-                formData.push({ name: 'selected_size', value: $sizeInput.val() });
-            }
-            const qVal = $form.find('input[name="quantity"]').val() || '1';
-            if (!formData.some(item => item.name === 'quantity')) {
-                formData.push({ name: 'quantity', value: qVal });
-            }
-            if (typeof mazeData !== 'undefined' && mazeData.nonce) {
-                formData.push({ name: 'maze_nonce', value: mazeData.nonce });
-            }
-
-            // Ensure all variation attribute selects and pills are explicitly included
+            // Ensure variation attributes from pills are included
             $form.find('.variation-row').each(function () {
                 const $row = $(this);
                 const $select = $row.find('select');
@@ -1314,48 +1202,33 @@
                 if ($select.length && $select.val()) {
                     attrVal = $select.val();
                 } else if ($activePill.length) {
-                    attrVal = $activePill.data('value') || $activePill.text().trim();
+                    attrVal = String($activePill.data('value') || $activePill.text().trim());
                 }
                 if (attrName && attrVal) {
                     let exists = false;
-                    for (let i = 0; i < formData.length; i++) {
-                        if (formData[i].name === attrName) {
-                            formData[i].value = attrVal;
-                            exists = true;
-                            break;
-                        }
+                    for (let j = 0; j < formData.length; j++) {
+                        if (formData[j].name === attrName) { formData[j].value = attrVal; exists = true; break; }
                     }
-                    if (!exists) {
-                        formData.push({ name: attrName, value: attrVal });
-                    }
+                    if (!exists) formData.push({ name: attrName, value: attrVal });
                 }
             });
 
-            const ajaxEndpoint = (typeof mazeData !== 'undefined' && mazeData.ajaxUrl) ? mazeData.ajaxUrl : '/wp-admin/admin-ajax.php';
+            // Add AJAX action & buy now flags
+            formData.push({ name: 'action', value: 'maze_ajax_add_to_cart' });
+            formData.push({ name: 'is_buy_now', value: '1' });
+            formData.push({ name: 'maze_buy_now', value: '1' });
 
-            function fallbackSubmit() {
-                clearTimeout(safetyTimer);
-                const targetId = (resolvedVarId > 0) ? resolvedVarId : resolvedProductId;
-                if (targetId) {
-                    const sep = defaultCheckoutUrl.indexOf('?') !== -1 ? '&' : '?';
-                    window.location.href = defaultCheckoutUrl + sep + 'add-to-cart=' + encodeURIComponent(targetId) + '&quantity=' + encodeURIComponent(qVal);
-                    return;
-                }
-                if (!$form.find('input[name="maze_buy_now"]').length) {
-                    $form.append('<input type="hidden" name="maze_buy_now" value="1">');
-                }
-                if (resolvedProductId && !$form.find('input[name="add-to-cart"]').length) {
-                    $form.append('<input type="hidden" name="add-to-cart" value="' + resolvedProductId + '">');
-                }
-                try {
-                    $form.get(0).submit();
-                } catch (err) {
-                    window.location.href = defaultCheckoutUrl;
-                }
+            if (!formData.some(function(d){ return d.name === 'quantity'; })) {
+                formData.push({ name: 'quantity', value: $form.find('input[name="quantity"]').val() || '1' });
+            }
+            if (typeof mazeData !== 'undefined' && mazeData.nonce) {
+                formData.push({ name: 'maze_nonce', value: mazeData.nonce });
             }
 
+            const ajaxUrl = (typeof mazeData !== 'undefined' && mazeData.ajaxUrl) ? mazeData.ajaxUrl : '/wp-admin/admin-ajax.php';
+
             $.ajax({
-                url: ajaxEndpoint,
+                url: ajaxUrl,
                 type: 'POST',
                 data: $.param(formData),
                 dataType: 'json',
@@ -1363,62 +1236,38 @@
                 success: function (res) {
                     clearTimeout(safetyTimer);
                     if (res && res.success) {
-                        const checkoutUrl = (res.data && res.data.checkout_url) ? res.data.checkout_url : defaultCheckoutUrl;
-                        window.location.href = checkoutUrl;
+                        // Product added → go to checkout (with all existing cart items)
+                        window.location.href = (res.data && res.data.checkout_url) ? res.data.checkout_url : checkoutUrl;
                     } else {
-                        fallbackSubmit();
+                        // AJAX said error but product might already be in cart → still go to checkout
+                        resetBuyBtn();
+                        var msg = (res && res.data && res.data.message) ? res.data.message : '';
+                        if (msg) alert(msg);
+                        else window.location.href = checkoutUrl;
                     }
                 },
                 error: function () {
-                    fallbackSubmit();
-                }
-            });
-        }
-
-        // Click handler for Buy Now button
-        $(document).on('click', '.maze_buy_now_button', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const $buyBtn = $(this);
-            const $form = $buyBtn.closest('form');
-            if (!$form.length) return;
-
-            if ($buyBtn.hasClass('is-loading')) return;
-
-            // Check size pills validation / auto-select first available size
-            const $pills = $form.find('.maze-size-pills');
-            if ($pills.length) {
-                let $activePill = $pills.find('.maze-size-pill.is-active');
-                if (!$activePill.length) {
-                    const $inStockPill = $pills.find('.maze-size-pill:not(.is-disabled, .disabled, [disabled], .opacity-30)').first();
-                    if ($inStockPill.length) {
-                        if (window.mazeSelectSize) {
-                            window.mazeSelectSize($inStockPill[0]);
-                        } else {
-                            $inStockPill.trigger('click');
-                        }
+                    // Network error → fallback: redirect with add-to-cart query param
+                    clearTimeout(safetyTimer);
+                    const varId = parseInt($form.find('input[name="variation_id"]').val(), 10) || 0;
+                    const targetId = (varId > 0) ? varId : productId;
+                    if (targetId) {
+                        const sep = checkoutUrl.indexOf('?') !== -1 ? '&' : '?';
+                        window.location.href = checkoutUrl + sep + 'add-to-cart=' + encodeURIComponent(targetId) + '&quantity=1';
                     } else {
-                        $pills.addClass('ring-2 ring-black');
-                        setTimeout(function () {
-                            $pills.removeClass('ring-2 ring-black');
-                        }, 1000);
-                        return false;
+                        window.location.href = checkoutUrl;
                     }
                 }
-            }
-
-            executeMazeBuyNow($form, $buyBtn);
+            });
         });
 
-        // AJAX Add to Bag & Buy Now on Single Product Pages (Simple & Variable)
-        // Eliminates full-page form POST, preventing browser ERR_CACHE_MISS / Confirm Form Resubmission on back navigation
+        // AJAX Add to Bag on Single Product Pages (Simple & Variable)
+        // Buy Now is handled by the separate click handler above
         $(document).on('submit', 'form.cart', function (e) {
             const $form = $(this);
             const $submitBtn = $form.find('.single_add_to_cart_button');
             const $buyBtn = $form.find('.maze_buy_now_button');
             const $pills = $form.find('.maze-size-pills');
-            const isBuyNow = !!$form.data('maze-buy-now');
-            $form.removeData('maze-buy-now');
 
             // 1. Check if size selection is required and made
             if ($pills.length && !$pills.find('.maze-size-pill.is-active').length) {
@@ -1453,7 +1302,6 @@
             if ($varIdInput.length && (!parseInt($varIdInput.val(), 10) || parseInt($varIdInput.val(), 10) <= 0)) {
                 const variations = $form.data('product_variations');
                 if (Array.isArray(variations)) {
-                    // Collect all currently selected attribute values from selects/pills
                     const selectedAttrs = {};
                     $form.find('.variation-row').each(function () {
                         const $row = $(this);
@@ -1478,7 +1326,6 @@
                         }
                     });
 
-                    // Find variation where ALL attributes match
                     const selectedKeys = Object.keys(selectedAttrs);
                     if (selectedKeys.length > 0) {
                         for (let v = 0; v < variations.length; v++) {
@@ -1488,7 +1335,6 @@
                             for (let k = 0; k < selectedKeys.length; k++) {
                                 const key = selectedKeys[k];
                                 const varAttrVal = String(variation.attributes[key] || '').toLowerCase();
-                                // Empty string in variation attributes means "Any" — always matches
                                 if (varAttrVal !== '' && varAttrVal !== selectedAttrs[key]) {
                                     allMatch = false;
                                     break;
@@ -1506,29 +1352,20 @@
             // 4. Intercept submission for AJAX processing
             e.preventDefault();
 
-            const $activeBtn = isBuyNow ? ($buyBtn.length ? $buyBtn : $submitBtn) : $submitBtn;
-            if ($activeBtn.hasClass('is-loading') || (!isBuyNow && $activeBtn.prop('disabled'))) {
+            if ($submitBtn.hasClass('is-loading') || $submitBtn.prop('disabled')) {
                 return false;
             }
 
             const originalSubmitBtnHtml = $submitBtn.html();
-            const originalBuyBtnHtml = $buyBtn.length ? $buyBtn.html() : '';
 
-            if (isBuyNow && $buyBtn.length) {
-                $buyBtn.addClass('is-loading opacity-80').prop('disabled', true);
-                $submitBtn.prop('disabled', true);
-                $buyBtn.html('<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4 text-black" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> CHECKING OUT...</span>');
-            } else {
-                $submitBtn.addClass('is-loading opacity-80').prop('disabled', true);
-                if ($buyBtn.length) $buyBtn.prop('disabled', true);
-                $submitBtn.html('<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> ADDING TO BAG...</span>');
-            }
+            $submitBtn.addClass('is-loading opacity-80').prop('disabled', true);
+            if ($buyBtn.length) $buyBtn.prop('disabled', true);
+            $submitBtn.html('<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> ADDING TO BAG...</span>');
 
             const serialized = $form.serializeArray();
             const formData = [];
             let resolvedProductId = '';
 
-            // Check button and hidden fields for product_id first
             const $pIdInput = $form.find('input[name="product_id"]');
             if ($pIdInput.length && $pIdInput.val()) {
                 resolvedProductId = $pIdInput.val();
@@ -1541,7 +1378,6 @@
                 if (btnVal) resolvedProductId = btnVal;
             }
 
-            // Process serialized fields: NEVER pass 'add-to-cart' in AJAX POST
             for (let i = 0; i < serialized.length; i++) {
                 const item = serialized[i];
                 if (item.name === 'add-to-cart') {
@@ -1558,23 +1394,17 @@
             }
 
             formData.push({ name: 'action', value: 'maze_ajax_add_to_cart' });
-            if (isBuyNow) {
-                formData.push({ name: 'is_buy_now', value: '1' });
-            }
 
-            // Ensure custom selected_size from simple product pills is included
             const $sizeInput = $form.find('input[name="selected_size"]');
             if ($sizeInput.length && !formData.some(item => item.name === 'selected_size')) {
                 formData.push({ name: 'selected_size', value: $sizeInput.val() });
             }
 
-            // Ensure quantity is included
             if (!formData.some(item => item.name === 'quantity')) {
                 const qVal = $form.find('input[name="quantity"]').val() || '1';
                 formData.push({ name: 'quantity', value: qVal });
             }
 
-            // Pass nonce if available
             if (typeof mazeData !== 'undefined' && mazeData.nonce) {
                 formData.push({ name: 'maze_nonce', value: mazeData.nonce });
             }
@@ -1589,12 +1419,6 @@
                 timeout: 10000,
                 success: function (res) {
                     if (res && res.success) {
-                        if (isBuyNow) {
-                            const checkoutUrl = (res.data && res.data.checkout_url) ? res.data.checkout_url : ((typeof mazeData !== 'undefined' && mazeData.checkoutUrl) ? mazeData.checkoutUrl : '/checkout/');
-                            window.location.href = checkoutUrl;
-                            return;
-                        }
-
                         $submitBtn.removeClass('is-loading opacity-80 added');
                         $submitBtn.html('<span class="inline-flex items-center justify-center gap-1.5 font-mono tracking-widest uppercase">ADDED TO BAG ✓</span>');
                         if ($buyBtn.length) $buyBtn.prop('disabled', false);
@@ -1612,12 +1436,11 @@
                             if (count !== null) syncMazeCartBadge(count);
                         }
 
-                        // Strictly clean up any stray View Cart links under the Buy Now button
+                        // Clean up stray View Cart links
                         $form.find('.maze-view-cart-wrap').remove();
                         $form.find('.maze_buy_now_button').next('.added_to_cart, .maze-view-cart-link').remove();
                         $form.find('.product-actions-buttons').next('.added_to_cart, .maze-view-cart-link').remove();
 
-                        // Display clean View Cart link directly under ADD TO BAG button (above BUY NOW)
                         const cartUrl = (res.data && res.data.cart_url) ? res.data.cart_url : ((typeof mazeData !== 'undefined' && mazeData.cartUrl) ? mazeData.cartUrl : '/cart/');
                         let $cartLink = $submitBtn.next('.added_to_cart, .maze-view-cart-link');
                         if (!$cartLink.length) {
@@ -1632,7 +1455,6 @@
 
                         setTimeout(function () {
                             $submitBtn.removeClass('added');
-                            // Ensure only one View Cart link exists right under ADD TO BAG, none under BUY NOW
                             $form.find('.maze-view-cart-wrap').remove();
                             $form.find('.maze_buy_now_button').next('.added_to_cart, .maze-view-cart-link').remove();
                             $form.find('.product-actions-buttons').next('.added_to_cart, .maze-view-cart-link').remove();
@@ -1650,7 +1472,7 @@
                         alert(errorMsg);
                         $submitBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalSubmitBtnHtml);
                         if ($buyBtn.length) {
-                            $buyBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalBuyBtnHtml);
+                            $buyBtn.removeClass('is-loading opacity-80').prop('disabled', false);
                         }
                     }
                 },
@@ -1661,10 +1483,9 @@
                         userMsg = 'Request timed out. Please try adding to bag again.';
                     }
                     alert(userMsg);
-                    // Reset button immediately so it never hangs indefinitely
                     $submitBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalSubmitBtnHtml);
                     if ($buyBtn.length) {
-                        $buyBtn.removeClass('is-loading opacity-80').prop('disabled', false).html(originalBuyBtnHtml);
+                        $buyBtn.removeClass('is-loading opacity-80').prop('disabled', false);
                     }
                     refreshMazeCartFragments();
                 }
