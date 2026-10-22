@@ -692,7 +692,14 @@ add_action('wp_ajax_nopriv_maze_ajax_add_to_cart', 'mazestreetwear_ajax_add_to_c
  * Prevents browser "Confirm Form Resubmission" (ERR_CACHE_MISS) on back-button navigation
  */
 add_filter('woocommerce_add_to_cart_redirect', function ($url) {
-    if (! empty($_REQUEST['maze_buy_now']) || ! empty($_POST['maze_buy_now'])) {
+    $is_buy_now = (! empty($_REQUEST['maze_buy_now']) && '0' !== (string)$_REQUEST['maze_buy_now'])
+        || (! empty($_POST['maze_buy_now']) && '0' !== (string)$_POST['maze_buy_now'])
+        || ! empty($_REQUEST['is_buy_now'])
+        || ! empty($_POST['is_buy_now'])
+        || ! empty($_REQUEST['maze_buy_now_submit'])
+        || ! empty($_POST['maze_buy_now_submit']);
+
+    if ($is_buy_now) {
         return function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/');
     }
     if (wp_doing_ajax() || (defined('DOING_AJAX') && DOING_AJAX) || (isset($_REQUEST['action']) && $_REQUEST['action'] === 'maze_ajax_add_to_cart')) {
@@ -715,7 +722,13 @@ add_filter('woocommerce_add_to_cart_redirect', function ($url) {
  * Priority 99 guarantees WooCommerce core add_to_cart_action at priority 20 has finished adding the product to cart
  */
 add_action('template_redirect', function () {
-    if ((isset($_REQUEST['maze_buy_now']) || isset($_GET['buy_now'])) && function_exists('is_product') && is_product()) {
+    $is_buy_now = (! empty($_REQUEST['maze_buy_now']) && '0' !== (string)$_REQUEST['maze_buy_now'])
+        || (! empty($_POST['maze_buy_now']) && '0' !== (string)$_POST['maze_buy_now'])
+        || ! empty($_REQUEST['maze_buy_now_submit'])
+        || ! empty($_REQUEST['is_buy_now'])
+        || isset($_GET['buy_now']);
+
+    if ($is_buy_now && function_exists('is_product') && is_product()) {
         if (! empty($_REQUEST['add-to-cart']) && function_exists('wc_get_checkout_url')) {
             wp_safe_redirect(wc_get_checkout_url());
             exit;

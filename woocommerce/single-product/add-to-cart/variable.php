@@ -266,6 +266,28 @@ window.mazeSelectSize = window.mazeSelectSize || function (btn, event) {
             }
         }
 
+        var varIdInput = form.querySelector('input[name="variation_id"]');
+        var rawVars = form.getAttribute('data-product_variations');
+        if (varIdInput && rawVars) {
+            try {
+                var varsList = JSON.parse(rawVars);
+                if (Array.isArray(varsList)) {
+                    var sLower = selectedVal.toLowerCase();
+                    for (var vi = 0; vi < varsList.length; vi++) {
+                        var vObj = varsList[vi];
+                        if (vObj && vObj.attributes) {
+                            for (var attrK in vObj.attributes) {
+                                if (String(vObj.attributes[attrK] || '').toLowerCase() === sLower) {
+                                    varIdInput.value = vObj.variation_id;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (err) {}
+        }
+
         var addBtn = form.querySelector('.single_add_to_cart_button');
         var buyBtn = form.querySelector('.maze_buy_now_button');
         if (addBtn) {
