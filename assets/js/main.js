@@ -1520,6 +1520,129 @@
             setInterval(updateMazeFooterClock, 1000);
         }
 
+        // --- 7. Modern Minimalist WooCommerce Catalog Ordering Dropdown ---
+        function initMazeModernOrdering() {
+            $('.woocommerce-ordering').each(function () {
+                var $form = $(this);
+                var $select = $form.find('select.orderby');
+                if (!$select.length || $form.find('.maze-custom-orderby-wrap').length) return;
+
+                $form.addClass('maze-custom-active');
+
+                var currentVal = $select.val();
+                var $selectedOption = $select.find('option:selected');
+                var currentText = $selectedOption.length ? $selectedOption.text().trim() : 'Default sorting';
+
+                var optionsHtml = '';
+                $select.find('option').each(function () {
+                    var val = $(this).val();
+                    var text = $(this).text().trim();
+                    var isSelected = (val === currentVal);
+                    optionsHtml += '<li class="maze-custom-orderby-item' + (isSelected ? ' is-active' : '') + '" data-value="' + val + '" role="option" aria-selected="' + (isSelected ? 'true' : 'false') + '">' +
+                        '<span class="maze-orderby-item-text">' + text + '</span>' +
+                        '<span class="maze-orderby-indicator">' +
+                            (isSelected ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : '') +
+                        '</span>' +
+                    '</li>';
+                });
+
+                var customDropdownHtml =
+                    '<div class="maze-custom-orderby-wrap">' +
+                        '<button type="button" class="maze-custom-orderby-trigger" aria-haspopup="listbox" aria-expanded="false">' +
+                            '<span class="maze-custom-orderby-current">' + currentText + '</span>' +
+                            '<span class="maze-custom-orderby-arrow">' +
+                                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                                    '<path d="M6 9l6 6 6-6"/>' +
+                                '</svg>' +
+                            '</span>' +
+                        '</button>' +
+                        '<div class="maze-custom-orderby-menu" role="listbox">' +
+                            '<ul class="maze-custom-orderby-list">' +
+                                optionsHtml +
+                            '</ul>' +
+                        '</div>' +
+                    '</div>';
+
+                $form.append(customDropdownHtml);
+
+                var $customWrap = $form.find('.maze-custom-orderby-wrap');
+                var $trigger = $customWrap.find('.maze-custom-orderby-trigger');
+                var $menu = $customWrap.find('.maze-custom-orderby-menu');
+                var $label = $customWrap.find('.maze-custom-orderby-current');
+
+                $trigger.on('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var isOpen = $customWrap.hasClass('is-open');
+                    $('.maze-custom-orderby-wrap').not($customWrap).removeClass('is-open').find('.maze-custom-orderby-trigger').attr('aria-expanded', 'false');
+                    if (isOpen) {
+                        $customWrap.removeClass('is-open');
+                        $trigger.attr('aria-expanded', 'false');
+                    } else {
+                        $customWrap.addClass('is-open');
+                        $trigger.attr('aria-expanded', 'true');
+                    }
+                });
+
+                $menu.on('click', '.maze-custom-orderby-item', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var selectedVal = $(this).data('value');
+                    var newText = $(this).find('.maze-orderby-item-text').text().trim();
+
+                    $menu.find('.maze-custom-orderby-item').removeClass('is-active').attr('aria-selected', 'false').find('.maze-orderby-indicator').empty();
+                    $(this).addClass('is-active').attr('aria-selected', 'true').find('.maze-orderby-indicator').html('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>');
+                    $label.text(newText);
+                    $customWrap.removeClass('is-open');
+                    $trigger.attr('aria-expanded', 'false');
+
+                    if (selectedVal !== currentVal) {
+                        $select.val(selectedVal).trigger('change');
+                        $form.trigger('submit');
+                        if ($form[0] && typeof $form[0].submit === 'function') {
+                            $form[0].submit();
+                        }
+                    }
+                });
+            });
+
+            // Close on click outside
+            $(document).on('click.mazeOrdering', function (e) {
+                if (!$(e.target).closest('.maze-custom-orderby-wrap').length) {
+                    $('.maze-custom-orderby-wrap').removeClass('is-open').find('.maze-custom-orderby-trigger').attr('aria-expanded', 'false');
+                }
+            });
+
+            // Close on escape
+            $(document).on('keydown.mazeOrdering', function (e) {
+                if (e.key === 'Escape') {
+                    $('.maze-custom-orderby-wrap.is-open').removeClass('is-open').find('.maze-custom-orderby-trigger').attr('aria-expanded', 'false').focus();
+                }
+            });
+        }
+        initMazeModernOrdering();
+
+        // --- 8. Modern Minimalist Pagination Enhancements ---
+        function initMazeModernPagination() {
+            $('.woocommerce-pagination').each(function () {
+                var $nav = $(this);
+                $nav.find('a.prev').each(function () {
+                    var text = $(this).text().trim();
+                    if (text === '←' || text === '&larr;' || text === '«' || text.indexOf('←') !== -1 || text === '') {
+                        $(this).html('&#8592;');
+                    }
+                });
+                $nav.find('a.next').each(function () {
+                    var text = $(this).text().trim();
+                    if (text === '→' || text === '&rarr;' || text === '»' || text.indexOf('→') !== -1 || text === '->' || text === '') {
+                        $(this).html('&#8594;');
+                    }
+                });
+            });
+        }
+        initMazeModernPagination();
+
     });
 
 })(jQuery);
+

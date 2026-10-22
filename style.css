@@ -1402,3 +1402,327 @@ html.maze-splash-dismissed #maze-splash-screen {
   -webkit-user-select: none !important;
   pointer-events: none !important;
 }
+
+/* ==========================================================================
+   MAZE STREETWEAR — REDESIGNED MODERN MINIMALIST CATALOG ORDERING
+   ========================================================================== */
+.woocommerce-ordering,
+form.woocommerce-ordering {
+  position: relative !important;
+  display: inline-block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+}
+
+/* Fallback & Base Native Select Styling */
+.woocommerce-ordering select.orderby,
+select.orderby {
+  background-color: #ffffff !important;
+  border: 1px solid #000000 !important;
+  color: #000000 !important;
+  font-family: var(--font-outfit, 'Outfit', sans-serif) !important;
+  font-size: 0.8125rem !important; /* 13px */
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  padding: 0.65rem 2.5rem 0.65rem 1rem !important;
+  outline: none !important;
+  border-radius: 0px !important;
+  cursor: pointer !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='black'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.85rem center !important;
+  background-size: 0.85rem !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  line-height: 1.2 !important;
+  min-width: 170px !important;
+  box-shadow: none !important;
+}
+
+.woocommerce-ordering select.orderby:hover,
+.woocommerce-ordering select.orderby:focus {
+  border-color: #000000 !important;
+  box-shadow: 0 0 0 1px #000000 !important;
+}
+
+/* When Custom Dropdown is Active, Hide Native Select Visually */
+.woocommerce-ordering.maze-custom-active select.orderby {
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+}
+
+/* Custom Minimalist Ordering Dropdown Container */
+.maze-custom-orderby-wrap {
+  position: relative !important;
+  display: inline-block !important;
+  font-family: var(--font-outfit, 'Outfit', sans-serif) !important;
+  text-align: left !important;
+}
+
+/* Custom Trigger Button */
+.maze-custom-orderby-trigger {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.85rem !important;
+  background-color: #ffffff !important;
+  border: 1px solid #000000 !important;
+  color: #000000 !important;
+  padding: 0.65rem 1rem !important;
+  font-family: var(--font-outfit, 'Outfit', sans-serif) !important;
+  font-size: 0.8125rem !important; /* 13px */
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.2 !important;
+  border-radius: 0px !important;
+  cursor: pointer !important;
+  min-width: 180px !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  user-select: none !important;
+  outline: none !important;
+}
+
+.maze-custom-orderby-trigger:hover,
+.maze-custom-orderby-wrap.is-open .maze-custom-orderby-trigger {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+.maze-custom-orderby-trigger .maze-custom-orderby-arrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 14px !important;
+  height: 14px !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  flex-shrink: 0 !important;
+}
+
+.maze-custom-orderby-wrap.is-open .maze-custom-orderby-arrow {
+  transform: rotate(180deg) !important;
+}
+
+.maze-custom-orderby-trigger .maze-custom-orderby-arrow svg {
+  width: 14px !important;
+  height: 14px !important;
+  stroke: currentColor !important;
+}
+
+/* Custom Dropdown Floating Menu */
+.maze-custom-orderby-menu {
+  position: absolute !important;
+  top: calc(100% + 4px) !important;
+  right: 0 !important;
+  min-width: 210px !important;
+  width: max-content !important;
+  max-width: 280px !important;
+  background-color: #ffffff !important;
+  border: 1px solid #000000 !important;
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.12) !important;
+  border-radius: 0px !important;
+  z-index: 100 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(-6px) scale(0.98) !important;
+  transform-origin: top right !important;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s !important;
+  pointer-events: none !important;
+}
+
+.maze-custom-orderby-wrap.is-open .maze-custom-orderby-menu {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) scale(1) !important;
+  pointer-events: auto !important;
+}
+
+.maze-custom-orderby-list {
+  list-style: none !important;
+  padding: 4px 0 !important;
+  margin: 0 !important;
+}
+
+.maze-custom-orderby-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  padding: 0.65rem 1rem !important;
+  color: #000000 !important;
+  font-family: var(--font-outfit, 'Outfit', sans-serif) !important;
+  font-size: 0.8125rem !important; /* 13px */
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1.25 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  user-select: none !important;
+}
+
+.maze-custom-orderby-item:hover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.maze-custom-orderby-item.is-active {
+  background-color: #f4f4f5 !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+.maze-custom-orderby-item.is-active:hover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.maze-custom-orderby-item .maze-orderby-indicator {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 14px !important;
+  height: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+.maze-custom-orderby-item .maze-orderby-indicator svg {
+  width: 14px !important;
+  height: 14px !important;
+  stroke: currentColor !important;
+}
+
+/* ==========================================================================
+   MAZE STREETWEAR — REDESIGNED MODERN MINIMALIST PAGINATION
+   ========================================================================== */
+.woocommerce-pagination,
+.maze-pagination-wrap .woocommerce-pagination {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin: 2rem 0 !important;
+  clear: both !important;
+  float: none !important;
+}
+
+/* Kill default WooCommerce box table styles */
+.woocommerce-pagination ul.page-numbers,
+.maze-pagination-wrap ul.page-numbers,
+.pagination .nav-links {
+  display: inline-flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important; /* Clean modern 8px separation between each number */
+  border: none !important;
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  white-space: normal !important;
+}
+
+.woocommerce-pagination ul.page-numbers li,
+.maze-pagination-wrap ul.page-numbers li {
+  display: inline-flex !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  float: none !important;
+  overflow: visible !important;
+}
+
+/* Individual Page Item (Numbers & Arrows) */
+.woocommerce-pagination ul.page-numbers li a,
+.woocommerce-pagination ul.page-numbers li span,
+.pagination .nav-links a,
+.pagination .nav-links span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  padding: 0 0.85rem !important;
+  border: 1px solid #000000 !important;
+  border-radius: 0px !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  font-family: var(--font-outfit, 'Outfit', sans-serif) !important;
+  font-size: 0.875rem !important; /* 14px */
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  text-decoration: none !important;
+  line-height: 1 !important;
+  box-sizing: border-box !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  user-select: none !important;
+}
+
+/* Active Page: Pure Stark Black Inversion */
+.woocommerce-pagination ul.page-numbers li span.current,
+.pagination .nav-links span.current {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+  font-weight: 700 !important;
+  cursor: default !important;
+}
+
+/* Inactive Page Links: Hover Inversion with 2px Lift */
+.woocommerce-pagination ul.page-numbers li a:hover,
+.pagination .nav-links a:hover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+  transform: translateY(-2px) !important;
+}
+
+.woocommerce-pagination ul.page-numbers li a:active,
+.pagination .nav-links a:active {
+  transform: translateY(0px) !important;
+}
+
+/* Navigation Arrows (Prev & Next) */
+.woocommerce-pagination ul.page-numbers li a.prev,
+.woocommerce-pagination ul.page-numbers li a.next {
+  font-size: 1.15rem !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  padding: 0 0.85rem !important;
+}
+
+/* Dots / Ellipsis */
+.woocommerce-pagination ul.page-numbers li span.dots,
+.pagination .nav-links span.dots {
+  border: none !important;
+  background: transparent !important;
+  color: #71717a !important;
+  min-width: 28px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.15em !important;
+  cursor: default !important;
+}
+
+@media (max-width: 639px) {
+  .woocommerce-pagination ul.page-numbers li a,
+  .woocommerce-pagination ul.page-numbers li span,
+  .pagination .nav-links a,
+  .pagination .nav-links span {
+    min-width: 40px !important;
+    height: 40px !important;
+    padding: 0 0.65rem !important;
+    font-size: 0.8125rem !important;
+  }
+}
+

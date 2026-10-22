@@ -86,7 +86,7 @@ do_action( 'woocommerce_before_main_content' );
         </div>
 
         <!-- Minimalist Pagination -->
-        <div class="maze-pagination-wrap py-12 flex justify-center text-sm sm:text-base font-mono font-bold">
+        <div class="maze-pagination-wrap py-12 flex justify-center text-sm sm:text-base font-outfit font-medium">
             <?php
             /**
              * Hook: woocommerce_after_shop_loop.

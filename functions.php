@@ -2085,4 +2085,24 @@ function mazestreetwear_redirect_deprecated_archive_lookbook()
 }
 add_action('template_redirect', 'mazestreetwear_redirect_deprecated_archive_lookbook');
 
+/**
+ * Modern Minimalist WooCommerce Pagination Arguments
+ * Ensures clean typography arrows and list formatting
+ *
+ * @param array $args Pagination arguments.
+ * @return array
+ */
+function mazestreetwear_custom_pagination_args($args)
+{
+    $args = is_array($args) ? $args : array();
+    $args['prev_text'] = is_rtl() ? '&#8594;' : '&#8592;';
+    $args['next_text'] = is_rtl() ? '&#8592;' : '&#8594;';
+    $args['type']      = 'list';
+    $args['end_size']  = 2;
+    $args['mid_size']  = 2;
+    return $args;
+}
+add_filter('woocommerce_pagination_args', 'mazestreetwear_custom_pagination_args');
+
+
 
