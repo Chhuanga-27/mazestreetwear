@@ -30,9 +30,32 @@ $content_classes   = $is_commerce ? 'entry-content max-w-none font-sans text-bas
 
             <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                 <header class="entry-header mb-8 sm:mb-12 pb-5 border-b border-black">
-                    <h1 class="entry-title text-3xl sm:text-5xl font-normal font-bebas uppercase tracking-wide text-black">
-                        <?php the_title(); ?>
-                    </h1>
+                    <?php if ( $is_wc_account ) : ?>
+                        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                            <div>
+                                <span class="block font-mono text-xs uppercase tracking-widest text-neutral-500 mb-1">
+                                    <?php esc_html_e( 'Client Sanctuary // Member Dashboard', 'mazestreetwear' ); ?>
+                                </span>
+                                <h1 class="entry-title text-4xl sm:text-6xl font-normal font-bebas uppercase tracking-wide text-black">
+                                    <?php the_title(); ?>
+                                </h1>
+                            </div>
+                            <?php if ( is_user_logged_in() ) : 
+                                $header_current_user = wp_get_current_user();
+                            ?>
+                                <div class="inline-flex items-center gap-3 border border-black px-4 py-2 bg-neutral-50 self-start sm:self-auto">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <span class="font-mono text-xs uppercase tracking-wider text-black">
+                                        <?php echo esc_html( $header_current_user->display_name ); ?> // <?php esc_html_e( 'Active Member', 'mazestreetwear' ); ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php else : ?>
+                        <h1 class="entry-title text-3xl sm:text-5xl font-normal font-bebas uppercase tracking-wide text-black">
+                            <?php the_title(); ?>
+                        </h1>
+                    <?php endif; ?>
                 </header>
 
                 <div class="<?php echo esc_attr( $content_classes ); ?>">

@@ -2521,5 +2521,44 @@ function mazestreetwear_clean_thankyou_hooks()
 }
 add_action('init', 'mazestreetwear_clean_thankyou_hooks');
 
+/**
+ * ============================================================================
+ * WOOCOMMERCE MY ACCOUNT CUSTOMIZATIONS
+ * ============================================================================
+ */
+
+/**
+ * 1. Remove 'Downloads' from WooCommerce My Account navigation menu.
+ * MAZE Streetwear exclusively retails physical garments; digital downloads are not applicable.
+ *
+ * @param array $items Array of account navigation menu endpoints and labels.
+ * @return array
+ */
+function mazestreetwear_remove_my_account_downloads($items)
+{
+    if (isset($items['downloads'])) {
+        unset($items['downloads']);
+    }
+    return $items;
+}
+add_filter('woocommerce_account_menu_items', 'mazestreetwear_remove_my_account_downloads', 999);
+
+/**
+ * 2. Redirect direct requests to /my-account/downloads/ endpoint to main My Account dashboard.
+ */
+function mazestreetwear_redirect_my_account_downloads_endpoint()
+{
+    if (is_admin()) {
+        return;
+    }
+
+    if (function_exists('is_account_page') && is_account_page() && function_exists('is_wc_endpoint_url') && is_wc_endpoint_url('downloads')) {
+        $my_account_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/');
+        wp_safe_redirect($my_account_url, 301);
+        exit;
+    }
+}
+add_action('template_redirect', 'mazestreetwear_redirect_my_account_downloads_endpoint');
+
 
 

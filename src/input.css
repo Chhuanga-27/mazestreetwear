@@ -2307,3 +2307,148 @@ select.orderby {
     font-size: 0.8125rem !important;
   }
 }
+
+/* WooCommerce My Account Navigation: Hide Downloads Tab */
+.woocommerce-MyAccount-navigation-link--downloads {
+  display: none !important;
+}
+
+/* ==========================================================================
+   MAZE STREETWEAR - MY ACCOUNT MODERN REDESIGN STYLES
+   ========================================================================== */
+
+/* 1. Reset archaic WooCommerce layout floats */
+.woocommerce-account .woocommerce-MyAccount-navigation,
+.woocommerce-account .woocommerce-MyAccount-content {
+  float: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.woocommerce-account .woocommerce {
+  width: 100%;
+}
+
+/* 2. Modern Brutalist Input Fields & Form Controls */
+.woocommerce-account .woocommerce-address-fields .form-row,
+.woocommerce-account .woocommerce-EditAccountForm .form-row {
+  margin-bottom: 1.25rem !important;
+  padding: 0 !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+.woocommerce-account .woocommerce-address-fields input.input-text,
+.woocommerce-account .woocommerce-address-fields select,
+.woocommerce-account .woocommerce-address-fields textarea,
+.woocommerce-account .woocommerce-EditAccountForm input.input-text,
+.woocommerce-account .woocommerce-EditAccountForm select,
+.woocommerce-account .woocommerce-EditAccountForm textarea,
+.woocommerce-account .login input.input-text,
+.woocommerce-account .register input.input-text {
+  border: 1px solid #000000 !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  font-family: var(--font-outfit) !important;
+  font-size: 0.875rem !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  outline: none !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.woocommerce-account .woocommerce-address-fields input.input-text:focus,
+.woocommerce-account .woocommerce-address-fields select:focus,
+.woocommerce-account .woocommerce-address-fields textarea:focus,
+.woocommerce-account .woocommerce-EditAccountForm input.input-text:focus,
+.woocommerce-account .woocommerce-EditAccountForm select:focus,
+.woocommerce-account .woocommerce-EditAccountForm textarea:focus,
+.woocommerce-account .login input.input-text:focus,
+.woocommerce-account .register input.input-text:focus {
+  box-shadow: 0 0 0 1px #000000 !important;
+}
+
+.woocommerce-account .woocommerce-address-fields label,
+.woocommerce-account .woocommerce-EditAccountForm label,
+.woocommerce-account .login label,
+.woocommerce-account .register label {
+  font-family: monospace !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #374151 !important;
+  margin-bottom: 0.35rem !important;
+  display: block !important;
+}
+
+/* 3. Modern Brutalist Order Details Table */
+.woocommerce-account .woocommerce-table--order-details {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  border: 1px solid #000000 !important;
+  margin: 1.5rem 0 !important;
+  font-family: var(--font-outfit) !important;
+}
+
+.woocommerce-account .woocommerce-table--order-details th {
+  background-color: #f5f5f5 !important;
+  border-bottom: 1px solid #000000 !important;
+  border-right: 1px solid #e5e5e5 !important;
+  padding: 0.85rem 1rem !important;
+  font-family: var(--font-bebas) !important;
+  font-size: 1.15rem !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: #000000 !important;
+  text-align: left !important;
+}
+
+.woocommerce-account .woocommerce-table--order-details td {
+  border-bottom: 1px solid #e5e5e5 !important;
+  border-right: 1px solid #e5e5e5 !important;
+  padding: 0.85rem 1rem !important;
+  font-size: 0.875rem !important;
+  color: #111111 !important;
+}
+
+.woocommerce-account .woocommerce-table--order-details tfoot th,
+.woocommerce-account .woocommerce-table--order-details tfoot td {
+  border-top: 1px solid #000000 !important;
+  padding: 0.75rem 1rem !important;
+}
+
+.woocommerce-account .woocommerce-table--order-details tfoot tr:last-child th,
+.woocommerce-account .woocommerce-table--order-details tfoot tr:last-child td {
+  font-family: var(--font-bebas) !important;
+  font-size: 1.5rem !important;
+  color: #000000 !important;
+  border-top: 2px solid #000000 !important;
+}
+
+/* 4. Brutalist Alerts & Notices */
+.woocommerce-account .woocommerce-message,
+.woocommerce-account .woocommerce-info,
+.woocommerce-account .woocommerce-error {
+  border: 1px solid #000000 !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  padding: 1rem 1.25rem !important;
+  font-family: var(--font-outfit) !important;
+  font-size: 0.875rem !important;
+  border-radius: 0 !important;
+  margin-bottom: 1.5rem !important;
+  box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 1) !important;
+}
+
+.woocommerce-account .woocommerce-message a.button,
+.woocommerce-account .woocommerce-info a.button {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  font-family: var(--font-bebas) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0 !important;
+  float: right !important;
+}
