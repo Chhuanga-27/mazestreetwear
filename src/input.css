@@ -535,6 +535,14 @@
     border-radius: 0px !important;
   }
 
+  /* Suppress default WooCommerce font icons that overlap notice text */
+  .woocommerce-message::before,
+  .woocommerce-info::before,
+  .woocommerce-error::before {
+    display: none !important;
+    content: none !important;
+  }
+
   /* Suppress WooCommerce Added-to-Cart notice / View Cart bar on single product and loops */
   .single-product .woocommerce-message,
   .woocommerce-message:has(.wc-forward),

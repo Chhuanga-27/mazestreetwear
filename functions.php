@@ -2374,5 +2374,152 @@ function mazestreetwear_custom_pagination_args($args)
 }
 add_filter('woocommerce_pagination_args', 'mazestreetwear_custom_pagination_args');
 
+/**
+ * ============================================================================
+ * MAZE ORDER CONFIRMATION & GUEST CHECKOUT ACCESS (PAYU & SESSION HANDLING)
+ * ============================================================================
+ */
+
+/**
+ * 1. Disable strict email verification requirements on the order-received page.
+ * Prevents payment gateway redirect loops and false login walls for paying customers.
+ */
+add_filter('woocommerce_order_email_verification_required', '__return_false', 999);
+
+/**
+ * 2. Allow customers (and guests) to view their order on the order-received page
+ * if they possess the valid cryptographic order key returned by payment gateways like PayU.
+ *
+ * @param array $allcaps All capabilities of the current user.
+ * @param array $caps Capabilities being checked.
+ * @param array $args Arguments passed to current_user_can.
+ * @param WP_User $user Current user object.
+ * @return array
+ */
+function mazestreetwear_allow_view_order_with_valid_key($allcaps, $caps, $args, $user)
+{
+    if (!empty($caps) && in_array('view_order', $caps, true) && isset($args[2])) {
+        $order_id = absint($args[2]);
+        if ($order_id > 0 && function_exists('wc_get_order')) {
+            $order = wc_get_order($order_id);
+            if ($order) {
+                $order_key = isset($_GET['key']) ? sanitize_text_field(wp_unslash($_GET['key'])) : '';
+                if (!empty($order_key) && hash_equals((string) $order->get_order_key(), (string) $order_key)) {
+                    $allcaps['view_order'] = true;
+                }
+            }
+        }
+    }
+    return $allcaps;
+}
+add_filter('user_has_cap', 'mazestreetwear_allow_view_order_with_valid_key', 999, 4);
+
+/**
+ * 3. Auto-login customer upon return from PayU (or external payment gateways)
+ * when arriving on the order-received endpoint with a valid order key.
+ * This ensures their authenticated session is restored without showing a login prompt.
+ */
+function mazestreetwear_auto_login_on_order_received()
+{
+    if (is_admin() || is_user_logged_in()) {
+        return;
+    }
+
+    if (function_exists('is_checkout') && is_checkout() && function_exists('is_wc_endpoint_url') && is_wc_endpoint_url('order-received')) {
+        global $wp;
+        $order_id = isset($wp->query_vars['order-received']) ? absint($wp->query_vars['order-received']) : 0;
+        if (!$order_id && isset($_GET['order_id'])) {
+            $order_id = absint($_GET['order_id']);
+        }
+
+        if ($order_id > 0 && function_exists('wc_get_order')) {
+            $order = wc_get_order($order_id);
+            $order_key = isset($_GET['key']) ? sanitize_text_field(wp_unslash($_GET['key'])) : '';
+
+            if ($order && !empty($order_key) && hash_equals((string) $order->get_order_key(), (string) $order_key)) {
+                $customer_id = $order->get_customer_id();
+                if ($customer_id > 0 && function_exists('wp_set_current_user') && function_exists('wp_set_auth_cookie')) {
+                    wp_set_current_user($customer_id);
+                    wp_set_auth_cookie($customer_id, true);
+                }
+            }
+        }
+    }
+}
+add_action('template_redirect', 'mazestreetwear_auto_login_on_order_received', 10);
+
+/**
+ * 4. Automatically create an account for guest checkouts if one does not exist,
+ * and link the order to the customer. WooCommerce will send them their welcome
+ * and password setup link automatically.
+ *
+ * @param int $order_id
+ */
+function mazestreetwear_auto_create_account_for_guest($order_id)
+{
+    if (!$order_id || !function_exists('wc_get_order')) {
+        return;
+    }
+
+    $order = wc_get_order($order_id);
+    if (!$order) {
+        return;
+    }
+
+    $customer_id = $order->get_customer_id();
+    $email = $order->get_billing_email();
+
+    if (empty($email)) {
+        return;
+    }
+
+    // If order already has a valid user, nothing to create
+    if ($customer_id > 0) {
+        return;
+    }
+
+    // Check if an existing WordPress user has this billing email
+    $existing_user = get_user_by('email', $email);
+    if ($existing_user) {
+        $order->set_customer_id($existing_user->ID);
+        $order->save();
+        return;
+    }
+
+    // Create a new customer account seamlessly in the background
+    if (function_exists('wc_create_new_customer')) {
+        $first_name = $order->get_billing_first_name();
+        $last_name  = $order->get_billing_last_name();
+        $username   = function_exists('wc_create_new_customer_username')
+            ? wc_create_new_customer_username($email, array('first_name' => $first_name, 'last_name' => $last_name))
+            : sanitize_user(current(explode('@', $email)), true);
+
+        $new_customer_id = wc_create_new_customer($email, $username);
+
+        if (!is_wp_error($new_customer_id) && $new_customer_id > 0) {
+            wp_update_user(array(
+                'ID'         => $new_customer_id,
+                'first_name' => $first_name,
+                'last_name'  => $last_name,
+            ));
+
+            $order->set_customer_id($new_customer_id);
+            $order->save();
+        }
+    }
+}
+add_action('woocommerce_checkout_order_processed', 'mazestreetwear_auto_create_account_for_guest', 20, 1);
+
+/**
+ * 5. Remove redundant default WooCommerce order details table from thankyou hook
+ * because our custom thankyou.php template renders the bespoke MAZE editorial receipt.
+ * Preserves third-party analytics, Facebook Pixel, and PayU conversion tracking hooks.
+ */
+function mazestreetwear_clean_thankyou_hooks()
+{
+    remove_action('woocommerce_thankyou', 'woocommerce_order_details_table', 10);
+}
+add_action('init', 'mazestreetwear_clean_thankyou_hooks');
+
 
 
