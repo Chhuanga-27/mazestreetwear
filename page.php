@@ -33,9 +33,6 @@ $content_classes   = $is_commerce ? 'entry-content max-w-none font-sans text-bas
                     <?php if ( $is_wc_account ) : ?>
                         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                             <div>
-                                <span class="block font-mono text-xs uppercase tracking-widest text-neutral-500 mb-1">
-                                    <?php esc_html_e( 'Client Sanctuary // Member Dashboard', 'mazestreetwear' ); ?>
-                                </span>
                                 <h1 class="entry-title text-4xl sm:text-6xl font-normal font-bebas uppercase tracking-wide text-black">
                                     <?php the_title(); ?>
                                 </h1>
