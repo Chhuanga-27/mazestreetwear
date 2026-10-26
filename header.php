@@ -79,10 +79,13 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
         </script>
     <?php endif; ?>
 
-    <?php if ($is_maze_home) : ?>
+    <?php if ($is_maze_home) : 
+        $hero_mobile_ver  = file_exists(get_template_directory() . '/assets/images/hero-mobile.jpg') ? filemtime(get_template_directory() . '/assets/images/hero-mobile.jpg') : '1';
+        $hero_desktop_ver = file_exists(get_template_directory() . '/assets/images/hero-desktop.jpg') ? filemtime(get_template_directory() . '/assets/images/hero-desktop.jpg') : '1';
+    ?>
         <!-- Preload High-Definition Hero Bento Banner (Responsive: Mobile & Desktop) -->
-        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-mobile.jpg'); ?>" media="(max-width: 639px)">
-        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-desktop.jpg'); ?>" media="(min-width: 640px)">
+        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-mobile.jpg?v=' . $hero_mobile_ver); ?>" media="(max-width: 639px)">
+        <link rel="preload" as="image" href="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-desktop.jpg?v=' . $hero_desktop_ver); ?>" media="(min-width: 640px)">
     <?php endif; ?>
 
     <!-- Favicon & Site Icons (Multi-size ICO, High-res PNG, Apple Touch & Manifest) -->
