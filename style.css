@@ -1546,7 +1546,8 @@ select.orderby {
   position: absolute !important;
   top: calc(100% + 4px) !important;
   right: 0 !important;
-  min-width: 210px !important;
+  left: auto !important;
+  min-width: 100% !important;
   width: max-content !important;
   max-width: 280px !important;
   background-color: #ffffff !important;
@@ -1560,6 +1561,28 @@ select.orderby {
   transform-origin: top right !important;
   transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s !important;
   pointer-events: none !important;
+}
+
+/* On mobile views (< 640px) anchor to left so menu content is never clipped off-screen */
+@media (max-width: 639px) {
+  .maze-custom-orderby-menu {
+    left: 0 !important;
+    right: auto !important;
+    transform-origin: top left !important;
+    max-width: calc(100vw - 32px) !important;
+  }
+}
+
+.maze-custom-orderby-menu.maze-menu-align-left {
+  left: 0 !important;
+  right: auto !important;
+  transform-origin: top left !important;
+}
+
+.maze-custom-orderby-menu.maze-menu-align-right {
+  right: 0 !important;
+  left: auto !important;
+  transform-origin: top right !important;
 }
 
 .maze-custom-orderby-wrap.is-open .maze-custom-orderby-menu {
@@ -1591,6 +1614,7 @@ select.orderby {
   cursor: pointer !important;
   transition: all 0.15s ease !important;
   user-select: none !important;
+  white-space: nowrap !important;
 }
 
 .maze-custom-orderby-item:hover {

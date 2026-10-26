@@ -1692,6 +1692,20 @@
                 var $menu = $customWrap.find('.maze-custom-orderby-menu');
                 var $label = $customWrap.find('.maze-custom-orderby-current');
 
+                function adjustMenuPosition() {
+                    $menu.removeClass('maze-menu-align-left maze-menu-align-right');
+                    var menuEl = $menu[0];
+                    if (!menuEl) return;
+                    var rect = menuEl.getBoundingClientRect();
+                    var vpWidth = window.innerWidth || document.documentElement.clientWidth;
+
+                    if (rect.left < 8) {
+                        $menu.addClass('maze-menu-align-left');
+                    } else if (rect.right > vpWidth - 8) {
+                        $menu.addClass('maze-menu-align-right');
+                    }
+                }
+
                 $trigger.on('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -1703,6 +1717,13 @@
                     } else {
                         $customWrap.addClass('is-open');
                         $trigger.attr('aria-expanded', 'true');
+                        adjustMenuPosition();
+                    }
+                });
+
+                $(window).on('resize.mazeOrdering', function () {
+                    if ($customWrap.hasClass('is-open')) {
+                        adjustMenuPosition();
                     }
                 });
 
