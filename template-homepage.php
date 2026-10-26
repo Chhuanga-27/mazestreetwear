@@ -27,7 +27,7 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     <section class="w-full bg-white pt-0 pb-10 sm:pb-16">
         <div class="maze-hero-bento relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/9] rounded-none border-0 overflow-hidden bg-[#e8e8e8] group">
             <picture class="w-full h-full block">
-                <source media="(max-width: 639px)" srcset="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-mobile.jpg' ); ?>" width="2560" height="1964">
+                <source media="(max-width: 639px)" srcset="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-mobile.jpg' ); ?>" width="2560" height="1920">
                 <source media="(min-width: 640px)" srcset="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-desktop.jpg' ); ?>" width="5765" height="3614">
                 <img 
                     src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-desktop.jpg' ); ?>" 
