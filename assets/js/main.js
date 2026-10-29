@@ -824,6 +824,62 @@
             });
         }
 
+        // Intercept Store API via window.fetch (captures Gutenberg/React Cart Block API requests)
+        if (window.fetch) {
+            const originalFetch = window.fetch;
+            window.fetch = function () {
+                const url = (arguments[0] && typeof arguments[0] === 'string')
+                    ? arguments[0]
+                    : (arguments[0] && arguments[0].url ? arguments[0].url : '');
+
+                const promise = originalFetch.apply(this, arguments);
+
+                if (url && (url.indexOf('/wc/store/') !== -1 || url.indexOf('wc-ajax=') !== -1 || url.indexOf('maze_get_cart_fragments') !== -1)) {
+                    promise.then(function (res) {
+                        try {
+                            const clone = res.clone();
+                            clone.json().then(function (data) {
+                                const count = extractMazeCartCount(data);
+                                if (count !== null) {
+                                    syncMazeCartBadge(count);
+                                    pulseMazeCartBadge();
+                                }
+                            }).catch(function () { });
+                        } catch (e) { }
+                    }).catch(function () { });
+                }
+
+                return promise;
+            };
+        }
+
+        // Intercept Store API via XMLHttpRequest
+        (function interceptXhr() {
+            const originalOpen = XMLHttpRequest.prototype.open;
+            const originalSend = XMLHttpRequest.prototype.send;
+
+            XMLHttpRequest.prototype.open = function (method, url) {
+                this._mazeRequestUrl = url;
+                return originalOpen.apply(this, arguments);
+            };
+
+            XMLHttpRequest.prototype.send = function () {
+                this.addEventListener('load', function () {
+                    try {
+                        if (this._mazeRequestUrl && (this._mazeRequestUrl.indexOf('/wc/store/') !== -1 || this._mazeRequestUrl.indexOf('wc-ajax=') !== -1)) {
+                            const data = JSON.parse(this.responseText);
+                            const count = extractMazeCartCount(data);
+                            if (count !== null) {
+                                syncMazeCartBadge(count);
+                                pulseMazeCartBadge();
+                            }
+                        }
+                    } catch (e) { }
+                });
+                return originalSend.apply(this, arguments);
+            };
+        })();
+
         // Intercept Store API via WordPress apiFetch middleware if available
         if (window.wp && window.wp.apiFetch && typeof window.wp.apiFetch.use === 'function') {
             try {
@@ -948,7 +1004,7 @@
 
         // 3. MutationObserver on Cart Block container to catch DOM mutations automatically
         function initCartBlockObserver() {
-            const target = document.querySelector('.wp-block-woocommerce-cart, .wc-block-cart, .woocommerce-cart-form');
+            const target = document.querySelector('.wp-block-woocommerce-cart, .wc-block-cart, .woocommerce-cart-form, main#primary');
             if (!target) return;
 
             let debounceTimer = null;
@@ -1098,17 +1154,18 @@
             const $submitBtn = $form.find('.single_add_to_cart_button');
             if ($submitBtn.length) $submitBtn.prop('disabled', true);
 
-            // --- 2. Check if size/variation pill is active ---
+            // --- 2. Ensure size/variation pill is active ---
             const $pills = $form.find('.maze-size-pills');
             if ($pills.length && !$pills.find('.maze-size-pill.is-active, .maze-size-pill.selected').length) {
-                $buyBtn.removeClass('is-loading opacity-80').prop('disabled', false);
-                $buyBtn.html('<span class="btn-text">' + defaultBtnText + '</span>');
-                if ($submitBtn.length) $submitBtn.prop('disabled', false);
-                $pills.addClass('ring-2 ring-black');
-                setTimeout(function () {
-                    $pills.removeClass('ring-2 ring-black');
-                }, 1000);
-                return false;
+                const $firstPill = $pills.find('.maze-size-pill:not(.is-disabled, .disabled, [disabled], .opacity-30)').first();
+                const $targetPill = $firstPill.length ? $firstPill : $pills.find('.maze-size-pill').first();
+                if ($targetPill.length) {
+                    if (window.mazeSelectSize) {
+                        window.mazeSelectSize($targetPill[0]);
+                    } else {
+                        $targetPill.trigger('click');
+                    }
+                }
             }
 
             // --- 3. Sync select values from active pills for variable products ---
@@ -1179,15 +1236,9 @@
                             }
                         }
                     }
-                    if (!resolvedVarId) {
-                        $buyBtn.removeClass('is-loading opacity-80').prop('disabled', false);
-                        $buyBtn.html('<span class="btn-text">' + defaultBtnText + '</span>');
-                        if ($submitBtn.length) $submitBtn.prop('disabled', false);
-                        $pills.addClass('ring-2 ring-black');
-                        setTimeout(function () {
-                            $pills.removeClass('ring-2 ring-black');
-                        }, 1000);
-                        return false;
+                    if (!resolvedVarId && variations[0] && variations[0].variation_id) {
+                        resolvedVarId = variations[0].variation_id;
+                        if ($varIdInput.length) $varIdInput.val(resolvedVarId);
                     }
                 }
             }

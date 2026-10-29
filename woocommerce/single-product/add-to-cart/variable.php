@@ -6,7 +6,7 @@
  * Preserves all native WooCommerce hooks and variation scripts.
  *
  * @package MazeStreetwear
- * @version 6.1.0
+ * @version 1.1.0
  */
 
 defined( 'ABSPATH' ) || exit;

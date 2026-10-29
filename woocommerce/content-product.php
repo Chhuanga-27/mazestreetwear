@@ -8,7 +8,7 @@
  * Zero ratings, zero sale badges, zero bulky buttons.
  *
  * @package MazeStreetwear
- * @version 3.6.0
+ * @version 1.1.0
  */
 
 defined( 'ABSPATH' ) || exit;

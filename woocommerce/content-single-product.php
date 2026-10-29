@@ -9,7 +9,7 @@
  *   solid black "ADD TO BAG" button, and accordions for Description and Shipping & Delivery.
  *
  * @package MazeStreetwear
- * @version 3.6.0
+ * @version 1.1.2
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -247,8 +247,7 @@ $image_count = count( $gallery_images );
                     $original_product = isset( $GLOBALS['product'] ) ? $GLOBALS['product'] : null;
                     foreach ( $related_ids as $rel_id ) :
                         $post_object = get_post( $rel_id );
-                        $GLOBALS['post'] = $post_object;
-                        setup_postdata( $post_object );
+                        setup_postdata( $GLOBALS['post'] =& $post_object );
                         $GLOBALS['product'] = wc_get_product( $rel_id );
                         wc_get_template_part( 'content', 'product' );
                     endforeach;

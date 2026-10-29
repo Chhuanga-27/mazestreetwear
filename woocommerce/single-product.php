@@ -6,7 +6,7 @@
  * Delegates to content-single-product.php for the 2-column layout framed by thin black dividers.
  *
  * @package MazeStreetwear
- * @version 1.6.4
+ * @version 1.1.0
  */
 
 defined( 'ABSPATH' ) || exit;

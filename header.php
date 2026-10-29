@@ -45,9 +45,10 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Fonts Preconnect: Outfit & Bebas Neue -->
+    <!-- Google Fonts Preconnect & Stylesheet: Outfit & Bebas Neue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
 
     <?php if ($show_maze_splash) : ?>
         <!-- Preload Splash Screen Artwork (Mobile & Desktop) -->
@@ -109,7 +110,6 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
     $maze_og_img      = get_template_directory_uri() . '/assets/images/og-image.png';
     ?>
 
-    <?php if (! function_exists('wpseo_init') && ! class_exists('RankMath') && ! class_exists('All_in_One_SEO_Pack')) : ?>
     <!-- Search Engine & Social Media Sharing (Google, WhatsApp, Twitter/X, Instagram) -->
     <meta property="og:site_name" content="Maze">
     <meta property="og:type" content="<?php echo is_singular('product') ? 'product' : (is_singular() ? 'article' : 'website'); ?>">
@@ -126,7 +126,6 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
     <meta name="twitter:title" content="<?php echo esc_attr($maze_page_title); ?>">
     <meta name="twitter:description" content="<?php echo esc_attr($maze_meta_desc); ?>">
     <meta name="twitter:image" content="<?php echo esc_url($maze_og_img); ?>">
-    <?php endif; ?>
 
     <!-- Google Search Structured Data (Site Name, Brand Identity & Official Logo) -->
     <script type="application/ld+json">

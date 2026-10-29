@@ -4,7 +4,7 @@
  *
  *
  * @package MazeStreetwear
- * @version 3.6.0
+ * @version 1.0.0
  * @var array<string, string> $catalog_orderby_options
  * @var string $orderby
  * @var bool $show_default_orderby

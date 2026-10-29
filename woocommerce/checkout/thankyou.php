@@ -11,7 +11,7 @@
  * - Preserved WooCommerce action hooks for PayU, analytics, and conversion tracking
  *
  * @package MazeStreetwear
- * @version 8.1.0
+ * @version 1.0.0
  *
  * @var WC_Order|false $order
  */

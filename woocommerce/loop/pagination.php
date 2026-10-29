@@ -3,7 +3,7 @@
  * Pagination - Show numbered pages for catalog - Modern Minimalist Editorial
  *
  * @package MazeStreetwear
- * @version 9.3.0
+ * @version 1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
