@@ -2876,5 +2876,24 @@ function mazestreetwear_redirect_my_account_downloads_endpoint()
 }
 add_action('template_redirect', 'mazestreetwear_redirect_my_account_downloads_endpoint');
 
+/**
+ * ============================================================================
+ * SECURITY HEADERS (HSTS & SECURE BROWSING)
+ * ============================================================================
+ * Enforce HTTP Strict Transport Security (HSTS) on all HTTPS responses.
+ * Instructs browsers (especially Chrome mobile HTTPS-First Mode) to always
+ * connect directly via HTTPS and never fall back to insecure HTTP.
+ */
+function mazestreetwear_send_security_headers()
+{
+    if (is_ssl() && !headers_sent()) {
+        header('Strict-Transport-Security: max-age=31536000; includeSubDomains; preload');
+        header('X-Content-Type-Options: nosniff');
+        header('Referrer-Policy: strict-origin-when-cross-origin');
+    }
+}
+add_action('send_headers', 'mazestreetwear_send_security_headers', 1);
+
+
 
 
