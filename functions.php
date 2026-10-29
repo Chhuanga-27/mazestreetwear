@@ -276,8 +276,9 @@ add_action('init', function () {
  * Preserve custom selected_size in cart item data for simple products
  */
 add_filter('woocommerce_add_cart_item_data', function ($cart_item_data, $product_id) {
-    if (! empty($_POST['selected_size'])) {
-        $cart_item_data['selected_size'] = sanitize_text_field(wp_unslash($_POST['selected_size']));
+    $size = ! empty($_POST['selected_size']) ? sanitize_text_field(wp_unslash($_POST['selected_size'])) : (! empty($_REQUEST['selected_size']) ? sanitize_text_field(wp_unslash($_REQUEST['selected_size'])) : '');
+    if (! empty($size)) {
+        $cart_item_data['selected_size'] = $size;
         $cart_item_data['unique_key']    = md5(microtime() . wp_rand());
     }
     return $cart_item_data;
@@ -763,7 +764,7 @@ add_filter('woocommerce_add_to_cart_redirect', function ($url) {
 }, 99);
 
 /**
- * Ensure add-to-cart parameter is populated from product_id for native Buy Now submissions
+ * Ensure add-to-cart parameter and variation attributes are populated for native Buy Now submissions
  */
 add_action('wp_loaded', function () {
     $is_buy_now = (! empty($_REQUEST['maze_buy_now']) && '0' !== (string)$_REQUEST['maze_buy_now'])
@@ -810,16 +811,74 @@ add_action('wp_loaded', function () {
                     if ($var_id) {
                         $_REQUEST['variation_id'] = $var_id;
                         $_POST['variation_id']    = $var_id;
-                        $child_var = wc_get_product($var_id);
-                        if ($child_var instanceof \WC_Product_Variation) {
-                            foreach ($child_var->get_variation_attributes() as $k => $v) {
-                                if (! isset($_POST[$k]) || '' === $_POST[$k]) {
-                                    $_POST[$k]    = $v;
-                                    $_REQUEST[$k] = $v;
-                                }
+                    }
+                }
+
+                // ALWAYS populate variation attributes from child variation into $_POST and $_REQUEST
+                if ($var_id) {
+                    $child_var = wc_get_product($var_id);
+                    if ($child_var instanceof \WC_Product_Variation) {
+                        foreach ($child_var->get_variation_attributes() as $k => $v) {
+                            if (! isset($_POST[$k]) || '' === $_POST[$k]) {
+                                $_POST[$k]    = $v;
+                                $_REQUEST[$k] = $v;
                             }
                         }
                     }
+                }
+
+                // Ensure any missing parent attributes receive default or first available option
+                if ($p instanceof \WC_Product_Variable) {
+                    $parent_attrs = $p->get_variation_attributes();
+                    if (is_array($parent_attrs)) {
+                        foreach ($parent_attrs as $p_attr_name => $p_options) {
+                            $p_key = 'attribute_' . sanitize_title($p_attr_name);
+                            if ((! isset($_POST[$p_key]) || '' === $_POST[$p_key]) && ! empty($p_options)) {
+                                $first_opt = reset($p_options);
+                                $_POST[$p_key]    = $first_opt;
+                                $_REQUEST[$p_key] = $first_opt;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // If Buy Now item is already in cart, redirect directly to checkout to avoid duplicate / sold-individually issues
+            if (function_exists('WC') && WC()->cart && ! WC()->cart->is_empty()) {
+                $already_in_cart = false;
+                $target_var_id   = ! empty($_REQUEST['variation_id']) ? absint($_REQUEST['variation_id']) : 0;
+                $candidate_size  = ! empty($_REQUEST['selected_size']) ? sanitize_text_field(wp_unslash($_REQUEST['selected_size'])) : '';
+
+                foreach (WC()->cart->get_cart() as $cart_item) {
+                    if ($target_var_id && ! empty($cart_item['variation_id']) && $cart_item['variation_id'] == $target_var_id) {
+                        $already_in_cart = true;
+                        break;
+                    } elseif (! $target_var_id && $cart_item['product_id'] == $prod_id) {
+                        if (! empty($candidate_size) && ! empty($cart_item['selected_size'])) {
+                            if (strcasecmp($candidate_size, $cart_item['selected_size']) === 0) {
+                                $already_in_cart = true;
+                                break;
+                            }
+                        } else {
+                            $already_in_cart = true;
+                            break;
+                        }
+                    }
+                }
+
+                if ($already_in_cart && function_exists('wc_get_checkout_url')) {
+                    if (function_exists('wc_clear_notices')) {
+                        wc_clear_notices();
+                    }
+                    WC()->cart->calculate_totals();
+                    if (method_exists(WC()->cart, 'maybe_set_cart_cookies')) {
+                        WC()->cart->maybe_set_cart_cookies();
+                    }
+                    if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie')) {
+                        WC()->session->set_customer_session_cookie(true);
+                    }
+                    wp_safe_redirect(wc_get_checkout_url());
+                    exit;
                 }
             }
         }
@@ -841,6 +900,9 @@ add_action('template_redirect', function () {
         // ONLY redirect to checkout if WooCommerce cart exists and is NOT empty!
         // This stops the empty-cart redirection when an unselected variation or invalid submission occurs
         if (function_exists('WC') && WC()->cart && ! WC()->cart->is_empty() && function_exists('wc_get_checkout_url')) {
+            if (function_exists('wc_clear_notices')) {
+                wc_clear_notices();
+            }
             wp_safe_redirect(wc_get_checkout_url());
             exit;
         }

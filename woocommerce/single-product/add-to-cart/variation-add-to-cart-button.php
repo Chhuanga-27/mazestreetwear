@@ -152,59 +152,41 @@ window.mazeBuyNow = function(btn, event) {
     }
 
     var buyNowInput = form.querySelector('input[name="maze_buy_now"], input.maze-buy-now-input');
-    if (buyNowInput) {
-        buyNowInput.value = '1';
+    if (!buyNowInput) {
+        buyNowInput = document.createElement('input');
+        buyNowInput.type = 'hidden';
+        buyNowInput.name = 'maze_buy_now';
+        form.appendChild(buyNowInput);
+    }
+    buyNowInput.value = '1';
+
+    var addInput = form.querySelector('input[name="add-to-cart"]');
+    if (!addInput) {
+        addInput = document.createElement('input');
+        addInput.type = 'hidden';
+        addInput.name = 'add-to-cart';
+        form.appendChild(addInput);
+    }
+    addInput.value = '<?php echo absint( $product->get_id() ); ?>';
+
+    var prodInput = form.querySelector('input[name="product_id"]');
+    if (!prodInput) {
+        prodInput = document.createElement('input');
+        prodInput.type = 'hidden';
+        prodInput.name = 'product_id';
+        form.appendChild(prodInput);
+    }
+    prodInput.value = '<?php echo absint( $product->get_id() ); ?>';
+
+    if (resolvedVarId > 0 && varIdInput) {
+        varIdInput.value = resolvedVarId;
     }
 
-    if (window.fetch && window.FormData) {
-        var formData = new FormData(form);
-        formData.set('action', 'maze_ajax_add_to_cart');
-        formData.set('is_buy_now', '1');
-        formData.set('maze_buy_now', '1');
-        formData.set('product_id', '<?php echo absint( $product->get_id() ); ?>');
-        formData.set('add-to-cart', '<?php echo absint( $product->get_id() ); ?>');
-        if (resolvedVarId > 0) formData.set('variation_id', String(resolvedVarId));
-        if (window.mazeData && window.mazeData.nonce) {
-            formData.set('maze_nonce', window.mazeData.nonce);
-        }
-        if (!formData.get('quantity')) {
-            formData.set('quantity', '1');
-        }
-
-        var ajaxUrl = (window.mazeData && window.mazeData.ajaxUrl) ? window.mazeData.ajaxUrl : (window.location.origin + '/wp-admin/admin-ajax.php');
-
-        fetch(ajaxUrl, {
-            method: 'POST',
-            body: formData,
-            credentials: 'same-origin'
-        })
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-            if (data && data.success && data.data && data.data.checkout_url) {
-                window.location.href = data.data.checkout_url;
-                return;
-            }
-            if (data && data.data && data.data.checkout_url && !data.data.message) {
-                window.location.href = data.data.checkout_url;
-                return;
-            }
-            if (data && data.success === false && data.data && data.data.message) {
-                alert(data.data.message);
-                btn.classList.remove('is-loading', 'opacity-80');
-                btn.innerHTML = '<span class="btn-text">' + defaultText + '</span>';
-                if (buyNowInput) buyNowInput.value = '0';
-                return;
-            }
-            window.location.href = checkoutUrl;
-        })
-        .catch(function() {
-            window.location.href = checkoutUrl;
-        });
-
-        return false;
-    } else {
-        window.location.href = checkoutUrl;
-        return false;
+    if (window.jQuery) {
+        window.jQuery(form).data('is-submitting-buy-now', true);
     }
+
+    HTMLFormElement.prototype.submit.call(form);
+    return false;
 };
 </script>
