@@ -27,9 +27,33 @@ $variations_attr = function_exists( 'wc_esc_json' ) ? wc_esc_json( $variations_j
 
 do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 
+<?php
+$default_initial_size = '';
+if ( ! empty( $attributes ) ) {
+    foreach ( $attributes as $a_name => $a_opts ) {
+        $found_val = isset( $_REQUEST[ 'attribute_' . sanitize_title( $a_name ) ] ) ? wc_clean( wp_unslash( $_REQUEST[ 'attribute_' . sanitize_title( $a_name ) ] ) ) : $product->get_variation_default_attribute( $a_name );
+        if ( empty( $found_val ) && ! empty( $available_variations ) ) {
+            $fk = 'attribute_' . sanitize_title( $a_name );
+            foreach ( $available_variations as $vi ) {
+                if ( ! empty( $vi['is_in_stock'] ) && ! empty( $vi['is_purchasable'] ) && isset( $vi['attributes'][$fk] ) && '' !== $vi['attributes'][$fk] ) {
+                    $found_val = $vi['attributes'][$fk];
+                    break;
+                }
+            }
+        }
+        if ( empty( $found_val ) && ! empty( $a_opts ) ) {
+            $found_val = is_array( $a_opts ) ? reset( $a_opts ) : '';
+        }
+        if ( ! empty( $found_val ) ) {
+            $default_initial_size = $found_val;
+            break;
+        }
+    }
+}
+?>
 <form class="variations_form cart space-y-6" action="<?php echo esc_url( apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() ) ); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product->get_id() ); ?>" data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok. ?>">
     <?php do_action( 'woocommerce_before_variations_form' ); ?>
-    <input type="hidden" name="selected_size" class="maze-selected-size-input" value="" />
+    <input type="hidden" name="selected_size" class="maze-selected-size-input" value="<?php echo esc_attr( $default_initial_size ); ?>" />
 
     <?php if ( empty( $available_variations ) && false !== $available_variations ) : ?>
         <p class="stock out-of-stock font-bebas text-base sm:text-lg font-normal uppercase tracking-wider text-black bg-neutral-100 p-3 border border-black">

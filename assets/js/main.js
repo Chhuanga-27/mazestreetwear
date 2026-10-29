@@ -433,6 +433,31 @@
                 $form.find('.single_add_to_cart_button, .maze_buy_now_button')
                     .removeClass('disabled opacity-60 cursor-not-allowed')
                     .prop('disabled', false);
+
+                // Auto-resolve variation_id immediately
+                const variations = $form.data('product_variations');
+                if (Array.isArray(variations) && variations.length > 0) {
+                    const sLower = selectedVal.toLowerCase();
+                    let matchedId = 0;
+                    for (let vi = 0; vi < variations.length; vi++) {
+                        const vItem = variations[vi];
+                        if (vItem && vItem.attributes) {
+                            for (let ak in vItem.attributes) {
+                                if (String(vItem.attributes[ak] || '').toLowerCase() === sLower) {
+                                    matchedId = vItem.variation_id;
+                                    break;
+                                }
+                            }
+                        }
+                        if (matchedId) break;
+                    }
+                    if (!matchedId && variations[0] && variations[0].variation_id) {
+                        matchedId = variations[0].variation_id;
+                    }
+                    if (matchedId) {
+                        $form.find('input[name="variation_id"]').val(matchedId);
+                    }
+                }
             }
         };
 
@@ -1269,8 +1294,20 @@
             // Mark form with data attribute so submit handler doesn't hijack it
             $form.attr('data-maze-buy-now', 'true');
 
+            // Reset function on error
+            function resetBuyNowBtn() {
+                $buyBtn.removeClass('is-loading opacity-80').prop('disabled', false);
+                $buyBtn.html('<span class="btn-text">' + defaultBtnText + '</span>');
+                if ($submitBtn.length) $submitBtn.prop('disabled', false);
+                $form.data('is-submitting-buy-now', false);
+                $form.removeAttr('data-maze-buy-now');
+                if ($buyNowInput.length) $buyNowInput.val('0');
+            }
+
             // Native submit fallback function
             function doNativeSubmit() {
+                $form.data('is-submitting-buy-now', true);
+                $buyNowInput.val('1');
                 if (productId) {
                     let $addInput = $form.find('input[name="add-to-cart"]');
                     if (!$addInput.length) {
@@ -1293,7 +1330,6 @@
                         $varInput.val(resolvedVarId);
                     }
                 }
-                $buyNowInput.val('1');
                 if ($form[0]) {
                     HTMLFormElement.prototype.submit.call($form[0]);
                 } else {
@@ -1301,8 +1337,8 @@
                 }
             }
 
-            // Safety timeout: fallback to native submit if network hangs after 3.5s
-            const safetyTimer = setTimeout(doNativeSubmit, 3500);
+            // Safety timeout: fallback to native submit only if network hangs after 5s
+            const safetyTimer = setTimeout(doNativeSubmit, 5000);
 
             // --- 6. Collect form data for AJAX ---
             const serialized = $form.serializeArray();
@@ -1374,28 +1410,31 @@
                 formData.push({ name: 'maze_nonce', value: mazeData.nonce });
             }
 
-            const ajaxUrl = (typeof mazeData !== 'undefined' && mazeData.ajaxUrl) ? mazeData.ajaxUrl : '/wp-admin/admin-ajax.php';
+            const ajaxUrl = (typeof mazeData !== 'undefined' && mazeData.ajaxUrl) ? mazeData.ajaxUrl : (window.location.origin + '/wp-admin/admin-ajax.php');
 
             $.ajax({
                 url: ajaxUrl,
                 type: 'POST',
                 data: $.param(formData),
                 dataType: 'json',
-                timeout: 5000,
+                timeout: 7000,
                 success: function (res) {
                     clearTimeout(safetyTimer);
                     if (res && res.success && res.data && res.data.checkout_url) {
                         window.location.href = res.data.checkout_url;
                         return;
                     }
-                    if (res && res.data && res.data.checkout_url) {
+                    if (res && res.data && res.data.checkout_url && !res.data.message) {
                         window.location.href = res.data.checkout_url;
+                        return;
+                    }
+                    if (res && res.success === false && res.data && res.data.message) {
+                        alert(res.data.message);
+                        resetBuyNowBtn();
                         return;
                     }
                     doNativeSubmit();
                     return;
-
-
                 },
                 error: function () {
                     clearTimeout(safetyTimer);
@@ -1406,18 +1445,43 @@
             return false;
         };
 
+        window.mazeDoBuyNow = window.mazeBuyNow;
+
         $(document).on('click', '.maze_buy_now_button', function (e) {
             return window.mazeBuyNow(this, e);
         });
 
+        // Ensure clicking Add To Bag explicitly resets any Buy Now status
+        $(document).on('click', '.single_add_to_cart_button', function () {
+            const $form = $(this).closest('form');
+            $form.data('is-submitting-buy-now', false);
+            $form.removeAttr('data-maze-buy-now');
+            $form.find('input[name="maze_buy_now"], .maze-buy-now-input').val('0');
+        });
+
+        // Reset all forms when navigating back via mobile bfcache (Back-Forward Cache)
+        window.addEventListener('pageshow', function () {
+            $('form.cart').each(function () {
+                const $form = $(this);
+                $form.data('is-submitting-buy-now', false);
+                $form.removeAttr('data-maze-buy-now');
+                $form.find('input[name="maze_buy_now"], .maze-buy-now-input').val('0');
+                $form.find('.single_add_to_cart_button').removeClass('is-loading opacity-80 disabled cursor-not-allowed').prop('disabled', false);
+                $form.find('.maze_buy_now_button').removeClass('is-loading opacity-80 disabled cursor-not-allowed').prop('disabled', false);
+            });
+        });
+
         // AJAX Add to Bag on Single Product Pages (Simple & Variable)
-        // Buy Now is handled by the separate click handler above
         $(document).on('submit', 'form.cart', function (e) {
             const $form = $(this);
-            // CRITICAL: If Buy Now is being processed, DO NOT intercept as add-to-bag!
-            if ($form.attr('data-maze-buy-now') === 'true' || $form.find('input[name="maze_buy_now"]').val() === '1') {
+            // Allow native submit ONLY if Buy Now explicitly initiated it
+            if ($form.data('is-submitting-buy-now') === true) {
                 return;
             }
+
+            // Always guarantee this submission is pure ADD TO BAG
+            $form.removeAttr('data-maze-buy-now');
+            $form.find('input[name="maze_buy_now"], .maze-buy-now-input').val('0');
 
             const $submitBtn = $form.find('.single_add_to_cart_button');
             const $buyBtn = $form.find('.maze_buy_now_button');

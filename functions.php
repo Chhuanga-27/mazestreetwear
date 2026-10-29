@@ -172,6 +172,24 @@ function mazestreetwear_scripts()
 add_action('wp_enqueue_scripts', 'mazestreetwear_scripts');
 
 /**
+ * Output early mazeData configuration in <head> so mobile inline scripts never fail
+ */
+add_action('wp_head', function () {
+    ?>
+    <script id="maze-data-early">
+    window.mazeData = window.mazeData || <?php echo wp_json_encode(array(
+        'ajaxUrl'     => admin_url('admin-ajax.php'),
+        'wcAjaxUrl'   => class_exists('WC_AJAX') ? WC_AJAX::get_endpoint('%%endpoint%%') : home_url('/?wc-ajax=%%endpoint%%'),
+        'nonce'       => wp_create_nonce('maze_cart_nonce'),
+        'cartUrl'     => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
+        'checkoutUrl' => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/'),
+        'shopUrl'     => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
+    )); ?>;
+    </script>
+    <?php
+}, 1);
+
+/**
  * Ensure WooCommerce cart fragments script remains active on Cart page for live header badge updates
  */
 add_action('wp_enqueue_scripts', function () {
@@ -539,6 +557,18 @@ function mazestreetwear_ajax_add_to_cart()
         if (empty($variation_id)) {
             wp_send_json_error(array('message' => __('Please select an available size before proceeding.', 'mazestreetwear')));
         }
+
+        // Synchronize variation attributes and variation_id to $_POST and $_REQUEST for core validation
+        foreach ($variations as $vk => $vv) {
+            if (! isset($_POST[$vk]) || '' === $_POST[$vk]) {
+                $_POST[$vk]    = $vv;
+                $_REQUEST[$vk] = $vv;
+            }
+        }
+        if ($variation_id) {
+            $_POST['variation_id']    = $variation_id;
+            $_REQUEST['variation_id'] = $variation_id;
+        }
     }
 
     // Preserve custom selected_size in cart item data
@@ -581,6 +611,9 @@ function mazestreetwear_ajax_add_to_cart()
             }
             if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie')) {
                 WC()->session->set_customer_session_cookie(true);
+            }
+            if (WC()->session && method_exists(WC()->session, 'save_data')) {
+                WC()->session->save_data();
             }
             while (ob_get_level() > 0) {
                 ob_end_clean();
@@ -639,6 +672,9 @@ function mazestreetwear_ajax_add_to_cart()
         }
         if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie')) {
             WC()->session->set_customer_session_cookie(true);
+        }
+        if (WC()->session && method_exists(WC()->session, 'save_data')) {
+            WC()->session->save_data();
         }
 
         ob_start();
@@ -740,6 +776,53 @@ add_action('wp_loaded', function () {
             $_REQUEST['add-to-cart'] = absint($_REQUEST['product_id']);
             $_POST['add-to-cart']    = absint($_REQUEST['product_id']);
         }
+
+        $prod_id = ! empty($_REQUEST['add-to-cart']) ? absint($_REQUEST['add-to-cart']) : (! empty($_REQUEST['product_id']) ? absint($_REQUEST['product_id']) : 0);
+        if ($prod_id) {
+            $p = wc_get_product($prod_id);
+            if ($p && $p->is_type('variable')) {
+                $var_id = ! empty($_REQUEST['variation_id']) ? absint($_REQUEST['variation_id']) : 0;
+                if (! $var_id) {
+                    $children = $p->get_children();
+                    $candidate_size = ! empty($_REQUEST['selected_size']) ? sanitize_text_field(wp_unslash($_REQUEST['selected_size'])) : '';
+                    if ($candidate_size) {
+                        foreach ($children as $cid) {
+                            $child = wc_get_product($cid);
+                            if ($child && $child->is_purchasable() && $child->is_in_stock()) {
+                                foreach ($child->get_attributes() as $cattr) {
+                                    if (strcasecmp($cattr, $candidate_size) === 0 || strcasecmp(sanitize_title($cattr), sanitize_title($candidate_size)) === 0) {
+                                        $var_id = $cid;
+                                        break 2;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (! $var_id && ! empty($children)) {
+                        foreach ($children as $cid) {
+                            $child = wc_get_product($cid);
+                            if ($child && $child->is_purchasable() && $child->is_in_stock()) {
+                                $var_id = $cid;
+                                break;
+                            }
+                        }
+                    }
+                    if ($var_id) {
+                        $_REQUEST['variation_id'] = $var_id;
+                        $_POST['variation_id']    = $var_id;
+                        $child_var = wc_get_product($var_id);
+                        if ($child_var instanceof \WC_Product_Variation) {
+                            foreach ($child_var->get_variation_attributes() as $k => $v) {
+                                if (! isset($_POST[$k]) || '' === $_POST[$k]) {
+                                    $_POST[$k]    = $v;
+                                    $_REQUEST[$k] = $v;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }, 15);
 
@@ -755,7 +838,9 @@ add_action('template_redirect', function () {
         || isset($_GET['buy_now']);
 
     if ($is_buy_now && function_exists('is_product') && is_product()) {
-        if (function_exists('wc_get_checkout_url')) {
+        // ONLY redirect to checkout if WooCommerce cart exists and is NOT empty!
+        // This stops the empty-cart redirection when an unselected variation or invalid submission occurs
+        if (function_exists('WC') && WC()->cart && ! WC()->cart->is_empty() && function_exists('wc_get_checkout_url')) {
             wp_safe_redirect(wc_get_checkout_url());
             exit;
         }

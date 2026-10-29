@@ -61,7 +61,7 @@ if ( $product instanceof \WC_Product_Variable ) {
             <span class="btn-text"><?php echo esc_html( $product->single_add_to_cart_text() ? $product->single_add_to_cart_text() : __( 'ADD TO BAG', 'mazestreetwear' ) ); ?></span>
         </button>
 
-        <button type="submit" name="maze_buy_now" value="1" class="maze_buy_now_button maze-btn-animated button bg-white text-black hover:bg-black hover:text-white text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border-2 border-black rounded-none font-bebas transition-all duration-200 cursor-pointer block text-center select-none active:scale-[0.98]" data-default-text="<?php esc_attr_e( 'BUY NOW', 'mazestreetwear' ); ?>" onclick="return window.mazeBuyNow ? window.mazeBuyNow(this, event) : true;">
+        <button type="button" class="maze_buy_now_button maze-btn-animated button bg-white text-black hover:bg-black hover:text-white text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border-2 border-black rounded-none font-bebas transition-all duration-200 cursor-pointer block text-center select-none active:scale-[0.98]" data-default-text="<?php esc_attr_e( 'BUY NOW', 'mazestreetwear' ); ?>" onclick="return window.mazeBuyNow ? window.mazeBuyNow(this, event) : true;">
             <span class="btn-text"><?php esc_html_e( 'BUY NOW', 'mazestreetwear' ); ?></span>
         </button>
     </div>
@@ -75,7 +75,10 @@ if ( $product instanceof \WC_Product_Variable ) {
 </div>
 
 <script>
-window.mazeBuyNow = window.mazeBuyNow || function(btn, event) {
+window.mazeBuyNow = function(btn, event) {
+    if (window.mazeDoBuyNow) {
+        return window.mazeDoBuyNow(btn, event);
+    }
     if (event) {
         event.preventDefault();
         event.stopPropagation();
@@ -90,6 +93,7 @@ window.mazeBuyNow = window.mazeBuyNow || function(btn, event) {
         return false;
     }
 
+    var defaultText = btn.getAttribute('data-default-text') || 'BUY NOW';
     btn.classList.add('is-loading', 'opacity-80');
     btn.innerHTML = '<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> CHECKING OUT...</span>';
 
@@ -113,8 +117,8 @@ window.mazeBuyNow = window.mazeBuyNow || function(btn, event) {
 
     // Resolve variation_id
     var varIdInput = form.querySelector('input[name="variation_id"]');
-    var rawVarId = varIdInput ? parseInt(varIdInput.value, 10) : 0;
-    if (!rawVarId || rawVarId <= 0) {
+    var resolvedVarId = varIdInput ? parseInt(varIdInput.value, 10) : 0;
+    if (!resolvedVarId || resolvedVarId <= 0) {
         var rawVars = form.getAttribute('data-product_variations');
         if (rawVars) {
             try {
@@ -122,26 +126,25 @@ window.mazeBuyNow = window.mazeBuyNow || function(btn, event) {
                 if (Array.isArray(varsList) && varsList.length > 0) {
                     var actPill = form.querySelector('.maze-size-pill.is-active, .maze-size-pill.selected');
                     var actVal = actPill ? (actPill.getAttribute('data-value') || actPill.textContent || '').trim().toLowerCase() : '';
-                    var resolvedId = 0;
                     if (actVal) {
                         for (var vi = 0; vi < varsList.length; vi++) {
                             var vObj = varsList[vi];
                             if (vObj && vObj.attributes) {
                                 for (var k in vObj.attributes) {
                                     if (String(vObj.attributes[k] || '').toLowerCase() === actVal) {
-                                        resolvedId = vObj.variation_id;
+                                        resolvedVarId = vObj.variation_id;
                                         break;
                                     }
                                 }
                             }
-                            if (resolvedId) break;
+                            if (resolvedVarId) break;
                         }
                     }
-                    if (!resolvedId && varsList[0] && varsList[0].variation_id) {
-                        resolvedId = varsList[0].variation_id;
+                    if (!resolvedVarId && varsList[0] && varsList[0].variation_id) {
+                        resolvedVarId = varsList[0].variation_id;
                     }
-                    if (resolvedId && varIdInput) {
-                        varIdInput.value = resolvedId;
+                    if (resolvedVarId && varIdInput) {
+                        varIdInput.value = resolvedVarId;
                     }
                 }
             } catch (err) {}
@@ -152,7 +155,6 @@ window.mazeBuyNow = window.mazeBuyNow || function(btn, event) {
     if (buyNowInput) {
         buyNowInput.value = '1';
     }
-    form.setAttribute('data-maze-buy-now', 'true');
 
     if (window.fetch && window.FormData) {
         var formData = new FormData(form);
@@ -161,7 +163,7 @@ window.mazeBuyNow = window.mazeBuyNow || function(btn, event) {
         formData.set('maze_buy_now', '1');
         formData.set('product_id', '<?php echo absint( $product->get_id() ); ?>');
         formData.set('add-to-cart', '<?php echo absint( $product->get_id() ); ?>');
-        if (resolvedId > 0) formData.set('variation_id', String(resolvedId));
+        if (resolvedVarId > 0) formData.set('variation_id', String(resolvedVarId));
         if (window.mazeData && window.mazeData.nonce) {
             formData.set('maze_nonce', window.mazeData.nonce);
         }
@@ -169,10 +171,7 @@ window.mazeBuyNow = window.mazeBuyNow || function(btn, event) {
             formData.set('quantity', '1');
         }
 
-        var ajaxUrl = (window.mazeData && window.mazeData.ajaxUrl) ? window.mazeData.ajaxUrl : '/wp-admin/admin-ajax.php';
-        var fallbackTimer = setTimeout(function() {
-            HTMLFormElement.prototype.submit.call(form);
-        }, 3500);
+        var ajaxUrl = (window.mazeData && window.mazeData.ajaxUrl) ? window.mazeData.ajaxUrl : (window.location.origin + '/wp-admin/admin-ajax.php');
 
         fetch(ajaxUrl, {
             method: 'POST',
@@ -181,19 +180,30 @@ window.mazeBuyNow = window.mazeBuyNow || function(btn, event) {
         })
         .then(function(res) { return res.json(); })
         .then(function(data) {
-            clearTimeout(fallbackTimer);
-            var target = (data && data.data && data.data.checkout_url) ? data.data.checkout_url : checkoutUrl;
-            if (data && data.success === false && !data.data.checkout_url) { HTMLFormElement.prototype.submit.call(form); return; }
-            window.location.href = target;
+            if (data && data.success && data.data && data.data.checkout_url) {
+                window.location.href = data.data.checkout_url;
+                return;
+            }
+            if (data && data.data && data.data.checkout_url && !data.data.message) {
+                window.location.href = data.data.checkout_url;
+                return;
+            }
+            if (data && data.success === false && data.data && data.data.message) {
+                alert(data.data.message);
+                btn.classList.remove('is-loading', 'opacity-80');
+                btn.innerHTML = '<span class="btn-text">' + defaultText + '</span>';
+                if (buyNowInput) buyNowInput.value = '0';
+                return;
+            }
+            window.location.href = checkoutUrl;
         })
         .catch(function() {
-            clearTimeout(fallbackTimer);
-            HTMLFormElement.prototype.submit.call(form);
+            window.location.href = checkoutUrl;
         });
 
         return false;
     } else {
-        HTMLFormElement.prototype.submit.call(form);
+        window.location.href = checkoutUrl;
         return false;
     }
 };
