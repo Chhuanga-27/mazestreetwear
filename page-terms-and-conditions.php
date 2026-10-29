@@ -31,7 +31,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
   "publisher": {
     "@type": "Organization",
     "name": "Maze Streetwear",
-    "legalName": "LALHRUAIZELA SAILO",
+    "legalName": "Maze Streetwear",
     "url": "https://mazestw.in",
     "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
     "address": {
@@ -103,9 +103,8 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                 <div>
                     <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Legal Business Name', 'mazestreetwear' ); ?></span>
                     <strong class="font-black text-black text-sm sm:text-base">
-                        LALHRUAIZELA SAILO
+                        Maze Streetwear
                     </strong>
-                    <span class="block text-[11px] font-mono text-neutral-600 font-bold">Trade Name: Maze Streetwear</span>
                 </div>
                 <div>
                     <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Exclusive Jurisdiction', 'mazestreetwear' ); ?></span>
@@ -256,7 +255,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                 <!-- Preamble / Introduction Card -->
                 <section class="border-l-4 border-black pl-5 sm:pl-7 py-2 bg-white">
                     <p class="text-base sm:text-lg font-sans text-neutral-900 leading-relaxed font-normal">
-                        Welcome to <a href="https://mazestw.in" class="underline hover:text-neutral-600 transition-colors font-medium">mazestw.in</a>. This Website is owned and operated by <strong>LALHRUAIZELA SAILO</strong> (trading as <strong>Maze Streetwear</strong>). By browsing our catalog, creating an account, or completing a transaction on this Website, you agree to be bound by the following Terms and Conditions (&ldquo;Terms of Service&rdquo;). If you do not agree with any part of these terms, please discontinue using this Website immediately.
+                        Welcome to <a href="https://mazestw.in" class="underline hover:text-neutral-600 transition-colors font-medium">mazestw.in</a>. This Website is owned and operated by <strong>Maze Streetwear</strong>. By browsing our catalog, creating an account, or completing a transaction on this Website, you agree to be bound by the following Terms and Conditions (&ldquo;Terms of Service&rdquo;). If you do not agree with any part of these terms, please discontinue using this Website immediately.
                     </p>
                 </section>
 

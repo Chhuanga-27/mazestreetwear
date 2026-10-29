@@ -29,7 +29,7 @@ get_header();
   "publisher": {
     "@type": "Organization",
     "name": "Maze Streetwear",
-    "legalName": "LALHRUAIZELA SAILO",
+    "legalName": "Maze Streetwear",
     "url": "https://mazestw.in",
     "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
     "address": {
@@ -100,8 +100,7 @@ get_header();
                 </div>
                 <div>
                     <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Legal Entity Name', 'mazestreetwear' ); ?></span>
-                    <strong class="font-black text-black text-sm sm:text-base">LALHRUAIZELA SAILO</strong>
-                    <span class="block text-[11px] font-mono text-neutral-600 font-bold">Trade Name: Maze Streetwear</span>
+                    <strong class="font-black text-black text-sm sm:text-base">Maze Streetwear</strong>
                 </div>
                 <div>
                     <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Grievance Jurisdiction', 'mazestreetwear' ); ?></span>
@@ -251,7 +250,7 @@ get_header();
                 <!-- Preamble / Introduction Card -->
                 <section class="border-l-4 border-black pl-5 sm:pl-7 py-2 bg-white">
                     <p class="text-base sm:text-lg font-sans text-neutral-900 leading-relaxed font-normal">
-                        This Privacy Policy applies to the website <a href="https://mazestw.in" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a> (&ldquo;Website&rdquo;), owned and operated by <strong>LALHRUAIZELA SAILO</strong> (trading and operating as <strong>Maze Streetwear</strong>, &ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;). We are committed to protecting the privacy and personal information of our visitors and customers. This Privacy Policy details how we collect, use, store, disclose, and safeguard your information when you browse our Website or make a purchase from our store.
+                        This Privacy Policy applies to the website <a href="https://mazestw.in" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a> (&ldquo;Website&rdquo;), owned and operated by <strong>Maze Streetwear</strong> (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;). We are committed to protecting the privacy and personal information of our visitors and customers. This Privacy Policy details how we collect, use, store, disclose, and safeguard your information when you browse our Website or make a purchase from our store.
                     </p>
                 </section>
 
@@ -504,7 +503,7 @@ get_header();
                                     <?php esc_html_e( 'STATUTORY APPOINTMENT // IT ACT 2000', 'mazestreetwear' ); ?>
                                 </span>
                                 <h3 class="text-2xl font-black font-sans uppercase tracking-tight text-black">
-                                    LALHRUAIZELA SAILO
+                                    <?php esc_html_e( 'Grievance Officer', 'mazestreetwear' ); ?>
                                 </h3>
                                 <p class="text-xs font-mono text-neutral-600 mt-0.5">
                                     <?php esc_html_e( 'Legal Entity / Brand: Maze Streetwear (mazestw.in)', 'mazestreetwear' ); ?>

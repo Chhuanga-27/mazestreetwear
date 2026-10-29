@@ -41,7 +41,7 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
       "@type": "ClothingStore",
       "@id": "https://mazestw.in/#organization",
       "name": "Maze Streetwear",
-      "legalName": "LALHRUAIZELA SAILO",
+      "legalName": "Maze Streetwear",
       "alternateName": ["MAZE", "mazestw.in"],
       "url": "https://mazestw.in",
       "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",

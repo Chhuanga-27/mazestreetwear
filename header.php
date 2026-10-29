@@ -154,7 +154,7 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
                     "@type": "ClothingStore",
                     "@id": "<?php echo esc_url(home_url('/#organization')); ?>",
                     "name": "Maze Streetwear",
-                    "legalName": "LALHRUAIZELA SAILO",
+                    "legalName": "Maze Streetwear",
                     "alternateName": ["MAZE", "mazestw.in"],
                     "url": "<?php echo esc_url(home_url('/')); ?>",
                     "logo": {

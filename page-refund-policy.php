@@ -31,7 +31,7 @@ $refund_url = function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazest
   "publisher": {
     "@type": "Organization",
     "name": "Maze Streetwear",
-    "legalName": "LALHRUAIZELA SAILO",
+    "legalName": "Maze Streetwear",
     "url": "https://mazestw.in",
     "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
     "address": {
@@ -276,7 +276,7 @@ $refund_url = function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazest
                 <!-- Preamble / Introduction Card -->
                 <section class="border-l-4 border-black pl-5 sm:pl-7 py-2 bg-white">
                     <p class="text-base sm:text-lg font-sans text-neutral-900 leading-relaxed font-normal">
-                        At <strong>Maze Streetwear</strong> (<a href="https://mazestw.in" target="_blank" rel="noopener noreferrer" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a>), operated by registered legal entity <strong>LALHRUAIZELA SAILO</strong>, we prioritize precision craftsmanship and premium streetwear standards. If you are not satisfied with your purchase, please review our comprehensive policy regarding returns, size exchanges, and store credit.
+                        At <strong>Maze Streetwear</strong> (<a href="https://mazestw.in" target="_blank" rel="noopener noreferrer" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a>), we prioritize precision craftsmanship and premium streetwear standards. If you are not satisfied with your purchase, please review our comprehensive policy regarding returns, size exchanges, and store credit.
                     </p>
                 </section>
 
@@ -707,7 +707,7 @@ Reason for Request: [e.g. Size Exchange / Fit Adjustment]</pre>
                         <div class="divide-y divide-neutral-200 font-mono text-xs">
                             <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                 <span class="text-neutral-400 uppercase tracking-wider"><?php esc_html_e( 'Legal Entity / Brand', 'mazestreetwear' ); ?></span>
-                                <strong class="text-black font-bold uppercase"><?php esc_html_e( 'LALHRUAIZELA SAILO (Maze Streetwear)', 'mazestreetwear' ); ?></strong>
+                                <strong class="text-black font-bold uppercase"><?php esc_html_e( 'Maze Streetwear', 'mazestreetwear' ); ?></strong>
                             </div>
 
                             <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
