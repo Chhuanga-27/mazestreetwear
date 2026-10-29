@@ -379,10 +379,14 @@ function mazestreetwear_ajax_add_to_cart()
         if (null === WC()->customer && class_exists('WC_Customer')) {
             WC()->customer = new WC_Customer(get_current_user_id(), true);
         }
-        if (null === WC()->cart && class_exists('WC_Cart')) {
-            WC()->cart = new WC_Cart();
+        if (null === WC()->cart) {
+            if (function_exists('wc_load_cart')) {
+                wc_load_cart();
+            } elseif (class_exists('WC_Cart')) {
+                WC()->cart = new WC_Cart();
+            }
         }
-        if (WC()->session && method_exists(WC()->session, 'has_session') && ! WC()->session->has_session() && method_exists(WC()->session, 'set_customer_session_cookie')) {
+        if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie')) {
             WC()->session->set_customer_session_cookie(true);
         }
     }
@@ -548,29 +552,34 @@ function mazestreetwear_ajax_add_to_cart()
 
     // If Buy Now was requested, check if this EXACT item or variation is ALREADY in the cart
     if ($is_buy_now && function_exists('WC') && WC()->cart) {
-        $found_in_cart = false;
-        foreach (WC()->cart->get_cart() as $c_item) {
+        $found_cart_item_key = false;
+        foreach (WC()->cart->get_cart() as $c_key => $c_item) {
             if ($variation_id && ! empty($c_item['variation_id']) && $c_item['variation_id'] == $variation_id) {
-                $found_in_cart = true;
+                $found_cart_item_key = $c_key;
                 break;
             } elseif (! $variation_id && $c_item['product_id'] == $product_id) {
                 if (! empty($cart_item_data['selected_size']) && ! empty($c_item['selected_size'])) {
                     if ($cart_item_data['selected_size'] === $c_item['selected_size']) {
-                        $found_in_cart = true;
+                        $found_cart_item_key = $c_key;
                         break;
                     }
                 } else {
-                    $found_in_cart = true;
+                    $found_cart_item_key = $c_key;
                     break;
                 }
             }
         }
-        if ($found_in_cart) {
+        if ($found_cart_item_key) {
+            $existing_item = WC()->cart->get_cart_item($found_cart_item_key);
+            $curr_qty      = ! empty($existing_item['quantity']) ? (int) $existing_item['quantity'] : 1;
+            if ($quantity > $curr_qty) {
+                WC()->cart->set_quantity($found_cart_item_key, $quantity);
+            }
             WC()->cart->calculate_totals();
             if (method_exists(WC()->cart, 'maybe_set_cart_cookies')) {
                 WC()->cart->maybe_set_cart_cookies();
             }
-            if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie') && ! WC()->session->has_session()) {
+            if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie')) {
                 WC()->session->set_customer_session_cookie(true);
             }
             while (ob_get_level() > 0) {
@@ -596,7 +605,7 @@ function mazestreetwear_ajax_add_to_cart()
             if (method_exists(WC()->cart, 'maybe_set_cart_cookies')) {
                 WC()->cart->maybe_set_cart_cookies();
             }
-            if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie') && ! WC()->session->has_session()) {
+            if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie')) {
                 WC()->session->set_customer_session_cookie(true);
             }
             while (ob_get_level() > 0) {
@@ -628,7 +637,7 @@ function mazestreetwear_ajax_add_to_cart()
         if (method_exists(WC()->cart, 'maybe_set_cart_cookies')) {
             WC()->cart->maybe_set_cart_cookies();
         }
-        if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie') && ! WC()->session->has_session()) {
+        if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie')) {
             WC()->session->set_customer_session_cookie(true);
         }
 
@@ -663,7 +672,7 @@ function mazestreetwear_ajax_add_to_cart()
             if (method_exists(WC()->cart, 'maybe_set_cart_cookies')) {
                 WC()->cart->maybe_set_cart_cookies();
             }
-            if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie') && ! WC()->session->has_session()) {
+            if (WC()->session && method_exists(WC()->session, 'set_customer_session_cookie')) {
                 WC()->session->set_customer_session_cookie(true);
             }
             while (ob_get_level() > 0) {
@@ -718,6 +727,23 @@ add_filter('woocommerce_add_to_cart_redirect', function ($url) {
 }, 99);
 
 /**
+ * Ensure add-to-cart parameter is populated from product_id for native Buy Now submissions
+ */
+add_action('wp_loaded', function () {
+    $is_buy_now = (! empty($_REQUEST['maze_buy_now']) && '0' !== (string)$_REQUEST['maze_buy_now'])
+        || (! empty($_POST['maze_buy_now']) && '0' !== (string)$_POST['maze_buy_now'])
+        || ! empty($_REQUEST['is_buy_now'])
+        || ! empty($_POST['is_buy_now']);
+
+    if ($is_buy_now) {
+        if (empty($_REQUEST['add-to-cart']) && ! empty($_REQUEST['product_id'])) {
+            $_REQUEST['add-to-cart'] = absint($_REQUEST['product_id']);
+            $_POST['add-to-cart']    = absint($_REQUEST['product_id']);
+        }
+    }
+}, 15);
+
+/**
  * Direct Checkout redirect for any product page request carrying Buy Now parameters
  * Priority 99 guarantees WooCommerce core add_to_cart_action at priority 20 has finished adding the product to cart
  */
@@ -729,7 +755,7 @@ add_action('template_redirect', function () {
         || isset($_GET['buy_now']);
 
     if ($is_buy_now && function_exists('is_product') && is_product()) {
-        if (! empty($_REQUEST['add-to-cart']) && function_exists('wc_get_checkout_url')) {
+        if (function_exists('wc_get_checkout_url')) {
             wp_safe_redirect(wc_get_checkout_url());
             exit;
         }

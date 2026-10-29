@@ -29,6 +29,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 
 <form class="variations_form cart space-y-6" action="<?php echo esc_url( apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() ) ); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product->get_id() ); ?>" data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok. ?>">
     <?php do_action( 'woocommerce_before_variations_form' ); ?>
+    <input type="hidden" name="selected_size" class="maze-selected-size-input" value="" />
 
     <?php if ( empty( $available_variations ) && false !== $available_variations ) : ?>
         <p class="stock out-of-stock font-bebas text-base sm:text-lg font-normal uppercase tracking-wider text-black bg-neutral-100 p-3 border border-black">

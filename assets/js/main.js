@@ -1271,6 +1271,28 @@
 
             // Native submit fallback function
             function doNativeSubmit() {
+                if (productId) {
+                    let $addInput = $form.find('input[name="add-to-cart"]');
+                    if (!$addInput.length) {
+                        $form.append('<input type="hidden" name="add-to-cart" value="' + productId + '" />');
+                    } else if (!$addInput.val()) {
+                        $addInput.val(productId);
+                    }
+                    let $prodInput = $form.find('input[name="product_id"]');
+                    if (!$prodInput.length) {
+                        $form.append('<input type="hidden" name="product_id" value="' + productId + '" />');
+                    } else if (!$prodInput.val()) {
+                        $prodInput.val(productId);
+                    }
+                }
+                if (resolvedVarId > 0) {
+                    let $varInput = $form.find('input[name="variation_id"]');
+                    if (!$varInput.length) {
+                        $form.append('<input type="hidden" name="variation_id" value="' + resolvedVarId + '" />');
+                    } else {
+                        $varInput.val(resolvedVarId);
+                    }
+                }
                 $buyNowInput.val('1');
                 if ($form[0]) {
                     HTMLFormElement.prototype.submit.call($form[0]);
@@ -1362,8 +1384,18 @@
                 timeout: 5000,
                 success: function (res) {
                     clearTimeout(safetyTimer);
-                    const targetCheckout = (res && res.data && res.data.checkout_url) ? res.data.checkout_url : checkoutUrl;
-                    window.location.href = targetCheckout;
+                    if (res && res.success && res.data && res.data.checkout_url) {
+                        window.location.href = res.data.checkout_url;
+                        return;
+                    }
+                    if (res && res.data && res.data.checkout_url) {
+                        window.location.href = res.data.checkout_url;
+                        return;
+                    }
+                    doNativeSubmit();
+                    return;
+
+
                 },
                 error: function () {
                     clearTimeout(safetyTimer);

@@ -154,6 +154,8 @@ if ($product->is_in_stock()) : ?>
             </button>
         </div>
 
+        <input type="hidden" name="add-to-cart" value="<?php echo absint($product->get_id()); ?>" />
+        <input type="hidden" name="product_id" value="<?php echo absint($product->get_id()); ?>" />
         <input type="hidden" name="maze_buy_now" class="maze-buy-now-input" value="0" />
 
         <?php do_action('woocommerce_after_add_to_cart_button'); ?>
@@ -245,6 +247,8 @@ if ($product->is_in_stock()) : ?>
                 formData.set('action', 'maze_ajax_add_to_cart');
                 formData.set('is_buy_now', '1');
                 formData.set('maze_buy_now', '1');
+                formData.set('product_id', '<?php echo absint($product->get_id()); ?>');
+                formData.set('add-to-cart', '<?php echo absint($product->get_id()); ?>');
                 if (window.mazeData && window.mazeData.nonce) {
                     formData.set('maze_nonce', window.mazeData.nonce);
                 }
@@ -266,6 +270,7 @@ if ($product->is_in_stock()) : ?>
                 .then(function(data) {
                     clearTimeout(fallbackTimer);
                     var target = (data && data.data && data.data.checkout_url) ? data.data.checkout_url : checkoutUrl;
+                    if (data && data.success === false && !data.data.checkout_url) { HTMLFormElement.prototype.submit.call(form); return; }
                     window.location.href = target;
                 })
                 .catch(function() {
@@ -279,6 +284,8 @@ if ($product->is_in_stock()) : ?>
                 return false;
             }
         };
+
+    </script>
 
     <?php do_action('woocommerce_after_add_to_cart_form'); ?>
 
