@@ -2,7 +2,7 @@
 /**
  * Template Name: Refund & Returns Policy
  *
- * Official Refund, Exchange & Store Credit Policy page template for Maze Streetwear (mazestw.in).
+ * Official Refund, Exchange & Store Credit Policy page template for Maze (mazestw.in).
  * Formatted under Indian E-Commerce consumer guidelines, IT regulations, and brand quality standards.
  *
  * @package MazeStreetwear
@@ -23,15 +23,15 @@ $refund_url = function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazest
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "Refund & Exchange Policy - Maze Streetwear",
+  "name": "Refund & Exchange Policy - Maze",
   "url": "<?php echo esc_url( $refund_url ); ?>",
-  "description": "Official Return, Size Exchange, and Store Credit Policy of Maze Streetwear (mazestw.in) detailing our 7-day return window, store credit policy, eligibility conditions, and support protocol.",
+  "description": "Official Return, Size Exchange, and Store Credit Policy of Maze (mazestw.in) detailing our 7-day return window, store credit policy, eligibility conditions, and support protocol.",
   "datePublished": "2026-10-15",
   "dateModified": "2026-10-15",
   "publisher": {
     "@type": "Organization",
-    "name": "Maze Streetwear",
-    "legalName": "Maze Streetwear",
+    "name": "Maze",
+    "legalName": "Maze",
     "url": "https://mazestw.in",
     "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
     "address": {
@@ -276,7 +276,7 @@ $refund_url = function_exists( 'mazestreetwear_get_refund_policy_url' ) ? mazest
                 <!-- Preamble / Introduction Card -->
                 <section class="border-l-4 border-black pl-5 sm:pl-7 py-2 bg-white">
                     <p class="text-base sm:text-lg font-sans text-neutral-900 leading-relaxed font-normal">
-                        At <strong>Maze Streetwear</strong> (<a href="https://mazestw.in" target="_blank" rel="noopener noreferrer" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a>), we prioritize precision craftsmanship and premium streetwear standards. If you are not satisfied with your purchase, please review our comprehensive policy regarding returns, size exchanges, and store credit.
+                        At <strong>Maze</strong> (<a href="https://mazestw.in" target="_blank" rel="noopener noreferrer" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a>), we prioritize precision craftsmanship and premium streetwear standards. If you are not satisfied with your purchase, please review our comprehensive policy regarding returns, size exchanges, and store credit.
                     </p>
                 </section>
 
@@ -697,7 +697,7 @@ Reason for Request: [e.g. Size Exchange / Fit Adjustment]</pre>
                     <div class="border border-black bg-white">
                         <div class="p-6 border-b border-black bg-neutral-50">
                             <h3 class="text-lg font-bold font-sans uppercase tracking-tight text-black mb-1">
-                                <?php esc_html_e( 'Maze Streetwear Concierge Desk', 'mazestreetwear' ); ?>
+                                <?php esc_html_e( 'Maze Concierge Desk', 'mazestreetwear' ); ?>
                             </h3>
                             <p class="text-xs text-neutral-600 font-sans">
                                 <?php esc_html_e( 'Our dedicated support team handles return authorizations, sizing guidance, and store credit dispatches.', 'mazestreetwear' ); ?>
@@ -707,7 +707,7 @@ Reason for Request: [e.g. Size Exchange / Fit Adjustment]</pre>
                         <div class="divide-y divide-neutral-200 font-mono text-xs">
                             <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                 <span class="text-neutral-400 uppercase tracking-wider"><?php esc_html_e( 'Legal Entity / Brand', 'mazestreetwear' ); ?></span>
-                                <strong class="text-black font-bold uppercase"><?php esc_html_e( 'Maze Streetwear', 'mazestreetwear' ); ?></strong>
+                                <strong class="text-black font-bold uppercase"><?php esc_html_e( 'Maze', 'mazestreetwear' ); ?></strong>
                             </div>
 
                             <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">

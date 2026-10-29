@@ -2,7 +2,7 @@
 /**
  * Single variation cart button override
  *
- * Full-width brutalist black button for Maze Streetwear variable products.
+ * Full-width brutalist black button for Maze variable products.
  *
  * @package MazeStreetwear
  * @version 1.2.0

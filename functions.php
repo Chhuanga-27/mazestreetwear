@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Maze Streetwear Theme Functions
+ * Maze Theme Functions
  *
  * @package MazeStreetwear
  * @version 1.0.0
@@ -1652,7 +1652,7 @@ function mazestreetwear_handle_contact_submission()
     $to           = 'enquiries@mazestw.in';
     $mail_subject = sprintf('[MAZE CONCIERGE] %s: %s', strtoupper($department), ! empty($subject) ? $subject : 'New Inquiry from ' . $name);
 
-    $body  = "MAZE STREETWEAR - CONCIERGE TRANSMISSION\n";
+    $body  = "MAZE - CONCIERGE TRANSMISSION\n";
     $body .= "==========================================\n\n";
     $body .= "Name: " . $name . "\n";
     $body .= "Email: " . $email . "\n";
@@ -1691,7 +1691,7 @@ add_action('admin_post_maze_contact_submission', 'mazestreetwear_handle_contact_
 add_action('admin_post_nopriv_maze_contact_submission', 'mazestreetwear_handle_contact_submission');
 
 /**
- * Default Favicon & Site Icon Support for Maze Streetwear
+ * Default Favicon & Site Icon Support for Maze
  * Ensures WordPress core, REST API, feeds, and third-party plugins use the custom MAZE emblem favicon
  * when no icon is uploaded in Appearance > Customize.
  *
@@ -1832,7 +1832,7 @@ add_filter('woocommerce_cart_item_name', 'mazestreetwear_uppercase_cart_item_nam
 add_filter('woocommerce_order_item_name', 'mazestreetwear_uppercase_cart_item_name', 10, 3);
 
 /**
- * Returns curated garment size charts for Maze Streetwear
+ * Returns curated garment size charts for Maze
  *
  * @return array
  */
@@ -2336,6 +2336,149 @@ function mazestreetwear_size_chart_inline_guard_css()
 add_action('wp_head', 'mazestreetwear_size_chart_inline_guard_css', 999);
 
 /**
+ * Hard-enforce Black background and White text for Cart ("Proceed to Checkout")
+ * and Checkout ("Place Order") buttons site-wide across Classic WooCommerce and Blocks.
+ */
+function mazestreetwear_cart_checkout_button_inline_css()
+{
+    ?>
+    <style id="maze-cart-checkout-button-styles">
+    /* CSS Variables for Gutenberg Cart & Checkout Blocks */
+    :root,
+    .woocommerce-cart,
+    .woocommerce-checkout,
+    .wp-block-woocommerce-cart,
+    .wp-block-woocommerce-checkout,
+    .wc-block-cart,
+    .wc-block-checkout {
+        --wc-block-components-button-background-color: #000000 !important;
+        --wc-block-components-button-color: #ffffff !important;
+        --wc-block-components-button-hover-background-color: #262626 !important;
+        --wc-block-components-button-hover-color: #ffffff !important;
+    }
+
+    /* Cart "Proceed to Checkout" & Checkout "Place Order" buttons */
+    .woocommerce-cart .checkout-button,
+    .woocommerce-cart .wc-proceed-to-checkout a,
+    .woocommerce-cart .wc-proceed-to-checkout button,
+    .woocommerce .cart-collaterals .cart_totals .checkout-button,
+    .woocommerce .cart-collaterals .checkout-button,
+    a.checkout-button,
+    button.checkout-button,
+    .wc-block-cart__submit-button,
+    .wc-block-cart__submit a,
+    .wc-block-cart__submit button,
+    .wc-block-cart__submit-container .wc-block-cart__submit-button,
+    .wp-block-woocommerce-cart .wc-block-cart__submit-button,
+    .wp-block-woocommerce-cart .wc-block-components-checkout-place-order-button,
+    .wp-block-woocommerce-cart .wc-block-components-button:not(.is-link),
+    .wc-block-cart .wc-block-components-button:not(.is-link),
+    #place_order,
+    button#place_order,
+    input#place_order,
+    .woocommerce-checkout #payment #place_order,
+    .woocommerce-checkout button#place_order,
+    .woocommerce-checkout #place_order,
+    .woocommerce-checkout .place-order button,
+    .woocommerce-checkout .place-order input[type="submit"],
+    .wc-block-components-checkout-place-order-button,
+    .wc-block-checkout__actions .wc-block-components-checkout-place-order-button,
+    .wc-block-checkout__actions button,
+    .wc-block-checkout__actions_row button,
+    .wp-block-woocommerce-checkout .wc-block-components-checkout-place-order-button,
+    .wp-block-woocommerce-checkout .wc-block-components-button:not(.is-link),
+    .wc-block-checkout .wc-block-components-checkout-place-order-button,
+    .wc-block-checkout .wc-block-components-button:not(.is-link) {
+        background: #000000 !important;
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        border: 1px solid #000000 !important;
+        border-color: #000000 !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Inner text & spans */
+    .woocommerce-cart .checkout-button *,
+    .woocommerce-cart .wc-proceed-to-checkout a *,
+    .woocommerce-cart .wc-proceed-to-checkout button *,
+    .wc-block-cart__submit-button *,
+    .wc-block-cart__submit *,
+    .wc-block-components-checkout-place-order-button *,
+    .wc-block-checkout__actions button *,
+    #place_order *,
+    .woocommerce-checkout #payment #place_order * {
+        color: #ffffff !important;
+    }
+
+    /* Hover state */
+    .woocommerce-cart .checkout-button:hover,
+    .woocommerce-cart .wc-proceed-to-checkout a:hover,
+    .woocommerce-cart .wc-proceed-to-checkout button:hover,
+    .woocommerce .cart-collaterals .cart_totals .checkout-button:hover,
+    .woocommerce .cart-collaterals .checkout-button:hover,
+    a.checkout-button:hover,
+    button.checkout-button:hover,
+    .wc-block-cart__submit-button:hover,
+    .wc-block-cart__submit a:hover,
+    .wc-block-cart__submit button:hover,
+    .wc-block-cart__submit-container .wc-block-cart__submit-button:hover,
+    .wp-block-woocommerce-cart .wc-block-cart__submit-button:hover,
+    .wp-block-woocommerce-cart .wc-block-components-checkout-place-order-button:hover,
+    .wp-block-woocommerce-cart .wc-block-components-button:not(.is-link):hover,
+    .wc-block-cart .wc-block-components-button:not(.is-link):hover,
+    #place_order:hover,
+    button#place_order:hover,
+    input#place_order:hover,
+    .woocommerce-checkout #payment #place_order:hover,
+    .woocommerce-checkout button#place_order:hover,
+    .woocommerce-checkout #place_order:hover,
+    .woocommerce-checkout .place-order button:hover,
+    .woocommerce-checkout .place-order input[type="submit"]:hover,
+    .wc-block-components-checkout-place-order-button:hover,
+    .wc-block-checkout__actions .wc-block-components-checkout-place-order-button:hover,
+    .wc-block-checkout__actions button:hover,
+    .wc-block-checkout__actions_row button:hover,
+    .wp-block-woocommerce-checkout .wc-block-components-checkout-place-order-button:hover,
+    .wp-block-woocommerce-checkout .wc-block-components-button:not(.is-link):hover,
+    .wc-block-checkout .wc-block-components-checkout-place-order-button:hover,
+    .wc-block-checkout .wc-block-components-button:not(.is-link):hover {
+        background: #262626 !important;
+        background-color: #262626 !important;
+        color: #ffffff !important;
+        border-color: #262626 !important;
+    }
+
+    .woocommerce-cart .checkout-button:hover *,
+    .wc-block-cart__submit-button:hover *,
+    .wc-block-cart__submit *:hover,
+    .wc-block-components-checkout-place-order-button:hover *,
+    .wc-block-checkout__actions button:hover *,
+    #place_order:hover *,
+    .woocommerce-checkout #payment #place_order:hover * {
+        color: #ffffff !important;
+    }
+
+    /* Focus & Active states */
+    .woocommerce-cart .checkout-button:focus,
+    .woocommerce-cart .checkout-button:active,
+    .wc-block-cart__submit-button:focus,
+    .wc-block-cart__submit-button:active,
+    #place_order:focus,
+    #place_order:active,
+    .wc-block-components-checkout-place-order-button:focus,
+    .wc-block-components-checkout-place-order-button:active {
+        background: #000000 !important;
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        border-color: #000000 !important;
+    }
+    </style>
+    <?php
+}
+add_action('wp_head', 'mazestreetwear_cart_checkout_button_inline_css', 999);
+
+/**
  * Permanently redirect deprecated Lookbook & Archive page URLs to Shop catalog
  */
 function mazestreetwear_redirect_deprecated_archive_lookbook()
@@ -2529,7 +2672,7 @@ add_action('init', 'mazestreetwear_clean_thankyou_hooks');
 
 /**
  * 1. Remove 'Downloads' from WooCommerce My Account navigation menu.
- * MAZE Streetwear exclusively retails physical garments; digital downloads are not applicable.
+ * MAZE exclusively retails physical garments; digital downloads are not applicable.
  *
  * @param array $items Array of account navigation menu endpoints and labels.
  * @return array

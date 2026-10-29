@@ -2,7 +2,7 @@
 /**
  * Template Name: Privacy Policy
  *
- * Official Privacy Policy page template for Maze Streetwear (mazestw.in).
+ * Official Privacy Policy page template for Maze (mazestw.in).
  * Formatted under Indian Information Technology Act, 2000 and RBI guidelines.
  *
  * @package MazeStreetwear
@@ -21,15 +21,15 @@ get_header();
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "Privacy Policy - Maze Streetwear",
+  "name": "Privacy Policy - Maze",
   "url": "<?php echo esc_url( function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? mazestreetwear_get_privacy_policy_url() : home_url( '/privacy-policy/' ) ); ?>",
-  "description": "Official Privacy Policy of Maze Streetwear detailing data collection, PayU payment security, Indian IT Act 2000 compliance, and Grievance Officer contact details.",
+  "description": "Official Privacy Policy of Maze detailing data collection, PayU payment security, Indian IT Act 2000 compliance, and Grievance Officer contact details.",
   "datePublished": "2026-10-15",
   "dateModified": "2026-10-15",
   "publisher": {
     "@type": "Organization",
-    "name": "Maze Streetwear",
-    "legalName": "Maze Streetwear",
+    "name": "Maze",
+    "legalName": "Maze",
     "url": "https://mazestw.in",
     "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
     "address": {
@@ -100,7 +100,7 @@ get_header();
                 </div>
                 <div>
                     <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Legal Entity Name', 'mazestreetwear' ); ?></span>
-                    <strong class="font-black text-black text-sm sm:text-base">Maze Streetwear</strong>
+                    <strong class="font-black text-black text-sm sm:text-base">Maze</strong>
                 </div>
                 <div>
                     <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Grievance Jurisdiction', 'mazestreetwear' ); ?></span>
@@ -250,7 +250,7 @@ get_header();
                 <!-- Preamble / Introduction Card -->
                 <section class="border-l-4 border-black pl-5 sm:pl-7 py-2 bg-white">
                     <p class="text-base sm:text-lg font-sans text-neutral-900 leading-relaxed font-normal">
-                        This Privacy Policy applies to the website <a href="https://mazestw.in" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a> (&ldquo;Website&rdquo;), owned and operated by <strong>Maze Streetwear</strong> (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;). We are committed to protecting the privacy and personal information of our visitors and customers. This Privacy Policy details how we collect, use, store, disclose, and safeguard your information when you browse our Website or make a purchase from our store.
+                        This Privacy Policy applies to the website <a href="https://mazestw.in" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a> (&ldquo;Website&rdquo;), owned and operated by <strong>Maze</strong> (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;). We are committed to protecting the privacy and personal information of our visitors and customers. This Privacy Policy details how we collect, use, store, disclose, and safeguard your information when you browse our Website or make a purchase from our store.
                     </p>
                 </section>
 
@@ -474,7 +474,7 @@ get_header();
                         </p>
 
                         <div class="pt-2">
-                            <a href="mailto:enquiries@mazestw.in?subject=<?php echo rawurlencode( 'Data Subject Rights Request - Maze Streetwear' ); ?>&body=<?php echo rawurlencode( 'Dear Grievance Officer,%0D%0A%0D%0AI would like to submit a request regarding my personal data under applicable Indian data protection standards:%0D%0A%0D%0A[ ] Request Access to Stored Data%0D%0A[ ] Correction of Personal / Address Records%0D%0A[ ] Deletion of Non-Statutory Records%0D%0A%0D%0AMy Registered Email / Phone:%0D%0AOrder Number (if applicable):%0D%0A%0D%0AThank you.' ); ?>" class="inline-flex items-center space-x-2 border border-black bg-black text-white hover:bg-neutral-800 transition-colors px-5 py-2.5 text-xs font-mono uppercase tracking-widest font-bold">
+                            <a href="mailto:enquiries@mazestw.in?subject=<?php echo rawurlencode( 'Data Subject Rights Request - Maze' ); ?>&body=<?php echo rawurlencode( 'Dear Grievance Officer,%0D%0A%0D%0AI would like to submit a request regarding my personal data under applicable Indian data protection standards:%0D%0A%0D%0A[ ] Request Access to Stored Data%0D%0A[ ] Correction of Personal / Address Records%0D%0A[ ] Deletion of Non-Statutory Records%0D%0A%0D%0AMy Registered Email / Phone:%0D%0AOrder Number (if applicable):%0D%0A%0D%0AThank you.' ); ?>" class="inline-flex items-center space-x-2 border border-black bg-black text-white hover:bg-neutral-800 transition-colors px-5 py-2.5 text-xs font-mono uppercase tracking-widest font-bold">
                                 <span><?php esc_html_e( 'SUBMIT RIGHTS REQUEST VIA EMAIL', 'mazestreetwear' ); ?></span>
                                 <span>&rarr;</span>
                             </a>
@@ -506,7 +506,7 @@ get_header();
                                     <?php esc_html_e( 'Grievance Officer', 'mazestreetwear' ); ?>
                                 </h3>
                                 <p class="text-xs font-mono text-neutral-600 mt-0.5">
-                                    <?php esc_html_e( 'Legal Entity / Brand: Maze Streetwear (mazestw.in)', 'mazestreetwear' ); ?>
+                                    <?php esc_html_e( 'Legal Entity / Brand: Maze (mazestw.in)', 'mazestreetwear' ); ?>
                                 </p>
                             </div>
                             <span class="inline-flex items-center space-x-1.5 text-xs font-mono bg-neutral-100 border border-neutral-300 px-3 py-1 font-bold text-neutral-800">
@@ -523,7 +523,7 @@ get_header();
                                     <?php esc_html_e( 'Physical Address', 'mazestreetwear' ); ?>
                                 </span>
                                 <address class="not-italic text-neutral-900 leading-relaxed font-medium">
-                                    Maze Streetwear<br>
+                                    Maze<br>
                                     Attn: Grievance Officer<br>
                                     Bungkawn Vengthar, A-25<br>
                                     Aizawl, Mizoram, 796005<br>

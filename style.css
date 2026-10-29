@@ -1,5 +1,5 @@
 /*
-Theme Name: Maze Streetwear
+Theme Name: Maze
 Theme URI: https://mazestw.in
 Author: MAZE
 Author URI: https://mazestw.in
@@ -536,6 +536,138 @@ body.woocommerce .site-header img {
 .woocommerce .return-to-shop .button:hover {
   background-color: #262626 !important;
   color: #ffffff !important;
+}
+
+/* ==========================================================================
+   CART & CHECKOUT PRIMARY BUTTONS: BLACK BACKGROUND & WHITE TEXT
+   Covers both Classic WooCommerce and WooCommerce Blocks (Gutenberg)
+   ========================================================================== */
+.woocommerce-cart,
+.woocommerce-checkout,
+.wp-block-woocommerce-cart,
+.wp-block-woocommerce-checkout,
+.wc-block-cart,
+.wc-block-checkout {
+  --wc-block-components-button-background-color: #000000 !important;
+  --wc-block-components-button-color: #ffffff !important;
+  --wc-block-components-button-hover-background-color: #262626 !important;
+  --wc-block-components-button-hover-color: #ffffff !important;
+}
+
+/* Cart "Proceed to Checkout" & Checkout "Place Order" buttons */
+.woocommerce-cart .checkout-button,
+.woocommerce-cart .wc-proceed-to-checkout a,
+.woocommerce-cart .wc-proceed-to-checkout button,
+.woocommerce .cart-collaterals .cart_totals .checkout-button,
+.woocommerce .cart-collaterals .checkout-button,
+a.checkout-button,
+button.checkout-button,
+.wc-block-cart__submit-button,
+.wc-block-cart__submit a,
+.wc-block-cart__submit button,
+.wc-block-cart__submit-container .wc-block-cart__submit-button,
+.wp-block-woocommerce-cart .wc-block-cart__submit-button,
+.wp-block-woocommerce-cart .wc-block-components-checkout-place-order-button,
+.wp-block-woocommerce-cart .wc-block-components-button:not(.is-link),
+.wc-block-cart .wc-block-components-button:not(.is-link),
+#place_order,
+button#place_order,
+input#place_order,
+.woocommerce-checkout #payment #place_order,
+.woocommerce-checkout button#place_order,
+.woocommerce-checkout #place_order,
+.woocommerce-checkout .place-order button,
+.woocommerce-checkout .place-order input[type="submit"],
+.wc-block-components-checkout-place-order-button,
+.wc-block-checkout__actions .wc-block-components-checkout-place-order-button,
+.wc-block-checkout__actions button,
+.wc-block-checkout__actions_row button,
+.wp-block-woocommerce-checkout .wc-block-components-checkout-place-order-button,
+.wp-block-woocommerce-checkout .wc-block-components-button:not(.is-link),
+.wc-block-checkout .wc-block-components-checkout-place-order-button,
+.wc-block-checkout .wc-block-components-button:not(.is-link) {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #000000 !important;
+  border-color: #000000 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.woocommerce-cart .checkout-button *,
+.woocommerce-cart .wc-proceed-to-checkout a *,
+.woocommerce-cart .wc-proceed-to-checkout button *,
+.wc-block-cart__submit-button *,
+.wc-block-cart__submit *,
+.wc-block-components-checkout-place-order-button *,
+.wc-block-checkout__actions button *,
+#place_order *,
+.woocommerce-checkout #payment #place_order * {
+  color: #ffffff !important;
+}
+
+/* Hover state */
+.woocommerce-cart .checkout-button:hover,
+.woocommerce-cart .wc-proceed-to-checkout a:hover,
+.woocommerce-cart .wc-proceed-to-checkout button:hover,
+.woocommerce .cart-collaterals .cart_totals .checkout-button:hover,
+.woocommerce .cart-collaterals .checkout-button:hover,
+a.checkout-button:hover,
+button.checkout-button:hover,
+.wc-block-cart__submit-button:hover,
+.wc-block-cart__submit a:hover,
+.wc-block-cart__submit button:hover,
+.wc-block-cart__submit-container .wc-block-cart__submit-button:hover,
+.wp-block-woocommerce-cart .wc-block-cart__submit-button:hover,
+.wp-block-woocommerce-cart .wc-block-components-checkout-place-order-button:hover,
+.wp-block-woocommerce-cart .wc-block-components-button:not(.is-link):hover,
+.wc-block-cart .wc-block-components-button:not(.is-link):hover,
+#place_order:hover,
+button#place_order:hover,
+input#place_order:hover,
+.woocommerce-checkout #payment #place_order:hover,
+.woocommerce-checkout button#place_order:hover,
+.woocommerce-checkout #place_order:hover,
+.woocommerce-checkout .place-order button:hover,
+.woocommerce-checkout .place-order input[type="submit"]:hover,
+.wc-block-components-checkout-place-order-button:hover,
+.wc-block-checkout__actions .wc-block-components-checkout-place-order-button:hover,
+.wc-block-checkout__actions button:hover,
+.wc-block-checkout__actions_row button:hover,
+.wp-block-woocommerce-checkout .wc-block-components-checkout-place-order-button:hover,
+.wp-block-woocommerce-checkout .wc-block-components-button:not(.is-link):hover,
+.wc-block-checkout .wc-block-components-checkout-place-order-button:hover,
+.wc-block-checkout .wc-block-components-button:not(.is-link):hover {
+  background: #262626 !important;
+  background-color: #262626 !important;
+  color: #ffffff !important;
+  border-color: #262626 !important;
+}
+
+.woocommerce-cart .checkout-button:hover *,
+.wc-block-cart__submit-button:hover *,
+.wc-block-cart__submit *:hover,
+.wc-block-components-checkout-place-order-button:hover *,
+.wc-block-checkout__actions button:hover *,
+#place_order:hover *,
+.woocommerce-checkout #payment #place_order:hover * {
+  color: #ffffff !important;
+}
+
+/* Focus and active states */
+.woocommerce-cart .checkout-button:focus,
+.woocommerce-cart .checkout-button:active,
+.wc-block-cart__submit-button:focus,
+.wc-block-cart__submit-button:active,
+#place_order:focus,
+#place_order:active,
+.wc-block-components-checkout-place-order-button:focus,
+.wc-block-components-checkout-place-order-button:active {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
 }
 
 .woocommerce .cart-collaterals .cart_totals {
@@ -1328,7 +1460,7 @@ body.is-accessory-product #maze-size-chart-modal,
 }
 
 /* ==========================================================================
-   MAZE STREETWEAR — SPLASH SCREEN TRANSITIONS & STYLES
+   MAZE — SPLASH SCREEN TRANSITIONS & STYLES
    ========================================================================== */
 html.maze-splash-dismissed #maze-splash-screen {
   display: none !important;
@@ -1425,7 +1557,7 @@ html.maze-splash-dismissed #maze-splash-screen {
 }
 
 /* ==========================================================================
-   MAZE STREETWEAR — REDESIGNED MODERN MINIMALIST CATALOG ORDERING
+   MAZE — REDESIGNED MODERN MINIMALIST CATALOG ORDERING
    ========================================================================== */
 .woocommerce-ordering,
 form.woocommerce-ordering {
@@ -1649,7 +1781,7 @@ select.orderby {
 }
 
 /* ==========================================================================
-   MAZE STREETWEAR — REDESIGNED MODERN MINIMALIST PAGINATION
+   MAZE — REDESIGNED MODERN MINIMALIST PAGINATION
    ========================================================================== */
 .woocommerce-pagination,
 .maze-pagination-wrap .woocommerce-pagination {

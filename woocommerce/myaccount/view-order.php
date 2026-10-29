@@ -1,6 +1,6 @@
 <?php
 /**
- * View Order - Custom Modern Brutalist UI for MAZE Streetwear
+ * View Order - Custom Modern Brutalist UI for MAZE
  *
  * This template overrides woocommerce/templates/myaccount/view-order.php.
  *

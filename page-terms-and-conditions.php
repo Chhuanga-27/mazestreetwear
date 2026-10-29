@@ -2,7 +2,7 @@
 /**
  * Template Name: Terms & Conditions
  *
- * Official Terms & Conditions page template for Maze Streetwear (mazestw.in).
+ * Official Terms & Conditions page template for Maze (mazestw.in).
  * Formatted under Indian Commercial Law, IT Act 2000, and Consumer Protection regulations.
  *
  * @package MazeStreetwear
@@ -23,15 +23,15 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "Terms & Conditions - Maze Streetwear",
+  "name": "Terms & Conditions - Maze",
   "url": "<?php echo esc_url( $terms_url ); ?>",
-  "description": "Official Terms and Conditions of Maze Streetwear (mazestw.in) detailing store terms, product representation, PayU payment settlement, intellectual property, and governing law.",
+  "description": "Official Terms and Conditions of Maze (mazestw.in) detailing store terms, product representation, PayU payment settlement, intellectual property, and governing law.",
   "datePublished": "2026-10-15",
   "dateModified": "2026-10-15",
   "publisher": {
     "@type": "Organization",
-    "name": "Maze Streetwear",
-    "legalName": "Maze Streetwear",
+    "name": "Maze",
+    "legalName": "Maze",
     "url": "https://mazestw.in",
     "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
     "address": {
@@ -103,7 +103,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                 <div>
                     <span class="block text-xs uppercase tracking-wider text-neutral-700 font-bold mb-1"><?php esc_html_e( 'Legal Business Name', 'mazestreetwear' ); ?></span>
                     <strong class="font-black text-black text-sm sm:text-base">
-                        Maze Streetwear
+                        Maze
                     </strong>
                 </div>
                 <div>
@@ -255,7 +255,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                 <!-- Preamble / Introduction Card -->
                 <section class="border-l-4 border-black pl-5 sm:pl-7 py-2 bg-white">
                     <p class="text-base sm:text-lg font-sans text-neutral-900 leading-relaxed font-normal">
-                        Welcome to <a href="https://mazestw.in" class="underline hover:text-neutral-600 transition-colors font-medium">mazestw.in</a>. This Website is owned and operated by <strong>Maze Streetwear</strong>. By browsing our catalog, creating an account, or completing a transaction on this Website, you agree to be bound by the following Terms and Conditions (&ldquo;Terms of Service&rdquo;). If you do not agree with any part of these terms, please discontinue using this Website immediately.
+                        Welcome to <a href="https://mazestw.in" class="underline hover:text-neutral-600 transition-colors font-medium">mazestw.in</a>. This Website is owned and operated by <strong>Maze</strong>. By browsing our catalog, creating an account, or completing a transaction on this Website, you agree to be bound by the following Terms and Conditions (&ldquo;Terms of Service&rdquo;). If you do not agree with any part of these terms, please discontinue using this Website immediately.
                     </p>
                 </section>
 
@@ -276,7 +276,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                                 <h3><?php esc_html_e( 'Merchant Identification & Operating Details', 'mazestreetwear' ); ?></h3>
                             </div>
                             <div class="text-sm text-neutral-800 font-sans leading-relaxed space-y-1.5">
-                                <p><strong><?php esc_html_e( 'Brand / Trade Name:', 'mazestreetwear' ); ?></strong> Maze Streetwear</p>
+                                <p><strong><?php esc_html_e( 'Brand / Trade Name:', 'mazestreetwear' ); ?></strong> Maze</p>
                                 <p><strong><?php esc_html_e( 'Platform / Domain:', 'mazestreetwear' ); ?></strong> <a href="https://mazestw.in" class="underline hover:text-black font-medium">https://mazestw.in</a></p>
                                 <p><strong><?php esc_html_e( 'Registered Office & Operating Address:', 'mazestreetwear' ); ?></strong> Bungkawn Vengthar, A-25, Aizawl, Mizoram - 796005, India</p>
                                 <p><strong><?php esc_html_e( 'Official Email:', 'mazestreetwear' ); ?></strong> <a href="mailto:enquiries@mazestw.in" class="underline hover:text-black font-medium">enquiries@mazestw.in</a></p>
@@ -373,7 +373,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
                             <span class="font-mono text-xs font-bold text-black mt-0.5 flex-shrink-0">[02]</span>
                             <div class="text-sm text-neutral-800 font-sans leading-relaxed space-y-2">
                                 <div>
-                                    <strong>Payment Settlement:</strong> <?php esc_html_e( 'We accept payments via authorized digital payment gateways through PayU India, including Unified Payments Interface (UPI - GPay, PhonePe, Paytm, BHIM), major Credit and Debit Cards (Visa, MasterCard, RuPay), and Net Banking. All online payment settlements are processed securely for Maze Streetwear.', 'mazestreetwear' ); ?>
+                                    <strong>Payment Settlement:</strong> <?php esc_html_e( 'We accept payments via authorized digital payment gateways through PayU India, including Unified Payments Interface (UPI - GPay, PhonePe, Paytm, BHIM), major Credit and Debit Cards (Visa, MasterCard, RuPay), and Net Banking. All online payment settlements are processed securely for Maze.', 'mazestreetwear' ); ?>
                                 </div>
                                 <div class="flex flex-wrap gap-2 pt-1 font-mono text-[10px] uppercase text-neutral-600">
                                     <span class="px-2 py-0.5 bg-white border border-neutral-300">UPI / QR</span>
@@ -405,7 +405,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
 
                     <div class="p-6 border border-black bg-white space-y-4">
                         <p class="text-sm sm:text-base text-neutral-800 font-sans leading-relaxed">
-                            <?php esc_html_e( 'All content on this Website—including the brand name "Maze Streetwear," custom logos, apparel graphic prints, lookbook imagery, product descriptions, website code, and user interface styling—is the exclusive intellectual property of Maze Streetwear. You may not copy, reproduce, modify, publish, distribute, or exploit any content without express written authorization.', 'mazestreetwear' ); ?>
+                            <?php esc_html_e( 'All content on this Website—including the brand name "Maze," custom logos, apparel graphic prints, lookbook imagery, product descriptions, website code, and user interface styling—is the exclusive intellectual property of Maze. You may not copy, reproduce, modify, publish, distribute, or exploit any content without express written authorization.', 'mazestreetwear' ); ?>
                         </p>
 
                         <div class="p-3 bg-neutral-100 border-l-2 border-black font-mono text-xs text-neutral-700">
@@ -425,7 +425,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
 
                     <div class="p-6 border border-neutral-300 bg-white space-y-4">
                         <p class="text-sm sm:text-base text-neutral-800 font-sans leading-relaxed">
-                            <?php esc_html_e( 'Maze Streetwear and its affiliates, employees, and logistics partners shall not be liable for any indirect, incidental, punitive, or consequential damages resulting from the use of, or inability to use, this Website, garment defects beyond the replacement value of the purchased item, or shipment delays caused by third-party courier handling or force majeure circumstances.', 'mazestreetwear' ); ?>
+                            <?php esc_html_e( 'Maze and its affiliates, employees, and logistics partners shall not be liable for any indirect, incidental, punitive, or consequential damages resulting from the use of, or inability to use, this Website, garment defects beyond the replacement value of the purchased item, or shipment delays caused by third-party courier handling or force majeure circumstances.', 'mazestreetwear' ); ?>
                         </p>
                     </div>
                 </section>

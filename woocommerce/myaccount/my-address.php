@@ -1,6 +1,6 @@
 <?php
 /**
- * My Addresses - Custom Modern Brutalist UI for MAZE Streetwear
+ * My Addresses - Custom Modern Brutalist UI for MAZE
  *
  * This template overrides woocommerce/templates/myaccount/my-address.php.
  *

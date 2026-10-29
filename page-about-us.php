@@ -2,7 +2,7 @@
 /**
  * Template Name: About Us
  *
- * Minimalist Editorial About Us template for Maze Streetwear (mazestw.in).
+ * Minimalist Editorial About Us template for Maze (mazestw.in).
  * Features an optic white background, pitch-black Outfit & Bebas Neue typography, and responsive layout.
  *
  * @package MazeStreetwear
@@ -27,7 +27,7 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
       "@type": "AboutPage",
       "@id": "<?php echo esc_url( $about_url ); ?>#webpage",
       "url": "<?php echo esc_url( $about_url ); ?>",
-      "name": "About Us - Maze Streetwear",
+      "name": "About Us - Maze",
       "description": "Started running since 2019, MAZE is a High-End streetwear brand founded by LALHRUAIZELA SAILO (Zela Sailo). The term \"MAZE\" refers to the world we live in. MAZE is you and me redefining streetwear, inspired to create.",
       "publisher": {
         "@id": "https://mazestw.in/#organization"
@@ -36,7 +36,7 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
     {
       "@type": "ClothingStore",
       "@id": "https://mazestw.in/#organization",
-      "name": "Maze Streetwear",
+      "name": "Maze",
       "legalName": "LALHRUAIZELA SAILO",
       "alternateName": ["MAZE", "mazestw.in"],
       "url": "https://mazestw.in",
@@ -53,7 +53,7 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
 <main id="primary" class="site-main min-h-[75vh] flex items-center justify-center bg-white text-black py-16 sm:py-24 md:py-32 lg:py-40 px-5 sm:px-8 lg:px-12">
     <div class="w-full max-w-4xl mx-auto">
         <article class="text-left">
-            <h1 class="sr-only"><?php esc_html_e( 'About Maze Streetwear', 'mazestreetwear' ); ?></h1>
+            <h1 class="sr-only"><?php esc_html_e( 'About Maze', 'mazestreetwear' ); ?></h1>
 
             <div class="font-outfit text-lg sm:text-xl md:text-2xl lg:text-[1.85rem] leading-[1.65] sm:leading-[1.7] md:leading-[1.75] text-black font-normal tracking-tight">
                 <p class="mb-6 sm:mb-8 md:mb-10">
@@ -72,7 +72,7 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
                     <strong class="text-black font-bold uppercase">LALHRUAIZELA SAILO</strong>
                     <span class="text-neutral-400"> &middot; </span>
                     <span><?php esc_html_e( 'Brand: ', 'mazestreetwear' ); ?></span>
-                    <strong class="text-black">Maze Streetwear</strong>
+                    <strong class="text-black">Maze</strong>
                     <span class="text-neutral-400"> &middot; </span>
                     <span><?php esc_html_e( 'Aizawl, Mizoram, India', 'mazestreetwear' ); ?></span>
                 </div>

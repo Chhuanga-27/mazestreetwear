@@ -2,7 +2,7 @@
 /**
  * Single Product Size Chart Modal Template
  *
- * Brutalist monochrome pop-up size chart modal for Maze Streetwear.
+ * Brutalist monochrome pop-up size chart modal for Maze.
  * Displays ONLY the size chart corresponding to the currently viewed product.
  *
  * @package MazeStreetwear
@@ -68,7 +68,7 @@ $product_name = $current_product ? $current_product->get_name() : '';
 }
 </style>
 
-<!-- Maze Streetwear Sizing Chart Modal -->
+<!-- Maze Sizing Chart Modal -->
 <div id="maze-size-chart-modal"
      class="maze-size-chart-modal fixed inset-0 z-[99999] bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-3 sm:p-6"
      role="dialog"

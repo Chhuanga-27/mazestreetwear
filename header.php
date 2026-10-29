@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The Header for Maze Streetwear Theme
+ * The Header for Maze Theme
  *
  * Displays all of the <head> section and everything up till <div id="content">
  *
@@ -100,18 +100,18 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
     <link rel="manifest" href="<?php echo esc_url(get_template_directory_uri() . '/site.webmanifest'); ?>">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-title" content="MAZE">
-    <meta name="application-name" content="Maze Streetwear">
+    <meta name="application-name" content="Maze">
 
     <?php
     $maze_current_url = home_url(add_query_arg(array(), $GLOBALS['wp']->request ?? ''));
     $maze_page_title  = wp_get_document_title();
-    $maze_meta_desc   = get_bloginfo('description') ? get_bloginfo('description') : 'Official online store of Maze Streetwear — Contemporary oversized cuts, heavy hoodies, bottoms, and brutalist apparel.';
+    $maze_meta_desc   = get_bloginfo('description') ? get_bloginfo('description') : 'Official online store of Maze — Contemporary oversized cuts, heavy hoodies, bottoms, and brutalist apparel.';
     $maze_logo_url    = get_template_directory_uri() . '/assets/images/maze_logo.png';
     $maze_og_img      = get_template_directory_uri() . '/assets/images/og-image.png';
     ?>
 
     <!-- Search Engine & Social Media Sharing (Google, WhatsApp, Twitter/X, Instagram) -->
-    <meta property="og:site_name" content="Maze Streetwear">
+    <meta property="og:site_name" content="Maze">
     <meta property="og:type" content="<?php echo is_singular('product') ? 'product' : (is_singular() ? 'article' : 'website'); ?>">
     <meta property="og:title" content="<?php echo esc_attr($maze_page_title); ?>">
     <meta property="og:description" content="<?php echo esc_attr($maze_meta_desc); ?>">
@@ -121,7 +121,7 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/png">
-    <meta property="og:image:alt" content="Maze Streetwear Brand Emblem">
+    <meta property="og:image:alt" content="Maze Brand Emblem">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo esc_attr($maze_page_title); ?>">
     <meta name="twitter:description" content="<?php echo esc_attr($maze_meta_desc); ?>">
@@ -135,8 +135,8 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
                     "@type": "WebSite",
                     "@id": "<?php echo esc_url(home_url('/#website')); ?>",
                     "url": "<?php echo esc_url(home_url('/')); ?>",
-                    "name": "Maze Streetwear",
-                    "alternateName": ["MAZE", "mazestw.in", "MAZE STREETWEAR", "Maze Clothing"],
+                    "name": "Maze",
+                    "alternateName": ["MAZE", "mazestw.in", "Maze Clothing"],
                     "description": "<?php echo esc_js($maze_meta_desc); ?>",
                     "publisher": {
                         "@id": "<?php echo esc_url(home_url('/#organization')); ?>"
@@ -153,8 +153,8 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
                 {
                     "@type": "ClothingStore",
                     "@id": "<?php echo esc_url(home_url('/#organization')); ?>",
-                    "name": "Maze Streetwear",
-                    "legalName": "Maze Streetwear",
+                    "name": "Maze",
+                    "legalName": "Maze",
                     "alternateName": ["MAZE", "mazestw.in"],
                     "url": "<?php echo esc_url(home_url('/')); ?>",
                     "logo": {
@@ -162,7 +162,7 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
                         "@id": "<?php echo esc_url(home_url('/#logo')); ?>",
                         "url": "<?php echo esc_url($maze_logo_url); ?>",
                         "contentUrl": "<?php echo esc_url($maze_logo_url); ?>",
-                        "caption": "Maze Streetwear Official Brand Logo",
+                        "caption": "Maze Official Brand Logo",
                         "inLanguage": "en-US",
                         "width": 1524,
                         "height": 168
@@ -203,7 +203,7 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
                     <source media="(min-width: 768px)" srcset="<?php echo esc_url(get_template_directory_uri() . '/assets/images/splash-desktop.jpg'); ?>">
                     <img 
                         src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/splash-desktop.jpg'); ?>" 
-                        alt="<?php esc_attr_e('MAZE Streetwear - Enter Shop', 'mazestreetwear'); ?>"
+                        alt="<?php esc_attr_e('MAZE - Enter Shop', 'mazestreetwear'); ?>"
                         fetchpriority="high"
                         loading="eager"
                         decoding="sync"

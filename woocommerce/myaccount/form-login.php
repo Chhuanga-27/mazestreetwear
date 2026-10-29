@@ -1,6 +1,6 @@
 <?php
 /**
- * Login & Register Form - Custom Modern Brutalist UI for MAZE Streetwear
+ * Login & Register Form - Custom Modern Brutalist UI for MAZE
  *
  * This template overrides woocommerce/templates/myaccount/form-login.php.
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Orders - Custom Modern Brutalist UI for MAZE Streetwear
+ * Orders - Custom Modern Brutalist UI for MAZE
  *
  * This template overrides woocommerce/templates/myaccount/orders.php.
  *
@@ -175,7 +175,7 @@ do_action( 'woocommerce_before_account_orders', $has_orders );
                 <?php esc_html_e( 'Your Order Archive Is Empty', 'mazestreetwear' ); ?>
             </h3>
             <p class="text-sm text-neutral-700 max-w-md mx-auto leading-relaxed">
-                <?php esc_html_e( 'You have not acquired any MAZE streetwear garments yet. Explore our current season drops and essentials.', 'mazestreetwear' ); ?>
+                <?php esc_html_e( 'You have not acquired any MAZE garments yet. Explore our current season drops and essentials.', 'mazestreetwear' ); ?>
             </p>
             <div class="pt-4">
                 <a href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>"

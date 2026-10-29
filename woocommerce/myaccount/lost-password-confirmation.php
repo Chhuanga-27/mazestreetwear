@@ -1,6 +1,6 @@
 <?php
 /**
- * Lost password confirmation text - Custom Modern Brutalist UI for MAZE Streetwear
+ * Lost password confirmation text - Custom Modern Brutalist UI for MAZE
  *
  * This template overrides woocommerce/templates/myaccount/lost-password-confirmation.php.
  *

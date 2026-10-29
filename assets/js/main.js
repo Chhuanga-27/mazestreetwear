@@ -1,5 +1,5 @@
 /**
- * Maze Streetwear Theme Main JavaScript
+ * Maze Theme Main JavaScript
  *
  * Handles:
  * - Responsive mobile navigation toggle
@@ -907,7 +907,7 @@
                 : 'wc/store/cart';
 
             try {
-                const store = window.wp.data.select(cartStore);
+                const store = window.wp.data.select(cartStore); 
                 if (!store || typeof store.getCartData !== 'function') return false;
             } catch (e) {
                 return false;

@@ -2,7 +2,7 @@
 /**
  * Template Name: Contact Us
  *
- * Minimalist Editorial Contact Us template for Maze Streetwear (mazestw.in).
+ * Minimalist Editorial Contact Us template for Maze (mazestw.in).
  * Features store details, studio address, email, Instagram, and storefront policies.
  *
  * @package MazeStreetwear
@@ -31,8 +31,8 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
       "@type": "ContactPage",
       "@id": "<?php echo esc_url( $contact_url ); ?>#webpage",
       "url": "<?php echo esc_url( $contact_url ); ?>",
-      "name": "Contact Us - Maze Streetwear",
-      "description": "Official contact directory for Maze Streetwear. Direct email at enquiries@mazestw.in and official Instagram @maze.stw.",
+      "name": "Contact Us - Maze",
+      "description": "Official contact directory for Maze. Direct email at enquiries@mazestw.in and official Instagram @maze.stw.",
       "publisher": {
         "@id": "https://mazestw.in/#organization"
       }
@@ -40,8 +40,8 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
     {
       "@type": "ClothingStore",
       "@id": "https://mazestw.in/#organization",
-      "name": "Maze Streetwear",
-      "legalName": "Maze Streetwear",
+      "name": "Maze",
+      "legalName": "Maze",
       "alternateName": ["MAZE", "mazestw.in"],
       "url": "https://mazestw.in",
       "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",

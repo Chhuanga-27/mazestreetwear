@@ -1,6 +1,6 @@
 <?php
 /**
- * Lost password form - Custom Modern Brutalist UI for MAZE Streetwear
+ * Lost password form - Custom Modern Brutalist UI for MAZE
  *
  * This template overrides woocommerce/templates/myaccount/form-lost-password.php.
  *

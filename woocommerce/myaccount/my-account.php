@@ -1,6 +1,6 @@
 <?php
 /**
- * My Account page - Custom Modern Brutalist UI for MAZE Streetwear
+ * My Account page - Custom Modern Brutalist UI for MAZE
  *
  * This template overrides woocommerce/templates/myaccount/my-account.php.
  * Features:

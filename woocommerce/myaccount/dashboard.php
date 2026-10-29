@@ -1,6 +1,6 @@
 <?php
 /**
- * My Account Dashboard - Custom Modern Brutalist UI for MAZE Streetwear
+ * My Account Dashboard - Custom Modern Brutalist UI for MAZE
  *
  * This template overrides woocommerce/templates/myaccount/dashboard.php.
  *

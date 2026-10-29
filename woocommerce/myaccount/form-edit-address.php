@@ -1,6 +1,6 @@
 <?php
 /**
- * Edit address form - Custom Modern Brutalist UI for MAZE Streetwear
+ * Edit address form - Custom Modern Brutalist UI for MAZE
  *
  * This template overrides woocommerce/templates/myaccount/form-edit-address.php.
  *

@@ -2,7 +2,7 @@
 /**
  * Template Name: Shipping & Delivery Policy
  *
- * Official Shipping, Delivery & Dispatch Policy page template for Maze Streetwear (mazestw.in).
+ * Official Shipping, Delivery & Dispatch Policy page template for Maze (mazestw.in).
  * Formatted under Indian E-Commerce consumer guidelines, logistics aggregator protocols, and brand standards.
  *
  * @package MazeStreetwear
@@ -24,15 +24,15 @@ $account_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "Shipping & Delivery Policy - Maze Streetwear",
+  "name": "Shipping & Delivery Policy - Maze",
   "url": "<?php echo esc_url( $shipping_url ); ?>",
-  "description": "Official Shipping & Delivery Policy of Maze Streetwear (mazestw.in) outlining serviceable areas across India, 24-48h dispatch timelines, courier tracking via Delhivery/Blue Dart/DTDC/India Post, transit fees, and support protocols.",
+  "description": "Official Shipping & Delivery Policy of Maze (mazestw.in) outlining serviceable areas across India, 24-48h dispatch timelines, courier tracking via Delhivery/Blue Dart/DTDC/India Post, transit fees, and support protocols.",
   "datePublished": "2026-10-15",
   "dateModified": "2026-10-15",
   "publisher": {
     "@type": "Organization",
-    "name": "Maze Streetwear",
-    "legalName": "Maze Streetwear",
+    "name": "Maze",
+    "legalName": "Maze",
     "url": "https://mazestw.in",
     "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
     "address": {
@@ -309,7 +309,7 @@ $account_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
                 <!-- Preamble / Introduction Card -->
                 <section class="border-l-4 border-black pl-5 sm:pl-7 py-2 bg-white">
                     <p class="text-base sm:text-lg font-sans text-neutral-900 leading-relaxed font-normal">
-                        At <strong>Maze Streetwear</strong> (<a href="https://mazestw.in" target="_blank" rel="noopener noreferrer" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a>), we ensure every garment is handled, inspected, and dispatched with precision. This Shipping & Delivery Policy outlines the terms, timelines, transit fees, and procedures governing all orders placed on our website.
+                        At <strong>Maze</strong> (<a href="https://mazestw.in" target="_blank" rel="noopener noreferrer" class="underline hover:text-neutral-600 transition-colors font-medium">https://mazestw.in</a>), we ensure every garment is handled, inspected, and dispatched with precision. This Shipping & Delivery Policy outlines the terms, timelines, transit fees, and procedures governing all orders placed on our website.
                     </p>
                 </section>
 
@@ -757,7 +757,7 @@ $account_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permali
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
                                 <div>
                                     <span class="block text-[10px] uppercase tracking-wider text-neutral-400 mb-0.5"><?php esc_html_e( 'Brand Entity', 'mazestreetwear' ); ?></span>
-                                    <strong class="text-black text-sm"><?php esc_html_e( 'Maze Streetwear', 'mazestreetwear' ); ?></strong>
+                                    <strong class="text-black text-sm"><?php esc_html_e( 'Maze', 'mazestreetwear' ); ?></strong>
                                 </div>
                                 <div>
                                     <span class="block text-[10px] uppercase tracking-wider text-neutral-400 mb-0.5"><?php esc_html_e( 'Support Email', 'mazestreetwear' ); ?></span>
@@ -894,7 +894,7 @@ Thank you!</pre>
                 <div class="pt-8 border-t border-neutral-200 flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono text-neutral-500 gap-4">
                     <div>
                         <span><?php esc_html_e( 'DOCUMENT REF: MAZE-LOGISTICS-POLICY-2026', 'mazestreetwear' ); ?></span>
-                        <span class="block text-[11px] text-neutral-600 mt-1"><?php esc_html_e( 'Legal Entity: ', 'mazestreetwear' ); ?><strong class="text-black uppercase"><?php esc_html_e( 'Maze Streetwear', 'mazestreetwear' ); ?></strong></span>
+                        <span class="block text-[11px] text-neutral-600 mt-1"><?php esc_html_e( 'Legal Entity: ', 'mazestreetwear' ); ?><strong class="text-black uppercase"><?php esc_html_e( 'Maze', 'mazestreetwear' ); ?></strong></span>
                     </div>
                     <div class="flex items-center space-x-2">
                         <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
