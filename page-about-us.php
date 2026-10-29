@@ -30,16 +30,16 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
       "name": "About Us - Maze",
       "description": "Started running since 2019, MAZE is a High-End streetwear brand founded by LALHRUAIZELA SAILO (Zela Sailo). The term \"MAZE\" refers to the world we live in. MAZE is you and me redefining streetwear, inspired to create.",
       "publisher": {
-        "@id": "https://mazestw.in/#organization"
+        "@id": "<?php echo esc_url( home_url( '/#organization' ) ); ?>"
       }
     },
     {
       "@type": "ClothingStore",
-      "@id": "https://mazestw.in/#organization",
+      "@id": "<?php echo esc_url( home_url( '/#organization' ) ); ?>",
       "name": "Maze",
       "legalName": "LALHRUAIZELA SAILO",
       "alternateName": ["MAZE", "mazestw.in"],
-      "url": "https://mazestw.in",
+      "url": "<?php echo esc_url( home_url( '/' ) ); ?>",
       "founder": {
         "@type": "Person",
         "name": "LALHRUAIZELA SAILO (Zela Sailo)"

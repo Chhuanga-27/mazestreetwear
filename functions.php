@@ -136,7 +136,7 @@ function mazestreetwear_scripts()
 
     // Theme JavaScript (Streetwear interactions, mobile menu, dynamic size pill variation sync)
     $main_js_path = get_template_directory() . '/assets/js/main.js';
-    $js_version   = time(); // Instant cache-busting to guarantee immediate execution in browser
+    $js_version   = file_exists($main_js_path) ? filemtime($main_js_path) : $theme_version;
 
     // Mazestreetwear-main JavaScript
     // CRITICAL: Depend strictly on 'jquery' so this script is GUARANTEED to load and execute
@@ -244,23 +244,11 @@ add_action('wp_ajax_maze_get_cart_fragments', 'mazestreetwear_ajax_get_cart_frag
 add_action('wp_ajax_nopriv_maze_get_cart_fragments', 'mazestreetwear_ajax_get_cart_fragments');
 
 /**
- * Ensure guest customer session is always initiated to prevent lost cart items & cookie desync
- */
-add_action('init', function () {
-    if (function_exists('WC') && ! is_admin()) {
-        if (WC()->session && ! WC()->session->has_session()) {
-            WC()->session->set_customer_session_cookie(true);
-        }
-    }
-}, 5);
-
-/**
  * Preserve custom selected_size in cart item data for simple products
  */
 add_filter('woocommerce_add_cart_item_data', function ($cart_item_data, $product_id) {
     if (! empty($_POST['selected_size'])) {
         $cart_item_data['selected_size'] = sanitize_text_field(wp_unslash($_POST['selected_size']));
-        $cart_item_data['unique_key']    = md5(microtime() . wp_rand());
     }
     return $cart_item_data;
 }, 10, 2);
@@ -314,14 +302,16 @@ add_action('template_redirect', function () {
 }, 1);
 
 /**
- * Allow clearing the cart via URL query parameter ?empty-cart=1 for instant debugging/testing
+ * Allow clearing the cart via URL query parameter ?empty-cart=1 strictly for administrators with a valid nonce
  */
 add_action('init', function () {
-    if (isset($_GET['empty-cart']) && function_exists('WC') && WC()->cart) {
-        WC()->cart->empty_cart();
-        $redirect = remove_query_arg('empty-cart');
-        wp_safe_redirect($redirect);
-        exit;
+    if (isset($_GET['empty-cart']) && current_user_can('manage_options') && function_exists('WC') && WC()->cart) {
+        if (isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'maze_empty_cart_action')) {
+            WC()->cart->empty_cart();
+            $redirect = remove_query_arg(array('empty-cart', '_wpnonce'));
+            wp_safe_redirect($redirect);
+            exit;
+        }
     }
 }, 20);
 
@@ -369,6 +359,12 @@ add_action('woocommerce_before_single_product', function () {
  */
 function mazestreetwear_ajax_add_to_cart()
 {
+    // Security verification (CSRF Protection)
+    $nonce = isset($_POST['maze_nonce']) ? sanitize_text_field(wp_unslash($_POST['maze_nonce'])) : (isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : (isset($_REQUEST['_ajax_nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['_ajax_nonce'])) : ''));
+    if (! wp_verify_nonce($nonce, 'maze_cart_nonce')) {
+        wp_send_json_error(array('message' => __('Security verification failed. Please refresh the page and try again.', 'mazestreetwear')));
+    }
+
     // Ensure WooCommerce session and cart exist in AJAX context
     if (function_exists('WC')) {
         if (null === WC()->session && class_exists('WC_Session_Handler')) {
@@ -482,43 +478,28 @@ function mazestreetwear_ajax_add_to_cart()
             }
         }
 
-        // 4. Fallback to first in-stock purchasable variation
+        // 4. Require valid variation selection (no silent fallback to arbitrary sizes)
         if (empty($variation_id)) {
-            $children = $product->get_children();
-            foreach ($children as $child_id) {
-                $child = wc_get_product($child_id);
-                if ($child && $child->is_purchasable() && $child->is_in_stock()) {
-                    $variation_id = $child_id;
-                    break;
-                }
-            }
+            wp_send_json_error(array(
+                'message' => __('Please select an available size before proceeding.', 'mazestreetwear'),
+            ));
         }
 
-        // 5. Fallback to first child
-        if (empty($variation_id)) {
-            $children = $product->get_children();
-            if (! empty($children)) {
-                $variation_id = reset($children);
-            }
-        }
-
-        // 6. Populate exact variation attributes from child variation
-        if ($variation_id) {
-            $child = wc_get_product($variation_id);
-            if ($child instanceof \WC_Product_Variation || (is_object($child) && method_exists($child, 'get_variation_attributes'))) {
-                /** @var \WC_Product_Variation $child */
-                $child_attrs = $child->get_variation_attributes();
-                if (is_array($child_attrs)) {
-                    foreach ($child_attrs as $attr_k => $attr_v) {
-                        if ('' !== $attr_v) {
-                            $variations[$attr_k] = $attr_v;
-                        }
+        // 5. Populate exact variation attributes from child variation
+        $child = wc_get_product($variation_id);
+        if ($child instanceof \WC_Product_Variation || (is_object($child) && method_exists($child, 'get_variation_attributes'))) {
+            /** @var \WC_Product_Variation $child */
+            $child_attrs = $child->get_variation_attributes();
+            if (is_array($child_attrs)) {
+                foreach ($child_attrs as $attr_k => $attr_v) {
+                    if ('' !== $attr_v) {
+                        $variations[$attr_k] = $attr_v;
                     }
                 }
             }
         }
 
-        // 7. Ensure any missing parent attributes receive default or first available option
+        // 6. Ensure any missing parent attributes receive default or first available option
         if ($product instanceof \WC_Product_Variable || (is_object($product) && method_exists($product, 'get_variation_attributes'))) {
             /** @var \WC_Product_Variable $product */
             $parent_attrs = $product->get_variation_attributes();
@@ -531,16 +512,11 @@ function mazestreetwear_ajax_add_to_cart()
                 }
             }
         }
-
-        if (empty($variation_id)) {
-            wp_send_json_error(array('message' => __('Please select an available size before proceeding.', 'mazestreetwear')));
-        }
     }
 
-    // Preserve custom selected_size in cart item data
+    // Preserve custom selected_size in cart item data without fragmenting identical items
     if (! empty($_POST['selected_size'])) {
         $cart_item_data['selected_size'] = sanitize_text_field(wp_unslash($_POST['selected_size']));
-        $cart_item_data['unique_key']    = md5(microtime() . wp_rand());
     }
 
     $checkout_url = function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/');
@@ -1528,8 +1504,13 @@ function mazestreetwear_ensure_legal_pages_exist()
 
     set_transient('mazestreetwear_legal_pages_checked', 1, DAY_IN_SECONDS);
 }
-add_action('init', 'mazestreetwear_ensure_legal_pages_exist', 5);
 add_action('after_switch_theme', 'mazestreetwear_ensure_legal_pages_exist');
+add_action('admin_init', function () {
+    if (! get_option('mazestreetwear_legal_pages_synced')) {
+        mazestreetwear_ensure_legal_pages_exist();
+        update_option('mazestreetwear_legal_pages_synced', 1);
+    }
+});
 
 /**
  * Safe Helper to retrieve product category archive URL
@@ -2524,10 +2505,27 @@ add_filter('woocommerce_pagination_args', 'mazestreetwear_custom_pagination_args
  */
 
 /**
- * 1. Disable strict email verification requirements on the order-received page.
- * Prevents payment gateway redirect loops and false login walls for paying customers.
+ * 1. Secure order email verification requirements on the order-received page.
+ * Allows seamless redirect for fresh orders with a valid cryptographic key (preventing payment gateway loops),
+ * while enforcing email verification for older orders to prevent PII harvesting.
  */
-add_filter('woocommerce_order_email_verification_required', '__return_false', 999);
+add_filter('woocommerce_order_email_verification_required', function ($required, $order) {
+    if (! $order instanceof \WC_Order) {
+        return $required;
+    }
+
+    $order_key = isset($_GET['key']) ? sanitize_text_field(wp_unslash($_GET['key'])) : '';
+    if (! empty($order_key) && hash_equals((string) $order->get_order_key(), (string) $order_key)) {
+        $created_date = $order->get_date_created();
+        $time_since_creation = $created_date ? (time() - $created_date->getTimestamp()) : 0;
+        // Permit seamless display within 4 hours of order placement with matching cryptographic key
+        if ($time_since_creation < (4 * HOUR_IN_SECONDS)) {
+            return false;
+        }
+    }
+
+    return true;
+}, 999, 2);
 
 /**
  * 2. Allow customers (and guests) to view their order on the order-received page
@@ -2558,43 +2556,12 @@ function mazestreetwear_allow_view_order_with_valid_key($allcaps, $caps, $args, 
 add_filter('user_has_cap', 'mazestreetwear_allow_view_order_with_valid_key', 999, 4);
 
 /**
- * 3. Auto-login customer upon return from PayU (or external payment gateways)
- * when arriving on the order-received endpoint with a valid order key.
- * This ensures their authenticated session is restored without showing a login prompt.
- */
-function mazestreetwear_auto_login_on_order_received()
-{
-    if (is_admin() || is_user_logged_in()) {
-        return;
-    }
-
-    if (function_exists('is_checkout') && is_checkout() && function_exists('is_wc_endpoint_url') && is_wc_endpoint_url('order-received')) {
-        global $wp;
-        $order_id = isset($wp->query_vars['order-received']) ? absint($wp->query_vars['order-received']) : 0;
-        if (!$order_id && isset($_GET['order_id'])) {
-            $order_id = absint($_GET['order_id']);
-        }
-
-        if ($order_id > 0 && function_exists('wc_get_order')) {
-            $order = wc_get_order($order_id);
-            $order_key = isset($_GET['key']) ? sanitize_text_field(wp_unslash($_GET['key'])) : '';
-
-            if ($order && !empty($order_key) && hash_equals((string) $order->get_order_key(), (string) $order_key)) {
-                $customer_id = $order->get_customer_id();
-                if ($customer_id > 0 && function_exists('wp_set_current_user') && function_exists('wp_set_auth_cookie')) {
-                    wp_set_current_user($customer_id);
-                    wp_set_auth_cookie($customer_id, true);
-                }
-            }
-        }
-    }
-}
-add_action('template_redirect', 'mazestreetwear_auto_login_on_order_received', 10);
-
-/**
- * 4. Automatically create an account for guest checkouts if one does not exist,
- * and link the order to the customer. WooCommerce will send them their welcome
+ * 3. Automatically create an account for genuine new guest checkouts if one does not exist,
+ * and link the order to the new customer. WooCommerce will send them their welcome
  * and password setup link automatically.
+ *
+ * NOTE: If an existing user matches the billing email, the order is intentionally kept
+ * as a guest order to prevent unauthenticated account takeover or unauthorized order association.
  *
  * @param int $order_id
  */
@@ -2612,7 +2579,7 @@ function mazestreetwear_auto_create_account_for_guest($order_id)
     $customer_id = $order->get_customer_id();
     $email = $order->get_billing_email();
 
-    if (empty($email)) {
+    if (empty($email) || !is_email($email)) {
         return;
     }
 
@@ -2621,11 +2588,10 @@ function mazestreetwear_auto_create_account_for_guest($order_id)
         return;
     }
 
-    // Check if an existing WordPress user has this billing email
+    // If an existing WordPress user exists for this email, do NOT auto-assign order to them
+    // unless they authenticate with their password. This prevents unauthorized order linkage.
     $existing_user = get_user_by('email', $email);
     if ($existing_user) {
-        $order->set_customer_id($existing_user->ID);
-        $order->save();
         return;
     }
 

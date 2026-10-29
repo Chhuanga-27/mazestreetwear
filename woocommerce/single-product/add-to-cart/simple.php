@@ -6,7 +6,7 @@
  * Minimalist rectangular size boxes & full-width "ADD TO BAG" CTA button.
  *
  * @package MazeStreetwear
- * @version 1.1.0
+ * @version 7.0.1
  */
 
 defined('ABSPATH') || exit;
@@ -149,7 +149,7 @@ if ($product->is_in_stock()) : ?>
                 <span class="btn-text"><?php echo esc_html($product->single_add_to_cart_text() ? $product->single_add_to_cart_text() : __('ADD TO BAG', 'mazestreetwear')); ?></span>
             </button>
 
-            <button type="submit" name="maze_buy_now" value="1" class="maze_buy_now_button maze-btn-animated button bg-white text-black hover:bg-black hover:text-white text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border-2 border-black rounded-none font-bebas transition-all duration-200 cursor-pointer block text-center select-none active:scale-[0.98]" data-default-text="<?php esc_attr_e('BUY NOW', 'mazestreetwear'); ?>" onclick="return window.mazeBuyNow ? window.mazeBuyNow(this, event) : true;">
+            <button type="submit" name="maze_buy_now" value="1" class="maze_buy_now_button maze-btn-animated button bg-white text-black hover:bg-black hover:text-white text-lg sm:text-xl font-normal uppercase tracking-wider py-4 w-full border-2 border-black rounded-none font-bebas transition-all duration-200 cursor-pointer block text-center select-none active:scale-[0.98]" data-default-text="<?php esc_attr_e('BUY NOW', 'mazestreetwear'); ?>">
                 <span class="btn-text"><?php esc_html_e('BUY NOW', 'mazestreetwear'); ?></span>
             </button>
         </div>
@@ -215,70 +215,7 @@ if ($product->is_in_stock()) : ?>
                 }
             }
         };
-
-        window.mazeBuyNow = window.mazeBuyNow || function(btn, event) {
-            if (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            if (!btn) return false;
-            if (btn.classList.contains('is-loading')) return false;
-
-            var form = btn.closest('form') || document.querySelector('form.cart');
-            var checkoutUrl = (window.mazeData && window.mazeData.checkoutUrl) ? window.mazeData.checkoutUrl : '/checkout/';
-            if (!form) {
-                window.location.href = checkoutUrl;
-                return false;
-            }
-
-            btn.classList.add('is-loading', 'opacity-80');
-            btn.innerHTML = '<span class="inline-flex items-center justify-center gap-2 font-mono tracking-widest uppercase"><svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> CHECKING OUT...</span>';
-
-            var buyNowInput = form.querySelector('input[name="maze_buy_now"], input.maze-buy-now-input');
-            if (buyNowInput) {
-                buyNowInput.value = '1';
-            }
-            form.setAttribute('data-maze-buy-now', 'true');
-
-            if (window.fetch && window.FormData) {
-                var formData = new FormData(form);
-                formData.set('action', 'maze_ajax_add_to_cart');
-                formData.set('is_buy_now', '1');
-                formData.set('maze_buy_now', '1');
-                if (window.mazeData && window.mazeData.nonce) {
-                    formData.set('maze_nonce', window.mazeData.nonce);
-                }
-                if (!formData.get('quantity')) {
-                    formData.set('quantity', '1');
-                }
-
-                var ajaxUrl = (window.mazeData && window.mazeData.ajaxUrl) ? window.mazeData.ajaxUrl : '/wp-admin/admin-ajax.php';
-                var fallbackTimer = setTimeout(function() {
-                    HTMLFormElement.prototype.submit.call(form);
-                }, 3500);
-
-                fetch(ajaxUrl, {
-                    method: 'POST',
-                    body: formData,
-                    credentials: 'same-origin'
-                })
-                .then(function(res) { return res.json(); })
-                .then(function(data) {
-                    clearTimeout(fallbackTimer);
-                    var target = (data && data.data && data.data.checkout_url) ? data.data.checkout_url : checkoutUrl;
-                    window.location.href = target;
-                })
-                .catch(function() {
-                    clearTimeout(fallbackTimer);
-                    HTMLFormElement.prototype.submit.call(form);
-                });
-
-                return false;
-            } else {
-                HTMLFormElement.prototype.submit.call(form);
-                return false;
-            }
-        };
+    </script>
 
     <?php do_action('woocommerce_after_add_to_cart_form'); ?>
 

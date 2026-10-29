@@ -19,8 +19,6 @@ Tags: e-commerce, streetwear, minimalist, brutalist, monochrome, black-and-white
  * Run 'npm run build' or 'npm run dev' to compile styles.
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
-
 :root {
   --color-maze-bg: #ffffff;
   --color-maze-card: #ffffff;
@@ -177,8 +175,8 @@ body.woocommerce .site-header img {
 
 /* Editorial Bento Box Hero Banner */
 .maze-hero-bento {
-  border-radius: 1rem !important;
-  border: 1px solid #000000 !important;
+  border-radius: 1rem;
+  border: 1px solid #000000;
   overflow: hidden !important;
   position: relative;
   background-color: #e8e8e8;
@@ -188,14 +186,14 @@ body.woocommerce .site-header img {
 
 @media (min-width: 640px) {
   .maze-hero-bento {
-    border-radius: 1.5rem !important;
+    border-radius: 1.5rem;
     aspect-ratio: 16 / 10;
   }
 }
 
 @media (min-width: 1024px) {
   .maze-hero-bento {
-    border-radius: 2rem !important;
+    border-radius: 2rem;
   }
 }
 

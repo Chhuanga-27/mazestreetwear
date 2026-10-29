@@ -11,7 +11,7 @@
  * - Product cards enforce strict 3:4 aspect ratio, neutral background, and object-top model framing via content-product.php
  *
  * @package MazeStreetwear
- * @version 1.2.0
+ * @version 8.6.0
  */
 
 defined( 'ABSPATH' ) || exit;

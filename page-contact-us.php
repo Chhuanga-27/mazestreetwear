@@ -34,16 +34,16 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
       "name": "Contact Us - Maze",
       "description": "Official contact directory for Maze. Direct email at enquiries@mazestw.in and official Instagram @maze.stw.",
       "publisher": {
-        "@id": "https://mazestw.in/#organization"
+        "@id": "<?php echo esc_url( home_url( '/#organization' ) ); ?>"
       }
     },
     {
       "@type": "ClothingStore",
-      "@id": "https://mazestw.in/#organization",
+      "@id": "<?php echo esc_url( home_url( '/#organization' ) ); ?>",
       "name": "Maze",
       "legalName": "Maze",
       "alternateName": ["MAZE", "mazestw.in"],
-      "url": "https://mazestw.in",
+      "url": "<?php echo esc_url( home_url( '/' ) ); ?>",
       "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
       "telephone": "+918787324795",
       "email": "enquiries@mazestw.in",
