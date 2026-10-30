@@ -73,6 +73,20 @@ if ($product->is_in_stock()) : ?>
             if ($is_sized_cat) {
                 $has_size_options = true;
                 $size_options = array('S', 'M', 'L', 'XL');
+                if (function_exists('mazestreetwear_get_product_size_chart')) {
+                    $prod_chart = mazestreetwear_get_product_size_chart($product);
+                    if (! empty($prod_chart['rows']) && is_array($prod_chart['rows'])) {
+                        $chart_sizes = array();
+                        foreach ($prod_chart['rows'] as $r) {
+                            if (! empty($r['size'])) {
+                                $chart_sizes[] = $r['size'];
+                            }
+                        }
+                        if (! empty($chart_sizes)) {
+                            $size_options = $chart_sizes;
+                        }
+                    }
+                }
             }
         }
 

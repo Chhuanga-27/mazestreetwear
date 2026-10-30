@@ -2096,6 +2096,16 @@ function mazestreetwear_get_size_charts()
                 array('size' => 'XL', 'length' => '27.5 in (69.85 cm)', 'chest' => '50 in (127.00 cm)'),
             ),
         ),
+        'stripe-shirt' => array(
+            'id'       => 'stripe-shirt',
+            'title'    => 'STRIPE SHIRT',
+            'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
+            'rows'     => array(
+                array('size' => 'MEDIUM',  'length' => '25 inch / 63.5 cm',   'chest' => '48 inch / 121.92 cm'),
+                array('size' => 'LARGE',   'length' => '26 inch / 66.4 cm',   'chest' => '49 inch / 124.46 cm'),
+                array('size' => 'X-LARGE', 'length' => '27.5 inch / 69.8 cm', 'chest' => '50 inch / 127 cm'),
+            ),
+        ),
     );
 
     // Aliases for alternate slugs, attributes, and backwards compatibility
@@ -2107,6 +2117,10 @@ function mazestreetwear_get_size_charts()
     $charts['jacket']                    = &$charts['utility-jacket'];
     $charts['double-layer-hoodie']       = &$charts['double-layered-hoodie'];
     $charts['camp-shirt-0-2']            = &$charts['camp-shirt'];
+    $charts['stripe-shirt']              = &$charts['stripe-shirt'];
+    $charts['striped-shirt']             = &$charts['stripe-shirt'];
+    $charts['stripe']                    = &$charts['stripe-shirt'];
+    $charts['striped']                   = &$charts['stripe-shirt'];
     $charts['wave-pants']                = &$charts['wave-pant'];
     $charts['pant']                      = &$charts['wave-pant'];
     $charts['pants']                     = &$charts['wave-pant'];
@@ -2355,17 +2369,22 @@ function mazestreetwear_get_current_product_size_chart_key($product = null)
         return 'camp-shirt';
     }
 
-    // 6. DOUBLE LAYERED HOODIE
+    // 6. STRIPE SHIRT (Matched before generic shirt/tee)
+    if (false !== strpos($search_pool, 'stripe') || false !== strpos($search_pool, 'striped')) {
+        return 'stripe-shirt';
+    }
+
+    // 7. DOUBLE LAYERED HOODIE
     if (false !== strpos($search_pool, 'double layer') || false !== strpos($search_pool, 'double-layer') || false !== strpos($search_pool, 'hoodie') || false !== strpos($search_pool, 'hooded') || false !== strpos($search_pool, 'sweatshirt')) {
         return 'double-layered-hoodie';
     }
 
-    // 7. UTILITY JACKET DESIGN 0.2 / WAVE JACKET
+    // 8. UTILITY JACKET DESIGN 0.2 / WAVE JACKET
     if (false !== strpos($search_pool, 'wave jacket') || false !== strpos($search_pool, 'utility jacket') || false !== strpos($search_pool, 'jacket') || false !== strpos($search_pool, 'bomber') || false !== strpos($search_pool, 'windbreaker') || false !== strpos($search_pool, 'coat')) {
         return 'utility-jacket';
     }
 
-    // 8. LIGHTNING T-SHIRT / T-SHIRT
+    // 9. LIGHTNING T-SHIRT / T-SHIRT
     if (false !== strpos($search_pool, 'lightning') || false !== strpos($search_pool, 't-shirt') || false !== strpos($search_pool, 'tshirt') || false !== strpos($search_pool, 'tee') || false !== strpos($search_pool, 'top') || false !== strpos($search_pool, 'shirt')) {
         return 'lightning-t-shirt';
     }
@@ -2438,6 +2457,12 @@ function mazestreetwear_get_product_size_chart($product = null)
                 $chart['title'] = 'LIGHTNING T-SHIRT';
             } else {
                 $chart['title'] = 'T-SHIRT';
+            }
+        } elseif ($key === 'stripe-shirt') {
+            if (false !== strpos($prod_name, 'STRIPED SHIRT')) {
+                $chart['title'] = 'STRIPED SHIRT';
+            } else {
+                $chart['title'] = 'STRIPE SHIRT';
             }
         }
     }
