@@ -282,7 +282,6 @@ if ($product->is_in_stock()) : ?>
             HTMLFormElement.prototype.submit.call(form);
             return false;
         };
-
     </script>
 
     <?php do_action('woocommerce_after_add_to_cart_form'); ?>
