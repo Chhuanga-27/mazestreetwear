@@ -42,7 +42,7 @@ $privacy_url  = function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? maz
       "@id": "https://mazestw.in/#organization",
       "name": "Maze",
       "legalName": "Maze",
-      "alternateName": ["MAZE", "mazestw.in"],
+      "alternateName": ["mazestw", "MAZESTW", "mazestw.in", "Maze Streetwear", "Maze Clothing", "mzestw", "MAZE"],
       "url": "https://mazestw.in",
       "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
       "telephone": "+918787324795",

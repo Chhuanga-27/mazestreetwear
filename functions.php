@@ -1438,6 +1438,13 @@ add_filter('template_include', 'mazestreetwear_legal_template_include', 99);
  */
 function mazestreetwear_legal_document_title_parts($title_parts)
 {
+    // On Front Page, optimize for brand keywords (mazestw, maze streetwear)
+    if (is_front_page() || is_home()) {
+        $title_parts['title'] = 'MAZE (MAZESTW) | Official Online Store';
+        $title_parts['tagline'] = 'Maze Streetwear India (mazestw.in)';
+        return $title_parts;
+    }
+
     $request_uri = isset($_SERVER['REQUEST_URI']) ? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI'])) : '';
     $path = trim(parse_url($request_uri, PHP_URL_PATH), '/');
     $site_path = trim(parse_url(home_url(), PHP_URL_PATH), '/');
@@ -2919,6 +2926,30 @@ function mazestreetwear_send_security_headers()
 }
 add_action('send_headers', 'mazestreetwear_send_security_headers', 1);
 
+/**
+ * Dynamic SEO Robots.txt Directives & Sitemap declaration for Maze (mazestw.in)
+ */
+function mazestreetwear_filter_robots_txt($output, $public)
+{
+    if ('0' === (string)$public) {
+        return $output;
+    }
 
+    $site_url    = home_url('/');
+    $sitemap_url = home_url('/wp-sitemap.xml');
 
+    $rules  = "User-agent: *\n";
+    $rules .= "Allow: /wp-content/uploads/\n";
+    $rules .= "Allow: /wp-content/themes/\n";
+    $rules .= "Disallow: /wp-admin/\n";
+    $rules .= "Allow: /wp-admin/admin-ajax.php\n";
+    $rules .= "Disallow: /cart/\n";
+    $rules .= "Disallow: /checkout/\n";
+    $rules .= "Disallow: /my-account/\n";
+    $rules .= "Disallow: /*add-to-cart=*\n";
+    $rules .= "Disallow: /*?orderby=*\n";
+    $rules .= "\nSitemap: " . esc_url($sitemap_url) . "\n";
 
+    return $rules;
+}
+add_filter('robots_txt', 'mazestreetwear_filter_robots_txt', 10, 2);

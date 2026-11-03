@@ -23,6 +23,9 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 
 <main id="primary" class="site-main bg-white text-black min-h-screen">
 
+    <!-- High-Priority Brand Heading for Google Indexing (mazestw) -->
+    <h1 class="sr-only"><?php esc_html_e( 'MAZE (MAZESTW) | Contemporary Luxury & Brutalist Streetwear India — Official Online Store', 'mazestreetwear' ); ?></h1>
+
     <!-- 1. Editorial Hero Banner (Full-Width, No Border, No Radius, HD) -->
     <section class="w-full bg-white pt-0 pb-10 sm:pb-16">
         <div class="maze-hero-bento relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[16/9] rounded-none border-0 overflow-hidden bg-[#e8e8e8] group">
@@ -35,7 +38,7 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
                 <source media="(min-width: 640px)" srcset="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-desktop.jpg?v=' . $hero_desktop_ver ); ?>" width="5765" height="3614">
                 <img 
                     src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-desktop.jpg?v=' . $hero_desktop_ver ); ?>" 
-                    alt="<?php esc_attr_e( 'MAZE Editorial SS26', 'mazestreetwear' ); ?>" 
+                    alt="<?php esc_attr_e( 'MAZE (MAZESTW) Editorial Brutalist Streetwear Collection', 'mazestreetwear' ); ?>" 
                     width="5765"
                     height="3614"
                     loading="eager"

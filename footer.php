@@ -104,7 +104,7 @@ $footer_card_border = $is_maze_home ? 'border-0' : 'border border-black/15 shado
                 <source type="image/svg+xml" srcset="<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze-footer-logo.svg' ); ?>">
                 <img 
                     src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze-footer-logo.png' ); ?>" 
-                    alt="<?php esc_attr_e( 'MAZE', 'mazestreetwear' ); ?>" 
+                    alt="<?php esc_attr_e( 'MAZE Streetwear (mazestw.in)', 'mazestreetwear' ); ?>" 
                     width="662" 
                     height="73" 
                     loading="lazy" 
@@ -118,7 +118,7 @@ $footer_card_border = $is_maze_home ? 'border-0' : 'border border-black/15 shado
         <div class="pt-5 sm:pt-6 border-t border-neutral-300 flex flex-col md:flex-row items-center justify-between text-xs sm:text-sm font-outfit gap-4">
             <!-- Left: Legal Links -->
             <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 sm:gap-x-4 gap-y-2 text-black font-medium">
-                <span class="font-normal font-bebas text-base text-black tracking-wider">MAZE &copy;<?php echo esc_html( date( 'Y' ) ); ?></span>
+                <span class="font-normal font-bebas text-base text-black tracking-wider">MAZE (MAZESTW) &copy;<?php echo esc_html( date( 'Y' ) ); ?></span>
                 <span class="text-neutral-500 font-black select-none" aria-hidden="true">&middot;</span>
                 <a href="<?php echo esc_url( function_exists( 'mazestreetwear_get_privacy_policy_url' ) ? mazestreetwear_get_privacy_policy_url() : home_url( '/privacy-policy/' ) ); ?>" class="maze-legal-link text-black hover:underline underline-offset-4 transition-colors">
                     <?php esc_html_e( 'Privacy Policy', 'mazestreetwear' ); ?>

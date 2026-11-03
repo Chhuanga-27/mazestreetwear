@@ -27,8 +27,8 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
       "@type": "AboutPage",
       "@id": "<?php echo esc_url( $about_url ); ?>#webpage",
       "url": "<?php echo esc_url( $about_url ); ?>",
-      "name": "About Us - Maze",
-      "description": "Started running since 2019, MAZE is a High-End streetwear brand founded by LALHRUAIZELA SAILO (Zela Sailo). The term \"MAZE\" refers to the world we live in. MAZE is you and me redefining streetwear, inspired to create.",
+      "name": "About Us - MAZE (MAZESTW)",
+      "description": "Started running since 2019, MAZE (MAZESTW) is a contemporary high-end streetwear brand founded by LALHRUAIZELA SAILO (Zela Sailo). The term \"MAZE\" refers to the world we live in. MAZE is you and me redefining streetwear, inspired to create.",
       "publisher": {
         "@id": "https://mazestw.in/#organization"
       }
@@ -38,7 +38,7 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
       "@id": "https://mazestw.in/#organization",
       "name": "Maze",
       "legalName": "LALHRUAIZELA SAILO",
-      "alternateName": ["MAZE", "mazestw.in"],
+      "alternateName": ["mazestw", "MAZESTW", "mazestw.in", "Maze Streetwear", "Maze Clothing", "mzestw", "MAZE"],
       "url": "https://mazestw.in",
       "founder": {
         "@type": "Person",
@@ -57,7 +57,7 @@ $about_url = function_exists( 'mazestreetwear_get_about_url' ) ? mazestreetwear_
 
             <div class="font-outfit text-lg sm:text-xl md:text-2xl lg:text-[1.85rem] leading-[1.65] sm:leading-[1.7] md:leading-[1.75] text-black font-normal tracking-tight">
                 <p class="mb-6 sm:mb-8 md:mb-10">
-                    <?php esc_html_e( 'Started running since 2019, MAZE is a High-End streetwear brand founded by LALHRUAIZELA SAILO (Zela Sailo),', 'mazestreetwear' ); ?><br class="hidden sm:inline" />
+                    <?php esc_html_e( 'Started running since 2019, MAZE (MAZESTW) is a contemporary high-end streetwear brand founded by LALHRUAIZELA SAILO (Zela Sailo),', 'mazestreetwear' ); ?><br class="hidden sm:inline" />
                     <?php esc_html_e( 'The term "MAZE" refers to the world we live in.', 'mazestreetwear' ); ?><br class="hidden sm:inline" />
                     <?php esc_html_e( 'MAZE is you and me redefining streetwear,', 'mazestreetwear' ); ?><br class="hidden sm:inline" />
                     <?php esc_html_e( 'inspired to create.', 'mazestreetwear' ); ?>

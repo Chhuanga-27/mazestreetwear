@@ -32,6 +32,7 @@ $terms_url = function_exists( 'mazestreetwear_get_terms_url' ) ? mazestreetwear_
     "@type": "Organization",
     "name": "Maze",
     "legalName": "Maze",
+    "alternateName": ["mazestw", "MAZESTW", "mazestw.in", "Maze Streetwear", "Maze Clothing", "mzestw", "MAZE"],
     "url": "https://mazestw.in",
     "logo": "<?php echo esc_url( get_template_directory_uri() . '/assets/images/maze_logo.png' ); ?>",
     "address": {

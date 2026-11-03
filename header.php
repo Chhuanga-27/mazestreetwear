@@ -103,25 +103,75 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
     <meta name="application-name" content="Maze">
 
     <?php
+    // Detect whether an external SEO plugin (Yoast, Rank Math, AIOSEO, SEOPress) is active
+    $maze_has_seo_plugin = defined('WPSEO_VERSION') || function_exists('rank_math') || class_exists('All_in_One_SEO_Pack') || defined('AIOSEO_VERSION') || class_exists('SEOPress');
+
     $maze_current_url = home_url(add_query_arg(array(), $GLOBALS['wp']->request ?? ''));
-    $maze_page_title  = wp_get_document_title();
-    $maze_meta_desc   = get_bloginfo('description') ? get_bloginfo('description') : 'Official online store of Maze — Contemporary oversized cuts, heavy hoodies, bottoms, and brutalist apparel.';
-    $maze_logo_url    = get_template_directory_uri() . '/assets/images/maze_logo.png';
-    $maze_og_img      = get_template_directory_uri() . '/assets/images/og-image.png';
+    if (is_front_page()) {
+        $maze_canonical_url = home_url('/');
+    } elseif (is_singular()) {
+        $maze_canonical_url = get_permalink();
+    } else {
+        $maze_canonical_url = $maze_current_url;
+    }
+
+    $maze_page_title = wp_get_document_title();
+
+    // Contextual SEO Meta Description targeted for "mazestw", "maze streetwear", and brand queries
+    if (is_front_page()) {
+        $maze_meta_desc = 'MAZE (MAZESTW) official online store — Discover premium contemporary streetwear, oversized tees, heavy hoodies, bottoms, and brutalist luxury apparel at mazestw.in.';
+    } elseif (is_singular('product')) {
+        global $post;
+        $prod_desc = '';
+        if ($post && ! empty($post->post_excerpt)) {
+            $prod_desc = wp_strip_all_tags($post->post_excerpt);
+        } elseif ($post && ! empty($post->post_content)) {
+            $prod_desc = wp_strip_all_tags($post->post_content);
+        }
+        if (! empty($prod_desc)) {
+            $maze_meta_desc = wp_trim_words($prod_desc, 25, '...') . ' Available at MAZE (MAZESTW) — mazestw.in';
+        } else {
+            $maze_meta_desc = sprintf('Shop %s at MAZE (MAZESTW) — Contemporary streetwear crafted in India. Fast shipping across India at mazestw.in.', get_the_title());
+        }
+    } elseif (is_page('about-us') || is_page('about')) {
+        $maze_meta_desc = 'About MAZE (MAZESTW) — Founded in 2019 by LALHRUAIZELA SAILO. Redefining Indian contemporary fashion and brutalist streetwear at mazestw.in.';
+    } elseif (is_page('contact-us') || is_page('contact')) {
+        $maze_meta_desc = 'Contact MAZE (MAZESTW) Concierge Desk. Direct support, inquiries, and orders at enquiries@mazestw.in and Instagram @maze.stw.';
+    } else {
+        $maze_meta_desc = get_bloginfo('description') ? get_bloginfo('description') : 'Official online store of MAZE (MAZESTW) — Contemporary oversized cuts, heavy hoodies, bottoms, and brutalist apparel.';
+    }
+
+    $maze_logo_url = get_template_directory_uri() . '/assets/images/maze_logo.png';
+    $maze_og_img   = get_template_directory_uri() . '/assets/images/og-image.png';
+
+    // If viewing single product with featured image, use product image for og:image
+    if (is_singular('product') && has_post_thumbnail()) {
+        $prod_img = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
+        if ($prod_img) {
+            $maze_og_img = $prod_img[0];
+        }
+    }
     ?>
 
+    <?php if (! $maze_has_seo_plugin) : ?>
+    <!-- Primary Search Engine Meta Tags (Standard Google SEO) -->
+    <meta name="description" content="<?php echo esc_attr($maze_meta_desc); ?>">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="<?php echo esc_url($maze_canonical_url); ?>">
+    <?php endif; ?>
+
     <!-- Search Engine & Social Media Sharing (Google, WhatsApp, Twitter/X, Instagram) -->
-    <meta property="og:site_name" content="Maze">
+    <meta property="og:site_name" content="MAZE (MAZESTW)">
     <meta property="og:type" content="<?php echo is_singular('product') ? 'product' : (is_singular() ? 'article' : 'website'); ?>">
     <meta property="og:title" content="<?php echo esc_attr($maze_page_title); ?>">
     <meta property="og:description" content="<?php echo esc_attr($maze_meta_desc); ?>">
-    <meta property="og:url" content="<?php echo esc_url($maze_current_url); ?>">
+    <meta property="og:url" content="<?php echo esc_url($maze_canonical_url); ?>">
     <meta property="og:image" content="<?php echo esc_url($maze_og_img); ?>">
     <meta property="og:image:secure_url" content="<?php echo esc_url($maze_og_img); ?>">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/png">
-    <meta property="og:image:alt" content="Maze Brand Emblem">
+    <meta property="og:image:alt" content="MAZE Streetwear Brand">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo esc_attr($maze_page_title); ?>">
     <meta name="twitter:description" content="<?php echo esc_attr($maze_meta_desc); ?>">
@@ -135,8 +185,8 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
                     "@type": "WebSite",
                     "@id": "<?php echo esc_url(home_url('/#website')); ?>",
                     "url": "<?php echo esc_url(home_url('/')); ?>",
-                    "name": "Maze",
-                    "alternateName": ["MAZE", "mazestw.in", "Maze Clothing"],
+                    "name": "MAZE",
+                    "alternateName": ["mazestw", "MAZESTW", "mazestw.in", "Maze Streetwear", "Maze Clothing", "mzestw", "MAZE"],
                     "description": "<?php echo esc_js($maze_meta_desc); ?>",
                     "publisher": {
                         "@id": "<?php echo esc_url(home_url('/#organization')); ?>"
@@ -151,24 +201,24 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
                     }
                 },
                 {
-                    "@type": "ClothingStore",
+                    "@type": ["ClothingStore", "Brand", "Organization"],
                     "@id": "<?php echo esc_url(home_url('/#organization')); ?>",
-                    "name": "Maze",
-                    "legalName": "Maze",
-                    "alternateName": ["MAZE", "mazestw.in"],
+                    "name": "MAZE",
+                    "legalName": "LALHRUAIZELA SAILO",
+                    "alternateName": ["mazestw", "MAZESTW", "mazestw.in", "Maze Streetwear", "Maze Clothing", "mzestw", "MAZE"],
                     "url": "<?php echo esc_url(home_url('/')); ?>",
                     "logo": {
                         "@type": "ImageObject",
                         "@id": "<?php echo esc_url(home_url('/#logo')); ?>",
                         "url": "<?php echo esc_url($maze_logo_url); ?>",
                         "contentUrl": "<?php echo esc_url($maze_logo_url); ?>",
-                        "caption": "Maze Official Brand Logo",
+                        "caption": "MAZE Official Brand Logo",
                         "inLanguage": "en-US",
                         "width": 1524,
                         "height": 168
                     },
                     "image": "<?php echo esc_url($maze_og_img); ?>",
-                    "description": "Contemporary streetwear brand offering oversized tees, heavy hoodies, bottoms, and brutalist luxury apparel.",
+                    "description": "Contemporary high-end streetwear brand offering oversized tees, heavy hoodies, bottoms, and brutalist luxury apparel.",
                     "telephone": "+918787324795",
                     "email": "enquiries@mazestw.in",
                     "priceRange": "₹₹",
@@ -181,12 +231,57 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
                         "addressCountry": "IN"
                     },
                     "sameAs": [
-                        "https://www.instagram.com/maze.stw?utm_source=ig_web_button_share_sheet&exln=ZDNlZDc0MzIxNw=="
+                        "https://www.instagram.com/maze.stw/"
                     ]
                 }
             ]
         }
     </script>
+
+    <?php if (is_singular('product') && function_exists('wc_get_product')) :
+        $maze_prod_obj = wc_get_product(get_the_ID());
+        if ($maze_prod_obj) :
+            $maze_prod_img_id = $maze_prod_obj->get_image_id();
+            $maze_prod_img_url = $maze_prod_img_id ? wp_get_attachment_image_url($maze_prod_img_id, 'full') : $maze_og_img;
+            $maze_prod_price = $maze_prod_obj->get_price();
+            $maze_prod_in_stock = $maze_prod_obj->is_in_stock();
+            $maze_prod_sku = $maze_prod_obj->get_sku() ? $maze_prod_obj->get_sku() : ('MAZESTW-' . $maze_prod_obj->get_id());
+            $maze_prod_desc = wp_strip_all_tags($maze_prod_obj->get_short_description() ?: $maze_prod_obj->get_description() ?: $maze_meta_desc);
+    ?>
+    <!-- Google Product Rich Snippet Schema for eCommerce -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": "<?php echo esc_js($maze_prod_obj->get_name()); ?>",
+            "image": [
+                "<?php echo esc_url($maze_prod_img_url); ?>"
+            ],
+            "description": "<?php echo esc_js($maze_prod_desc); ?>",
+            "sku": "<?php echo esc_js($maze_prod_sku); ?>",
+            "mpn": "<?php echo esc_js($maze_prod_sku); ?>",
+            "brand": {
+                "@type": "Brand",
+                "name": "MAZE",
+                "alternateName": "mazestw"
+            },
+            "offers": {
+                "@type": "Offer",
+                "url": "<?php echo esc_url(get_permalink($maze_prod_obj->get_id())); ?>",
+                "priceCurrency": "<?php echo esc_js(function_exists('get_woocommerce_currency') ? get_woocommerce_currency() : 'INR'); ?>",
+                "price": "<?php echo esc_js($maze_prod_price ?: '0'); ?>",
+                "priceValidUntil": "<?php echo esc_js(gmdate('Y-12-31', strtotime('+1 year'))); ?>",
+                "itemCondition": "https://schema.org/NewCondition",
+                "availability": "<?php echo $maze_prod_in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'; ?>",
+                "seller": {
+                    "@type": "Organization",
+                    "name": "MAZE",
+                    "alternateName": "mazestw"
+                }
+            }
+        }
+    </script>
+    <?php endif; endif; ?>
 
     <?php wp_head(); ?>
 </head>
@@ -292,7 +387,7 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
                         <img
                             id="masthead-logo"
                             src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/maze_logo.png'); ?>"
-                            alt="<?php echo esc_attr(get_bloginfo('name', 'display')); ?>"
+                            alt="<?php echo esc_attr(get_bloginfo('name', 'display') . ' Streetwear (mazestw.in)'); ?>"
                             width="160"
                             height="22"
                             class="maze-logo-img h-3.5 sm:h-[18px] md:h-[22px] w-auto max-w-[115px] sm:max-w-[160px] md:max-w-[180px] object-contain transition-opacity duration-150 group-hover:opacity-75" />
