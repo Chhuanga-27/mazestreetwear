@@ -1438,10 +1438,10 @@ add_filter('template_include', 'mazestreetwear_legal_template_include', 99);
  */
 function mazestreetwear_legal_document_title_parts($title_parts)
 {
-    // On Front Page, optimize for brand keywords (mazestw, maze streetwear)
+    // On Front Page, clean brand title for browser tab
     if (is_front_page() || is_home()) {
-        $title_parts['title'] = 'MAZE (MAZESTW) | Official Online Store';
-        $title_parts['tagline'] = 'Maze Streetwear India (mazestw.in)';
+        $title_parts['title'] = 'MAZE | Official Online Store';
+        unset($title_parts['tagline']);
         return $title_parts;
     }
 

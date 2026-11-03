@@ -161,7 +161,7 @@ $show_maze_splash         = $is_front_page && ! $is_inner_page && ! $is_single_p
     <?php endif; ?>
 
     <!-- Search Engine & Social Media Sharing (Google, WhatsApp, Twitter/X, Instagram) -->
-    <meta property="og:site_name" content="MAZE (MAZESTW)">
+    <meta property="og:site_name" content="MAZE">
     <meta property="og:type" content="<?php echo is_singular('product') ? 'product' : (is_singular() ? 'article' : 'website'); ?>">
     <meta property="og:title" content="<?php echo esc_attr($maze_page_title); ?>">
     <meta property="og:description" content="<?php echo esc_attr($maze_meta_desc); ?>">
