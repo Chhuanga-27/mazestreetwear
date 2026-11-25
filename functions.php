@@ -2113,6 +2113,15 @@ function mazestreetwear_get_size_charts()
                 array('size' => 'X-LARGE', 'length' => '27.5 inch / 69.8 cm', 'chest' => '50 inch / 127 cm'),
             ),
         ),
+        'pleated-jacket' => array(
+            'id'       => 'pleated-jacket',
+            'title'    => 'PLEATED JACKET',
+            'columns'  => array('SIZE', 'LENGTH', 'CHEST'),
+            'rows'     => array(
+                array('size' => 'MEDIUM', 'length' => '24.5 inch / 62.23 cm', 'chest' => '47 inch / 119.38 cm'),
+                array('size' => 'LARGE',  'length' => '26 inch / 66.4 cm',    'chest' => '49 inch / 124.46 cm'),
+            ),
+        ),
     );
 
     // Aliases for alternate slugs, attributes, and backwards compatibility
@@ -2122,6 +2131,7 @@ function mazestreetwear_get_size_charts()
     $charts['wave-jacket']               = &$charts['utility-jacket'];
     $charts['utility-jacket-design-0-2'] = &$charts['utility-jacket'];
     $charts['jacket']                    = &$charts['utility-jacket'];
+    $charts['pleated']                   = &$charts['pleated-jacket'];
     $charts['double-layer-hoodie']       = &$charts['double-layered-hoodie'];
     $charts['camp-shirt-0-2']            = &$charts['camp-shirt'];
     $charts['stripe-shirt']              = &$charts['stripe-shirt'];
@@ -2386,12 +2396,17 @@ function mazestreetwear_get_current_product_size_chart_key($product = null)
         return 'double-layered-hoodie';
     }
 
-    // 8. UTILITY JACKET DESIGN 0.2 / WAVE JACKET
+    // 8. PLEATED JACKET (Matched before generic jacket)
+    if (false !== strpos($search_pool, 'pleated jacket') || false !== strpos($search_pool, 'pleated')) {
+        return 'pleated-jacket';
+    }
+
+    // 9. UTILITY JACKET DESIGN 0.2 / WAVE JACKET
     if (false !== strpos($search_pool, 'wave jacket') || false !== strpos($search_pool, 'utility jacket') || false !== strpos($search_pool, 'jacket') || false !== strpos($search_pool, 'bomber') || false !== strpos($search_pool, 'windbreaker') || false !== strpos($search_pool, 'coat')) {
         return 'utility-jacket';
     }
 
-    // 9. LIGHTNING T-SHIRT / T-SHIRT
+    // 10. LIGHTNING T-SHIRT / T-SHIRT
     if (false !== strpos($search_pool, 'lightning') || false !== strpos($search_pool, 't-shirt') || false !== strpos($search_pool, 'tshirt') || false !== strpos($search_pool, 'tee') || false !== strpos($search_pool, 'top') || false !== strpos($search_pool, 'shirt')) {
         return 'lightning-t-shirt';
     }
