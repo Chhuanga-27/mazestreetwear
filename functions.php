@@ -2459,33 +2459,9 @@ function mazestreetwear_get_product_size_chart($product = null)
     $chart = $charts[$key];
 
     if ($chart && is_a($product, 'WC_Product')) {
-        $prod_name = strtoupper(trim($product->get_name()));
-        if ($key === 'utility-jacket') {
-            if (false !== strpos($prod_name, 'WAVE JACKET')) {
-                $chart['title'] = 'WAVE JACKET';
-            } elseif (false !== strpos($prod_name, 'UTILITY JACKET DESIGN 0.2')) {
-                $chart['title'] = 'UTILITY JACKET DESIGN 0.2';
-            } elseif (false !== strpos($prod_name, 'UTILITY JACKET')) {
-                $chart['title'] = 'UTILITY JACKET';
-            }
-        } elseif ($key === 'puffy-puffer') {
-            if (false !== strpos($prod_name, 'PUFFY PUFFER 0.2')) {
-                $chart['title'] = 'PUFFY PUFFER 0.2';
-            } elseif (false !== strpos($prod_name, 'PUFFY PUFFER')) {
-                $chart['title'] = 'PUFFY PUFFER';
-            }
-        } elseif ($key === 'lightning-t-shirt') {
-            if (false !== strpos($prod_name, 'LIGHTNING')) {
-                $chart['title'] = 'LIGHTNING T-SHIRT';
-            } else {
-                $chart['title'] = 'T-SHIRT';
-            }
-        } elseif ($key === 'stripe-shirt') {
-            if (false !== strpos($prod_name, 'STRIPED SHIRT')) {
-                $chart['title'] = 'STRIPED SHIRT';
-            } else {
-                $chart['title'] = 'STRIPE SHIRT';
-            }
+        $prod_name = trim($product->get_name());
+        if ($prod_name !== '') {
+            $chart['title'] = strtoupper($prod_name);
         }
     }
 
@@ -2943,6 +2919,10 @@ add_action('send_headers', 'mazestreetwear_send_security_headers', 1);
 
 /**
  * Dynamic SEO Robots.txt Directives & Sitemap declaration for Maze (mazestw.in)
+ *
+ * @param string      $output The robots.txt output.
+ * @param bool|string $public Whether the site is considered "public".
+ * @return string
  */
 function mazestreetwear_filter_robots_txt($output, $public)
 {

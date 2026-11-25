@@ -45,10 +45,12 @@ if ( empty( $chart_data ) || ! is_array( $chart_data ) ) {
 }
 
 $chart_id     = isset( $chart_data['id'] ) ? $chart_data['id'] : 'lightning-t-shirt';
-$chart_title  = isset( $chart_data['title'] ) ? $chart_data['title'] : __( 'SIZE GUIDE', 'mazestreetwear' );
+$product_name = $current_product ? trim( $current_product->get_name() ) : '';
+$chart_title  = $product_name !== ''
+    ? $product_name
+    : ( isset( $chart_data['title'] ) ? $chart_data['title'] : __( 'SIZE GUIDE', 'mazestreetwear' ) );
 $columns      = isset( $chart_data['columns'] ) ? $chart_data['columns'] : array( 'SIZE', 'LENGTH', 'CHEST' );
 $rows         = isset( $chart_data['rows'] ) ? $chart_data['rows'] : array();
-$product_name = $current_product ? $current_product->get_name() : '';
 ?>
 
 <style>
