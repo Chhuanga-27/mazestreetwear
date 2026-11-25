@@ -93,75 +93,109 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     );
 
     if ( class_exists( 'WooCommerce' ) ) {
-        $populate_showcase_item = static function ( &$item, $post_id ) {
-            $wc_product = wc_get_product( $post_id );
+        $used_ids        = array();
+        $used_titles     = array();
+        $used_permalinks = array();
+
+        $normalize_title = static function ( $title ) {
+            $clean = wp_strip_all_tags( (string) $title );
+            $clean = preg_replace( '/\s+/', ' ', trim( $clean ) );
+            return function_exists( 'mb_strtolower' ) ? mb_strtolower( $clean, 'UTF-8' ) : strtolower( $clean );
+        };
+
+        $populate_showcase_item = static function ( &$item, $post_id ) use ( &$used_ids, &$used_titles, &$used_permalinks, $normalize_title ) {
+            $pid = (int) $post_id;
+            if ( $pid <= 0 || in_array( $pid, $used_ids, true ) || 'publish' !== get_post_status( $pid ) ) {
+                return false;
+            }
+
+            $wc_product = wc_get_product( $pid );
             if ( ! $wc_product ) {
                 return false;
             }
+
+            $title_key = $normalize_title( $wc_product->get_name() );
+            $permalink = (string) $wc_product->get_permalink();
+            if ( ( '' !== $title_key && in_array( $title_key, $used_titles, true ) ) || ( '' !== $permalink && in_array( $permalink, $used_permalinks, true ) ) ) {
+                return false;
+            }
+
             $item['title']     = $wc_product->get_name();
             $item['price']     = $wc_product->get_price_html();
-            $item['permalink'] = $wc_product->get_permalink();
-            if ( has_post_thumbnail( $post_id ) ) {
-                $item['image'] = get_the_post_thumbnail_url( $post_id, 'full' );
+            $item['permalink'] = $permalink;
+            if ( has_post_thumbnail( $pid ) ) {
+                $item['image'] = get_the_post_thumbnail_url( $pid, 'full' );
+            }
+
+            $used_ids[] = $pid;
+            if ( '' !== $title_key ) {
+                $used_titles[] = $title_key;
+            }
+            if ( '' !== $permalink ) {
+                $used_permalinks[] = $permalink;
             }
             return true;
         };
 
-        $excluded_ids = array();
-
-        // Look for puffer-gilet first or query latest published garments
-        $puffer_post = get_page_by_path( 'puffer-gilet', OBJECT, 'product' );
-        if ( $puffer_post && 'publish' !== get_post_status( $puffer_post ) ) {
-            $puffer_post = null;
+        // Look for puffer-gilet / puffer-gillet first or query latest published garments
+        $puffer_post = null;
+        foreach ( array( 'puffer-gilet', 'puffer-gillet' ) as $puffer_slug ) {
+            $candidate = get_page_by_path( $puffer_slug, OBJECT, 'product' );
+            if ( $candidate && 'publish' === get_post_status( $candidate ) ) {
+                $puffer_post = $candidate;
+                break;
+            }
         }
         if ( ! $puffer_post ) {
-            $puffer_q = new WP_Query( array(
-                'post_type'           => 'product',
-                'post_status'         => 'publish',
-                'posts_per_page'      => 1,
-                's'                   => 'Puffer Gilet',
-                'ignore_sticky_posts' => true,
-            ) );
-            if ( $puffer_q->have_posts() ) {
-                $puffer_q->the_post();
-                $puffer_post = get_post();
+            foreach ( array( 'Puffer Gilet', 'Puffer Gillet' ) as $puffer_search ) {
+                $puffer_q = new WP_Query( array(
+                    'post_type'           => 'product',
+                    'post_status'         => 'publish',
+                    'posts_per_page'      => 1,
+                    's'                   => $puffer_search,
+                    'ignore_sticky_posts' => true,
+                    'no_found_rows'       => true,
+                ) );
+                if ( $puffer_q->have_posts() ) {
+                    $puffer_q->the_post();
+                    $puffer_post = get_post();
+                    wp_reset_postdata();
+                    break;
+                }
                 wp_reset_postdata();
             }
         }
 
-        if ( $puffer_post && $populate_showcase_item( $showcase_item_1, $puffer_post->ID ) ) {
-            $excluded_ids[] = (int) $puffer_post->ID;
-        } else {
+        if ( ! ( $puffer_post && $populate_showcase_item( $showcase_item_1, $puffer_post->ID ) ) ) {
             // Use 1st published WooCommerce product if available
             $first_q = new WP_Query( array(
                 'post_type'           => 'product',
                 'post_status'         => 'publish',
                 'posts_per_page'      => 1,
                 'ignore_sticky_posts' => true,
+                'no_found_rows'       => true,
             ) );
             if ( $first_q->have_posts() ) {
                 $first_q->the_post();
-                $first_id = get_the_ID();
-                if ( $populate_showcase_item( $showcase_item_1, $first_id ) ) {
-                    $excluded_ids[] = (int) $first_id;
-                }
-                wp_reset_postdata();
+                $populate_showcase_item( $showcase_item_1, get_the_ID() );
             }
+            wp_reset_postdata();
         }
 
-        // 2nd & 3rd showcase products (exclude already-selected product IDs to prevent duplicates)
+        // 2nd & 3rd showcase products (strictly deduplicated by ID, title, and permalink)
         $remaining_q = new WP_Query( array(
             'post_type'           => 'product',
             'post_status'         => 'publish',
-            'posts_per_page'      => 2,
-            'post__not_in'        => $excluded_ids,
+            'posts_per_page'      => 12,
+            'post__not_in'        => $used_ids,
             'ignore_sticky_posts' => true,
+            'no_found_rows'       => true,
         ) );
         if ( $remaining_q->have_posts() ) {
             $slot_index = 2;
-            while ( $remaining_q->have_posts() ) {
+            while ( $remaining_q->have_posts() && $slot_index <= 3 ) {
                 $remaining_q->the_post();
-                $pid = get_the_ID();
+                $pid = (int) get_the_ID();
                 if ( 2 === $slot_index && $populate_showcase_item( $showcase_item_2, $pid ) ) {
                     $slot_index++;
                 } elseif ( 3 === $slot_index && $populate_showcase_item( $showcase_item_3, $pid ) ) {

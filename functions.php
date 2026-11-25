@@ -2461,7 +2461,7 @@ function mazestreetwear_get_product_size_chart($product = null)
     if ($chart && is_a($product, 'WC_Product')) {
         $prod_name = trim($product->get_name());
         if ($prod_name !== '') {
-            $chart['title'] = strtoupper($prod_name);
+            $chart['title'] = mb_strtoupper($prod_name, 'UTF-8');
         }
     }
 
