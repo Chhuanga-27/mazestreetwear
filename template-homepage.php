@@ -93,14 +93,34 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
     );
 
     if ( class_exists( 'WooCommerce' ) ) {
+        $populate_showcase_item = static function ( &$item, $post_id ) {
+            $wc_product = wc_get_product( $post_id );
+            if ( ! $wc_product ) {
+                return false;
+            }
+            $item['title']     = $wc_product->get_name();
+            $item['price']     = $wc_product->get_price_html();
+            $item['permalink'] = $wc_product->get_permalink();
+            if ( has_post_thumbnail( $post_id ) ) {
+                $item['image'] = get_the_post_thumbnail_url( $post_id, 'full' );
+            }
+            return true;
+        };
+
+        $excluded_ids = array();
+
         // Look for puffer-gilet first or query latest published garments
         $puffer_post = get_page_by_path( 'puffer-gilet', OBJECT, 'product' );
+        if ( $puffer_post && 'publish' !== get_post_status( $puffer_post ) ) {
+            $puffer_post = null;
+        }
         if ( ! $puffer_post ) {
             $puffer_q = new WP_Query( array(
-                'post_type'      => 'product',
-                'post_status'    => 'publish',
-                'posts_per_page' => 1,
-                's'              => 'Puffer Gilet',
+                'post_type'           => 'product',
+                'post_status'         => 'publish',
+                'posts_per_page'      => 1,
+                's'                   => 'Puffer Gilet',
+                'ignore_sticky_posts' => true,
             ) );
             if ( $puffer_q->have_posts() ) {
                 $puffer_q->the_post();
@@ -109,75 +129,43 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
             }
         }
 
-        if ( $puffer_post ) {
-            $wc_p1 = wc_get_product( $puffer_post->ID );
-            if ( $wc_p1 ) {
-                $showcase_item_1['title']     = $wc_p1->get_name();
-                $showcase_item_1['price']     = $wc_p1->get_price_html();
-                $showcase_item_1['permalink'] = $wc_p1->get_permalink();
-                if ( has_post_thumbnail( $puffer_post->ID ) ) {
-                    $showcase_item_1['image'] = get_the_post_thumbnail_url( $puffer_post->ID, 'full' );
-                }
-            }
+        if ( $puffer_post && $populate_showcase_item( $showcase_item_1, $puffer_post->ID ) ) {
+            $excluded_ids[] = (int) $puffer_post->ID;
         } else {
             // Use 1st published WooCommerce product if available
             $first_q = new WP_Query( array(
-                'post_type'      => 'product',
-                'post_status'    => 'publish',
-                'posts_per_page' => 1,
+                'post_type'           => 'product',
+                'post_status'         => 'publish',
+                'posts_per_page'      => 1,
+                'ignore_sticky_posts' => true,
             ) );
             if ( $first_q->have_posts() ) {
                 $first_q->the_post();
-                $wc_first = wc_get_product( get_the_ID() );
-                if ( $wc_first ) {
-                    $showcase_item_1['title']     = $wc_first->get_name();
-                    $showcase_item_1['price']     = $wc_first->get_price_html();
-                    $showcase_item_1['permalink'] = $wc_first->get_permalink();
-                    if ( has_post_thumbnail( get_the_ID() ) ) {
-                        $showcase_item_1['image'] = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-                    }
+                $first_id = get_the_ID();
+                if ( $populate_showcase_item( $showcase_item_1, $first_id ) ) {
+                    $excluded_ids[] = (int) $first_id;
                 }
                 wp_reset_postdata();
             }
         }
 
-        // 2nd showcase product
-        $second_q = new WP_Query( array(
-            'post_type'      => 'product',
-            'post_status'    => 'publish',
-            'posts_per_page' => 1,
-            'offset'         => 1,
+        // 2nd & 3rd showcase products (exclude already-selected product IDs to prevent duplicates)
+        $remaining_q = new WP_Query( array(
+            'post_type'           => 'product',
+            'post_status'         => 'publish',
+            'posts_per_page'      => 2,
+            'post__not_in'        => $excluded_ids,
+            'ignore_sticky_posts' => true,
         ) );
-        if ( $second_q->have_posts() ) {
-            $second_q->the_post();
-            $wc_sec = wc_get_product( get_the_ID() );
-            if ( $wc_sec ) {
-                $showcase_item_2['title']     = $wc_sec->get_name();
-                $showcase_item_2['price']     = $wc_sec->get_price_html();
-                $showcase_item_2['permalink'] = $wc_sec->get_permalink();
-                if ( has_post_thumbnail( get_the_ID() ) ) {
-                    $showcase_item_2['image'] = get_the_post_thumbnail_url( get_the_ID(), 'full' );
-                }
-            }
-            wp_reset_postdata();
-        }
-
-        // 3rd showcase product
-        $third_q = new WP_Query( array(
-            'post_type'      => 'product',
-            'post_status'    => 'publish',
-            'posts_per_page' => 1,
-            'offset'         => 2,
-        ) );
-        if ( $third_q->have_posts() ) {
-            $third_q->the_post();
-            $wc_third = wc_get_product( get_the_ID() );
-            if ( $wc_third ) {
-                $showcase_item_3['title']     = $wc_third->get_name();
-                $showcase_item_3['price']     = $wc_third->get_price_html();
-                $showcase_item_3['permalink'] = $wc_third->get_permalink();
-                if ( has_post_thumbnail( get_the_ID() ) ) {
-                    $showcase_item_3['image'] = get_the_post_thumbnail_url( get_the_ID(), 'full' );
+        if ( $remaining_q->have_posts() ) {
+            $slot_index = 2;
+            while ( $remaining_q->have_posts() ) {
+                $remaining_q->the_post();
+                $pid = get_the_ID();
+                if ( 2 === $slot_index && $populate_showcase_item( $showcase_item_2, $pid ) ) {
+                    $slot_index++;
+                } elseif ( 3 === $slot_index && $populate_showcase_item( $showcase_item_3, $pid ) ) {
+                    $slot_index++;
                 }
             }
             wp_reset_postdata();
